@@ -238,7 +238,7 @@ class Pipeline:
             boundary=load_conus_boundary()
             core_inputs=load_source_document(self.path(self.config.core_source_inputs),self.root)
             geo=build_features(grid_path,core_inputs,self.output/'geography_core',study_geometry=boundary.boundary,
-                cache_dir=self.root/'data/interim/phase7_delivery_v1'/self.identity,resume=True,progress=print)
+                cache_dir=self.root/'data/interim'/self.config.delivery_version/self.identity,resume=True,progress=print)
             prov=pd.read_parquet(self.output/'geography_core/feature_provenance.parquet')
             prov.attrs.update(grid_definition_id=self.config.grid_definition_id,data_mode='real')
             coverage={'core':json.loads((self.output/'geography_core/coverage_report.json').read_text(encoding='utf-8'))}
