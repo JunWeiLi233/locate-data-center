@@ -45,6 +45,22 @@ def identity_tokens(folder: Path) -> dict[str, str]:
     if core_manifest.is_file():
         for key in json.loads(core_manifest.read_text(encoding='utf-8')).get('tile_keys', []):
             tokens[key] = '<TILE_KEY>'
+    # Source-configuration digests hash root-resolved input paths; their content is
+    # compared separately through config_snapshot.json and source_inventory.json.
+    def configuration_digests(value):
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key.endswith('configuration_sha256') and isinstance(item, str):
+                    yield item
+                else:
+                    yield from configuration_digests(item)
+        elif isinstance(value, list):
+            for item in value:
+                yield from configuration_digests(item)
+    source_manifest = folder / 'source_data_manifest.json'
+    if source_manifest.is_file():
+        for digest in configuration_digests(json.loads(source_manifest.read_text(encoding='utf-8'))):
+            tokens[digest] = '<SOURCE_CONFIGURATION>'
     # Digest of the validation input binding, which embeds the identities above.
     sensitivity = folder / 'sensitivity_results.parquet'
     texts = [p.read_text(encoding='utf-8') for p in folder.rglob('*.json') if p.name not in EXECUTION_METADATA]
