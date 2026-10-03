@@ -1,0 +1,11 @@
+# Processing settings, not physical/sustainability thresholds.
+input_grid: data/processed/us_grid__dev_tiny.parquet
+output_dir: data/processed
+cache_dir: data/interim/phase2_features
+tile_size_cells: 625
+resume: true
+scope: development
+# National processing: input_grid=data/processed/us_grid.parquet. Sources remain
+# partial unless complete official local files replace bounded cached inputs.
+# Local source overrides use build_features source_inputs[source_id]['paths'];
+# see docs/data_dictionary.md and default_source_inputs() for path/metadata keys.

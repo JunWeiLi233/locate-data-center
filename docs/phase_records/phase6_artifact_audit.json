@@ -1,0 +1,408 @@
+{
+  "accuracy_reported": null,
+  "baseline_preservation": {
+    "fresh_phase5_baseline_reproduced": true,
+    "frozen_inputs_unchanged_before_after": true,
+    "run_metadata_hashes_valid": true
+  },
+  "data_quality": {
+    "interpretation": "Source/coverage and join evidence; not independent physical validation.",
+    "totals": {
+      "common_coarse20km4": {
+        "known_rows": 506,
+        "partial_coverage_rows": 18,
+        "rows": 560,
+        "unknown_rows": 54
+      },
+      "common_fine10km16": {
+        "known_rows": 2022,
+        "partial_coverage_rows": 18,
+        "rows": 2240,
+        "unknown_rows": 218
+      },
+      "prospective_holdout25": {
+        "known_rows": 3158,
+        "partial_coverage_rows": 39,
+        "rows": 3500,
+        "unknown_rows": 342
+      }
+    },
+    "unknown_metrics": {
+      "common_coarse20km4": {
+        "egrid_multiple_subregion_labels_json": 4,
+        "flood_coverage_frac": 4,
+        "flood_overlap_frac": 4,
+        "flood_sfha_area_km2": 4,
+        "flood_surveyed_coverage_frac": 4,
+        "nex_access_cm2_ssp245_2030_pr_mean_mm_per_day": 4,
+        "nex_access_cm2_ssp245_2030_tas_mean_c": 4,
+        "nex_access_cm2_ssp245_2030_temporal_coverage_frac": 4,
+        "nsrdb_point_ghi_mean_w_per_m2": 4,
+        "ntad_rail_distance_km": 4,
+        "wildfire_burn_probability": 4,
+        "wildfire_conditional_flame_length_ft": 4,
+        "wind_toolkit_index_capacity_factor_mean_frac": 3,
+        "wind_toolkit_index_wind_speed_mean_m_per_s": 3
+      },
+      "common_fine10km16": {
+        "egrid_multiple_subregion_labels_json": 16,
+        "flood_coverage_frac": 16,
+        "flood_overlap_frac": 16,
+        "flood_sfha_area_km2": 16,
+        "flood_surveyed_coverage_frac": 16,
+        "nex_access_cm2_ssp245_2030_pr_mean_mm_per_day": 16,
+        "nex_access_cm2_ssp245_2030_tas_mean_c": 16,
+        "nex_access_cm2_ssp245_2030_temporal_coverage_frac": 16,
+        "nsrdb_point_ghi_mean_w_per_m2": 16,
+        "ntad_rail_distance_km": 16,
+        "wildfire_burn_probability": 16,
+        "wildfire_conditional_flame_length_ft": 16,
+        "wind_toolkit_index_capacity_factor_mean_frac": 13,
+        "wind_toolkit_index_wind_speed_mean_m_per_s": 13
+      },
+      "prospective_holdout25": {
+        "egrid_multiple_subregion_labels_json": 25,
+        "flood_coverage_frac": 25,
+        "flood_overlap_frac": 25,
+        "flood_sfha_area_km2": 25,
+        "flood_surveyed_coverage_frac": 25,
+        "nex_access_cm2_ssp245_2030_pr_mean_mm_per_day": 25,
+        "nex_access_cm2_ssp245_2030_tas_mean_c": 25,
+        "nex_access_cm2_ssp245_2030_temporal_coverage_frac": 25,
+        "nsrdb_point_ghi_mean_w_per_m2": 25,
+        "ntad_rail_distance_km": 25,
+        "wildfire_burn_probability": 25,
+        "wildfire_conditional_flame_length_ft": 25,
+        "wind_toolkit_index_capacity_factor_mean_frac": 21,
+        "wind_toolkit_index_wind_speed_mean_m_per_s": 21
+      }
+    }
+  },
+  "evaluation_version": "phase6_v1",
+  "external_validation": {
+    "externally_unvalidated_modules": [
+      "annual electricity and operational carbon",
+      "on-site operational water",
+      "parcel/power/water/fiber feasibility",
+      "future water-stress scenario binding",
+      "MCDA ranking and search-region recommendations"
+    ],
+    "externally_validated_modules": [],
+    "overall_accuracy": null,
+    "rationale": "No independent, system-boundary-compatible facility measurements or engineering observations are available. Source lookup and join checks are software/data-quality verification, not independent physical validation.",
+    "status": "UNAVAILABLE"
+  },
+  "freeze": {
+    "archive_sha256": "48d8a1e9f7e655b125d1bde6a9841f46d2329633390057b61663dde6590a0781",
+    "fingerprint_sha256": "c8fd37349196910add4ee1f392965aaa38ee60bed7d55f4e0688cc0371eb52b8",
+    "freeze_id": "phase6-v1-c8fd37349196910a",
+    "holdout_feature_evaluation_started_at_freeze": false,
+    "input_files": 89,
+    "manifest_sha256": "2411c9ac0b99ca8ff5143e8cb9de740e48c795a852f20377034f5e0769d2a1df",
+    "path": "runs/phase6/freeze/v1/freeze_manifest.json",
+    "snapshot_files": 115,
+    "software_files": 115
+  },
+  "geography_build_summary": {
+    "baseline_separation_km": 250.59928172283335,
+    "path": "runs/phase6/inputs/geography_build_summary.json",
+    "peak_paged_commit_bytes": 1333022720,
+    "peak_working_set_bytes": 740958208,
+    "sha256": "45a6ad13c09327b99d3093cf5372e2b4eb333f440dc382fb2eddbe2d23590fa3"
+  },
+  "holdout": {
+    "alternatives": 50,
+    "cells": 25,
+    "conditional": 50,
+    "critical_unknown": 50,
+    "externally_validated": false,
+    "hard_failures": 0,
+    "pareto": 6,
+    "rankable": 50,
+    "selection_was_prospective": true
+  },
+  "inactive_analyses": [
+    {
+      "module_id": "climate_to_cooling_response",
+      "reason": "No defensible local climate-to-PUE/WUE response function exists; NASA context must not alter cooling physics.",
+      "status": "INAPPLICABLE"
+    },
+    {
+      "module_id": "construction_lifecycle_sensitivity",
+      "reason": "No real project inventory, product factors or transport routes exist; unknown components cannot be varied from invented baselines.",
+      "status": "INAPPLICABLE"
+    }
+  ],
+  "outputs": {
+    "ablation_results.csv": {
+      "bytes": 2729,
+      "repeat_identical": true,
+      "repeat_sha256": "97443dbf79a7c4ba412fd39903c4dba0499bd80bd54e05a24c2bfd2395c1ba83",
+      "sha256": "97443dbf79a7c4ba412fd39903c4dba0499bd80bd54e05a24c2bfd2395c1ba83"
+    },
+    "alternative_rank_ranges.csv": {
+      "bytes": 25555,
+      "repeat_identical": true,
+      "repeat_sha256": "062030dec6c92560848f99fc9f60622e24fc1c2d02c47a0537975d0d3ddbb76c",
+      "sha256": "062030dec6c92560848f99fc9f60622e24fc1c2d02c47a0537975d0d3ddbb76c"
+    },
+    "fixed_region_summary.csv": {
+      "bytes": 19399,
+      "repeat_identical": true,
+      "repeat_sha256": "42cc5e400d21baebea6619a5e8231a5146edcf402a6167b1b208550b4cf2e408",
+      "sha256": "42cc5e400d21baebea6619a5e8231a5146edcf402a6167b1b208550b4cf2e408"
+    },
+    "holdout_data_quality.csv": {
+      "bytes": 44912,
+      "repeat_identical": true,
+      "repeat_sha256": "8108045f1c68d93eba4930695b20b1068df5476a7680bb9ed12d7c22fd5fa26f",
+      "sha256": "8108045f1c68d93eba4930695b20b1068df5476a7680bb9ed12d7c22fd5fa26f"
+    },
+    "holdout_ranked_cells.parquet": {
+      "bytes": 78053,
+      "metadata": {
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "data_mode": "real",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "schema": "DecisionResult",
+        "schema_version": "1.1.0"
+      },
+      "repeat_identical": true,
+      "repeat_sha256": "cab7e36c7b622610daa1c0998d6d074a69cd7c65f9ddbce3e4977047479140ca",
+      "sha256": "cab7e36c7b622610daa1c0998d6d074a69cd7c65f9ddbce3e4977047479140ca"
+    },
+    "resolution_results.csv": {
+      "bytes": 1356,
+      "repeat_identical": true,
+      "repeat_sha256": "16a774eb0274d9de1137ca2dba2d0b43fd3f0879dce0adda1423af134eb18a12",
+      "sha256": "16a774eb0274d9de1137ca2dba2d0b43fd3f0879dce0adda1423af134eb18a12"
+    },
+    "robustness_summary.csv": {
+      "bytes": 10571,
+      "repeat_identical": true,
+      "repeat_sha256": "90a2b18b582cd1957ad1faada889a8a5a4a81535bfa51ee2cbda1552dd93693a",
+      "sha256": "90a2b18b582cd1957ad1faada889a8a5a4a81535bfa51ee2cbda1552dd93693a"
+    },
+    "run_metadata.json": {
+      "bytes": 5219,
+      "repeat_identical": true,
+      "repeat_sha256": "2d5f9649b21bb05473f64f5889e298c9219497174802b08a090306ff08855c36",
+      "sha256": "2d5f9649b21bb05473f64f5889e298c9219497174802b08a090306ff08855c36"
+    },
+    "sensitivity_results.parquet": {
+      "bytes": 192921,
+      "metadata": {
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "data_mode": "real",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "schema": "SensitivityResult",
+        "schema_version": "1.0.0"
+      },
+      "repeat_identical": true,
+      "repeat_sha256": "1c4669310746b18eb851f73dd468c001884b49086f5a9f79e2ce05a0998a0d85",
+      "sha256": "1c4669310746b18eb851f73dd468c001884b49086f5a9f79e2ce05a0998a0d85"
+    },
+    "validation_report.json": {
+      "bytes": 20055,
+      "repeat_identical": true,
+      "repeat_sha256": "201ad5346af56db3fe06a94062100ac322e35382cec18aacab107a5a0f33e7ae",
+      "sha256": "201ad5346af56db3fe06a94062100ac322e35382cec18aacab107a5a0f33e7ae"
+    },
+    "validation_report.md": {
+      "bytes": 3126,
+      "repeat_identical": true,
+      "repeat_sha256": "8f879bf24b0bc74771c36dbe0c6fb3be94a3eebd57f8ad5fb12ab05ae9bca041",
+      "sha256": "8f879bf24b0bc74771c36dbe0c6fb3be94a3eebd57f8ad5fb12ab05ae9bca041"
+    }
+  },
+  "phase": 6,
+  "prospective_inputs": {
+    "common_coarse20km4": {
+      "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s20000m-v1",
+      "grid_ids": 4,
+      "output_hashes": {
+        "enhanced/enhanced_feature_provenance.parquet": "dba613f985f49c74c27755480394d0538f85a9fa06176604f8b92051388ab000",
+        "enhanced/enhanced_grid_dataset.parquet": "4930abdc52c0e7550538dd89d2c0dec6021e88e530af70b3ddeed22f6c24280d",
+        "grid.parquet": "f079795b99f410ed6ac52b8a428f00876b043d91af654d778a8e6016ecac7b8a"
+      },
+      "path": "runs/phase6/inputs/common_coarse20km4/evaluation_manifest.json",
+      "repeat_identical": true,
+      "sha256": "f0699f5639273757ae04f76ea32b1c1085d4e1a134e1312f25ca6bbb95f581b1"
+    },
+    "common_fine16": {
+      "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+      "grid_ids": 16,
+      "output_hashes": {
+        "enhanced/enhanced_feature_provenance.parquet": "2d455a2b17b1e480f80d2609ea035bc3efd4a61d31af6fb2ae5df893ae0f2317",
+        "enhanced/enhanced_grid_dataset.parquet": "c220484f2408658cb2ada0c946b76d2c8fc11d43a49171c2de46047666b32f52",
+        "grid.parquet": "aeb9e2bd234a0ea5752630acc21cdf113495c20d0ab68f33e46eceeee03e8068"
+      },
+      "path": "runs/phase6/inputs/common_fine16/evaluation_manifest.json",
+      "repeat_identical": true,
+      "sha256": "0c4cbdba3292ba7f9c5cae7367c90d57e0bf2d60a70229db683b37106ff8f728"
+    },
+    "holdout25": {
+      "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+      "grid_ids": 25,
+      "output_hashes": {
+        "enhanced/enhanced_feature_provenance.parquet": "e526fc10afba294a827cbca322b4ea1bca2e8cd0b52364187694c93d931fd347",
+        "enhanced/enhanced_grid_dataset.parquet": "067385a9c4a6d9fa59a6b25d41b592945a7154e13303ca14b4d6ed58a6e01a56",
+        "grid.parquet": "dc3744b0a82b2d8800a3b5ff30a897ff9e0db065ef766fb44cc31e976a799a85"
+      },
+      "path": "runs/phase6/inputs/holdout25/evaluation_manifest.json",
+      "repeat_identical": true,
+      "sha256": "afbbff533b5ae6244aafb00579c3659032c9876d2dfc4bbb9957eac67a6badca"
+    }
+  },
+  "remaining_blockers": [
+    "No independent system-boundary-compatible facility observations or engineering benchmarks are available.",
+    "Critical parcel, contiguous land, utility capacity, water-supply and fiber evidence remain unresolved where marked UNKNOWN.",
+    "Climate-to-cooling and construction-lifecycle sensitivities are inactive because required response functions/inventories/factors are unavailable.",
+    "National-scale runtime and memory remain unvalidated."
+  ],
+  "repeat": {
+    "different_files": [],
+    "directory": "runs/phase6/repeat_final",
+    "identical_files": 11
+  },
+  "resolution": {
+    "cell_ids_compared": false,
+    "common_footprint_km2": 1600.0,
+    "rows": [
+      {
+        "cells": 16,
+        "comparison_basis": "Equal projected footprint; native features and all model stages recomputed independently; cell IDs are not matched across resolutions.",
+        "connected_regions": 1,
+        "design_id": "air_dry_assumed",
+        "fine_coarse_selected_intersection_km2": 300.0,
+        "fine_coarse_selected_jaccard": 0.6,
+        "fine_coarse_selected_union_km2": 500.0,
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "rankable_cells": 16,
+        "rankable_score_mean": 83.37410329557727,
+        "resolution": "fine_10km",
+        "selected_members": 4,
+        "selected_union_km2": 400.0,
+        "study_area_intersection_km2": 1600.0
+      },
+      {
+        "cells": 16,
+        "comparison_basis": "Equal projected footprint; native features and all model stages recomputed independently; cell IDs are not matched across resolutions.",
+        "connected_regions": 1,
+        "design_id": "cold_plate_tower_assumed",
+        "fine_coarse_selected_intersection_km2": 300.0,
+        "fine_coarse_selected_jaccard": 0.6,
+        "fine_coarse_selected_union_km2": 500.0,
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "rankable_cells": 16,
+        "rankable_score_mean": 80.74610329557729,
+        "resolution": "fine_10km",
+        "selected_members": 4,
+        "selected_union_km2": 400.0,
+        "study_area_intersection_km2": 1600.0
+      },
+      {
+        "cells": 4,
+        "comparison_basis": "Equal projected footprint; native features and all model stages recomputed independently; cell IDs are not matched across resolutions.",
+        "connected_regions": 1,
+        "design_id": "air_dry_assumed",
+        "fine_coarse_selected_intersection_km2": 300.0,
+        "fine_coarse_selected_jaccard": 0.6,
+        "fine_coarse_selected_union_km2": 500.0,
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s20000m-v1",
+        "rankable_cells": 4,
+        "rankable_score_mean": 83.37410329557729,
+        "resolution": "coarse_20km",
+        "selected_members": 1,
+        "selected_union_km2": 400.0,
+        "study_area_intersection_km2": 1600.0
+      },
+      {
+        "cells": 4,
+        "comparison_basis": "Equal projected footprint; native features and all model stages recomputed independently; cell IDs are not matched across resolutions.",
+        "connected_regions": 1,
+        "design_id": "cold_plate_tower_assumed",
+        "fine_coarse_selected_intersection_km2": 300.0,
+        "fine_coarse_selected_jaccard": 0.6,
+        "fine_coarse_selected_union_km2": 500.0,
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s20000m-v1",
+        "rankable_cells": 4,
+        "rankable_score_mean": 80.74610329557729,
+        "resolution": "coarse_20km",
+        "selected_members": 1,
+        "selected_union_km2": 400.0,
+        "study_area_intersection_km2": 1600.0
+      }
+    ]
+  },
+  "schema_version": "1.0.0",
+  "schemas": {
+    "ablation_rows": 4,
+    "all_rows_valid": true,
+    "alternative_rank_range_rows": 84,
+    "data_quality_rows": 420,
+    "fixed_region_rows": 56,
+    "holdout_ranked_rows": 50,
+    "resolution_rows": 4,
+    "robustness_rows": 28,
+    "sensitivity_rows": 2352
+  },
+  "sensitivity": {
+    "alternative_rank_range_max": 70,
+    "alternative_rank_range_min": 2,
+    "cases": 28,
+    "categories": {
+      "ablation": 4,
+      "baseline": 1,
+      "carbon": 2,
+      "land": 2,
+      "load": 2,
+      "pue": 2,
+      "screening": 1,
+      "water": 8,
+      "weights": 4,
+      "wue": 2
+    },
+    "eligibility_changes_total": 84,
+    "rank_correlation_max": 1.0,
+    "rank_correlation_min": 0.6110154905335629,
+    "ranked_cases_per_alternative": [
+      27,
+      27
+    ],
+    "strict_rankable": 0,
+    "top_k_overlap_max": 10,
+    "top_k_overlap_min": 0
+  },
+  "status": "PASS_AWAITING_ORCHESTRATOR_ACCEPTANCE",
+  "tests": {
+    "focused_primary": {
+      "elapsed_seconds": 11.36,
+      "failed": 0,
+      "passed": 28
+    },
+    "orchestrator": {
+      "basetemp": ".tmp-root-phase6-preregistered-final",
+      "cacheprovider_disabled": true,
+      "elapsed_seconds": 42.58,
+      "failed": 0,
+      "passed": 439,
+      "reported_by": "orchestrator"
+    },
+    "primary": {
+      "command": ".venv\\Scripts\\python.exe -m pytest -q --basetemp=.pytest-work/phase6-full-freeze -p no:cacheprovider --tb=short",
+      "elapsed_seconds": 43.45,
+      "failed": 0,
+      "passed": 439,
+      "skipped": 0,
+      "warnings": 0
+    },
+    "reviewer": {
+      "basetemp": ".tmp-review-phase6-frozen-full",
+      "elapsed_seconds": 40.74,
+      "failed": 0,
+      "passed": 439
+    }
+  },
+  "verified_at_utc": "2026-10-03T08:38:44.417334+00:00"
+}

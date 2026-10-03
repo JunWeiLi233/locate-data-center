@@ -1,0 +1,108 @@
+# Regional search baseline. Whole-cell exposures are informational; actual
+# parcel clearance is critical UNKNOWN. No overlap cutoff is chosen for winners.
+screening_mode: STRICT
+requirements:
+  - requirement_id: total_suitable_area_plausibility
+    metric: suitable_land_area_km2
+    accepted_statuses: [observed, calculated, proxy]
+    operator: ge
+    threshold_from: minimum_land_area_km2
+    unit: km2
+    basis: project_assumption
+    rationale: Regional plausibility only; scattered NLCD pixels are not contiguous or developable land.
+  - requirement_id: contiguous_suitable_land
+    metric: largest_contiguous_suitable_area_km2
+    operator: ge
+    threshold_from: minimum_land_area_km2
+    unit: km2
+    basis: project_assumption
+    rationale: Require contiguous land independently of total classified pixels.
+  - requirement_id: confirmed_developable_parcel
+    metric: confirmed_developable_parcel_area_km2
+    operator: ge
+    threshold_from: minimum_land_area_km2
+    unit: km2
+    basis: project_assumption
+    rationale: Land rights, setbacks, permitting and constructability require parcel verification.
+  - requirement_id: parcel_flood_clearance
+    metric: confirmed_parcel_flood_clearance
+    operator: ge
+    threshold: 1
+    unit: verified_flag
+    basis: project_assumption
+    rationale: Usable-parcel flood clearance required; regional SFHA fraction is not parcel clearance.
+    reference: docs/research/phase3/screening_threshold_basis.md section 2; contextual guidance, not private-project legal exclusion.
+  - requirement_id: parcel_ecology_clearance
+    metric: confirmed_parcel_ecology_clearance
+    operator: ge
+    threshold: 1
+    unit: verified_flag
+    basis: project_assumption
+    rationale: Parcel ecology/wetland review required; PAD-US/NLCD indicators do not prove approval.
+  - requirement_id: parcel_wildfire_clearance
+    metric: confirmed_parcel_wildfire_clearance
+    operator: ge
+    threshold: 1
+    unit: verified_flag
+    basis: project_assumption
+    rationale: Verified wildfire review required; unknown burn probability stays unknown.
+  - requirement_id: utility_capacity
+    metric: confirmed_utility_capacity_mw
+    operator: ge
+    threshold_from: peak_facility_demand_mw
+    unit: mw
+    coverage_policy: not_applicable
+    basis: project_assumption
+    rationale: Connection capacity must meet verified peak facility demand, never average IT or proximity.
+  - requirement_id: water_supply_strategy
+    metric: confirmed_water_supply_strategy
+    operator: ge
+    threshold: 1
+    unit: verified_flag
+    coverage_policy: not_applicable
+    basis: project_assumption
+    rationale: Withdrawal/discharge and supply strategy required even for dry assumptions; Aqueduct is not supply commitment.
+  - requirement_id: data_center_fiber
+    metric: confirmed_data_center_fiber
+    operator: ge
+    threshold: 1
+    unit: verified_flag
+    coverage_policy: not_applicable
+    basis: project_assumption
+    rationale: Require verified connectivity/diversity; proximity/FCC availability cannot substitute.
+  - requirement_id: regional_flood_indicator
+    metric: flood_overlap_frac
+    operator: informational
+    unit: frac
+    is_critical: false
+    basis: project_assumption
+    rationale: Regional exposure only; a river within a100km2cell does not prove every possible parcel unusable.
+  - requirement_id: regional_protected_indicator
+    metric: protected_overlap_frac
+    operator: informational
+    unit: frac
+    is_critical: false
+    basis: project_assumption
+    rationale: Informational exposure without inferring legal prohibition from a GAP fraction.
+  - requirement_id: regional_water_stress_indicator
+    metric: baseline_water_stress_score
+    operator: informational
+    unit: score_0_to_5
+    is_critical: false
+    basis: project_assumption
+    rationale: Aqueduct exposure without invented scientific cutoff or supply commitment.
+  - requirement_id: regional_transmission_indicator
+    metric: transmission_distance_km
+    operator: informational
+    unit: km
+    is_critical: false
+    coverage_policy: not_applicable
+    basis: project_assumption
+    rationale: Proximity only, not capacity, interconnection timeline or supplying utility.
+  - requirement_id: regional_wildfire_indicator
+    metric: wildfire_burn_probability
+    operator: informational
+    unit: annual_probability
+    is_critical: false
+    basis: project_assumption
+    rationale: Native burn-probability evidence unavailable; WHP is separate, never a replacement.

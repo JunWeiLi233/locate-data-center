@@ -1,0 +1,32 @@
+schema_version: 1.0.0
+geography: data/processed/us_grid_dataset.parquet
+provenance: data/processed/feature_provenance.parquet
+facility: configs/facility.yaml
+cooling_designs: configs/cooling_designs.yaml
+physical_scenarios: configs/phase3_physical_scenarios.yaml
+constraints: configs/constraints.yaml
+baseline_profile: configs/scoring_profile.yaml
+enhanced_profile_declaration: docs/phase_records/phase5_profiles_predeclared.json
+pathways: [bau, opt, pes]
+milestone_years: [2030, 2040, 2050, 2080]
+screening_modes: [STRICT, EXPLORATORY]
+annual_extension:
+  enabled: true
+  method: repeat_opening_year_annual_scenario
+  basis: project_assumption
+  rationale: >-
+    Repeat the opening-year historical-static eGRID2023 annual carbon and
+    explicitly constant cooling-design PUE/WUE assumptions for exactly 25
+    modeled years from 2030 through 2054, each with 8,760 hours. This is an illustrative constant
+    project scenario, not a future-grid forecast or calendar leap-year model.
+    Missing opening-year factors remain UNKNOWN. Aqueduct trend windows and
+    NASA climate context are never copied/interpolated to annual physical years.
+lifecycle: configs/phase5_lifecycle.yaml
+comparison_policy:
+  basis: project_assumption
+  rationale: >-
+    Preserve the accepted baseline criterion IDs, hierarchy, local/global weights,
+    normalization bounds and selection policy. Only the disclosed water-stress
+    source binding changes. Context-only expanded sources add no weights.
+    Analyze every external water pathway/window separately; do not optimize
+    favorable weather. Unsupported 2040 is retained as unranked diagnostics.

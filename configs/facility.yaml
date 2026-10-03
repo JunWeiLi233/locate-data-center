@@ -1,0 +1,20 @@
+# Illustrative user specification, not an industry requirement.
+facilities:
+  - facility_id: illustrative_100mw
+    basis: project_assumption
+    rationale: >-
+      User Phase 3 illustrative 100 MW IT, load factor 0.80, opening 2030 and
+      25-year lifetime. 8760 hours represents a nonleap modeled year.
+      Land 0.40468564224 km2 equals 100 acres as a project planning assumption,
+      not contiguous/surveyed land or a binding rule; context:
+      docs/research/phase3/screening_threshold_basis.md section 7.
+    peak_it_power_mw: 100.0
+    average_it_load_factor: 0.80
+    target_opening_year: 2030
+    operating_lifetime_years: 25
+    hours_in_modeled_year: 8760
+    minimum_land_area_km2: 0.40468564224
+    cooling_design_id: null
+    cooling_designs: [air_dry_assumed, cold_plate_tower_assumed]
+    screening_mode: STRICT
+    notes: Annual calculations only; lifetime is recorded without assuming lifetime emissions.

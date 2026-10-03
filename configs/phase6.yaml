@@ -1,0 +1,118 @@
+schema_version: 1.0.0
+evaluation_version: phase6_v1
+accepted_phase5_record: docs/phase_records/phase_5.json
+preselection_manifest: runs/phase6/inputs/preselection/selection_manifest.json
+software_evidence: runs/phase6/software_verification.json
+inputs:
+  geography: runs/phase5/integrated/enhanced_grid_dataset.parquet
+  provenance: runs/phase5/integrated/enhanced_feature_provenance.parquet
+  facility: configs/facility.yaml
+  cooling_designs: configs/cooling_designs.yaml
+  physical_scenarios: configs/phase3_physical_scenarios.yaml
+  constraints: configs/constraints.yaml
+  phase5_profile_declaration: docs/phase_records/phase5_profiles_predeclared.json
+  baseline_profile: configs/phase5_scoring_profiles/bau_2030.yaml
+  baseline_ranked_cells: runs/phase5/integrated/enhanced/bau_2030/exploratory/decision/ranked_cells.parquet
+  baseline_region_membership: runs/phase5/integrated/enhanced/bau_2030/exploratory/decision/region_membership.parquet
+baseline:
+  case_id: baseline_bau_2030_equal
+  pathway: bau
+  milestone_year: 2030
+  screening_mode: EXPLORATORY
+  basis: accepted_phase5_policy
+  rationale: >-
+    Freshly rerun the accepted BAU2030 external-water context with the accepted
+    equal-group profile. This establishes the comparison reference without
+    selecting a favorable future scenario.
+top_k:
+  k: 10
+  key: [grid_id, design_id, scenario_id]
+  cross_context_comparison_key: [grid_id, design_id]
+  scenario_policy: separate_each_external_context
+  tie_policy: mcda_score_desc_then_grid_id_design_id_scenario_id_asc_exact_k
+fixed_region_policy:
+  membership_path: runs/phase5/integrated/enhanced/bau_2030/exploratory/decision/region_membership.parquet
+  join_key: [grid_id, design_id]
+  policy: >-
+    Retain every accepted baseline member in every matched case. Report total,
+    eligible, complete/rankable and missing counts; never average only survivors.
+weight_cases:
+  - case_id: weight_energy_focus
+    group_weights: {energy_carbon: 0.4, water_stewardship: 0.2, grid_infrastructure: 0.2, land: 0.2}
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+  - case_id: weight_water_focus
+    group_weights: {energy_carbon: 0.2, water_stewardship: 0.4, grid_infrastructure: 0.2, land: 0.2}
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+  - case_id: weight_infrastructure_focus
+    group_weights: {energy_carbon: 0.2, water_stewardship: 0.2, grid_infrastructure: 0.4, land: 0.2}
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+  - case_id: weight_land_focus
+    group_weights: {energy_carbon: 0.2, water_stewardship: 0.2, grid_infrastructure: 0.2, land: 0.4}
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+scalar_cases:
+  - {case_id: pue_minus_10pct, category: pue, multiplier: 0.9, basis: project_assumption, rationale: Multiplicative stress around each declared constant annual PUE; not an empirical confidence interval.}
+  - {case_id: pue_plus_10pct, category: pue, multiplier: 1.1, basis: project_assumption, rationale: Multiplicative stress around each declared constant annual PUE; not an empirical confidence interval.}
+  - {case_id: wue_minus_50pct, category: wue, multiplier: 0.5, basis: project_assumption, rationale: Multiplicative stress around each declared constant WUE; a declared zero remains zero.}
+  - {case_id: wue_plus_50pct, category: wue, multiplier: 1.5, basis: project_assumption, rationale: Multiplicative stress around each declared constant WUE; not an empirical confidence interval.}
+  - {case_id: load_minus_10pct, category: load, multiplier: 0.9, basis: project_assumption, rationale: Multiplicative stress around the declared average IT load factor.}
+  - {case_id: load_plus_10pct, category: load, multiplier: 1.1, basis: project_assumption, rationale: Multiplicative stress around the declared average IT load factor.}
+  - {case_id: carbon_half_historical_intensity, category: carbon, multiplier: 0.5, basis: project_assumption, rationale: Counterfactual multiplier on the historical eGRID2023 factor; explicitly not a future-grid forecast.}
+  - {case_id: carbon_one_point_five_historical_intensity, category: carbon, multiplier: 1.5, basis: project_assumption, rationale: Counterfactual multiplier on the historical eGRID2023 factor; explicitly not a future-grid forecast.}
+  - {case_id: land_threshold_half, category: land, multiplier: 0.5, basis: project_assumption, rationale: Screening-policy stress at half the declared regional land-plausibility threshold; not parcel engineering.}
+  - {case_id: land_threshold_double, category: land, multiplier: 2.0, basis: project_assumption, rationale: Screening-policy stress at twice the declared regional land-plausibility threshold; not parcel engineering.}
+water_cases:
+  - {case_id: water_bau_2050, pathway: bau, milestone_year: 2050, profile: configs/phase5_scoring_profiles/bau_2050.yaml}
+  - {case_id: water_bau_2080, pathway: bau, milestone_year: 2080, profile: configs/phase5_scoring_profiles/bau_2080.yaml}
+  - {case_id: water_opt_2030, pathway: opt, milestone_year: 2030, profile: configs/phase5_scoring_profiles/opt_2030.yaml}
+  - {case_id: water_opt_2050, pathway: opt, milestone_year: 2050, profile: configs/phase5_scoring_profiles/opt_2050.yaml}
+  - {case_id: water_opt_2080, pathway: opt, milestone_year: 2080, profile: configs/phase5_scoring_profiles/opt_2080.yaml}
+  - {case_id: water_pes_2030, pathway: pes, milestone_year: 2030, profile: configs/phase5_scoring_profiles/pes_2030.yaml}
+  - {case_id: water_pes_2050, pathway: pes, milestone_year: 2050, profile: configs/phase5_scoring_profiles/pes_2050.yaml}
+  - {case_id: water_pes_2080, pathway: pes, milestone_year: 2080, profile: configs/phase5_scoring_profiles/pes_2080.yaml}
+screening_cases:
+  - case_id: screening_strict
+    mode: STRICT
+    basis: accepted_screening_policy
+    rationale: Apply the accepted strict treatment of critical UNKNOWN evidence; every hard failure remains excluded.
+ablation_cases:
+  - {case_id: ablate_energy_carbon, removed_group: energy_carbon}
+  - {case_id: ablate_water_stewardship, removed_group: water_stewardship}
+  - {case_id: ablate_grid_infrastructure, removed_group: grid_infrastructure}
+  - {case_id: ablate_land, removed_group: land}
+ablation_policy:
+  method: remove_group_then_equalize_remaining_parent_groups
+  rationale: >-
+    Remove every metric in the named parent group. Preserve within-group local
+    weights for retained groups and assign each retained parent 1/N. Export
+    original and new global weights. This is a diagnostic, not evidence that an
+    omitted group is unimportant.
+holdout:
+  holdout_geography: runs/phase6/inputs/holdout25/enhanced/enhanced_grid_dataset.parquet
+  holdout_provenance: runs/phase6/inputs/holdout25/enhanced/enhanced_feature_provenance.parquet
+  fine_geography: runs/phase6/inputs/common_fine16/enhanced/enhanced_grid_dataset.parquet
+  fine_provenance: runs/phase6/inputs/common_fine16/enhanced/enhanced_feature_provenance.parquet
+  coarse_geography: runs/phase6/inputs/common_coarse20km4/enhanced/enhanced_grid_dataset.parquet
+  coarse_provenance: runs/phase6/inputs/common_coarse20km4/enhanced/enhanced_feature_provenance.parquet
+  common_footprint_epsg5070: [-180000.0, 1060000.0, -140000.0, 1100000.0]
+  expected_holdout_cells: 25
+  expected_fine_cells: 16
+  expected_coarse_cells: 4
+  expected_common_square_union_km2: 1600.0
+  minimum_baseline_separation_km: 50.0
+inactive_analyses:
+  - module_id: climate_to_cooling_response
+    status: INAPPLICABLE
+    reason: No defensible local climate-to-PUE/WUE response function exists; NASA context must not alter cooling physics.
+  - module_id: construction_lifecycle_sensitivity
+    status: INAPPLICABLE
+    reason: No real project inventory, product factors or transport routes exist; unknown components cannot be varied from invented baselines.
+external_validation:
+  status: UNAVAILABLE
+  rationale: >-
+    No independent, system-boundary-compatible facility measurements or
+    engineering observations are available. Source lookup and join checks are
+    software/data-quality verification, not independent physical validation.

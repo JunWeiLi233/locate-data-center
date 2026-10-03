@@ -1,0 +1,793 @@
+{
+  "acceptance_owner": "main_orchestrator_root",
+  "accepted_at_utc": "2026-10-03T08:43:04.263754+00:00",
+  "accepted_by": "main_orchestrator_root",
+  "artifact_audit": {
+    "path": "docs/phase_records/phase6_artifact_audit.json",
+    "sha256": "df18b38ba46a870577ff7093b25016530d2b302a07cd67c0fe1469216c82cf26"
+  },
+  "code_revision": {
+    "git_base": "44040ed33f9d3fb9d9837fc8dbbc1f61481a9a9e",
+    "protected_working_fingerprint_sha256": "c8fd37349196910add4ee1f392965aaa38ee60bed7d55f4e0688cc0371eb52b8",
+    "source_config_test_method_hashes": {
+      "configs/constraints.yaml": "04b33be0bdf2aaaa269efcc86b2d85f7a6b8b4537ca1073822ab2ea4e3dfbb7c",
+      "configs/cooling_designs.yaml": "19912691adfa3e0fb9b02a78663673af2bd9ea0640e6f964af8b7b40ee9f7802",
+      "configs/expanded_sources.yaml": "6ecc513068e300577b0068988f5d534876eff25eec0f322cbc24ef511647127c",
+      "configs/facility.yaml": "1d869378aecb77a76b1c5d0cf17f94786d86c8ceab8b9eb170ed7eba88744949",
+      "configs/geography.yaml": "8a46b1d0ea7b958eeebc29e27563c07485c1ede53a3fb1cc80180e5a1dcf77b2",
+      "configs/grid.yaml": "d8d222197f60513db481814610f96908c2bc71469363368b28e264f69cdac82f",
+      "configs/phase3_physical_scenarios.yaml": "a3b22ce83ddfb0602eca842dcc06004e7a6f7af88dc74987ded9eddc824c3cbe",
+      "configs/phase5.yaml": "a52b34b62f6e7ca23db080a8c3f60561e7290573d5bc1eb94570f2cffd0fd3f8",
+      "configs/phase5_lifecycle.yaml": "de39b15afa2082c5d833c4dc12476cea5b22d75b766670fe31c1840b623138bd",
+      "configs/phase5_scoring_profiles/bau_2030.yaml": "65259c53674f6060e71a15ddf029696d41ad3b9afbe73f562a911e0fd021ffa5",
+      "configs/phase5_scoring_profiles/bau_2040.yaml": "3aa62a964cf6b05cd0b014a8b0c1ee00905c41d683ef7d54aa0621e665294521",
+      "configs/phase5_scoring_profiles/bau_2050.yaml": "fceffea854eb685aef2298eea434fad865aa8e0599ab98e0ada4547af1908b5e",
+      "configs/phase5_scoring_profiles/bau_2080.yaml": "b813998636bbfcc858a4c1d7919dd300c867d55be2719dd51e7b180944920d78",
+      "configs/phase5_scoring_profiles/opt_2030.yaml": "843db8b486dd02ff3caaf4510a0aed7d05fb69deb6163807ab7dd4722d84c712",
+      "configs/phase5_scoring_profiles/opt_2040.yaml": "55dc9d41eb664f4fcdb50d7fe645da9a1aaf9622517fbc0452e8a0f581ea05fd",
+      "configs/phase5_scoring_profiles/opt_2050.yaml": "d3e826963fcd90e12158020b0593fdb3765d48eea00b14c3f4ff234313e5d886",
+      "configs/phase5_scoring_profiles/opt_2080.yaml": "66ef2c1df4dcebd5da3a5d202cd73dbfb8d4ecd73f37f4ce294ef961864374ad",
+      "configs/phase5_scoring_profiles/pes_2030.yaml": "9ceec6a6477e68bcf2177a3351e0a84fb323f82761c77f595ba8ed70df9b11a1",
+      "configs/phase5_scoring_profiles/pes_2040.yaml": "3223090af20313f07e239bd3d29d09bd001302a57cd61b6797532be65ae227f3",
+      "configs/phase5_scoring_profiles/pes_2050.yaml": "f1f0b3059fea1e707f084a02c21a2fc448b88a496918f1c1ec611da2162a24e9",
+      "configs/phase5_scoring_profiles/pes_2080.yaml": "04b8f666d0e5b7ac7d3f2210a9121bbf91c68f61d829eaff1ab7eb0fd5a9723c",
+      "configs/phase6.yaml": "18f372f2ac1ee5301d698f66f92f880de9acd5ba838b933bfbedeef9b3560cf2",
+      "configs/run.yaml": "5aecd8a09ad1f1bcccf37ac33bb69eb2c1970d165a29b76e604bb0d71b946148",
+      "configs/scenarios.yaml": "4623f29f03b0201e39d109e48d3571c03fce31988acd56c1003a8683b39cf76a",
+      "configs/scoring.yaml": "e1c6fd84d54c79ea2c8188142c0c086352fdaec97fa5e0ad825f8faf77a2d3f9",
+      "configs/scoring_profile.yaml": "3f7c2102e9212008ee4d1082ab679ec8deedd94851a10a3127da81369a2481f0",
+      "configs/sources.yaml": "d134ac32f843ef67a21c1d5d5c804a2ca64799f2a25d8adcf97fa4594381fbd2",
+      "docs/data_contracts.md": "80a64ca7f929833949d097586da9f00b26497d350ab6175c324b264a137637d0",
+      "docs/data_dictionary.md": "deae547a980af9c851a7a6182b9887a9c13acaf6a2c05ee9a4f7a3f4fcf66f81",
+      "docs/environment.md": "3a48f2f45b86f228698855bcf8207fc924f51409dc03e4d72e22d86aa76cd743",
+      "docs/limitations.md": "317314c4f9e5ee4107cdd4cbb74b5ea89dba1f40a89feb08c692297c2df5d2e9",
+      "docs/methodology.md": "538179f16a0bd03bc59ba6bc6e25a521055e7460a0da64a038456f4a21517144",
+      "docs/sources.md": "437e152a6aa81a24d0cb53b6533d7d210e150d44ecc3e064ce11a57b4b0c1221",
+      "docs/specs/phase6.md.txt": "04cca22b5307ad3bf63b55bdce9a9386af926418af43e8daab531b348a625363",
+      "pyproject.toml": "5ba196d506fab230def7f2d7fbf48513d0191d897e2f274cbfd6644e62149aca",
+      "requirements.lock.txt": "37c0bea92a3371ea4315482e2a40cc173c5ea35872dc1c4e35784e37149a080d",
+      "runs/phase6/inputs/preselection/build_inputs.py": "f3ddd6f9173e3e21a53b81f7a4c47ff0d8f13cb26922455771b45feb32f13cbf",
+      "runs/phase6/inputs/preselection/select_geometry.py": "004a9de0f4abe1fdf7a8336433b4ca11b3a217620c0390d55fd379ea116a963b",
+      "src/dc_locator/__init__.py": "efc9963ad2fae7111cb9d2f572df1d3e4f0da1b79148daf397b4b93c1af674d5",
+      "src/dc_locator/__main__.py": "08cdacbbb941fd390c5ca9d6d5dd5102f98db02d1bb9e89c5839f67770f1a6bc",
+      "src/dc_locator/cli.py": "467a057f6335fc7c177b0eab68bdeb084bed78cf6ceaf495df02cef7e5067b04",
+      "src/dc_locator/config.py": "fc9f6829f5b782daac1ef782365fafdf614ff9c35485140650a8d2fcf24847a1",
+      "src/dc_locator/geography/__init__.py": "9cacd2296fcb5e919656c83de036b7b86eba745d2c5e638bcb724dad27e15f58",
+      "src/dc_locator/geography/boundary.py": "21ac10ad443a23b5b4ea100622a25c7aca0d0182b986da2cbdf8e4f85c147030",
+      "src/dc_locator/geography/distance.py": "4d1d7cf106783e33f965b562625da97aacadb9440ee8e3dbac6d9829401ef993",
+      "src/dc_locator/geography/features.py": "c90cb52e641d095400c17434d3444a830ffd5d7f095b43a03a506e867d1f268e",
+      "src/dc_locator/geography/grid.py": "d582e3b2d1cd6cd5ab75a03486316fc3cf3e9cbbf0ba29440030836eac1b0933",
+      "src/dc_locator/geography/sources/__init__.py": "0adc31cd854c4bf41a0a4ad59052c6fd5b64734e5304bc92786382e591d60cc9",
+      "src/dc_locator/geography/sources/aqueduct.py": "085ed9e4f53b2d4f74a2352602a1236bf4b097dd194e627b2840d1d517a093d6",
+      "src/dc_locator/geography/sources/aqueduct_future.py": "f3d15881f1299727647d968d1d3e69c312c269de3bb99b2798ecdd88f14f7bab",
+      "src/dc_locator/geography/sources/climate.py": "a280638cd3215cf3fe9837575e480fad9bda328c8143d31e3032caefe26e9b39",
+      "src/dc_locator/geography/sources/egrid.py": "3f679195b16127dfa248ee8eb768ffb64234cb6d8733603a0bb1f68585328471",
+      "src/dc_locator/geography/sources/expanded.py": "6d8d150e4e2292a71a2e6763798c46f593b02066f9740953fa0bd884819deeea",
+      "src/dc_locator/geography/sources/expanded_ingestion.py": "d71c907b34572ef55bba62abb8395def292be7d3624bba2264881acc85ad0cee",
+      "src/dc_locator/geography/sources/flood.py": "741c710ac5a427bc3d7534633b75db8ff0e2e3c4745207212b6f5e1a7a89eebe",
+      "src/dc_locator/geography/sources/infrastructure.py": "e7a1e7cdf8541fca5671ab78e731ba59432067ef5114eb340a7a3a856a625fde",
+      "src/dc_locator/geography/sources/ingestion.py": "3540f0d37b86e842da313eee6f5f4a25c53374fd043596ab973f30ae3deaf7a1",
+      "src/dc_locator/geography/sources/native_climate.py": "cd2bac877230e585ba31bbbdc4a7684273ad3c4373c6236855951581fed39b0e",
+      "src/dc_locator/geography/sources/native_expanded.py": "00e03c0c178d622d32307b75c2fe21aaada14c6a108a078507b0bc82102aea67",
+      "src/dc_locator/geography/sources/nlcd.py": "e2b0c52c56d31bcfdc966cc92ef3e9b3a589b1b51a538478a6a4fb77fa31c2e9",
+      "src/dc_locator/geography/sources/protected.py": "736351f0112e78a203d8591c0d7989d5f4ecd1d706bdfa19b1f48b4591efc93d",
+      "src/dc_locator/geography/sources/spatial.py": "2fbcc931150bd3a9d24fef71c7ec15314b14921af8d7c394ee27d28090ba1d2c",
+      "src/dc_locator/geography/sources/wildfire.py": "0c0b718f729e65ca9a2a9f257bf1ff11dd7c335e2fb03e10b5d0188487495018",
+      "src/dc_locator/io.py": "4a3b76ed06f169493397cafb7f54a808226cab29ffab393cb6dee3d57df27603",
+      "src/dc_locator/model/__init__.py": "99fff79931dde4a52e2a786e854d14f0c215b3c3da7cab5b5e18ed9edc7fbaaa",
+      "src/dc_locator/model/ahp.py": "d065d2212624ea62460763104a6c116ef2691025c00ce5ccb234a4404bee62fa",
+      "src/dc_locator/model/cooling.py": "c49a677ead8aaf40f64990a60d2e149f45c1c33b3d56ca3a868b16ebcb3db950",
+      "src/dc_locator/model/decision.py": "c6ca86608281fa02aaa5625181d9dc416805e607288e53c3ba861a8911efac66",
+      "src/dc_locator/model/enhanced.py": "b2f793e7b27ae9c1f4186c73d44702aa9b28b5d1d4cee15ddf46698fab705565",
+      "src/dc_locator/model/lifecycle.py": "c07836cb4b69d9a50bfba4d92d85de6b47fdc76f0f0b5a86d9f2a59a8cc2bd3f",
+      "src/dc_locator/model/mcda.py": "313a8e5e6ed62a4d6eb3a15633e75ed1d7f5b6f279b83de55b9d6b0f61af4aed",
+      "src/dc_locator/model/metrics.py": "4e0de3d136ff9c28d04b9721332efb4708b3781df0712ca146fb27a5101f4241",
+      "src/dc_locator/model/normalization.py": "f0bd85ade869c3297d70aa52739de85a7d01df32defba4529e8bfc738e6b3add",
+      "src/dc_locator/model/pareto.py": "e8ba3e7acff1783511f00ed5c6626781b432c153b27909467f18e72d90cc0a5f",
+      "src/dc_locator/model/physics.py": "f86de498d4be93d346ace065d3cea7aab593347715d28b1991ba01fa1653dcc3",
+      "src/dc_locator/model/regions.py": "af4217f174a61f527f99a927f550094394ea9e3670acfa3037dfc18137501e7a",
+      "src/dc_locator/model/scenarios.py": "3259c9ca1f90b97f610248db51ff5ba48dd994175ba2b3b926a240ef6b95b978",
+      "src/dc_locator/model/screening.py": "6170902c7620da385cecbcf1338a689f5e6e5d43e71de5b0b5f8d4a1dddbaf37",
+      "src/dc_locator/model/validation/__init__.py": "388f2b6047529931a7c599f2148b565a42f2cc06c1870931dd1de090fb1d77fd",
+      "src/dc_locator/model/validation/__main__.py": "6f79c38a4ab3db28eddf9d8e1f17b2baed342931c150334509577ef0e0848fa3",
+      "src/dc_locator/model/validation/analysis.py": "0e397601845c2abb1fd467252d1e283a86c269de5a7c07aa0bee4d2f0b07dddb",
+      "src/dc_locator/model/validation/config.py": "1dda0837bc695f6dcaad57eebcd3a8bfacd087637c337275d44c92aa931bd2ea",
+      "src/dc_locator/model/validation/freeze.py": "6c3ad5123907f491322e23e0aff8b8b1a2f4a70b20ef96a69e24d8e187524d6f",
+      "src/dc_locator/model/validation/reporting.py": "8042da8bd9ebc32c128dbbdc1ee66180fd78f83b346e1bc289870a411861f2a4",
+      "src/dc_locator/model/validation/runner.py": "6a5845accbcd01aeb1d41ab1d25f43ffb53f1f9b748ab8b89d481449c26fea99",
+      "src/dc_locator/model/validation/schemas.py": "7fc56d8d9b48f60b8e4e1c6cb35deb4cfaf83e1d3acad332a5440872558080b4",
+      "src/dc_locator/paths.py": "3733e420d093f1bf75f95afae48a8bb3afcde418ea50ce857e22d3b1e8e922ba",
+      "src/dc_locator/provenance.py": "0a7ae9d15fc417956e2c8313030656b770ea40fb3b304f6b970315b8478ff46a",
+      "src/dc_locator/schemas.py": "9ee874330b9219cf8aa594ad953f53a102c33d6ce8285a4d869d8757b74a66fe",
+      "src/dc_locator/source_periods.py": "a5cf962312b106327fb6364212e3e346bdef722db316dbf5b2dc97d042bc0eaa",
+      "src/dc_locator/validation.py": "2b05c23840ff1dea5e85abdacf0f6bc4bcaadb03b5c7f30281b90e325c53e448",
+      "tests/conftest.py": "0d42cdd10ba666cb86c99997190efd63b6d9c36c9f5e500cf97ccae12ebf676d",
+      "tests/test_aqueduct_future.py": "d327163650cbfd61839d13eb2ac1f10a1ae0ce670ad931d1118a3500e4ebb612",
+      "tests/test_boundary.py": "2dbc163ed370d4fa1d4cc5e553d121837551fce78705d3f4c994efc3624f5441",
+      "tests/test_cli.py": "55b2381fa2fd183098511626683cb42519b469d31365149435941c4fc50787ce",
+      "tests/test_cli_build_grid_real.py": "e5d2c6cbd9646f78059c3de705e6b0e90c3d1da6dc5dfbf3a8a288eb9f2c2c4e",
+      "tests/test_config.py": "8fddbcfeeb6c76381608e29f88298c39182059dd674bc81560c258bed1c83e55",
+      "tests/test_distance.py": "3c8d2c1c0a5e022e4d71be904b802471adb60027a079096ec5b031c15cafdc52",
+      "tests/test_expanded_builder.py": "b062123de05f0ae354864508a1ca670d0f8633b99d9121c5663f2e982436eaf0",
+      "tests/test_expanded_native.py": "b6e717f894cfe8fc6e055b7640bf139eceb68f9be720069df2a2aba01610c9d9",
+      "tests/test_geography_features.py": "d7af79526d1057e8c12713be191845251d9c5430b64d365ae29dc2fd110c4b7a",
+      "tests/test_grid.py": "48f31bd1afde72f6bd870f58313c13d7c54fb1c39b156de006b181c937d3b64e",
+      "tests/test_grid_audit.py": "916b3bfb928446961a79c1d99c4388091153fd45cf80e7e54fe9db742973d4b3",
+      "tests/test_io.py": "8e1eb62a1e120a22214731b8f9b786c5c85b982ad61608f67fa74b836fb4772c",
+      "tests/test_model_ahp.py": "53f7a58cf34a78e41845a860b5dd53e2e689423d3ede037d1ff6d2360b3e3f8c",
+      "tests/test_model_lifecycle.py": "282a834951b73e93f2e2e040f338962d6a050be718e585dab699d2bcacd0b104",
+      "tests/test_model_physics.py": "320b8ba2f0f44704158b5a44f87311f4fa536330d706ed3d41325e0198c3aa89",
+      "tests/test_model_scenarios.py": "93149ef358354d07dcc2a2e7c9238c329ffa22eaa36a8a4b7fe3add0234b6600",
+      "tests/test_model_screening.py": "1fad429a62c62727d865c77c7ec4d74b4ecbef761746ea5acedf003d707b3191",
+      "tests/test_phase4.py": "ca9316ec9106e2a157b972cba972a4250a77ea43cadd259bcf10e9cd674d735e",
+      "tests/test_phase5_integration.py": "3b3c7011faa962d614ffc86b4abd4c1959334ed15b0d6822a4869c8beaf2a5dd",
+      "tests/test_phase6_properties.py": "84fd688501da2d978af37c7b35dd9afd4489d9b4cc7bf9540c8c1588e0e9fc5b",
+      "tests/test_phase6_validation.py": "290a11ef00c276efb2fc450740006dbe9a393487ade73439d4fb7f0df3eabc89",
+      "tests/test_provenance.py": "7935e3c0042952984fae9fd8db094248626046c79942009a9a750f633b70496d",
+      "tests/test_schemas.py": "c0e716e567e13ddb6ea761ef28e096006b67d92cda5180bfb79c97dfe8231afe"
+    },
+    "working_model_revision": "phase6-v1-c8fd37349196910a"
+  },
+  "data_versions": {
+    "frozen_source_and_input_records": {
+      "configs/constraints.yaml": {
+        "bytes": 4505,
+        "directory_member_count": null,
+        "path": "configs/constraints.yaml",
+        "sha256": "04b33be0bdf2aaaa269efcc86b2d85f7a6b8b4537ca1073822ab2ea4e3dfbb7c"
+      },
+      "configs/cooling_designs.yaml": {
+        "bytes": 1358,
+        "directory_member_count": null,
+        "path": "configs/cooling_designs.yaml",
+        "sha256": "19912691adfa3e0fb9b02a78663673af2bd9ea0640e6f964af8b7b40ee9f7802"
+      },
+      "configs/facility.yaml": {
+        "bytes": 930,
+        "directory_member_count": null,
+        "path": "configs/facility.yaml",
+        "sha256": "1d869378aecb77a76b1c5d0cf17f94786d86c8ceab8b9eb170ed7eba88744949"
+      },
+      "configs/phase3_physical_scenarios.yaml": {
+        "bytes": 545,
+        "directory_member_count": null,
+        "path": "configs/phase3_physical_scenarios.yaml",
+        "sha256": "a3b22ce83ddfb0602eca842dcc06004e7a6f7af88dc74987ded9eddc824c3cbe"
+      },
+      "configs/phase5_scoring_profiles/bau_2030.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/bau_2030.yaml",
+        "sha256": "65259c53674f6060e71a15ddf029696d41ad3b9afbe73f562a911e0fd021ffa5"
+      },
+      "configs/phase5_scoring_profiles/bau_2050.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/bau_2050.yaml",
+        "sha256": "fceffea854eb685aef2298eea434fad865aa8e0599ab98e0ada4547af1908b5e"
+      },
+      "configs/phase5_scoring_profiles/bau_2080.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/bau_2080.yaml",
+        "sha256": "b813998636bbfcc858a4c1d7919dd300c867d55be2719dd51e7b180944920d78"
+      },
+      "configs/phase5_scoring_profiles/opt_2030.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/opt_2030.yaml",
+        "sha256": "843db8b486dd02ff3caaf4510a0aed7d05fb69deb6163807ab7dd4722d84c712"
+      },
+      "configs/phase5_scoring_profiles/opt_2050.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/opt_2050.yaml",
+        "sha256": "d3e826963fcd90e12158020b0593fdb3765d48eea00b14c3f4ff234313e5d886"
+      },
+      "configs/phase5_scoring_profiles/opt_2080.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/opt_2080.yaml",
+        "sha256": "66ef2c1df4dcebd5da3a5d202cd73dbfb8d4ecd73f37f4ce294ef961864374ad"
+      },
+      "configs/phase5_scoring_profiles/pes_2030.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/pes_2030.yaml",
+        "sha256": "9ceec6a6477e68bcf2177a3351e0a84fb323f82761c77f595ba8ed70df9b11a1"
+      },
+      "configs/phase5_scoring_profiles/pes_2050.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/pes_2050.yaml",
+        "sha256": "f1f0b3059fea1e707f084a02c21a2fc448b88a496918f1c1ec611da2162a24e9"
+      },
+      "configs/phase5_scoring_profiles/pes_2080.yaml": {
+        "bytes": 7453,
+        "directory_member_count": null,
+        "path": "configs/phase5_scoring_profiles/pes_2080.yaml",
+        "sha256": "04b8f666d0e5b7ac7d3f2210a9121bbf91c68f61d829eaff1ab7eb0fd5a9723c"
+      },
+      "configs/phase6.yaml": {
+        "bytes": 8336,
+        "directory_member_count": null,
+        "path": "configs/phase6.yaml",
+        "sha256": "18f372f2ac1ee5301d698f66f92f880de9acd5ba838b933bfbedeef9b3560cf2"
+      },
+      "data/processed/feature_provenance.parquet": {
+        "bytes": 34686,
+        "directory_member_count": null,
+        "path": "data/processed/feature_provenance.parquet",
+        "sha256": "cbadbc001a38751190c88353e90b1058172f7d747ef64dfca61309f3055960c1"
+      },
+      "data/processed/us_grid.parquet": {
+        "bytes": 6130848,
+        "directory_member_count": null,
+        "path": "data/processed/us_grid.parquet",
+        "sha256": "f68d54f5beeec65310b1244c5aa92897eea427cd8fb73519f592423891012b05"
+      },
+      "data/processed/us_grid__dev_default.parquet": {
+        "bytes": 186432,
+        "directory_member_count": null,
+        "path": "data/processed/us_grid__dev_default.parquet",
+        "sha256": "bfb7f7918639be90a0206bb25af383eb386a1c2ff82e4255ebc51292282648af"
+      },
+      "data/processed/us_grid__dev_tiny.parquet": {
+        "bytes": 31937,
+        "directory_member_count": null,
+        "path": "data/processed/us_grid__dev_tiny.parquet",
+        "sha256": "0f352c4cfd079e84a1fc8c04d8160ef52ef9402df16fa52406790c91c65cfbdb"
+      },
+      "data/processed/us_grid_dataset.parquet": {
+        "bytes": 215642,
+        "directory_member_count": null,
+        "path": "data/processed/us_grid_dataset.parquet",
+        "sha256": "bcfd82314d0c09c39c494ae23f374cdfc4a74311931fce61e65cf2f6efd878ae"
+      },
+      "data/raw/_literature/download_log.json": {
+        "bytes": 33862,
+        "directory_member_count": null,
+        "path": "data/raw/_literature/download_log.json",
+        "sha256": "52b16806500e71a9b1424c44ffe1b99f8700908261d8fba51ffc8d471d252704"
+      },
+      "data/raw/_literature/download_log_cooling_designs_pue_wue.json": {
+        "bytes": 33862,
+        "directory_member_count": null,
+        "path": "data/raw/_literature/download_log_cooling_designs_pue_wue.json",
+        "sha256": "52b16806500e71a9b1424c44ffe1b99f8700908261d8fba51ffc8d471d252704"
+      },
+      "data/raw/_literature/download_log_electricity_water.json": {
+        "bytes": 20158,
+        "directory_member_count": null,
+        "path": "data/raw/_literature/download_log_electricity_water.json",
+        "sha256": "4fdc1d61f286d3bfd8b0559e7a2cc99de2691b82ac3359140fffa9f44f5c408a"
+      },
+      "data/raw/_literature/download_log_screening_threshold_basis.json": {
+        "bytes": 54590,
+        "directory_member_count": null,
+        "path": "data/raw/_literature/download_log_screening_threshold_basis.json",
+        "sha256": "002a507004e561c1bfe9f6fc372caac969ed6d3b45a25546cef38fb44bd25138"
+      },
+      "data/raw/berkeley_queued_up/phase5/01c41c5ee800be873bd2/download_log.json": {
+        "bytes": 635,
+        "directory_member_count": null,
+        "path": "data/raw/berkeley_queued_up/phase5/01c41c5ee800be873bd2/download_log.json",
+        "sha256": "421091f27974fa29477554c7249fadc235e27a182b5eba435194f0058b365689"
+      },
+      "data/raw/berkeley_queued_up/phase5/01c41c5ee800be873bd2/lbnl_ix_queue_data_file_thru2025.xlsx": {
+        "bytes": 15571236,
+        "directory_member_count": null,
+        "path": "data/raw/berkeley_queued_up/phase5/01c41c5ee800be873bd2/lbnl_ix_queue_data_file_thru2025.xlsx",
+        "sha256": "794582d3281c6a305e9615fcfec3fae9dc85be2165216d33760b677e976a08b6"
+      },
+      "data/raw/census_cartographic_boundary/cb_2023_us_county_500k.zip": {
+        "bytes": 11630077,
+        "directory_member_count": null,
+        "path": "data/raw/census_cartographic_boundary/cb_2023_us_county_500k.zip",
+        "sha256": "99d6597b1fc7767deef62e01d28d8b5dcbd578e151855f7dc0d173cbf5bf0868"
+      },
+      "data/raw/census_cartographic_boundary/cb_2023_us_state_500k.zip": {
+        "bytes": 3249332,
+        "directory_member_count": null,
+        "path": "data/raw/census_cartographic_boundary/cb_2023_us_state_500k.zip",
+        "sha256": "4a9b4f5cf993cd23738ac49b58fbb556f1f097fcf5e404a9dc10348dd41f7432"
+      },
+      "data/raw/census_cartographic_boundary/download_log.json": {
+        "bytes": 2254,
+        "directory_member_count": null,
+        "path": "data/raw/census_cartographic_boundary/download_log.json",
+        "sha256": "d586195e2316c3542babc41351934f9665454d33719a158a49b228b9aace8bbf"
+      },
+      "data/raw/eia861/phase5/a8e2f2dbe78584cd90ee/download_log.json": {
+        "bytes": 508,
+        "directory_member_count": null,
+        "path": "data/raw/eia861/phase5/a8e2f2dbe78584cd90ee/download_log.json",
+        "sha256": "ece9875430f294779f688153567429dbc5b0bcbd32a3978db9e7cdc89b57fb4c"
+      },
+      "data/raw/eia861/phase5/a8e2f2dbe78584cd90ee/f8612024.zip": {
+        "bytes": 4568208,
+        "directory_member_count": null,
+        "path": "data/raw/eia861/phase5/a8e2f2dbe78584cd90ee/f8612024.zip",
+        "sha256": "77ce49c60ac5a6bad50c442fc401aad5404a21da875dc5cbaba353af5ede54de"
+      },
+      "data/raw/eia_energy_atlas/download_log.json": {
+        "bytes": 6207,
+        "directory_member_count": null,
+        "path": "data/raw/eia_energy_atlas/download_log.json",
+        "sha256": "465f89929fd78c99c60c34e8c066fac7c639e1f5c48bbd9ad08f46251b085b3f"
+      },
+      "data/raw/eia_energy_atlas/eia_electric_power_transmission_lines_archive_national.geojson": {
+        "bytes": 160785995,
+        "directory_member_count": null,
+        "path": "data/raw/eia_energy_atlas/eia_electric_power_transmission_lines_archive_national.geojson",
+        "sha256": "da9350f2e2f9017a2b7170bbe37266115279e1f7991fd2afe184f3371936a919"
+      },
+      "data/raw/eia_energy_atlas/eia_natural_gas_interstate_intrastate_pipelines_national.geojson": {
+        "bytes": 14773757,
+        "directory_member_count": null,
+        "path": "data/raw/eia_energy_atlas/eia_natural_gas_interstate_intrastate_pipelines_national.geojson",
+        "sha256": "75cb0c7eb24e86c9195d27a9194b355f302d3705ff03fd61f7125e936ee5168f"
+      },
+      "data/raw/eia_energy_atlas/eia_power_plants_national.geojson": {
+        "bytes": 10385398,
+        "directory_member_count": null,
+        "path": "data/raw/eia_energy_atlas/eia_power_plants_national.geojson",
+        "sha256": "ab32783165132dc63c0ede53116bf8d349f96dfd5923fa6978a79f5b05971050"
+      },
+      "data/raw/epa_egrid/official_2023/download_log.json": {
+        "bytes": 1435,
+        "directory_member_count": null,
+        "path": "data/raw/epa_egrid/official_2023/download_log.json",
+        "sha256": "0aa2c8367f75fbfe85dc80a166401c4d09b160a8a38c1dbbefdba6fc97081f4c"
+      },
+      "data/raw/epa_egrid/official_2023/egrid2023_data_rev2.xlsx": {
+        "bytes": 21213301,
+        "directory_member_count": null,
+        "path": "data/raw/epa_egrid/official_2023/egrid2023_data_rev2.xlsx",
+        "sha256": "895cd81dd8662406189ad8adf5a2578dcb362cdb5cff7cca81b10ee6bd2447c6"
+      },
+      "data/raw/epa_egrid/official_2023/egrid2023_multiple_subregions.zip": {
+        "bytes": 16188767,
+        "directory_member_count": null,
+        "path": "data/raw/epa_egrid/official_2023/egrid2023_multiple_subregions.zip",
+        "sha256": "9c7398f84af782c1c1f51d0eed73a1bbe6b4ee8745b96247706f5eecce090168"
+      },
+      "data/raw/epa_egrid/official_2023/egrid2023_subregions.zip": {
+        "bytes": 57260059,
+        "directory_member_count": null,
+        "path": "data/raw/epa_egrid/official_2023/egrid2023_subregions.zip",
+        "sha256": "0e8529937b6c849e490d93f1fb38b465e3ea902ff86d06bfbafe1b7fd67035ba"
+      },
+      "data/raw/fema_nfhl/bounded/download_log.json": {
+        "bytes": 1790,
+        "directory_member_count": null,
+        "path": "data/raw/fema_nfhl/bounded/download_log.json",
+        "sha256": "0c237f63d6ca904446c1de552a802c3025c198a257e736279c6844d99e1be40b"
+      },
+      "data/raw/fema_nfhl/bounded/nfhl_layer0_46da3d71b6e206c8f673.geojson": {
+        "bytes": 1011842,
+        "directory_member_count": null,
+        "path": "data/raw/fema_nfhl/bounded/nfhl_layer0_46da3d71b6e206c8f673.geojson",
+        "sha256": "6fee3ea859f71feae7bb860361e5b4523dfbfbf3511636e86e00ffc83c7ef99a"
+      },
+      "data/raw/fema_nfhl/bounded/nfhl_layer28_d61f6f5f26ac79081446.geojson": {
+        "bytes": 134787811,
+        "directory_member_count": null,
+        "path": "data/raw/fema_nfhl/bounded/nfhl_layer28_d61f6f5f26ac79081446.geojson",
+        "sha256": "1237484e593dafeedfad172345602204fe73c61c2ba85f3ade8f67d37bf4da16"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/20d67841bc794501af22/download_log.json": {
+        "bytes": 817,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/20d67841bc794501af22/download_log.json",
+        "sha256": "5dd240973d38d6ce058ec26ca3c35a5ae1f79ada51d9281311b359ede75f4b71"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/20d67841bc794501af22/tasmax_2030.nc": {
+        "bytes": 42796,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/20d67841bc794501af22/tasmax_2030.nc",
+        "sha256": "8d55b052f7a2a3f5929a467558b566f7b4fa3e992b5acd3510ddaf3f47d9a966"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/2d34533e539368792500/download_log.json": {
+        "bytes": 817,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/2d34533e539368792500/download_log.json",
+        "sha256": "5b6d632805598d69606fdc3c2631a2fe60e068564e487be74ab38f643a50e035"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/2d34533e539368792500/tasmin_2030.nc": {
+        "bytes": 42208,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/2d34533e539368792500/tasmin_2030.nc",
+        "sha256": "44e648adb62aa7727258bc228f8f7b38e3078f8caab8b1723442a403cb45f865"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/4b1fec7b44a805b54eb3/download_log.json": {
+        "bytes": 805,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/4b1fec7b44a805b54eb3/download_log.json",
+        "sha256": "b44e853fe3b6cab86def6971e6e95c3edfaeb707cc8271244efb04edd2ef5c29"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/4b1fec7b44a805b54eb3/tas_2030.nc": {
+        "bytes": 42776,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/4b1fec7b44a805b54eb3/tas_2030.nc",
+        "sha256": "7aa087083f747009de718a210625dffc074d5b04a7b24434d5996c89417e97a1"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/e5a39194b7941795091d/download_log.json": {
+        "bytes": 801,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/e5a39194b7941795091d/download_log.json",
+        "sha256": "58d888f0c9c7825b6e3a874607502303e07c2e59e173a920acc5f014c8e9f47f"
+      },
+      "data/raw/nasa_nex_gddp_cmip6/phase5/e5a39194b7941795091d/pr_2030.nc": {
+        "bytes": 42480,
+        "directory_member_count": null,
+        "path": "data/raw/nasa_nex_gddp_cmip6/phase5/e5a39194b7941795091d/pr_2030.nc",
+        "sha256": "d56baca4a7a7746d2bec2e7fba6773d8a1511db205eacf3a2ef9d67a48907bbd"
+      },
+      "data/raw/nlr_wind_toolkit/phase5/5e80ed87cfe12788d7b1/download_log.json": {
+        "bytes": 537,
+        "directory_member_count": null,
+        "path": "data/raw/nlr_wind_toolkit/phase5/5e80ed87cfe12788d7b1/download_log.json",
+        "sha256": "413241e984461be820fedba897289396eed905ede21e79b3347fe8bb1832e5f4"
+      },
+      "data/raw/nlr_wind_toolkit/phase5/5e80ed87cfe12788d7b1/wtk_site_metadata.csv": {
+        "bytes": 10242519,
+        "directory_member_count": null,
+        "path": "data/raw/nlr_wind_toolkit/phase5/5e80ed87cfe12788d7b1/wtk_site_metadata.csv",
+        "sha256": "285b46161371974dc88b1f389ec623a5796f1075eb5576336fd951fd7aa82475"
+      },
+      "data/raw/noaa_ibtracs/phase5/4e74f25b18aba9d567e2/download_log.json": {
+        "bytes": 603,
+        "directory_member_count": null,
+        "path": "data/raw/noaa_ibtracs/phase5/4e74f25b18aba9d567e2/download_log.json",
+        "sha256": "61187629ef8e7ab4a7506c8b6458cb3c7d160c11d84775ce781f430c72a522ac"
+      },
+      "data/raw/noaa_ibtracs/phase5/4e74f25b18aba9d567e2/ibtracs.NA.list.v04r01.csv": {
+        "bytes": 57552255,
+        "directory_member_count": null,
+        "path": "data/raw/noaa_ibtracs/phase5/4e74f25b18aba9d567e2/ibtracs.NA.list.v04r01.csv",
+        "sha256": "9e41cf9d3c4e6ae82fe35f218a3f1baea3e44b9e768857d62149ed9e73348e7b"
+      },
+      "data/raw/noaa_ncei_climate/download_log.json": {
+        "bytes": 499512,
+        "directory_member_count": null,
+        "path": "data/raw/noaa_ncei_climate/download_log.json",
+        "sha256": "24fe6e5706438faaf34e211f4f6e7823799b1598ef60885b1609ba9b60f1c4c7"
+      },
+      "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tavg_norm.tif": {
+        "bytes": 791736,
+        "directory_member_count": null,
+        "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tavg_norm.tif",
+        "sha256": "221db3be503a50c5c1d2796f4e489f1a46d1eabf78023bad4ca5a8a77d15acbd"
+      },
+      "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_max.tif": {
+        "bytes": 885191,
+        "directory_member_count": null,
+        "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_max.tif",
+        "sha256": "4b00d1c63b839f86eb605434dfd31ddd449dcfa3b74e5c9b5077b77a28d66f0e"
+      },
+      "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_norm.tif": {
+        "bytes": 859134,
+        "directory_member_count": null,
+        "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_norm.tif",
+        "sha256": "865fd37d6946c26fbda1461cb0746b459c603b0e572131834fa140dfff5317b5"
+      },
+      "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmin_norm.tif": {
+        "bytes": 849735,
+        "directory_member_count": null,
+        "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmin_norm.tif",
+        "sha256": "5b193a4126a33cd87df2dcace3722c06ed8980f42a19225720c121fbe6d402a7"
+      },
+      "data/raw/ntad/phase5/80d519ee16bed31da370/download_log.json": {
+        "bytes": 1390,
+        "directory_member_count": null,
+        "path": "data/raw/ntad/phase5/80d519ee16bed31da370/download_log.json",
+        "sha256": "dbf135b6520ca3b9cf1ad0a65c4f15ca5e02f24706f2c67109eed4a469bced15"
+      },
+      "data/raw/ntad/phase5/80d519ee16bed31da370/features.esri.json": {
+        "bytes": 4943918,
+        "directory_member_count": null,
+        "path": "data/raw/ntad/phase5/80d519ee16bed31da370/features.esri.json",
+        "sha256": "8c71910a6b8c54fe9028420bb22e112a82fe5e06f925ea2bd13203cd1f84fe33"
+      },
+      "data/raw/usdm/phase5/364e8d37b621912e0c1e/county_drought.csv": {
+        "bytes": 30182034,
+        "directory_member_count": null,
+        "path": "data/raw/usdm/phase5/364e8d37b621912e0c1e/county_drought.csv",
+        "sha256": "8d062b6f61c41ca7d11c86cff5a459cdd7aa800a639428febc0d27fbec3dc19a"
+      },
+      "data/raw/usdm/phase5/364e8d37b621912e0c1e/download_log.json": {
+        "bytes": 642,
+        "directory_member_count": null,
+        "path": "data/raw/usdm/phase5/364e8d37b621912e0c1e/download_log.json",
+        "sha256": "aa3ef41d618dc46c11d917f13eeff293d03d0892662768a26b4d6337a6e5cccb"
+      },
+      "data/raw/usfs_wildfire_risk/download_log.json": {
+        "bytes": 5895,
+        "directory_member_count": null,
+        "path": "data/raw/usfs_wildfire_risk/download_log.json",
+        "sha256": "4294d5bbffb19209c7c99a7e7f98dcf45b3ad8411b023e3a4df5127a16680e30"
+      },
+      "data/raw/usfs_wildfire_risk/whp/RDS-2015-0047-4_Data.zip": {
+        "bytes": 368424961,
+        "directory_member_count": null,
+        "path": "data/raw/usfs_wildfire_risk/whp/RDS-2015-0047-4_Data.zip",
+        "sha256": "7f10f1f8dd97551b8be1458fe0ec924df60b2cea7ece2d1af4c3c1166d1895ab"
+      },
+      "data/raw/usfs_wildfire_risk/wrc/bounded/BurnProbability_2a6aa73069a81e8a3250_5070.tif": {
+        "bytes": 19926570,
+        "directory_member_count": null,
+        "path": "data/raw/usfs_wildfire_risk/wrc/bounded/BurnProbability_2a6aa73069a81e8a3250_5070.tif",
+        "sha256": "21325e2c39bf0d7ff27c84723f431610b503411ee61df6c9002712d0bc3b4d85"
+      },
+      "data/raw/usfs_wildfire_risk/wrc/bounded/ConditionalFlameLength_60e2e205bbd7899b0d02_5070.tif": {
+        "bytes": 19926570,
+        "directory_member_count": null,
+        "path": "data/raw/usfs_wildfire_risk/wrc/bounded/ConditionalFlameLength_60e2e205bbd7899b0d02_5070.tif",
+        "sha256": "29908918949af117189093ddffe9c9e852ebf9a19cfdb0bed066180859241cdf"
+      },
+      "data/raw/usfs_wildfire_risk/wrc/bounded/download_log.json": {
+        "bytes": 2079,
+        "directory_member_count": null,
+        "path": "data/raw/usfs_wildfire_risk/wrc/bounded/download_log.json",
+        "sha256": "413dfc278f13212967a907c29fc6ae0871c01e3e7debf347dd12d5a372b4c10f"
+      },
+      "data/raw/usgs_annual_nlcd/Annual_NLCD_LndCov_2024_devbbox_5070.tif": {
+        "bytes": 230367480,
+        "directory_member_count": null,
+        "path": "data/raw/usgs_annual_nlcd/Annual_NLCD_LndCov_2024_devbbox_5070.tif",
+        "sha256": "d60479c1d5ee951d8caa2fb211ad2f87da1a1a41aa178ac25ed98d94a93c83ba"
+      },
+      "data/raw/usgs_annual_nlcd/download_log.json": {
+        "bytes": 9159,
+        "directory_member_count": null,
+        "path": "data/raw/usgs_annual_nlcd/download_log.json",
+        "sha256": "e2f2eb73007faef240142fae8d44e93d79772f8646771cc13951fe7fe0385eaa"
+      },
+      "data/raw/usgs_padus/PADUS4_1VectorAnalysis_CONUS.gdb": {
+        "bytes": 441838654,
+        "directory_member_count": 63,
+        "path": "data/raw/usgs_padus/PADUS4_1VectorAnalysis_CONUS.gdb",
+        "sha256": "9be9c205c230a92d7217c26d28ce843a81eb71c377b06094d8e90e9c52b5d095"
+      },
+      "data/raw/usgs_padus/download_log.json": {
+        "bytes": 6263,
+        "directory_member_count": null,
+        "path": "data/raw/usgs_padus/download_log.json",
+        "sha256": "0b1bfd8a689725d624a2ca4b5940bcb8b2e67c58509453fc2ff2c9468ef42cc7"
+      },
+      "data/raw/wri_aqueduct40/aqueduct-4-0-water-risk-data.zip": {
+        "bytes": 261527511,
+        "directory_member_count": null,
+        "path": "data/raw/wri_aqueduct40/aqueduct-4-0-water-risk-data.zip",
+        "sha256": "bd3ed2bce88d6ff1b89191632ad134a2436e1e1d49599382f23a04d513624fc3"
+      },
+      "data/raw/wri_aqueduct40/download_log.json": {
+        "bytes": 1845,
+        "directory_member_count": null,
+        "path": "data/raw/wri_aqueduct40/download_log.json",
+        "sha256": "ffc4e5eb9de136e2bbd5f9a475ef9d4e365eb8e68587bf144d2eca305b576ef4"
+      },
+      "docs/phase_records/phase5_profiles_predeclared.json": {
+        "bytes": 133351,
+        "directory_member_count": null,
+        "path": "docs/phase_records/phase5_profiles_predeclared.json",
+        "sha256": "f7fc521e3739db160316c6078a44bdf54434118ceb45207fa9934ec93869ef9a"
+      },
+      "docs/phase_records/phase_5.json": {
+        "bytes": 175686,
+        "directory_member_count": null,
+        "path": "docs/phase_records/phase_5.json",
+        "sha256": "a8cc8944d614209281f342b7db0650a2e4a23d91b6c6d98b4bf96256e57accaa"
+      },
+      "runs/phase5/integrated/enhanced/bau_2030/exploratory/decision/ranked_cells.parquet": {
+        "bytes": 89778,
+        "directory_member_count": null,
+        "path": "runs/phase5/integrated/enhanced/bau_2030/exploratory/decision/ranked_cells.parquet",
+        "sha256": "03f379b7e5924440acdc0f34875b7d55e4a07c780a6bd9c9cc2843cfc60d0341"
+      },
+      "runs/phase5/integrated/enhanced/bau_2030/exploratory/decision/region_membership.parquet": {
+        "bytes": 10016,
+        "directory_member_count": null,
+        "path": "runs/phase5/integrated/enhanced/bau_2030/exploratory/decision/region_membership.parquet",
+        "sha256": "b19eb8cdd863d0bc1819bb7541b3f6da32204af429828adbb72bcfb0d7b18ef8"
+      },
+      "runs/phase5/integrated/enhanced_feature_provenance.parquet": {
+        "bytes": 53101,
+        "directory_member_count": null,
+        "path": "runs/phase5/integrated/enhanced_feature_provenance.parquet",
+        "sha256": "7eee462f8514e26fff80e42bd492eb939f7328a821744c739007e4f2fd43d6fd"
+      },
+      "runs/phase5/integrated/enhanced_grid_dataset.parquet": {
+        "bytes": 593160,
+        "directory_member_count": null,
+        "path": "runs/phase5/integrated/enhanced_grid_dataset.parquet",
+        "sha256": "96add7295bc5f8728513f7b562d2c211cfc8c05f52c01196bdfd91596900da14"
+      },
+      "runs/phase6/inputs/preselection/aqueduct_future_source.json": {
+        "bytes": 500,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/aqueduct_future_source.json",
+        "sha256": "30a2d77a46bc9c011ba05e5f9390f58601e3f84798ad5adbe88841ac42f961ed"
+      },
+      "runs/phase6/inputs/preselection/baseline_sources.json": {
+        "bytes": 34640,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/baseline_sources.json",
+        "sha256": "6f8d2cef85a40d4932fbc0e1abd3ae9f925913db68ae6e38b4a74a6b9c9e0c79"
+      },
+      "runs/phase6/inputs/preselection/build_inputs.py": {
+        "bytes": 11543,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/build_inputs.py",
+        "sha256": "f3ddd6f9173e3e21a53b81f7a4c47ff0d8f13cb26922455771b45feb32f13cbf"
+      },
+      "runs/phase6/inputs/preselection/coarse_grid_config.json": {
+        "bytes": 500,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/coarse_grid_config.json",
+        "sha256": "99f9d4432601b35dabfc72d4ccd4a35c69dee01856d2d11f04e70534e80091fd"
+      },
+      "runs/phase6/inputs/preselection/expanded_sources.json": {
+        "bytes": 21244,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/expanded_sources.json",
+        "sha256": "2846967fd5f1310431de0c16279a0523d1150191d9dc2abdca5d2db4dc5b73b0"
+      },
+      "runs/phase6/inputs/preselection/preselection_archive.zip": {
+        "bytes": 41059,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/preselection_archive.zip",
+        "sha256": "5473d93c1169d47303da18c21edc946bcf670d710c06376c806b27e951446a0b"
+      },
+      "runs/phase6/inputs/preselection/preselection_checksums.json": {
+        "bytes": 1987,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/preselection_checksums.json",
+        "sha256": "76ed1c7050be41139acb8ba0e3e9aa5029145ba4938f2795e27a4c1075813752"
+      },
+      "runs/phase6/inputs/preselection/select_geometry.py": {
+        "bytes": 11022,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/select_geometry.py",
+        "sha256": "004a9de0f4abe1fdf7a8336433b4ca11b3a217620c0390d55fd379ea116a963b"
+      },
+      "runs/phase6/inputs/preselection/selection_manifest.json": {
+        "bytes": 94085,
+        "directory_member_count": null,
+        "path": "runs/phase6/inputs/preselection/selection_manifest.json",
+        "sha256": "ec4386aac988b280666c77e38617e7a45230d00b3a43c3fd2aba18fef019910a"
+      },
+      "runs/phase6/software_verification.json": {
+        "bytes": 13428,
+        "directory_member_count": null,
+        "path": "runs/phase6/software_verification.json",
+        "sha256": "484eee8d4ea076887f7060d3e3b1871ca12d7149694e140a14467a4208d08917"
+      }
+    },
+    "holdout_summary": "runs/phase6/inputs/geography_build_summary.json"
+  },
+  "documentation_status": "Outcome handoff and pending record complete; frozen method documents remain byte-identical.",
+  "evaluation_version": "phase6_v1",
+  "freeze_id": "phase6-v1-c8fd37349196910a",
+  "freeze_manifest_sha256": "2411c9ac0b99ca8ff5143e8cb9de740e48c795a852f20377034f5e0769d2a1df",
+  "handoff": {
+    "path": "docs/phase_handoff.md",
+    "sha256": "72562394343ac17d37ed2190dd8f914e659913fcc413f02185c93604a61c72c2"
+  },
+  "independent_verification": {
+    "orchestrator": {
+      "command": ".venv\\Scripts\\python.exe -m pytest -q --basetemp=.tmp-root-phase6-preregistered-final -p no:cacheprovider --tb=short",
+      "elapsed_seconds": 42.58,
+      "equal_fine_coarse_footprint_km2": 1600,
+      "failed": 0,
+      "files_identical_across_three_runs": 11,
+      "full_suite_passed": 439,
+      "output_directory": "runs/orchestrator_phase6_frozen",
+      "real_cli_exit_code": 0,
+      "scalar_cases_verified": 10,
+      "selected_area_jaccard": 0.6,
+      "strict_critical_unknown_alternatives_excluded": 84
+    },
+    "reviewer": {
+      "decision": "GO",
+      "elapsed_seconds": 40.74,
+      "failed": 0,
+      "files_identical": 11,
+      "full_suite_passed": 439,
+      "output_directory": "runs/phase6/review_final",
+      "real_cli_exit_code": 0
+    }
+  },
+  "limits": [
+    "No independent system-boundary-compatible facility observations or engineering benchmarks are available.",
+    "Critical parcel, contiguous land, utility capacity, water-supply and fiber evidence remain unresolved where marked UNKNOWN.",
+    "Climate-to-cooling and construction-lifecycle sensitivities are inactive because required response functions/inventories/factors are unavailable.",
+    "National-scale runtime and memory remain unvalidated."
+  ],
+  "outputs": {
+    "ablation_results.csv": {
+      "bytes": 2729,
+      "sha256": "97443dbf79a7c4ba412fd39903c4dba0499bd80bd54e05a24c2bfd2395c1ba83"
+    },
+    "alternative_rank_ranges.csv": {
+      "bytes": 25555,
+      "sha256": "062030dec6c92560848f99fc9f60622e24fc1c2d02c47a0537975d0d3ddbb76c"
+    },
+    "fixed_region_summary.csv": {
+      "bytes": 19399,
+      "sha256": "42cc5e400d21baebea6619a5e8231a5146edcf402a6167b1b208550b4cf2e408"
+    },
+    "holdout_data_quality.csv": {
+      "bytes": 44912,
+      "sha256": "8108045f1c68d93eba4930695b20b1068df5476a7680bb9ed12d7c22fd5fa26f"
+    },
+    "holdout_ranked_cells.parquet": {
+      "bytes": 78053,
+      "sha256": "cab7e36c7b622610daa1c0998d6d074a69cd7c65f9ddbce3e4977047479140ca"
+    },
+    "resolution_results.csv": {
+      "bytes": 1356,
+      "sha256": "16a774eb0274d9de1137ca2dba2d0b43fd3f0879dce0adda1423af134eb18a12"
+    },
+    "robustness_summary.csv": {
+      "bytes": 10571,
+      "sha256": "90a2b18b582cd1957ad1faada889a8a5a4a81535bfa51ee2cbda1552dd93693a"
+    },
+    "run_metadata.json": {
+      "bytes": 5219,
+      "sha256": "2d5f9649b21bb05473f64f5889e298c9219497174802b08a090306ff08855c36"
+    },
+    "sensitivity_results.parquet": {
+      "bytes": 192921,
+      "sha256": "1c4669310746b18eb851f73dd468c001884b49086f5a9f79e2ce05a0998a0d85"
+    },
+    "validation_report.json": {
+      "bytes": 20055,
+      "sha256": "201ad5346af56db3fe06a94062100ac322e35382cec18aacab107a5a0f33e7ae"
+    },
+    "validation_report.md": {
+      "bytes": 3126,
+      "sha256": "8f879bf24b0bc74771c36dbe0c6fb3be94a3eebd57f8ad5fb12ab05ae9bca041"
+    }
+  },
+  "owner": "phase1_review_independent_validator",
+  "phase": 6,
+  "phase_blockers": [],
+  "protected_fingerprint_sha256": "c8fd37349196910add4ee1f392965aaa38ee60bed7d55f4e0688cc0371eb52b8",
+  "result_summary": {
+    "all_final_repeat_files_identical": true,
+    "externally_validated_modules": [],
+    "holdout_alternatives": 50,
+    "holdout_hard_failures": 0,
+    "holdout_rankable_conditional": 50,
+    "overall_accuracy": null,
+    "prospective_holdout_cells": 25,
+    "resolution_selected_area_jaccard": [
+      0.6
+    ],
+    "sensitivity_cases": 28,
+    "sensitivity_rows": 2352
+  },
+  "root_audit": {
+    "path": "runs/phase6/root_final_audit.json",
+    "sha256": "af30e46173f9c7d3372e7cfd33ebdc644c39eadf1a0e696406ca4d88759fb9f8"
+  },
+  "schema_version": "1.0.0",
+  "schema_versions": {
+    "AlternativeRankRange": "1.0.0",
+    "DecisionResult": "1.1.0",
+    "FeatureMetadata": "1.1.0",
+    "FixedRegionSummary": "1.0.0",
+    "GeographicFeatureDataset": "1.2.0",
+    "RobustnessSummary": "1.0.0",
+    "SensitivityResult": "1.0.0"
+  },
+  "software_evidence": {
+    "failed": 0,
+    "passed": 439,
+    "path": "runs/phase6/software_verification.json",
+    "sha256": "484eee8d4ea076887f7060d3e3b1871ca12d7149694e140a14467a4208d08917"
+  },
+  "status": "accepted"
+}

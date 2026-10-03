@@ -16,8 +16,9 @@ Full requirements: `docs/specs/master_prompt.md` and `docs/specs/phase1.md.txt` 
   assumptions, and decision preferences.
 - It is **not** proof that any parcel is buildable or objectively best. Region geometries are **search
   areas**; a centroid is never an approved construction site.
-- No frontend, chatbot, autonomous research-agent platform, or machine-learning location predictor.
-  No LLM ever decides a score, weight, threshold, coefficient, or winner.
+- The separately authorized frontend in `frontend/` presents deterministic model outputs. It must not
+  implement model mathematics, a chatbot, or a machine-learning location predictor. No LLM ever decides
+  a score, weight, threshold, coefficient, or winner.
 - The analysis must never start from a manually selected list of cities. Development areas are bounding boxes
   used only to bound computation, and they never change grid IDs.
 
@@ -77,6 +78,13 @@ Shared infrastructure (schemas, config, provenance, IO, CLI) lives at `src/dc_lo
   licenses on the user's behalf. If a source needs any of these, mark it `BLOCKED` (or `PARTIAL`), implement
   a local-file input path (`data/raw/<source_id>/manual/…`), and document exact manual-acquisition steps.
 - Credentials only via environment variables (e.g. `NREL_API_KEY`); never written to configs, logs, or git.
+- **Download authorization (user, in chat, 2026-10-02):** public datasets from the official sources named in
+  `docs/specs/master_prompt.md` may be downloaded into `data/raw/` up to **~60 GB in total for the project**
+  (no logins, forms, CAPTCHAs). Track cumulative bytes in each source's manifest; before any single download that
+  would push the project total past 60 GB, stop and report instead of downloading.
+- **Never modify anything outside the project root** — no edits to `~/.claude/` settings, global configs,
+  CLAUDE.md files, environment variables, or other user files. Model/tooling configuration is the orchestrator's
+  and the user's business, not a phase task.
 - Source/adapter status vocabulary: `READY | PARTIAL | BLOCKED` (plus `NOT_IMPLEMENTED` for planned adapters).
   Coverage reporting must distinguish **implemented** (code exists) vs **acquired** (data downloaded) vs
   **analyzed** (features computed for cells).
@@ -102,6 +110,12 @@ docs/                        methodology, data_contracts, data_dictionary, sourc
 
 Geography outputs go to `data/processed/`. Model outputs (screening, performance, rankings, regions,
 validation) go to a run folder `runs/<run_name>/`.
+
+Phase7 delivery clarification authorized by the root/user: geography production remains separate,
+while reproducible real geographic/provenance copies and intermediate geographic builds may also live
+in an owned `runs/<run_name>/` final package. Explicit synthetic geography stays in `tests/fixtures/`
+or synthetic run folders, never `data/processed/`. Workspace-local pytest temporary folders are permitted
+for verification. This additive path clarification is recorded in the handoff.
 
 ## 6. Shared technical contracts (authoritative detail in `docs/data_contracts.md`)
 
@@ -129,8 +143,8 @@ validation) go to a run folder `runs/<run_name>/`.
 
 ## 7. Environment and engineering conventions
 
-- Windows 11, Git Bash. **The project path contains spaces and periods — always quote it:**
-  `"/d/locate-data-center/U.S. Sustainable Data Center Location Discovery Model"`.
+- Windows 11, PowerShell or Git Bash. The project root is `D:\locate-data-center`
+  (`"/d/locate-data-center"` in Git Bash). Quote paths supplied to commands.
 - Python 3.12 virtualenv at `.venv` managed with `uv`. Run everything with the venv interpreter:
   `.venv/Scripts/python -m pytest`, `.venv/Scripts/python -m dc_locator …`.
 - Pinned dependencies in `pyproject.toml` + `requirements.lock.txt`; record the environment in docs.

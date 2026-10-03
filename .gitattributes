@@ -1,0 +1,6 @@
+# Preserve exact bytes used by scientific source/configuration checksums.
+* -text
+*.parquet binary
+*.png binary
+*.jpg binary
+*.zip binary

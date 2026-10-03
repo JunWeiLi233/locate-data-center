@@ -1,0 +1,1324 @@
+==================================================
+108. REGION OVERLAP
+==================================================
+
+If candidate regions overlap geographically:
+
+do not hide one region underneath another without interaction.
+
+Support:
+
+selection priority
+outline differentiation
+click cycling where necessary
+or an overlapping-region selector.
+
+If two candidate regions are generated from different model runs,
+clearly distinguish their run IDs.
+
+Do not merge overlapping regions unless the backend/model explicitly
+defines them as one candidate.
+
+==================================================
+109. RANKING CHANGES
+==================================================
+
+When configuration changes and a new model run returns:
+
+animate or update candidate positions/ranks carefully.
+
+Example:
+
+Previous run:
+
+Region A   #1
+Region B   #2
+Region C   #3
+
+New run:
+
+Region B   #1
+Region A   #4
+Region D   #2
+
+The frontend should display the NEW ranking.
+
+Do not preserve stale rank badges.
+
+If the same stable region ID appears in both runs, optionally show:
+
+↑ 1
+↓ 3
+NEW
+
+but only when the comparison is valid.
+
+Do not compare rank changes between unrelated region definitions.
+
+==================================================
+110. MODEL CONFIGURATION VS MAP FILTERS
+==================================================
+
+Clearly separate:
+
+MODEL CONFIGURATION
+
+from:
+
+MAP DISPLAY FILTERS.
+
+MODEL CONFIGURATION changes the calculation.
+
+Examples:
+
+100 MW → 200 MW
+cooling design
+water constraint
+AHP weights
+future scenario
+minimum land requirement
+
+These require backend recalculation.
+
+MAP DISPLAY FILTERS only change visualization.
+
+Examples:
+
+show top 10
+show Pareto only
+hide conditional candidates
+toggle water layer
+toggle infrastructure
+
+These should not rerun the model.
+
+Make this distinction clear in code and UI.
+
+==================================================
+111. ADVANCED FILTER PANEL
+==================================================
+
+Provide optional advanced constraints.
+
+Examples:
+
+Minimum suitable land
+Maximum water-stress category/value
+Maximum flood exposure
+Maximum wildfire exposure
+Maximum transmission distance
+
+Only expose constraints that the backend actually supports.
+
+Do not create frontend-only filtering and pretend it was part of
+model feasibility screening.
+
+Label:
+
+MODEL CONSTRAINTS
+
+separately from:
+
+DISPLAY FILTERS.
+
+==================================================
+112. DEFAULT CONFIGURATION
+==================================================
+
+Provide an initial example configuration so the app is usable.
+
+Example:
+
+Peak IT Power:
+100 MW
+
+Average IT Load:
+80%
+
+Target Opening:
+2030
+
+Lifetime:
+25 years
+
+Cooling:
+Optimize
+
+Weighting:
+Equal / Balanced baseline
+
+However:
+
+all defaults must be labeled:
+
+Example configuration
+
+unless the project has established them as actual requirements.
+
+Do not imply:
+
+100 MW
+
+or
+
+80%
+
+is an industry-standard data center.
+
+==================================================
+113. CONFIGURATION VALIDATION
+==================================================
+
+Validate:
+
+peak IT power > 0
+
+0 < average load factor <= 1
+
+target year within backend-supported range
+
+lifetime > 0
+
+supported cooling configuration
+
+valid decision method
+
+valid AHP matrix when supplied
+
+Show specific messages.
+
+Example:
+
+"Average IT load must be between 0% and 100%."
+
+Do not submit invalid configurations.
+
+==================================================
+114. CONFIGURATION UNITS
+==================================================
+
+Display units next to inputs.
+
+Examples:
+
+MW
+%
+years
+km
+km²
+
+Do not require users to infer units.
+
+Convert UI percentages appropriately.
+
+Example:
+
+User enters:
+
+80%
+
+Backend receives:
+
+0.80
+
+Centralize unit conversions.
+
+Do not scatter:
+
+value / 100
+
+through multiple components.
+
+==================================================
+115. RESULT UNITS
+==================================================
+
+Create centralized formatting utilities.
+
+Examples:
+
+formatPower()
+formatEnergy()
+formatCarbon()
+formatWater()
+formatDistance()
+formatArea()
+formatPercent()
+
+Possible display:
+
+100 MW
+
+840,960 MWh/year
+
+84,096 tCO₂e/year
+
+210.2 ML/year
+
+7.2 km
+
+100 km²
+
+Keep backend canonical units unchanged internally where practical.
+
+Do not perform destructive rounding before comparison.
+
+==================================================
+116. LARGE NUMBER DISPLAY
+==================================================
+
+Use human-readable formatting while preserving precision on demand.
+
+Example:
+
+Main UI:
+
+841 GWh/year
+
+Details:
+
+840,960 MWh/year
+
+Main UI:
+
+84.1 ktCO₂e/year
+
+Details:
+
+84,096 tCO₂e/year
+
+Do not mix:
+
+kg
+tonnes
+kilotonnes
+
+without explicit conversion.
+
+==================================================
+117. SCORE DISPLAY
+==================================================
+
+Scores should be secondary to physical metrics.
+
+Do not design the candidate card as only:
+
+87.4
+
+Instead:
+
+#1 Candidate Region 014
+Decision score: 87.4
+
+Carbon:
+84.1 ktCO₂e/year
+
+Water:
+210 ML/year
+
+Water stress:
+Low
+
+Climate:
+Low flood / low wildfire
+
+Power capacity:
+UNKNOWN
+
+This keeps the application scientifically interpretable.
+
+==================================================
+118. BASELINE COMPARISON
+==================================================
+
+If the backend provides a baseline/reference scenario:
+
+show:
+
+Compared with baseline
+
+Carbon:
+−18%
+
+Water:
+−31%
+
+Energy:
+−7%
+
+Only show comparisons when:
+
+both quantities share compatible boundaries and assumptions.
+
+Do not create percentage improvements from unrelated scenarios.
+
+Display baseline definition.
+
+==================================================
+119. MODEL RUN DETAILS
+==================================================
+
+Create a RunDetails panel.
+
+Show:
+
+Run ID
+Model version
+Grid resolution
+Facility configuration
+Weighting method
+Scenario
+Dataset versions
+Execution timestamp
+Coverage
+Warnings
+
+Example:
+
+Grid resolution:
+10 km
+
+Analysis coverage:
+Contiguous United States
+
+or:
+
+Analysis coverage:
+Development subset only
+
+Never label subset analysis as nationwide.
+
+==================================================
+120. DATASET COVERAGE WARNING
+==================================================
+
+If backend reports incomplete coverage:
+
+show a visible warning.
+
+Example:
+
+PARTIAL DATA COVERAGE
+
+FCC connectivity data were unavailable for 18% of evaluated cells.
+
+or:
+
+Future climate analysis unavailable for some candidate regions.
+
+Do not bury critical coverage limitations only in methodology pages.
+
+==================================================
+121. MAP COVERAGE VISUALIZATION
+==================================================
+
+Optional but valuable:
+
+add:
+
+[ ] Data Coverage
+
+layer.
+
+Show cells/regions where:
+
+all required data available
+partial data
+critical data missing
+
+This helps distinguish:
+
+low suitability
+
+from:
+
+low information.
+
+Those are not the same thing.
+
+==================================================
+122. DATA QUALITY VS SITE QUALITY
+==================================================
+
+Never conflate:
+
+Site Quality
+
+with:
+
+Data Quality.
+
+A candidate can be:
+
+High site score
+Low data quality
+
+or:
+
+Moderate site score
+High data quality.
+
+Display these separately.
+
+Example:
+
+Decision score:
+88
+
+Data quality:
+Medium
+
+Verification:
+3 critical unknowns
+
+==================================================
+123. UNKNOWN DATA MAP STYLE
+==================================================
+
+Unknown data should have its own visual treatment.
+
+For example:
+
+hatched
+neutral
+outlined
+
+Do not map UNKNOWN to:
+
+0
+
+and do not color it as:
+
+best
+
+or:
+
+worst.
+
+This applies to:
+
+water
+climate
+power
+fiber
+community
+heat reuse
+all other layers.
+
+==================================================
+124. SEARCH REGION SCOPE
+==================================================
+
+Current model scope:
+
+United States.
+
+The map may visually show the world in globe mode, but the search
+button should clearly state:
+
+Search United States
+
+until global model coverage exists.
+
+Do not imply worldwide model coverage because a globe is visible.
+
+==================================================
+125. GLOBAL EXPANSION READINESS
+==================================================
+
+Design geographic interfaces so they are not fundamentally tied to
+U.S. state IDs.
+
+CandidateRegion should primarily rely on:
+
+region ID
+geometry
+centroid
+verified labels
+
+U.S.-specific metadata may be optional:
+
+state
+county
+
+This makes later international expansion possible.
+
+But do not implement unsupported global datasets now.
+
+==================================================
+126. MAP INITIAL STATE
+==================================================
+
+On initial load:
+
+show the contiguous United States.
+
+Do not automatically center on the user's device location.
+
+The project is a national locator, not a "near me" application.
+
+Display:
+
+"Configure a data center and search the U.S."
+
+If a previous run ID exists in the URL:
+
+load that run instead.
+
+==================================================
+127. EMPTY INITIAL MAP
+==================================================
+
+Before the first search:
+
+do not display fake candidate markers.
+
+The map may display:
+
+state boundaries
+base geography
+optional static explanatory layers
+
+Candidate layer should be empty.
+
+If demo mode is enabled:
+
+show the DEMO DATA indicator.
+
+==================================================
+128. CANDIDATE LIST SORTING
+==================================================
+
+Default:
+
+sort by backend rank.
+
+Allow optional sorting by raw metrics:
+
+Decision Score
+Carbon
+Water
+Water Stress
+Climate
+Infrastructure
+
+When sorting changes:
+
+do not alter backend rank.
+
+Example:
+
+Sorted by Water
+
+Region C
+Backend Rank #4
+
+Region A
+Backend Rank #1
+
+Keep model rank visible.
+
+==================================================
+129. CANDIDATE LIST VIRTUALIZATION
+==================================================
+
+If result lists become large:
+
+use list virtualization.
+
+Do not render thousands of complex result cards simultaneously.
+
+For the normal shortlist of candidate regions, simple rendering is
+acceptable.
+
+Optimize only where necessary.
+
+==================================================
+130. REGION FAVORITES / SHORTLIST
+==================================================
+
+Allow users to add candidates to:
+
+Shortlist
+
+This is a frontend comparison feature.
+
+It must NOT change the model score.
+
+Example:
+
+☆ Add to shortlist
+
+Shortlisted regions can later be compared.
+
+Do not call this:
+
+Approved Sites.
+
+==================================================
+131. EXPORT RESULTS
+==================================================
+
+Provide export controls if backend supports them.
+
+Possible:
+
+Download CSV
+Download GeoJSON
+Download Run Report
+
+Prefer backend-generated authoritative exports.
+
+Do not reconstruct a supposedly complete scientific report solely
+from the visible frontend subset.
+
+For map screenshots/export:
+
+ensure legends and run metadata are visible.
+
+==================================================
+132. GEOJSON EXPORT
+==================================================
+
+If candidate-region GeoJSON is downloadable:
+
+include properties such as:
+
+region_id
+rank
+decision_score
+screening_status
+pareto_optimal
+run_id
+
+Do not place enormous provenance objects inside each feature if a
+separate metadata file is more appropriate.
+
+==================================================
+133. PRESENTATION MODE
+==================================================
+
+Add an optional:
+
+Presentation Mode
+
+for demonstrations.
+
+Presentation Mode should:
+
+hide advanced configuration clutter
+keep map large
+show top candidates
+show six-factor summary
+show run configuration
+show key limitations
+
+It must use the exact same model results.
+
+Do not create separate fake presentation data.
+
+==================================================
+134. STORY MODE — OPTIONAL
+==================================================
+
+Optional after MVP:
+
+Create a guided sequence:
+
+1. Start with entire U.S.
+2. Show geographic grid.
+3. Apply land/ecology constraints.
+4. Apply climate constraints.
+5. Apply infrastructure screening.
+6. Run physical model.
+7. Show Pareto candidates.
+8. Cluster into regions.
+9. Reveal top candidates.
+
+This can be powerful for hackathon presentation.
+
+However:
+
+the animation must be driven by actual model-stage outputs.
+
+Do not fake removed cells merely for dramatic effect.
+
+==================================================
+135. SEARCH PROGRESS API — OPTIONAL
+==================================================
+
+If model execution becomes long enough to justify it:
+
+support backend job architecture.
+
+Example:
+
+POST /api/search
+
+returns:
+
+{
+    "job_id": "JOB123",
+    "status": "QUEUED"
+}
+
+Then:
+
+GET /api/jobs/JOB123
+
+returns:
+
+{
+    "status": "RUNNING",
+    "stage": "PHYSICAL_MODEL"
+}
+
+Eventually:
+
+{
+    "status": "COMPLETE",
+    "run_id": "RUN123"
+}
+
+Or use Server-Sent Events / WebSocket if already supported.
+
+Do not introduce job infrastructure if searches complete quickly.
+
+==================================================
+136. PROGRESS STAGES
+==================================================
+
+If backend reports stages, use canonical stage names:
+
+PREPARING
+SCREENING
+SIMULATING
+PARETO
+RANKING
+CLUSTERING
+FINALIZING
+
+Map to readable UI:
+
+Preparing geographic data
+Applying constraints
+Calculating facility performance
+Finding efficient alternatives
+Ranking candidates
+Building candidate regions
+Preparing results
+
+Do not display fake progress percentages unless backend provides
+real measurable progress.
+
+==================================================
+137. CACHING SEARCHES
+==================================================
+
+If backend supports deterministic run caching:
+
+identical:
+
+facility configuration
+model configuration
+dataset version
+
+may reuse a previous run.
+
+Frontend should treat cached and newly computed results identically.
+
+Optionally display:
+
+"Loaded existing reproducible run."
+
+Do not calculate cache identity independently in frontend unless
+backend specifies the hashing method.
+
+==================================================
+138. MAP SNAPSHOT
+==================================================
+
+Optional:
+
+allow the user to create a presentation-ready map snapshot.
+
+Snapshot should include:
+
+candidate regions
+rank markers
+legend
+model run ID
+scenario
+facility size
+
+Do not include private configuration or credentials.
+
+If implementation becomes complex, defer this until after MVP.
+
+==================================================
+139. PRINT / REPORT VIEW
+==================================================
+
+Optional:
+
+create a print-friendly candidate comparison view.
+
+Include:
+
+Search configuration
+Map
+Top candidate regions
+Six-factor comparison
+Raw metrics
+Uncertainty
+Sources
+Methodology disclaimer
+
+This is secondary to the interactive map.
+
+==================================================
+140. MODEL EXPLANATION CONTRACT
+==================================================
+
+Prefer backend to return structured explanation data.
+
+Example:
+
+{
+  "strengths": [
+    {
+      "criterion": "water",
+      "metric": "baseline_water_stress",
+      "comparison": "lower_than_candidate_median",
+      "contribution": 8.2
+    }
+  ],
+
+  "weaknesses": [...],
+
+  "unknowns": [...],
+
+  "verification_required": [...]
+}
+
+Frontend converts these structures into readable text.
+
+Do not have frontend infer causal explanations from arbitrary
+correlations.
+
+==================================================
+141. AI-GENERATED EXPLANATION — OPTIONAL
+==================================================
+
+If an LLM explanation feature is later added:
+
+the LLM receives ONLY structured model results and provenance.
+
+It may explain:
+
+why candidate A ranked above B
+
+what assumptions matter
+
+what remains unknown
+
+It may NOT:
+
+change scores
+change ranks
+invent sources
+invent missing measurements
+declare an unknown requirement confirmed
+
+The deterministic model remains authoritative.
+
+==================================================
+142. HEATMAP VS GRID
+==================================================
+
+Do not blur discrete 10 km grid-cell scores into a smooth heatmap
+unless explicitly labeled as visual interpolation.
+
+Preferred:
+
+actual grid polygons
+
+or:
+
+proper rasterization of grid values.
+
+A smooth gradient may falsely imply measurements exist between cell
+values.
+
+If a heatmap is used for visual overview:
+
+label it:
+
+"Visualization interpolation"
+
+and preserve actual grid inspection.
+
+==================================================
+143. NATIONAL MAP PERFORMANCE STRATEGY
+==================================================
+
+For national scale:
+
+candidate regions:
+GeoJSON is likely sufficient.
+
+top candidate markers:
+MapLibre symbol layer.
+
+tens of thousands of grid cells:
+vector tiles preferred.
+
+large raster environmental layers:
+raster/vector tile service preferred.
+
+Do not ship multi-gigabyte source files to the browser.
+
+==================================================
+144. MAPLIBRE SOURCE ORGANIZATION
+==================================================
+
+Use logically separate sources:
+
+candidate-regions
+candidate-centroids
+suitability-grid
+water-layer
+climate-layer
+infrastructure-layer
+heat-reuse-layer
+community-layer
+
+Use stable IDs.
+
+Do not recreate source IDs dynamically on every render.
+
+==================================================
+145. MAPLIBRE LAYER ORDER
+==================================================
+
+Establish intentional rendering order.
+
+Example bottom → top:
+
+Basemap
+Raw environmental layer
+Suitability grid
+Infrastructure
+Candidate region fill
+Candidate region outline
+Heat-reuse opportunities
+Candidate rank markers
+Selected candidate highlight
+
+Ensure rank markers remain visible.
+
+Selected region should remain visible above normal candidate fills.
+
+==================================================
+146. SELECTED FEATURE STATE
+==================================================
+
+Prefer MapLibre feature-state or equivalent efficient layer filtering
+for selected/hovered states.
+
+Avoid replacing entire GeoJSON sources merely because selection
+changed.
+
+Selection should be performant.
+
+==================================================
+147. MAP ACCESSIBILITY ALTERNATIVE
+==================================================
+
+Because interactive maps have accessibility limitations:
+
+every candidate shown on map must also appear in an accessible
+results list.
+
+All important metrics available through map interaction must also
+be accessible through normal DOM controls.
+
+A keyboard-only user must be able to:
+
+search
+select candidate
+inspect metrics
+compare candidates
+inspect sources.
+
+==================================================
+148. MOBILE MAP INTERACTION
+==================================================
+
+On mobile:
+
+map should remain usable with one hand.
+
+Avoid permanent large overlays.
+
+Use bottom sheet states:
+
+collapsed:
+Top candidates
+
+half:
+Candidate summary
+
+expanded:
+Full details
+
+Keep map controls away from sheet drag area.
+
+Ensure tap targets are sufficiently large.
+
+==================================================
+149. TABLET LAYOUT
+==================================================
+
+For medium screens:
+
+consider:
+
+collapsible sidebar
++
+large map
+
+rather than desktop fixed-width sidebar.
+
+Test common tablet widths.
+
+==================================================
+150. LOADING SKELETONS
+==================================================
+
+Use lightweight loading states for panels.
+
+Do not cover the entire map with a blocking loading screen if an
+existing run remains visible.
+
+When a new search starts:
+
+optionally dim previous candidates and mark:
+
+"Previous run"
+
+until new results arrive.
+
+Once new run completes:
+
+replace them.
+
+==================================================
+151. ERROR RECOVERY
+==================================================
+
+Provide retry for recoverable errors.
+
+Example:
+
+"Search failed."
+
+[Retry]
+
+Preserve the user's configuration.
+
+Do not clear their inputs after a backend error.
+
+==================================================
+152. INVALID REGION DATA
+==================================================
+
+If one candidate is invalid:
+
+skip/flag that candidate.
+
+Do not discard all valid candidates.
+
+Log development diagnostics.
+
+User-facing:
+
+"1 candidate could not be mapped because its geometry was invalid."
+
+==================================================
+153. OBSERVABILITY
+==================================================
+
+Add appropriate frontend logging/error boundaries.
+
+Do not log sensitive configuration secrets.
+
+Track useful development events such as:
+
+search submitted
+search failed
+map source failed
+invalid API record
+
+Use existing project observability tooling if available.
+
+Do not add third-party analytics without project approval.
+
+==================================================
+154. TEST MAP DATA
+==================================================
+
+Tests must use small deterministic GeoJSON fixtures.
+
+Include:
+
+single Polygon
+MultiPolygon
+overlapping regions
+missing centroid
+invalid record
+conditional candidate
+candidate with unknown metrics
+
+Do not require live network map data for all unit tests.
+
+==================================================
+155. END-TO-END TEST
+==================================================
+
+Create at least one automated browser-level test if project tooling
+supports it.
+
+Flow:
+
+Open application
+
+→ verify U.S. map container
+
+→ configure 100 MW example
+
+→ click Find Locations
+
+→ mock/test backend returns 3 candidates
+
+→ verify 3 candidate results
+
+→ select rank #1
+
+→ verify candidate detail panel
+
+→ verify six factor categories
+
+→ verify UNKNOWN power capacity
+
+→ activate Water layer
+
+→ verify layer state
+
+→ compare #1 and #2
+
+→ verify comparison panel
+
+This test uses explicit TEST DATA.
+
+==================================================
+156. REAL BACKEND SMOKE TEST
+==================================================
+
+Once backend integration is available:
+
+perform a smoke test against a real development-area model run.
+
+Verify:
+
+response schema
+GeoJSON validity
+coordinates
+scores
+units
+unknown handling
+source metadata
+selection behavior
+
+Do not convert the development-area smoke test into a claim of
+national model completion.
+
+==================================================
+157. FRONTEND DOCUMENTATION
+==================================================
+
+Create:
+
+frontend/README.md
+
+or equivalent.
+
+Document:
+
+setup
+package manager
+environment variables
+map configuration
+backend API
+mock mode
+development commands
+test commands
+build command
+project structure
+known limitations
+
+Also document expected backend contract.
+
+==================================================
+158. API CONTRACT DOCUMENTATION
+==================================================
+
+Create a versioned API contract.
+
+Prefer:
+
+OpenAPI generated by backend
+
+or:
+
+shared schema package
+
+where possible.
+
+Frontend and backend should not independently maintain conflicting
+copies of the same schema.
+
+If shared generation is unavailable:
+
+document API version explicitly.
+
+==================================================
+159. SCHEMA VERSIONING
+==================================================
+
+Backend response should ideally include:
+
+schema_version
+
+Example:
+
+{
+  "schema_version": "1.0",
+  ...
+}
+
+Frontend should detect unsupported versions.
+
+Do not silently interpret incompatible data.
+
+==================================================
+160. DESIGN SYSTEM
+==================================================
+
+Use a restrained scientific/technical visual language.
+
+Suggested principles:
+
+neutral basemap
+high information density without clutter
+clear

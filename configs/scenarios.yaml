@@ -1,0 +1,4 @@
+# External scenarios (climate/grid/water futures; Phase 5). Kept separate
+# from configs/cooling_designs.yaml's decision alternatives (AGENTS.md
+# section 6: optimizers never "choose" a scenario). Empty in Phase 1.
+scenarios: []

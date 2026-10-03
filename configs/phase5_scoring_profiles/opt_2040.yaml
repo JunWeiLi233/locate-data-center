@@ -1,0 +1,200 @@
+profile_id: enhanced_aqueduct_opt_2040_v1
+profile_version: 1.0.0
+description: Matched baseline preferences with unsupported requested2040 Aqueduct
+  water-stress evidence. No native2040 field, interpolation or copying; missing required
+  score prevents ranking.
+weighting_method: equal
+user_weights: null
+ahp_judgments: null
+groups:
+- group_id: energy_carbon
+  label: Annual electricity CO2e
+  equal_parent_weight: 0.25
+- group_id: water_stewardship
+  label: Site consumption and local basin stress, distinct aspects
+  equal_parent_weight: 0.25
+- group_id: grid_infrastructure
+  label: Mapped transmission proximity
+  equal_parent_weight: 0.25
+- group_id: land
+  label: Mapped non-water/ice/wetland proxy fraction
+  equal_parent_weight: 0.25
+metrics:
+- metric_id: annual_electricity_co2e
+  column: c_electricity_tonnes
+  table: performance
+  definition: Annual operational electricity CO2-equivalent emissions; historical-static
+    scenario.
+  unit: tonnes_CO2e
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 1000000.0
+  basis: project_assumption
+  rationale: Zero to1million tonnes per modeled year is a deliberately broad decision
+    reference for the illustrative100MW facility, selected before inspecting winners.
+    Not an engineering, regulatory or life-cycle threshold; scores are conditional
+    on this policy.
+  role: decision_metric
+  group_id: energy_carbon
+  local_weight: 1.0
+  required: true
+  allowed_statuses:
+  - calculated
+  source_id: epa_egrid
+  source_field: SRC2ERTA
+  minimum_coverage_frac: 0.999999
+  double_count_family: operational_electricity
+- metric_id: annual_site_water_consumption
+  column: w_site_m3
+  table: performance
+  definition: Annual direct site blue-water consumption, not withdrawal or generation
+    water.
+  unit: m3_consumed
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 1000000.0
+  basis: project_assumption
+  rationale: Zero to1million m3 per modeled year is a broad water-consumption decision
+    reference for the illustrative100MW facility, chosen before winners. No inference
+    of withdrawal, supply commitment or a physical/regulatory admissibility threshold.
+  role: decision_metric
+  group_id: water_stewardship
+  local_weight: 0.5
+  required: true
+  allowed_statuses:
+  - calculated
+  source_id: null
+  source_field: null
+  minimum_coverage_frac: null
+  double_count_family: site_water_consumption
+- metric_id: local_baseline_water_stress
+  column: aqueduct_opt_2040_water_stress_score
+  table: geography
+  definition: Unsupported requested2040 Aqueduct water-stress score; no native source
+    field, source window, interpolation or copied2030/2050 data. Value remains UNKNOWN.
+  unit: score_0_to_5
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 5.0
+  basis: published_source_scale
+  reference: https://github.com/wri/Aqueduct40/blob/master/data_dictionary_water-risk-atlas.md
+  rationale: Same native0–5 bounds, local weight0.5 and minimizing preference as the
+    accepted baseline; only the source/time binding changes. Unsupported milestone
+    remains UNKNOWN and unranked.
+  role: decision_metric
+  group_id: water_stewardship
+  local_weight: 0.5
+  required: true
+  allowed_statuses:
+  - scenario
+  source_id: wri_aqueduct40_future
+  source_field: null
+  minimum_coverage_frac: 0.999999
+  double_count_family: local_water_stress
+- metric_id: transmission_proximity
+  column: transmission_distance_km
+  table: geography
+  definition: Minimum study-intersection distance to mapped EIA transmission inventory;
+    capacity unconfirmed.
+  unit: km
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 50.0
+  basis: project_assumption
+  rationale: Zero to50km is an investigation-distance preference chosen before winners,
+    not a utility connection rule or available-capacity claim. Native areal coverage
+    is not applicable to this inventory; proxy status and low confidence stay visible.
+  role: informational_proxy
+  group_id: grid_infrastructure
+  local_weight: 1.0
+  required: true
+  allowed_statuses:
+  - proxy
+  source_id: eia_energy_atlas
+  source_field: transmission line geometry
+  minimum_coverage_frac: null
+  double_count_family: mapped_transmission_access
+- metric_id: suitable_land_fraction
+  column: potentially_suitable_land_frac
+  table: geography
+  definition: Fraction of observed NLCD classes excluding water/ice/wetlands; not
+    contiguous/buildable land.
+  unit: frac
+  direction: maximize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 1.0
+  basis: project_assumption
+  rationale: Native fraction domain0–1; maximizing preference is a project proxy policy,
+    not a parcel approval.
+  role: informational_proxy
+  group_id: land
+  local_weight: 1.0
+  required: true
+  allowed_statuses:
+  - proxy
+  source_id: usgs_annual_nlcd
+  source_field: valid classes except 11,12,90,95
+  minimum_coverage_frac: 0.999999
+  double_count_family: potentially_suitable_land
+excluded_criteria:
+- criterion: facility_energy
+  role: physical_model_input
+  reason: Already included in annual electricity CO2e; no double energy score.
+- criterion: pue_wue
+  role: physical_model_input
+  reason: Physical scenario inputs; not separately scored.
+- criterion: temperature
+  role: physical_model_input
+  reason: Constant PUE/WUE have no climatic dependence; no cold-climate bonus.
+- criterion: suitable_land_area
+  role: hard_constraint
+  reason: Area plausibility screening is retained; no duplicate area score.
+- criterion: flood_ecology_parcel_clearance
+  role: hard_constraint
+  reason: Remain critical screening requirements; geographic overlaps do not establish
+    parcel clearance.
+- criterion: climate_resilience_wrc
+  role: omitted
+  reason: Verified WRC hazard evidence is unavailable; WHP is not substituted.
+- criterion: future_grid_carbon
+  role: omitted
+  reason: Only historical-static2023 scenario is supported.
+- criterion: generation_water
+  role: omitted
+  reason: Defensible generation-geography factors unavailable; UNKNOWN.
+- criterion: construction_embodied_carbon
+  role: omitted
+  reason: Construction inventory and lifecycle factors not available in baseline.
+pareto:
+  objective_space: raw_metrics
+  absolute_tolerances:
+    annual_electricity_co2e: 1.0e-06
+    annual_site_water_consumption: 1.0e-06
+    local_baseline_water_stress: 1.0e-09
+    transmission_proximity: 1.0e-09
+    suitable_land_fraction: 1.0e-09
+  relative_tolerance: 0.0
+  basis: project_assumption
+  rationale: Numerical comparison tolerances only; not significance or physical equivalence
+    claims.
+region_selection:
+  rule: top_fraction_per_design_scenario
+  top_fraction: 0.25
+  adjacency: rook
+  minimum_cells: 1
+  require_pareto: false
+  basis: project_assumption
+  rationale: Select the top ceil25percent within each complete design/scenario group,
+    before examining winners. Rook adjacency uses shared grid edges. Dominated alternatives
+    remain available and visibly flagged; disconnected components stay separate.
+ahp:
+  consistency_threshold: 0.1
+  reciprocal_tolerance: 1.0e-08
+  basis: project_assumption
+  rationale: Conventional consistency review cutoff; no supplied expert judgments
+    or automatic repair.

@@ -1,0 +1,43 @@
+# Grid definition (GRID CONTRACT; see docs/data_contracts.md for the
+# authoritative, column-by-column description of what this produces).
+#
+# origin_x_m / origin_y_m / crs / grid_scheme_version are CONSTANTS of the
+# grid definition itself -- they are NOT derived from the CONUS boundary.
+# They were chosen to sit north-west of all of CONUS with margin, and to be
+# divisible by 1, 2, 2.5, 5, 10, 20, 25, 50 and 100 km so grids built at any
+# of those resolutions nest exactly on a shared origin. Changing any of
+# crs/origin_x_m/origin_y_m/cell_size_m/grid_scheme_version changes
+# grid_definition_id and therefore every grid_id.
+
+crs: "EPSG:5070"        # NAD83 / Conus Albers Equal Area, metres. Lat/lon outputs use EPSG:4326.
+origin_x_m: -2500000.0  # Fixed top-left origin X, EPSG:5070 metres.
+origin_y_m: 3400000.0   # Fixed top-left origin Y, EPSG:5070 metres.
+cell_size_m: 10000.0    # Default cell size: 10 km x 10 km. Must be > 0.
+grid_scheme_version: 1  # Bump only if the origin/CRS/ID scheme itself changes (not a cell-size change).
+
+id_row_col_digits: 4    # Zero-padded width of row/col in grid_id, e.g. "g10000m-r0123-c0456".
+                        # Generation fails loudly if the real CONUS extent at cell_size_m needs more digits.
+tile_size_cells: 25     # Cells per tile edge: tile_id = (row // tile_size_cells, col // tile_size_cells).
+
+min_intersection_km2: 0.0  # Inclusion threshold: a cell is retained only when (cell square ∩ CONUS)
+                            # area exceeds this. 0.0 = any positive intersection; a pure edge/point
+                            # touch (zero area) is always excluded regardless of this threshold.
+
+# Development bounding boxes (EPSG:4326 lon/lat), used only to SELECT cells
+# of the already-generated national grid for fast iteration; they never
+# change a retained cell's grid_id or attributes (GRID CONTRACT).
+study_areas:
+  dev_tiny:
+    # ~30 cells; fast real-data tests.
+    lon_min: -96.0
+    lat_min: 30.0
+    lon_max: -95.5
+    lat_max: 30.5
+  dev_default:
+    # ~2,000 cells; spans the TX/LA/AR edge, several eGRID subregions, Gulf
+    # coastline, mapped and possibly-unmapped flood areas, and national
+    # forests -- chosen for physical/data diversity, NOT for any city.
+    lon_min: -98.0
+    lat_min: 29.0
+    lon_max: -93.0
+    lat_max: 33.0

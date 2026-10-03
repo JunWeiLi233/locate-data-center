@@ -1,0 +1,59 @@
+schema_version: 2.0.0
+delivery_version: phase7_delivery_v1
+run_name: synthetic_fixture
+data_mode: synthetic
+grid_config: configs/grid.yaml
+grid_path: tests/fixtures/phase7/grid.parquet
+grid_definition_id: conus-epsg5070-ox-2500000-oy3400000-s10000m-v1
+study_area: synthetic_fixture
+source_registry: configs/sources.yaml
+local_sources: tests/fixtures/phase7/sources.json
+core_source_inputs: null
+expanded_source_inputs: null
+aqueduct_source_input: null
+expanded_features: false
+facility: configs/facility.yaml
+cooling_designs: configs/cooling_designs.yaml
+physical_scenarios: configs/phase3_physical_scenarios.yaml
+constraints: configs/constraints.yaml
+scoring_profile: configs/scoring_profile.yaml
+screening_mode: EXPLORATORY
+weighting_method: equal
+user_group_weights: null
+ahp_input: null
+future:
+  enabled: false
+validation:
+  enabled: true
+  validation_revision: phase7_current_v1
+  top_k: 10
+  cases:
+  - case_id: pue_minus_10pct
+    category: pue
+    multiplier: 0.9
+    basis: project_assumption
+    rationale: Multiplicative stress around each declared constant annual PUE; not
+      an empirical confidence interval.
+  - case_id: wue_minus_50pct
+    category: wue
+    multiplier: 0.5
+    basis: project_assumption
+    rationale: Multiplicative stress around each declared constant WUE; a declared
+      zero remains zero.
+  - case_id: screening_strict
+    mode: STRICT
+    basis: project_assumption
+    rationale: Apply the accepted strict treatment of critical UNKNOWN evidence; every
+      hard failure remains excluded.
+    category: screening
+  allow_synthetic: true
+  max_cases: 64
+  future_contexts: []
+maximum_model_cells: 1000
+resource_policy_basis: project_assumption
+resource_policy_rationale: Bound current delivery to the configured development subset
+  below1000cells; national source coverage and vector RAM are unvalidated. This is
+  an execution budget, not an engineering threshold.
+random_seed: null
+fixture_geography: tests/fixtures/phase7/geography.parquet
+fixture_provenance: tests/fixtures/phase7/provenance.parquet

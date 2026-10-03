@@ -1,0 +1,29 @@
+# Explicit constant scenarios, not measured or climate-dependent functions.
+# Research context: docs/research/phase3/cooling_designs_pue_wue.md sections 2/3/7.
+cooling_designs:
+  - design_id: air_dry_assumed
+    heat_transport: Air-cooled IT with chilled-water air handlers
+    heat_rejection: Air-cooled chiller and dry cooler, no evaporative assist
+    annual_pue: 1.20
+    wue_l_per_it_kwh: 0.0
+    water_basis: consumption
+    peak_pue: null
+    peak_pue_verified: false
+    basis: project_assumption
+    rationale: >-
+      Illustrative annual PUE1.20; zero cooling/humidification blue-water consumption
+      is an ideal dry-system scenario. Sanitary/construction water is outside this
+      boundary. This does not assert measured annual or verified peak PUE.
+  - design_id: cold_plate_tower_assumed
+    heat_transport: Direct-to-chip cold plates and secondary coolant loop
+    heat_rejection: Water-cooled chiller and evaporative cooling tower
+    annual_pue: 1.20
+    wue_l_per_it_kwh: 0.30
+    water_basis: consumption
+    peak_pue: null
+    peak_pue_verified: false
+    basis: project_assumption
+    rationale: >-
+      Illustrative constant assumptions mirror the mandatory numerical fixture;
+      not geographic measurements or a claim about this design's efficiency.
+      WUE0.30 means consumption per IT kWh; withdrawal/blowdown is unknown.

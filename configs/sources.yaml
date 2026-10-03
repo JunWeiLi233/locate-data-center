@@ -1,0 +1,187 @@
+# Source registry; READY describes implemented inputs, not national analysis.
+sources:
+- source_id: nrel_nsrdb
+  name: NREL National Solar Radiation Database (NSRDB)
+  phase: 5
+  status: PARTIAL
+  url: https://developer.nlr.gov/docs/solar/nsrdb/python-examples/
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: nrel_wind_toolkit
+  name: NREL WIND Toolkit / wind-resource dataset
+  phase: 5
+  status: PARTIAL
+  url: https://data.nlr.gov/submissions/54
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: epa_egrid
+  name: EPA eGRID (grid carbon intensity by subregion)
+  phase: 2
+  status: READY
+  url: https://www.epa.gov/egrid/detailed-data
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: berkeley_queued_up
+  name: Berkeley Lab Queued Up (interconnection queue)
+  phase: 5
+  status: PARTIAL
+  url: https://emp.lbl.gov/queues
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: eia_861
+  name: EIA Form EIA-861 (utility data)
+  phase: 5
+  status: PARTIAL
+  url: https://www.eia.gov/electricity/data/eia861/
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: eia_energy_atlas
+  name: EIA / U.S. Energy Atlas (power plants, transmission lines, pipelines)
+  phase: 2
+  status: READY
+  url: https://atlas.eia.gov/
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: wri_aqueduct40
+  name: WRI Aqueduct 4.0 (water risk)
+  phase: 2
+  status: READY
+  url: https://www.wri.org/data/aqueduct-water-risk-atlas
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: noaa_ncei_climate
+  name: NOAA/NCEI climate normals
+  phase: 2
+  status: READY
+  url: https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: epa_cwns
+  name: EPA Clean Watersheds Needs Survey (CWNS)
+  phase: 5
+  status: BLOCKED
+  url: https://sdwis.epa.gov/ords/sfdw_pub/r/sfdw/cwns_pub/about
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: global_iron_steel_tracker
+  name: Global Iron and Steel Tracker
+  phase: 5
+  status: BLOCKED
+  url: https://globalenergymonitor.org/projects/global-iron-steel-tracker/
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: global_cement_concrete_tracker
+  name: Global Cement and Concrete Tracker
+  phase: 5
+  status: BLOCKED
+  url: https://globalenergymonitor.org/projects/global-cement-and-concrete-tracker/
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: freight_analysis_framework
+  name: Freight Analysis Framework (FAF)
+  phase: 5
+  status: PARTIAL
+  url: https://www.bts.gov/faf/faf5
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: building_transparency_ec3
+  name: Building Transparency / EC3
+  phase: 5
+  status: BLOCKED
+  url: https://www.buildingtransparency.org/api-access-pricing/
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: usgs_annual_nlcd
+  name: USGS Annual NLCD (land cover)
+  phase: 2
+  status: PARTIAL
+  url: https://www.usgs.gov/centers/eros/science/annual-national-land-cover-database
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: fcc_broadband
+  name: FCC broadband availability data
+  phase: 5
+  status: NOT_IMPLEMENTED
+  url: https://www.fcc.gov/BroadbandData
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: ntad
+  name: National Transportation Atlas Database (NTAD)
+  phase: 5
+  status: PARTIAL
+  url: https://www.bts.gov/ntad/continuousupdates
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: fema_nfhl
+  name: FEMA National Flood Hazard Layer (NFHL)
+  phase: 2
+  status: PARTIAL
+  url: https://www.fema.gov/flood-maps/national-flood-hazard-layer
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: usfs_wildfire_risk
+  name: USFS Wildfire Risk to Communities
+  phase: 2
+  status: PARTIAL
+  url: https://www.fs.usda.gov/rds/archive/catalog/RDS-2020-0016-2
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: noaa_ibtracs
+  name: NOAA IBTrACS (tropical cyclone tracks)
+  phase: 5
+  status: PARTIAL
+  url: https://www.ncei.noaa.gov/products/international-best-track-archive
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: us_drought_monitor
+  name: U.S. Drought Monitor
+  phase: 5
+  status: PARTIAL
+  url: https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: nasa_nex_gddp_cmip6
+  name: NASA NEX-GDDP-CMIP6 (downscaled climate projections)
+  phase: 5
+  status: PARTIAL
+  url: https://nccs.smce.nasa.gov/data-collections/nex-gddp-cmip6/
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: fema_rapt
+  name: FEMA Resilience Analysis and Planning Tool (RAPT)
+  phase: 5
+  status: NOT_IMPLEMENTED
+  url: https://content.govdelivery.com/accounts/USDHSFEMA/bulletins/426af63
+  notes: Expanded registry configs/expanded_sources.yaml; implementation, acquisition and
+    analysis are separate in expanded_coverage_report.json. See docs/research/phase5/native_sources.md.
+- source_id: usgs_padus
+  name: USGS Protected Areas Database (PAD-US)
+  phase: 2
+  status: READY
+  url: https://doi.org/10.5066/P96WBCHS
+  notes: Implemented Phase2 adapter; development coverage and acquired/analyzed distinctions
+    are in data/processed/coverage_report.json. See docs/sources.md for native semantics
+    and blockers.
+- source_id: usfs_whp
+  name: USFS Wildfire Hazard Potential
+  phase: 2
+  status: READY
+  url: https://www.fs.usda.gov/rds/archive/catalog/RDS-2015-0047-4
+  notes: Supplemental official WHP2023 indicator,270m; distinct from WRC and never
+    a replacement for missing WRC features.
+- source_id: wri_aqueduct40_future
+  name: WRI Aqueduct4.0 future annual water stress
+  phase: 5
+  status: PARTIAL
+  url: https://www.wri.org/data/aqueduct-water-risk-atlas
+  notes: Implemented/acquired/analyzed future_annual Y2023M07D05; BAU/OPT/PES
+    2030/2050/2080 native windows 2015-2045/2035-2065/2065-2095; five-GCM median.
+    Positive9999 extreme scarcity is distinct from native NULL missing. See
+    docs/research/phase5/temporal_lifecycle.md and the primary enhanced coverage report.

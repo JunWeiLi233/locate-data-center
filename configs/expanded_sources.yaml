@@ -1,0 +1,135 @@
+schema_version: 1.0.0
+scope: development cells only; sources are informational and add no weights or hard-check PASS
+sources:
+  eia_861:
+    raw_namespace: eia861
+    native_pattern: f8612024.zip
+    implemented: true
+    status: PARTIAL
+    source_name: EIA861 reliability State Totals
+    source_url: https://www.eia.gov/electricity/data/eia861/
+    source_version: 2024 final; updated 2025-12-03
+    data_year: '2024'
+    spatial_resolution: state aggregates; customer populations vary by reporting basis
+    limitation: State context cannot establish the serving utility or facility outage performance; IEEE and Any Standard remain separate.
+  us_drought_monitor:
+    raw_namespace: usdm
+    native_pattern: county_drought.csv
+    implemented: true
+    status: PARTIAL
+    source_name: USDM cumulative county area percentages
+    source_url: https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx
+    source_version: weekly county cumulative snapshot; statisticsType=1
+    data_year: 2000-01-01/2024-12-31
+    spatial_resolution: county; weekly Tuesdays
+    limitation: County historical area context, not committed water or future drought probability.
+  berkeley_queued_up:
+    raw_namespace: berkeley_queued_up
+    native_pattern: lbnl_ix_queue_data_file_thru2025.xlsx
+    implemented: true
+    status: PARTIAL
+    source_name: Berkeley Lab and GridTracker Queued Up
+    source_url: https://emp.lbl.gov/queues
+    source_version: 2026 edition; May2026 workbook
+    data_year: through 2025
+    spatial_resolution: first listed project county; incomplete/unlocated projects retained as limitations
+    limitation: Not a comprehensive county inventory; absence is UNKNOWN. Reported MW is neither guaranteed supply nor a future emissions factor.
+  noaa_ibtracs:
+    raw_namespace: noaa_ibtracs
+    native_pattern: ibtracs.NA.list.v04r01.csv
+    implemented: true
+    status: PARTIAL
+    source_name: NOAA IBTrACS North Atlantic MAIN tracks
+    source_url: https://www.ncei.noaa.gov/products/international-best-track-archive
+    source_version: v04r01 retrieved snapshot
+    data_year: 1980-2024
+    spatial_resolution: track positions mainly 3 or 6 hourly; no wind-field inference
+    limitation: Historical segment proximity and storm counts, not future landfall or damage probability. 100km is a descriptive project reporting radius.
+  ntad:
+    raw_namespace: ntad
+    native_pattern: features.esri.json
+    implemented: true
+    status: PARTIAL
+    source_name: BTS/FRA NTAD rail network lines
+    source_url: https://www.bts.gov/ntad/continuousupdates
+    source_version: rail network 2026-07-21
+    data_year: '2026'
+    spatial_resolution: mapped rail network; US 1:24000 or better
+    limitation: Minimum mapped rail distance is not a delivery route, usable siding, rail service agreement, or capacity.
+  nrel_wind_toolkit:
+    raw_namespace: nlr_wind_toolkit
+    native_pattern: wtk_site_metadata.csv
+    implemented: true
+    status: PARTIAL
+    source_name: NLR WIND Toolkit Power Data Site Index
+    source_url: https://data.nlr.gov/submissions/54
+    source_version: native site index v1; 2016-10-17; DOI10.7799/1329290
+    data_year: 2007-2013 modeled power dataset; index native summary
+    spatial_resolution: selected modeled sites from 2km WIND grid; not areal coverage
+    limitation: WRDB is https://wrdb.nlr.gov/; this older selected-site index is a declared WIND Toolkit subset. Samples do not represent all land or contracted power; SRW hourly local parser is implemented but unacquired.
+  nrel_nsrdb:
+    raw_namespace: nrel_nsrdb
+    native_pattern: manual/*.csv
+    implemented: true
+    status: PARTIAL
+    source_name: NLR National Solar Radiation Database
+    source_url: https://developer.nlr.gov/docs/solar/nsrdb/python-examples/
+    source_version: local native CSV version must be supplied
+    data_year: local native observation period
+    spatial_resolution: modeled point time series; not whole-cell areal observation
+    limitation: Native two-metadata-row CSV parser implemented; no data acquired. Public no-sign S3 exists; API requires key and personal fields, which were not submitted. Solar resource is not purchased power.
+  nasa_nex_gddp_cmip6:
+    raw_namespace: nasa_nex_gddp_cmip6
+    native_pattern: '*.nc'
+    analysis_variables: [tas, pr]
+    verification_dependencies: [tasmax, tasmin]
+    implemented: true
+    status: PARTIAL
+    source_name: NASA NEX-GDDP-CMIP6
+    source_url: https://nccs.smce.nasa.gov/data-collections/nex-gddp-cmip6/
+    source_version: '2.0; ACCESS-CM2; r1i1p1f1; ssp245'
+    data_year: '2030'
+    spatial_resolution: 0.25 degree daily downscaled model grid
+    limitation: One model/member/SSP and one future year only; 2031-2054 remain unacquired. Native tas CF time-maximum tag conflicts with daily-mean definition; matching native tasmax/tasmin numerical identity is required and recorded. Components are verification dependencies only. No climate-PUE function or parcel engineering claim.
+  epa_cwns:
+    implemented: false
+    status: BLOCKED
+    source_url: https://sdwis.epa.gov/ords/sfdw_pub/r/sfdw/cwns_pub/about
+    source_version: 2022 survey; snapshot 2022-01-01
+    limitation: Native downloads currently open personal-data popup; no submission/bypass. Public scope/manual verified, exact native export headers unverified pending authorized local files. No fabricated normalized CSV adapter.
+  fcc_broadband:
+    implemented: false
+    status: NOT_IMPLEMENTED
+    source_url: https://www.fcc.gov/BroadbandData
+    source_version: latest applicable filing/export must be selected
+    limitation: Native availability/location export not acquired or verified; licensed location linkage needed. Availability would not prove diverse data-center fiber.
+  global_iron_steel_tracker:
+    implemented: false
+    status: BLOCKED
+    source_url: https://globalenergymonitor.org/projects/global-iron-steel-tracker/
+    source_version: September2026
+    limitation: Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.
+  global_cement_concrete_tracker:
+    implemented: false
+    status: BLOCKED
+    source_url: https://globalenergymonitor.org/projects/global-cement-and-concrete-tracker/
+    source_version: July2026
+    limitation: Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.
+  freight_analysis_framework:
+    implemented: false
+    status: PARTIAL
+    source_url: https://www.bts.gov/faf/faf5
+    source_version: 5.7.1; 2024 preliminary annual estimate
+    limitation: Official native CSV ZIP link verified; server connection reset during acquisition. Exact local CSV headers remain unverified; no native integration claimed. Regional flows are not a delivery route.
+  building_transparency_ec3:
+    implemented: false
+    status: BLOCKED
+    source_url: https://www.buildingtransparency.org/api-access-pricing/
+    source_version: July2026 access terms
+    limitation: Verified organization/account required; API access terms restrict caching/redistribution. No account/API data acquired or native integration claimed.
+  fema_rapt:
+    implemented: false
+    status: NOT_IMPLEMENTED
+    source_url: https://content.govdelivery.com/accounts/USDHSFEMA/bulletins/426af63
+    source_version: updated 2026 tool
+    limitation: RAPT is available; no user agreement accepted. Appropriate underlying native source/export has not been verified or acquired.

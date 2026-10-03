@@ -1,0 +1,3 @@
+The 121 KB state context in `states.geojson` is derived from the project's verified cached U.S. Census Bureau GENZ2023 state cartographic boundaries (public domain). Source: https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_state_500k.zip. SHA-256: `4a9b4f5cf993cd23738ac49b58fbb556f1f097fcf5e404a9dc10348dd41f7432`.
+
+The 48 contiguous states and Washington, DC were simplified in EPSG:5070 with a topology-preserving 6,000 metre tolerance, transformed to EPSG:4326, and rounded to five decimal places for display. State label points are interior representative points from the original projected state geometries. These boundaries are map context only; they do not represent model coverage, parcels, analysis geometries, or candidate regions.

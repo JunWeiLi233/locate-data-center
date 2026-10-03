@@ -1,0 +1,243 @@
+# Data dictionary
+
+Column reference for accepted grid, geography, model, temporal, validation and delivery files.
+For scientific definitions and current versioned contracts, see `docs/data_contracts.md`; this
+document is the quick-lookup table AGENTS.md section 11 requires separately from it.
+
+## `data/processed/us_grid.parquet`, `us_grid__dev_tiny.parquet`, `us_grid__dev_default.parquet`
+
+GeoParquet, one row per grid cell, sorted by `(row, col)`. Geometry column: `geometry` (Polygon, EPSG:5070).
+
+| Column | Type | Unit | Nullable |
+|---|---|---|---|
+| `grid_id` | string | -- | no (primary key) |
+| `grid_definition_id` | string | -- | no |
+| `row` | int32 | -- | no |
+| `col` | int32 | -- | no |
+| `tile_id` | string | -- | no |
+| `geometry` | Polygon (EPSG:5070) | metres | no |
+| `cell_area_km2` | float64 | km² | no |
+| `study_area_intersection_km2` | float64 | km² | no |
+| `study_area_frac` | float64 | fraction (0-1) | no |
+| `is_boundary_cell` | bool | -- | no |
+| `centroid_x_m` | float64 | metres (EPSG:5070) | no |
+| `centroid_y_m` | float64 | metres (EPSG:5070) | no |
+| `centroid_lat` | float64 | degrees (EPSG:4326) | no |
+| `centroid_lon` | float64 | degrees (EPSG:4326) | no |
+| `rep_point_lat` | float64 | degrees (EPSG:4326) | no |
+| `rep_point_lon` | float64 | degrees (EPSG:4326) | no |
+| `state_fips_primary` | string(2) | -- | no |
+| `state_abbr_primary` | string(2) | -- | no |
+| `state_share_primary_frac` | float64 | fraction (0-1) | no |
+| `state_fips_all` | string | -- | no |
+| `n_states` | int64 | count | no |
+| `county_geoid_primary` | string(5) | -- | yes (see `docs/limitations.md`) |
+| `county_name_primary` | string | -- | yes |
+| `county_share_primary_frac` | float64 | fraction (0-1) | yes |
+| `county_geoid_all` | string | -- | yes |
+| `n_counties` | int64 | count | no (0 in the null-county case) |
+| `data_mode` | string (`real`) | -- | no |
+
+`study_area_intersection_km2` measures the CONUS administrative-boundary intersection, including mapped
+inland/coastal water. It is not land-only or developable-land area; Phase 2 land-cover masking is required.
+
+File-level Parquet key-value metadata: `dc_locator.schema=GridCell`,
+`dc_locator.schema_version=1.0.0` for the three preserved existing grid files and `1.1.0` for newly generated
+grid files, `dc_locator.data_mode=real`, `dc_locator.grid_definition_id=<id>`,
+`dc_locator.created_by=<...>` -- see `docs/data_contracts.md`'s "File-level Parquet metadata contract".
+
+## `data/processed/us_grid_summary.json`
+
+| Key | Type | Description |
+|---|---|---|
+| `grid_definition_id` | string | Matches every row's `grid_definition_id` in the three Parquet files. |
+| `crs`, `origin_x_m`, `origin_y_m`, `cell_size_m` | -- | The grid definition actually used. |
+| `boundary_source_id` | string | `"census_cartographic_boundary"`. |
+| `boundary_vintage` | string | `"2023"` (GENZ2023). |
+| `boundary_state_zip_sha256`, `boundary_county_zip_sha256` | string | sha256 of the exact cached source zips used for this generation. |
+| `generation_stats` | object | `row_range`, `col_range`, `n_candidates_bbox`, `n_touching_boundary`, `n_zero_area_touches_excluded`, `n_excluded_by_min_intersection_threshold`, `excluded_by_threshold_total_km2`, `n_retained`. |
+| `total_study_area_intersection_km2` | float | Sum of the national grid's `study_area_intersection_km2` -- administrative extent including mapped water, not land-only area. |
+| `total_cell_area_km2` | float | Sum of the national grid's `cell_area_km2` (every retained cell's *full* square area, including the part outside CONUS for boundary cells). |
+| `per_state_cell_counts` | object | `state_fips_primary -> cell count`, national grid only. |
+| `files` | object | Per output file: `path`, `n_cells`, `sha256`. |
+
+## `data/raw/census_cartographic_boundary/download_log.json`
+
+Array of `{url, path, bytes, sha256, retrieved_at_utc, notes}` -- one entry per cached source file
+(AGENTS.md section 4's download-manifest contract). See `docs/sources.md`.
+# Phase 2 geographic features (2026-10-03)
+
+`geography.features.build_features(grid, source_inputs, output_dir, *, study_geometry=None,
+cache_dir=None, tile_size_cells=625, resume=True, progress=None)` writes `us_grid_dataset.parquet`,
+`feature_provenance.parquet`, `coverage_report.json`, and `data_manifest.json`; it also returns the
+wide GeoDataFrame. `grid` accepts a Phase 1 GeoParquet path or GeoDataFrame. `study_geometry` is
+the CONUS boundary in EPSG:5070; by default the cached Phase 1 Census boundary is loaded.
+`default_source_inputs(project_root=None)` discovers cached official inputs and metadata without
+network calls. Explicit local sources use the same `paths` keys below. Real source configs must
+carry `data_mode: real`; synthetic configs and grids are refused in real output directories.
+
+All area fractions below use **cell square ∩ CONUS boundary**, except NLCD class fractions and
+the suitable fraction, which explicitly use **valid observed NLCD class area**. Actual NLCD
+areas in km² remain unextrapolated. Every metric has status/confidence/coverage companions, and
+long provenance includes source field, release, native resolution, units, method and missing reason.
+Numeric null means UNKNOWN; category/region strings use `value_text` in provenance. Fractions
+are 0–1, scores and categories retain their native scales, ratios need not be ≤1.
+
+| Metric(s) | Meaning / unit / aggregation |
+|---|---|
+| `land_cover_{water,ice_snow,developed_open,developed_low,developed_medium,developed_high,barren,deciduous_forest,evergreen_forest,mixed_forest,shrub,grassland,pasture,cultivated,woody_wetland,emergent_wetland}_frac` | Fraction of valid NLCD area in classes 11,12,21,22,23,24,31,41,42,43,52,71,81,82,90,95 respectively. Exact area intersections at pixel edges; 30 m interior pixels retain native area. Zero/off-legend/250 pixels are missing, never water. |
+| `nlcd_coverage_frac`, `nlcd_observed_area_km2` | Valid NLCD area divided by study-intersection area; measured valid area in km². |
+| `nlcd_water_area_km2`, `nlcd_land_area_km2` | Observed class11 area; all other valid-class area. Census study area includes water and is separately preserved. |
+| `potentially_suitable_land_frac`, `suitable_land_area_km2` | Descriptive **proxy**: valid classes excluding11,12,90,95 (water/ice/wetlands); fraction of mapped NLCD area and measured km². Forest, agricultural and developed land remain in the proxy. No property rights, slope, habitat, foundations or buildability inferred. |
+| `protected_overlap_frac`, `padus_gap1_frac` … `padus_gap4_frac` | GAP1+2 union, and each GAP category area, divided by study-intersection area. GAP3/4 retained separately; not all PAD-US inventory polygons have GAP1 protection. `RastDrop=1` excluded per USGS flattened analysis product. |
+| `padus_coverage_frac` | Study area with valid GAP1–4 classification; uncovered area remains distinct. |
+| `grid_carbon_intensity_kg_per_mwh` | Historical **CO2-equivalent** proxy from EPA `SRC2ERTA`, total-output lb CO2e/MWh × exact0.45359237 kg/lb; area-weighted across primary subregion polygons. It is not future/marginal electricity carbon or a supplying-utility determination. |
+| `grid_co2_intensity_kg_per_mwh` | EPA `SRCO2RTA`, CO2-only historical rate with same lb→kg conversion. Never substituted for CO2e. |
+| `egrid_subregion_primary`, `egrid_n_subregions`, `egrid_subregion_shares_json` | Largest-area primary map association (lexicographic tie), distinct regions and `{region:study_area_share}`. Geographic region mixing does not confirm a site's actual supplying utility. |
+| `egrid_multiple_subregion_overlap_frac`, `egrid_multiple_subregion_labels_json` | Union area in EPA multiple-subregion polygons / study area, plus published ambiguity labels and shares. Resolve actual supplier with utility evidence before site analysis. |
+| `baseline_water_stress_ratio` | Aqueduct `bws_raw` demand/renewable-supply ratio; mean over ordinary valid subbasin areas, excluding `-9999` missing and `9999` extreme-scarcity sentinel. Its own coverage excludes sentinel area; no 0–1 clipping. |
+| `baseline_water_stress_score` | Separately area-weighted `bws_score` on native0–5 scale; `-9999` missing. |
+| `baseline_water_stress_category`, `baseline_water_stress_category_shares_json` | Plurality-area `bws_cat`, lowest category on tie, with area shares. `-1` is valid Arid and Low Water Use; `-9999` is missing. Categories never averaged. |
+| `baseline_water_stress_extreme_scarcity_frac` | Study-area share with `bws_raw=9999`, preserving severe scarcity outside ordinary ratio means. |
+| `aqueduct_coverage_frac`, `aqueduct_n_subbasins`, `aqueduct_subbasin_shares_json` | Coverage including extreme sentinel, distinct `pfaf_id` and shares. Baseline rows are tiled across ID families; union/dissolve by `pfaf_id` prevents counting duplicate basin geography. Not water-supply commitment. |
+| `temperature_mean_c`, `temperature_annual_max_mean_c`, `temperature_annual_min_mean_c` | NOAA1991–2020 annual temperature normals, Celsius, projected pixel-area weighted. Native1/24degree cells are retained as spatial-resolution metadata. |
+| `temperature_warmest_month_daily_max_c` | `annual-tmax_max`: maximum monthly mean daily maximum normal, Celsius. It is not a single-day design extreme or hourly operating weather. |
+| `flood_overlap_frac`, `flood_sfha_area_km2` | Union of known FEMA `SFHA_TF=T` polygons / study area and measured km². SFHA area is never divided by only mapped hazard area. Missing/undetermined mapping remains null. |
+| `flood_coverage_frac` | Area with T/F SFHA classification excluding zoneD/OPEN WATER / study area. `U` is undetermined. This is independent of hazard overlap and independent of availability footprint. |
+| `flood_surveyed_coverage_frac` | Separate NFHL Availability layer0 footprint / study area. Queried empty footprint can be observed0; outside or partial acquisition bbox is UNKNOWN. A surveyed footprint alone does not make missing hazard classification low risk. |
+| `wildfire_burn_probability`, `wildfire_conditional_flame_length_ft` | Native WRC annual burn probability and conditional flame length in feet. Local-file interfaces implemented. Acquired public ImageServer exports have unverified U16 packing/scales/no-data: current real features are UNKNOWN `invalid_source_value`. BP export0..35 is rejected rather than filtered to0..1. |
+| `wildfire_hazard_potential_whp2023` | Separately identified USFS **WHP2023** continuous dimensionless potential index; 270 m zonal mean. It is not WRC burn probability and cannot fill a missing WRC feature. |
+| `transmission_distance_km`, `power_plant_distance_km`, `gas_pipeline_distance_km` | Minimum distance from full study-intersection polygon to mapped national EIA line/point geometry, EPSG:5070 m/1000. Proximity proxy only, no available capacity or connection claim. Native inventory coverage is not a measurable area fraction (provenance coverage null). Projection scale uncertainty ~1.6% across CONUS per `geography.distance`. |
+
+Local path keys: NLCD`land_cover`; eGRID`workbook,regions,multiple_regions` plus
+`region_field,unit,sheet`; Aqueduct`baseline` plus`layer,zip_member`; NOAA named temperature
+metrics; FEMA`hazards,surveyed` plus each layer's`query_bounds_4326`; WRC named wildfire metrics
+with verified native units/masks; EIA`transmission,power_plants,pipelines`; PAD-US`areas` plus
+`layer`; WHP`archive` plus`zip_member`. Metadata keys:`source_name,source_url,source_version,
+data_year,retrieved_at,spatial_resolution,data_mode`. A `quality_blocker` forces UNKNOWN.
+
+Raster reads are cell-window bounded (4 million pixels maximum); projected pixel edges intersect
+exactly, geographic pixel edges are densified before EPSG:5070 projection (≤0.008degrees segments).
+Vector sources use spatial indexes, padded study-envelope clipping and union to avoid double counts.
+National runs process at most625 cells per tile by default. Checkpoints are keyed by source-content
+SHA256, selected IDs/geometry/full Phase1 attributes, grid definition, configuration, aggregation version
+and relevant implementation/shared-contract hashes; checkpoint files are checksum-verified on resume.
+
+
+## Phase 3 run tables (runs/phase3 and runs/phase3/exploratory)
+
+- screening_results.parquet: ScreeningResult1.1.0, one grid_id/design_id/scenario_id/requirement row.
+  value is the decision evidence; UNKNOWN has null value and missing_reason. evidence_json retains
+  the complete geographic source record, including informational values with no parcel decision.
+- screening_eligibility.parquet: ScreeningEligibility1.0.0, one grid/design/scenario row.
+  hard_fail, critical_unknown, eligible and conditional are explicit booleans; mode is STRICT or EXPLORATORY.
+- site_performance.parquet: SitePerformance1.1.0, one grid/design/scenario annual diagnostic row.
+  e_it_mwh/e_facility_mwh are MWh; c_electricity_kg and c_electricity_tonnes are annual operating CO2e.
+  w_site_m3/w_site_liters and w_electricity_m3/w_electricity_liters are separate consumption quantities.
+  w_site_withdrawal_m3/w_site_withdrawal_liters and w_electricity_withdrawal_m3/w_electricity_withdrawal_liters are distinct withdrawal.
+  peak_facility_demand_mw is null without verified peak PUE. metric_metadata_json maps every physical
+  metric to status, confidence, unit, formula, missing reason and source evidence. assumptions_json
+  retains full facility/design/external-scenario configuration; warnings_json preserves interpretation.
+- screening_summary.json: counts, mode, critical vs informational outcomes, full configuration snapshot
+  and interpretation. Performance is all-alternative diagnostics, not a list of accepted sites.
+
+Original geographic output files and their meanings remain unchanged. Read full schemas and migration
+notes in docs/data_contracts.md. The table units never equate water consumption with withdrawal.
+# Phase 4 decision columns
+
+| Column | Unit/meaning |
+|---|---|
+|profile_id/profile_fingerprint|Declared policy ID and SHA256 of profile bytes for file runs|
+|raw_annual_electricity_co2e|tonnesCO2e annually, retained diagnostic physical value|
+|raw_annual_site_water_consumption|m3_consumed annually, not withdrawal|
+|raw_local_baseline_water_stress|native score0–5, local basin pressure|
+|raw_transmission_proximity|km minimum study-intersection distance to mapped inventory, capacity unconfirmed|
+|raw_suitable_land_fraction|0–1 NLCD proxy excluding water/ice/wetlands, contiguity unconfirmed|
+|annual_electricity_co2e/annual_site_water_consumption/local_baseline_water_stress/transmission_proximity/suitable_land_fraction|0–100 fixed-reference higher-is-better preference values|
+|rankable/rank_status/unranked_reason|Eligibility+complete required metrics+usable preference weights; CONDITIONAL remains visible|
+|weights_used_json/contribution_by_metric_json|Complete fixed global leaf weights and every weighted contribution|
+|contribution_<metric_id>/mcda_score|0–100 weighted preference points/sum; null for unranked|
+|mcda_rank|1-based ordinal within scenario; deterministic tuple tie rule, null unranked|
+|pareto_comparable/pareto_status/is_pareto_optimal|Physical comparison independent of AHP review; NOT_ASSESSED/FRONTIER/DOMINATED and nullable bool|
+|representative_json|Actual evaluated member tuple with physical outputs, score, contributions, Pareto and screening evidence|
+|metric_distributions_json|Per-member known count, min,p25,median,p75,max for active physical columns and score|
+|suitable_land_area_km2 (region)|Sum of member NLCD proxy areas; null if any member missing; never contiguous parcel capacity|
+
+Normalized long-form evidence preserves source vintage/retrieval/native-resolution and original
+metric status/confidence. `source_valid=false` values remain raw diagnostics with null normalized
+value and explicit missing_reason. `constant_observed_column` marks constant valid values in the
+provided dataset; fixed reference normalization still applies. Region membership counts are
+design/scenario-specific: one cell may belong to separate investigated design alternatives.
+
+## Phase 5 enhanced and temporal columns
+
+Enhanced files use GeographicFeatureDataset1.2.0; preserved baseline files remain1.1.0.
+Aqueduct columns are `aqueduct_<bau|opt|pes>_<2030|2040|2050|2080>_water_stress_<suffix>`
+with status/confidence/coverage_frac companions. Suffixes ratio, score, category, label,
+extreme_scarcity_frac and category_shares_json retain distinct native meanings. Positive9999 raw
+scarcity is a separate area fraction, not an ordinary ratio mean. NULL is missing. Unsupported2040
+is UNKNOWN with unsupported_source_period. Native windows/SSP/five-model median are in method JSON.
+
+Temporal annual variables: e_it_mwh, e_facility_mwh, c_electricity_kg, w_site_m3, w_electricity_m3,
+w_site_withdrawal_m3 and w_electricity_withdrawal_m3. Units are MWh, kgCO2e and separate consumed/
+withdrawn m3. Tonnes/liters stay in unchanged SitePerformance. Source-window context is never copied
+annually; NASA model/member/SSP/year is separately identified. Lifecycle `_kg` values are gross
+kgCO2e; known_subtotal_partial_kg is incomplete when required components are unknown, and full total
+remains null in the real no-inventory run. See contracts and temporal_lifecycle research for keys,
+source/assumption metadata, units, period identities and accounting modules.
+
+## Phase 6 validation outputs
+
+`sensitivity_results.parquet` uses `SensitivityResult` 1.0.0 and contains one row per
+case/grid/design correspondence. Its identity columns are `evaluation_version`, `freeze_id`, `case_id`,
+`case_category`, grid definition/data mode, grid/design, baseline and case scenario IDs, and both profile
+IDs. Baseline/case eligibility, rankability, hard-fail, critical-UNKNOWN, conditional, rank, score,
+Pareto and exact top-k fields are retained. `rank_change` is case minus baseline rank. Raw metrics,
+metric deltas, contributions, contribution deltas and assumptions are finite JSON objects. A driver is
+reported only for a positive mean absolute known contribution change; omitted ablation metrics remain
+explicitly omitted.
+
+`robustness_summary.csv` contains case-level alternative/eligible/rankable/conditional/hard-fail and
+eligibility-change counts, exact-k overlap/Jaccard, matched rank correlation, rank-change statistics,
+driver scope, weighting method, scenario identities and comparison key. `fixed_region_summary.csv`
+contains every accepted baseline region/design member count, matched/eligible/rankable/unranked counts,
+ranked-member min/max, and an all-members-only mean. `alternative_rank_ranges.csv` uses
+`AlternativeRankRange` 1.0.0: evaluation/freeze identity, grid/design, baseline scenario/rank, evaluated,
+ranked and unranked case counts, min/max/range, and the separate-context scope statement.
+
+`ablation_results.csv` stores the removed group, global renormalization policy, original/retained weights,
+removed metric IDs and outcome diagnostics. `resolution_results.csv` stores resolution/grid definition,
+design, cell/rankable/member/region counts, Census-intersection and selected-union areas, and cross-
+resolution selected-area intersection/union/Jaccard. `holdout_data_quality.csv` reports each dataset/
+metric row count, known/UNKNOWN count, partial-coverage count, coverage minimum/mean and source IDs.
+`validation_report.json`/`.md` and `run_metadata.json` bind scope, limitations, hashes and output counts.
+
+## Phase7 current delivery fields
+
+The real run-package geographic/provenance copies retain all accepted physical source units and row
+identities; original `data/processed` files remain preserved. See the earlier metric tables for the
+681-column enhanced development geography and one grid/metric provenance row.
+
+`weight_result.json`: `weights` (global leaf weights) and `weighting_method` (actual resolved mode).
+`source_inventory.json`: verified native/acquisition-log paths, bytes/SHA/request/source/version evidence
+and separate implemented/acquired/analyzed registry states. `source_coverage.json` retains all source
+coverage/unknown reasons while execution-only tile resume counters remain intermediate diagnostics.
+`profile_snapshot.json` stores the resolved complete policy/fingerprint before current ranking.
+
+Current sensitivity rows retain `case_id`, category, full grid/design/scenario key, raw performance,
+score/rankability/conditional/hard-failure/critical-UNKNOWN, criterion/contribution fields and
+`validation_revision`/`validation_id`. Alternative rank ranges retain ranked/unranked/evaluated case
+counts; unavailable ranks are null. Robustness/fixed-region CSVs document comparison denominator and
+member retention. Current validation JSON binds actual table/config/source/model hashes, unavailable
+independent validation and null overall accuracy. Substantive report text and table bytes are deterministic;
+execution UUID/timestamp/process lifetime memory/cache-hit diagnostics are intentionally changing metadata.
+
+Each future context has its own profile/scenario/performance/ranking/regions/report. Requested2040 water
+contexts have no native fields and remain UNKNOWN/UNRANKED. Independent NASA model/member/SSP/year rows use
+`design_id=source_context`; no weather-to-cooling response is invented. Lifecycle partial components
+retain accounting module boundaries and total UNKNOWN when required modules are missing.
+
+Resource accounting revision: cumulative project raw/interim byte totals are recorded only in
+`run_metadata.resource_diagnostics`, freshly measured on fresh and cached executions. They do not alter
+source evidence, physical outputs, cache identity or substantive source-manifest checksums. The initial
+V1 counter drift and narrowly corrected V2 executable evidence are preserved in `runs/phase7`.

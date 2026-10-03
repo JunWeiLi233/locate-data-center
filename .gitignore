@@ -28,3 +28,12 @@ runs/*
 Thumbs.db
 .vscode/
 .idea/
+
+# Local workspace tools and verification scratch files
+.claude/
+.omx/
+.pytest-work/
+.tmp-*/
+.tmp-*.py
+.tmp-*.html
+.tmp-*.xml

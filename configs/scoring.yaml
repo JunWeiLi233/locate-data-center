@@ -1,0 +1,124 @@
+# Active registry; extended frozen profile in configs/scoring_profile.yaml.
+metrics:
+- metric_id: annual_electricity_co2e
+  column: c_electricity_tonnes
+  table: performance
+  definition: Annual operational electricity CO2-equivalent emissions; historical-static
+    scenario.
+  unit: tonnes_CO2e
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 1000000.0
+  basis: project_assumption
+  rationale: Zero to1million tonnes per modeled year is a deliberately broad decision
+    reference for the illustrative100MW facility, selected before inspecting winners.
+    Not an engineering, regulatory or life-cycle threshold; scores are conditional
+    on this policy.
+  role: decision_metric
+  group_id: energy_carbon
+  local_weight: 1.0
+  required: true
+  allowed_statuses:
+  - calculated
+  source_id: epa_egrid
+  source_field: SRC2ERTA
+  minimum_coverage_frac: 0.999999
+  double_count_family: operational_electricity
+- metric_id: annual_site_water_consumption
+  column: w_site_m3
+  table: performance
+  definition: Annual direct site blue-water consumption, not withdrawal or generation
+    water.
+  unit: m3_consumed
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 1000000.0
+  basis: project_assumption
+  rationale: Zero to1million m3 per modeled year is a broad water-consumption decision
+    reference for the illustrative100MW facility, chosen before winners. No inference
+    of withdrawal, supply commitment or a physical/regulatory admissibility threshold.
+  role: decision_metric
+  group_id: water_stewardship
+  local_weight: 0.5
+  required: true
+  allowed_statuses:
+  - calculated
+  source_id: null
+  source_field: null
+  minimum_coverage_frac: null
+  double_count_family: site_water_consumption
+- metric_id: local_baseline_water_stress
+  column: baseline_water_stress_score
+  table: geography
+  definition: Aqueduct baseline local basin-stress score, separately valued from site
+    consumption.
+  unit: score_0_to_5
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 5.0
+  basis: published_source_scale
+  reference: https://github.com/wri/Aqueduct40/blob/master/data_dictionary_water-risk-atlas.md
+  rationale: Native published0–5 score scale; minimizing preference and0.5 local weight
+    are project policies.
+  role: decision_metric
+  group_id: water_stewardship
+  local_weight: 0.5
+  required: true
+  allowed_statuses:
+  - observed
+  source_id: wri_aqueduct40
+  source_field: bws_score
+  minimum_coverage_frac: 0.999999
+  double_count_family: local_water_stress
+- metric_id: transmission_proximity
+  column: transmission_distance_km
+  table: geography
+  definition: Minimum study-intersection distance to mapped EIA transmission inventory;
+    capacity unconfirmed.
+  unit: km
+  direction: minimize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 50.0
+  basis: project_assumption
+  rationale: Zero to50km is an investigation-distance preference chosen before winners,
+    not a utility connection rule or available-capacity claim. Native areal coverage
+    is not applicable to this inventory; proxy status and low confidence stay visible.
+  role: informational_proxy
+  group_id: grid_infrastructure
+  local_weight: 1.0
+  required: true
+  allowed_statuses:
+  - proxy
+  source_id: eia_energy_atlas
+  source_field: transmission line geometry
+  minimum_coverage_frac: null
+  double_count_family: mapped_transmission_access
+- metric_id: suitable_land_fraction
+  column: potentially_suitable_land_frac
+  table: geography
+  definition: Fraction of observed NLCD classes excluding water/ice/wetlands; not
+    contiguous/buildable land.
+  unit: frac
+  direction: maximize
+  normalization: fixed_linear
+  reference_low: 0.0
+  reference_high: 1.0
+  basis: project_assumption
+  rationale: Native fraction domain0–1; maximizing preference is a project proxy policy,
+    not a parcel approval.
+  role: informational_proxy
+  group_id: land
+  local_weight: 1.0
+  required: true
+  allowed_statuses:
+  - proxy
+  source_id: usgs_annual_nlcd
+  source_field: valid classes except 11,12,90,95
+  minimum_coverage_frac: 0.999999
+  double_count_family: potentially_suitable_land
+weighting_method: equal
+ahp_judgments: null

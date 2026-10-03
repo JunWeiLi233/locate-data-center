@@ -1,0 +1,123 @@
+{
+  "all_lifecycle_rows_schema_valid": true,
+  "all_provenance_rows_schema_valid": true,
+  "all_temporal_rows_schema_valid": true,
+  "annual_periods_per_group": 25,
+  "artifacts_identical": 353,
+  "baseline_preserved": true,
+  "carbon_full_coverage_tolerance": 1e-06,
+  "carbon_groups": 1008,
+  "code_revision": "sha256:c37565852deccd28af146c46918aadfb055ea1e1b82f371482b082b45b40c6de",
+  "comparison_rows": 2016,
+  "files": {
+    "baseline_vs_enhanced.parquet": {
+      "bytes": 38700,
+      "metadata": {
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "data_mode": "real",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "schema": "BaselineEnhancedComparison",
+        "schema_version": "1.0.0"
+      },
+      "sha256": "b6f54755de43bf93528d06abe765e5ac7388cddacfc72a7bffc20e678f4bb75a"
+    },
+    "enhanced_feature_provenance.parquet": {
+      "bytes": 53101,
+      "metadata": {
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "data_mode": "real",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "schema": "FeatureMetadata",
+        "schema_version": "1.1.0"
+      },
+      "sha256": "7eee462f8514e26fff80e42bd492eb939f7328a821744c739007e4f2fd43d6fd"
+    },
+    "enhanced_grid_dataset.parquet": {
+      "bytes": 593160,
+      "metadata": {
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "data_mode": "real",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "schema": "GeographicFeatureDataset",
+        "schema_version": "1.2.0"
+      },
+      "sha256": "96add7295bc5f8728513f7b562d2c211cfc8c05f52c01196bdfd91596900da14"
+    },
+    "future_scenarios.parquet": {
+      "bytes": 5062910,
+      "metadata": {
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "data_mode": "real",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "schema": "FutureScenarioValue",
+        "schema_version": "1.0.0"
+      },
+      "sha256": "0420d3e0afa920d73cc63f615e5b030c8f5f0d7eab53b1237060925c9e0f1a38"
+    },
+    "lifecycle_results.parquet": {
+      "bytes": 696448,
+      "metadata": {
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "data_mode": "real",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+        "schema": "LifecycleResult",
+        "schema_version": "1.0.0"
+      },
+      "sha256": "764214f8505398c0f7a8d4a735f27ca0c6a8a2a23c4247444f7ffbb1f53cf0de"
+    }
+  },
+  "final_code_hashes": {
+    "src\\dc_locator\\geography\\sources\\aqueduct_future.py": "f3d15881f1299727647d968d1d3e69c312c269de3bb99b2798ecdd88f14f7bab",
+    "src\\dc_locator\\model\\enhanced.py": "b2f793e7b27ae9c1f4186c73d44702aa9b28b5d1d4cee15ddf46698fab705565",
+    "src\\dc_locator\\model\\lifecycle.py": "c07836cb4b69d9a50bfba4d92d85de6b47fdc76f0f0b5a86d9f2a59a8cc2bd3f",
+    "src\\dc_locator\\model\\scenarios.py": "3259c9ca1f90b97f610248db51ff5ba48dd994175ba2b3b926a240ef6b95b978",
+    "src\\dc_locator\\schemas.py": "aec9ed5a4683e73f9ebad2fbc2b687317eb321fd3c3c8929862d86681248734a",
+    "src\\dc_locator\\source_periods.py": "a5cf962312b106327fb6364212e3e346bdef722db316dbf5b2dc97d042bc0eaa",
+    "src\\dc_locator\\validation.py": "2b05c23840ff1dea5e85abdacf0f6bc4bcaadb03b5c7f30281b90e325c53e448"
+  },
+  "final_module_accounting_evidence": "Inventory accounting modules exactly equal compatible factor modules; boolean component values rejected before coercion",
+  "first_year": 2030,
+  "full_lifecycle_null": 1008,
+  "geography_columns": 681,
+  "geography_rows": 42,
+  "last_year": 2054,
+  "lifecycle_rows": 1008,
+  "peak_working_set_bytes": [
+    1901715456,
+    1900687360
+  ],
+  "provenance_rows": 6636,
+  "source_ids_registered": true,
+  "status": "PASS",
+  "temporal_kind_counts": {
+    "annual_operating": 176400,
+    "source_projection_window": 4662,
+    "unsupported_requested_period": 1512
+  },
+  "temporal_rows": 182574,
+  "test_hashes": {
+    "tests/conftest.py": "0d42cdd10ba666cb86c99997190efd63b6d9c36c9f5e500cf97ccae12ebf676d",
+    "tests/test_aqueduct_future.py": "d327163650cbfd61839d13eb2ac1f10a1ae0ce670ad931d1118a3500e4ebb612",
+    "tests/test_boundary.py": "2dbc163ed370d4fa1d4cc5e553d121837551fce78705d3f4c994efc3624f5441",
+    "tests/test_cli.py": "55b2381fa2fd183098511626683cb42519b469d31365149435941c4fc50787ce",
+    "tests/test_cli_build_grid_real.py": "e5d2c6cbd9646f78059c3de705e6b0e90c3d1da6dc5dfbf3a8a288eb9f2c2c4e",
+    "tests/test_config.py": "4c8a6ee6d0e45234952d8c9cf7269a98eb4b10c7bd197e7bfe8e0de592c94994",
+    "tests/test_distance.py": "3c8d2c1c0a5e022e4d71be904b802471adb60027a079096ec5b031c15cafdc52",
+    "tests/test_expanded_builder.py": "b062123de05f0ae354864508a1ca670d0f8633b99d9121c5663f2e982436eaf0",
+    "tests/test_expanded_native.py": "b6e717f894cfe8fc6e055b7640bf139eceb68f9be720069df2a2aba01610c9d9",
+    "tests/test_geography_features.py": "d7af79526d1057e8c12713be191845251d9c5430b64d365ae29dc2fd110c4b7a",
+    "tests/test_grid.py": "48f31bd1afde72f6bd870f58313c13d7c54fb1c39b156de006b181c937d3b64e",
+    "tests/test_grid_audit.py": "916b3bfb928446961a79c1d99c4388091153fd45cf80e7e54fe9db742973d4b3",
+    "tests/test_io.py": "8e1eb62a1e120a22214731b8f9b786c5c85b982ad61608f67fa74b836fb4772c",
+    "tests/test_model_ahp.py": "53f7a58cf34a78e41845a860b5dd53e2e689423d3ede037d1ff6d2360b3e3f8c",
+    "tests/test_model_lifecycle.py": "282a834951b73e93f2e2e040f338962d6a050be718e585dab699d2bcacd0b104",
+    "tests/test_model_physics.py": "f2fa0a4c78fe396821696a236f3f2a921899305e5e6c12864a0d30de628e4321",
+    "tests/test_model_scenarios.py": "93149ef358354d07dcc2a2e7c9238c329ffa22eaa36a8a4b7fe3add0234b6600",
+    "tests/test_model_screening.py": "1fad429a62c62727d865c77c7ec4d74b4ecbef761746ea5acedf003d707b3191",
+    "tests/test_phase4.py": "ca9316ec9106e2a157b972cba972a4250a77ea43cadd259bcf10e9cd674d735e",
+    "tests/test_phase5_integration.py": "3b3c7011faa962d614ffc86b4abd4c1959334ed15b0d6822a4869c8beaf2a5dd",
+    "tests/test_provenance.py": "7935e3c0042952984fae9fd8db094248626046c79942009a9a750f633b70496d",
+    "tests/test_schemas.py": "16932794fb0198af90997bc791460236d2f46d0d1a9e769477dae0715e640f0d"
+  },
+  "verified_at_utc": "2026-10-03T07:16:19.299591+00:00"
+}

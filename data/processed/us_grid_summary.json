@@ -1,0 +1,99 @@
+{
+  "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+  "crs": "EPSG:5070",
+  "origin_x_m": -2500000.0,
+  "origin_y_m": 3400000.0,
+  "cell_size_m": 10000.0,
+  "boundary_source_id": "census_cartographic_boundary",
+  "boundary_vintage": "2023",
+  "boundary_state_zip_sha256": "4a9b4f5cf993cd23738ac49b58fbb556f1f097fcf5e404a9dc10348dd41f7432",
+  "boundary_county_zip_sha256": "99d6597b1fc7767deef62e01d28d8b5dcbd578e151855f7dc0d173cbf5bf0868",
+  "generation_stats": {
+    "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+    "cell_size_m": 10000.0,
+    "row_range": [
+      22,
+      313
+    ],
+    "col_range": [
+      14,
+      475
+    ],
+    "n_candidates_bbox": 134904,
+    "n_touching_boundary": 79888,
+    "n_zero_area_touches_excluded": 0,
+    "n_excluded_by_min_intersection_threshold": 0,
+    "excluded_by_threshold_total_km2": 0.0,
+    "n_retained": 79888
+  },
+  "total_study_area_intersection_km2": 7803932.193254141,
+  "total_cell_area_km2": 7988800.0,
+  "per_state_cell_counts": {
+    "01": 1355,
+    "04": 2991,
+    "05": 1387,
+    "06": 4251,
+    "08": 2693,
+    "09": 135,
+    "10": 60,
+    "11": 2,
+    "12": 1701,
+    "13": 1535,
+    "16": 2175,
+    "17": 1459,
+    "18": 937,
+    "19": 1463,
+    "20": 2139,
+    "21": 1054,
+    "22": 1317,
+    "23": 964,
+    "24": 316,
+    "25": 267,
+    "26": 1745,
+    "27": 2248,
+    "28": 1246,
+    "29": 1799,
+    "30": 3850,
+    "31": 2006,
+    "32": 2858,
+    "33": 243,
+    "34": 222,
+    "35": 3165,
+    "36": 1352,
+    "37": 1376,
+    "38": 1864,
+    "39": 1092,
+    "40": 1808,
+    "41": 2548,
+    "42": 1180,
+    "44": 41,
+    "45": 831,
+    "46": 1982,
+    "47": 1091,
+    "48": 7049,
+    "49": 2202,
+    "50": 259,
+    "51": 1091,
+    "53": 1866,
+    "54": 626,
+    "55": 1516,
+    "56": 2531
+  },
+  "files": {
+    "national": {
+      "path": "us_grid.parquet",
+      "n_cells": 79888,
+      "sha256": "f68d54f5beeec65310b1244c5aa92897eea427cd8fb73519f592423891012b05"
+    },
+    "dev_tiny": {
+      "path": "us_grid__dev_tiny.parquet",
+      "n_cells": 42,
+      "sha256": "0f352c4cfd079e84a1fc8c04d8160ef52ef9402df16fa52406790c91c65cfbdb"
+    },
+    "dev_default": {
+      "path": "us_grid__dev_default.parquet",
+      "n_cells": 2091,
+      "sha256": "bfb7f7918639be90a0206bb25af383eb386a1c2ff82e4255ebc51292282648af"
+    }
+  }
+}

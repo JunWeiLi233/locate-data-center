@@ -1,0 +1,259 @@
+{
+  "phase": 3,
+  "status": "accepted",
+  "accepted_at": "2026-10-03T05:11:26.449345+00:00",
+  "verified_at_utc": "2026-10-03T05:11:26.449345+00:00",
+  "code_revision": "sha256:053083f77fd90fb6b6b8994b66163c1184fcbaddc8eba8b4ae2f8ea840fd42cf",
+  "code_revision_git_base": "44040ed33f9d3fb9d9837fc8dbbc1f61481a9a9e",
+  "revision_note": "Working source/config/test snapshot; base Git commit does not claim to contain uncommitted implementation",
+  "source_file_sha256": {
+    "configs/constraints.yaml": "04b33be0bdf2aaaa269efcc86b2d85f7a6b8b4537ca1073822ab2ea4e3dfbb7c",
+    "configs/cooling_designs.yaml": "19912691adfa3e0fb9b02a78663673af2bd9ea0640e6f964af8b7b40ee9f7802",
+    "configs/facility.yaml": "1d869378aecb77a76b1c5d0cf17f94786d86c8ceab8b9eb170ed7eba88744949",
+    "configs/phase3_physical_scenarios.yaml": "a3b22ce83ddfb0602eca842dcc06004e7a6f7af88dc74987ded9eddc824c3cbe",
+    "src/dc_locator/config.py": "907378e7d93d3fb0fb3b7330ae3294605c5f1d7368829f0ed96a974c55e88c0c",
+    "src/dc_locator/model/__init__.py": "99fff79931dde4a52e2a786e854d14f0c215b3c3da7cab5b5e18ed9edc7fbaaa",
+    "src/dc_locator/model/cooling.py": "31f6d3d48196d6cead6976ba205b2390146b34bcea3a0bf611f08901f18e8ecd",
+    "src/dc_locator/model/physics.py": "8afdcba59ced1110f44fe568cf101a8c47a67c1938a6d3594cbdbb9881c7ea46",
+    "src/dc_locator/model/screening.py": "6170902c7620da385cecbcf1338a689f5e6e5d43e71de5b0b5f8d4a1dddbaf37",
+    "src/dc_locator/schemas.py": "64c7b18e21a1d02fe528b32d0f045f5d51c10236423b359f8d2845feb68cb50b",
+    "tests/test_model_physics.py": "f2fa0a4c78fe396821696a236f3f2a921899305e5e6c12864a0d30de628e4321",
+    "tests/test_model_screening.py": "1fad429a62c62727d865c77c7ec4d74b4ecbef761746ea5acedf003d707b3191",
+    "tests/test_schemas.py": "16932794fb0198af90997bc791460236d2f46d0d1a9e769477dae0715e640f0d"
+  },
+  "schema_versions": {
+    "FacilityConfig": "1.1.0",
+    "ScreeningResult": "1.1.0",
+    "SitePerformance": "1.1.0",
+    "ScreeningEligibility": "1.0.0",
+    "input_GeographicFeatureDataset": "1.1.0",
+    "input_FeatureMetadata": "1.1.0"
+  },
+  "data_versions": {
+    "input_parquet_sha256": {
+      "us_grid_dataset.parquet": "bcfd82314d0c09c39c494ae23f374cdfc4a74311931fce61e65cf2f6efd878ae",
+      "feature_provenance.parquet": "cbadbc001a38751190c88353e90b1058172f7d747ef64dfca61309f3055960c1"
+    },
+    "geographic_data_manifest_sha256": "975f46260d29afab7d421e5715c43bae15c7e00837eb1d2823989047341e80a2",
+    "carbon_source_field": "EPA eGRID2023 rev2 SRC2ERTA, kgCO2e/MWh",
+    "external_scenario": "historical_static_2023"
+  },
+  "tests": {
+    "passed": 154,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 21.58,
+    "command": ".venv/Scripts/python.exe -m pytest -q --basetemp=.tmp-phase3-acceptance -p no:cacheprovider --tb=short"
+  },
+  "debug_history": [
+    "Initial TDD collection failed on missing model modules before implementation",
+    "Intermediate full suite142passed/1failed after duplicate-ID validation exposed a duplicate requirement ID in a test fixture; the fixture ID was corrected without changing expected physical values"
+  ],
+  "artifact_checks": {
+    "all_output_rows_validate_schemas": true,
+    "unique_alternative_and_requirement_keys": true,
+    "unknown_metric_values_null": true,
+    "modeled_carbon_is_scenario_original_evidence_retained": true,
+    "two_independent_repeated_runs_parquet_hash_identical": true,
+    "phase2_geography_inputs_preserved_sha256": true
+  },
+  "outputs": [
+    {
+      "path": "runs/phase3/screening_results.parquet",
+      "bytes": 42630,
+      "sha256": "480e5796f0cacbfce12f18297ace425d3f35cceff8240bc19442c9b838ce5d30",
+      "rows": 1176,
+      "metadata": {
+        "schema": "ScreeningResult",
+        "schema_version": "1.1.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "repeat_sha256_identical": true
+    },
+    {
+      "path": "runs/phase3/screening_eligibility.parquet",
+      "bytes": 8411,
+      "sha256": "8c9a9ae4af134f6a6d9b749d6c5fdaee61467372202c241ae9409518acf13996",
+      "rows": 84,
+      "metadata": {
+        "schema": "ScreeningEligibility",
+        "schema_version": "1.0.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "repeat_sha256_identical": true
+    },
+    {
+      "path": "runs/phase3/site_performance.parquet",
+      "bytes": 54335,
+      "sha256": "ea6363d6028e59d418a57dcb32c95a766a4c795e75f556a9fae7f4f31dfaff55",
+      "rows": 84,
+      "metadata": {
+        "schema": "SitePerformance",
+        "schema_version": "1.1.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "repeat_sha256_identical": true
+    },
+    {
+      "path": "runs/phase3/screening_summary.json",
+      "bytes": 10533,
+      "sha256": "3fb44d82d97843e0b62c01d5a43f97d708c5be7e35a7be44a885eeecc557cc1f"
+    },
+    {
+      "path": "runs/phase3/exploratory/screening_results.parquet",
+      "bytes": 42656,
+      "sha256": "3347aa6c553c8d7d1ed5f73994966202ea2da63b4e80ff6207fd748817e967dc",
+      "rows": 1176,
+      "metadata": {
+        "schema": "ScreeningResult",
+        "schema_version": "1.1.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "repeat_sha256_identical": true
+    },
+    {
+      "path": "runs/phase3/exploratory/screening_eligibility.parquet",
+      "bytes": 8436,
+      "sha256": "a38a00028d21d224ac7fbd63bcb613a862698e59f9cd5105548c3b6742ab396b",
+      "rows": 84,
+      "metadata": {
+        "schema": "ScreeningEligibility",
+        "schema_version": "1.0.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "repeat_sha256_identical": true
+    },
+    {
+      "path": "runs/phase3/exploratory/site_performance.parquet",
+      "bytes": 54335,
+      "sha256": "ea6363d6028e59d418a57dcb32c95a766a4c795e75f556a9fae7f4f31dfaff55",
+      "rows": 84,
+      "metadata": {
+        "schema": "SitePerformance",
+        "schema_version": "1.1.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "repeat_sha256_identical": true
+    },
+    {
+      "path": "runs/phase3/exploratory/screening_summary.json",
+      "bytes": 10540,
+      "sha256": "f14b2bd4578fb9e1e62a7f872ac819cc3d47ae33c880a424f458fde128211595"
+    }
+  ],
+  "summaries": {
+    "STRICT": {
+      "n_alternatives": 84,
+      "n_eligible": 0,
+      "n_conditional": 0,
+      "n_hard_fail": 0,
+      "n_critical_unknown": 84,
+      "outcomes": {
+        "PASS": 84,
+        "UNKNOWN": 1092
+      },
+      "critical_outcomes": {
+        "PASS": 84,
+        "UNKNOWN": 672
+      },
+      "informational_outcomes": {
+        "UNKNOWN": 420
+      },
+      "mode_override_requested": true
+    },
+    "EXPLORATORY": {
+      "n_alternatives": 84,
+      "n_eligible": 84,
+      "n_conditional": 84,
+      "n_hard_fail": 0,
+      "n_critical_unknown": 84,
+      "outcomes": {
+        "PASS": 84,
+        "UNKNOWN": 1092
+      },
+      "critical_outcomes": {
+        "PASS": 84,
+        "UNKNOWN": 672
+      },
+      "informational_outcomes": {
+        "UNKNOWN": 420
+      },
+      "mode_override_requested": true
+    }
+  },
+  "known_limitations": [
+    "Only42 development cells, not national",
+    "STRICT accepts0; EXPLORATORY retains84conditional alternatives requiring parcel/contiguous-land/utility/water/fiber verification",
+    "Complete cooling topology is represented but PUE/WUE constants are illustrative scenario assumptions without geographic climate relationships",
+    "Opening2030 applies2023 historical carbon unchanged by explicit scenario; annual electricity CO2e is not forecast or lifecycle carbon",
+    "Annual PUE is not verified peak PUE; current peak facility demand and utility capacity stay UNKNOWN",
+    "Site consumption and withdrawal are separate; consumption-only WUE cannot establish withdrawal/supply requirements",
+    "Generation water factor/geography unavailable, so electricity water is UNKNOWN",
+    "Regional flood/ecology exposure has no invented parcel-impossibility cutoff; actual clearance remains UNKNOWN",
+    "Per-alternative evidence record construction and national model runtime/peak RAM have not been validated at national scale"
+  ],
+  "blockers": [],
+  "next_phase_api": {
+    "screen": "screen(geography,provenance,facility,designs,scenarios,requirements,mode=None)->(screening,eligibility,summary); default=facility.screening_mode",
+    "simulate": "simulate(geography,provenance,facility,designs,scenarios)->annual performance for all alternatives",
+    "run_phase3": "run_phase3(geography_path,provenance_path,facility,designs,scenarios,requirements,output_dir,mode=None); explicit override recorded",
+    "decision_join_key": [
+      "grid_id",
+      "design_id",
+      "scenario_id"
+    ],
+    "eligibility_fields": [
+      "hard_fail",
+      "critical_unknown",
+      "eligible",
+      "conditional",
+      "mode"
+    ],
+    "physical_metrics": [
+      "e_it_mwh",
+      "e_facility_mwh",
+      "c_electricity_kg",
+      "c_electricity_tonnes",
+      "w_site_m3",
+      "w_site_liters",
+      "w_electricity_m3",
+      "w_electricity_liters",
+      "w_site_withdrawal_m3",
+      "w_site_withdrawal_liters",
+      "w_electricity_withdrawal_m3",
+      "w_electricity_withdrawal_liters",
+      "pue",
+      "wue_l_per_kwh",
+      "grid_carbon_intensity_kg_per_mwh",
+      "peak_facility_demand_mw"
+    ],
+    "provenance_fields": [
+      "metric_metadata_json",
+      "assumptions_json",
+      "warnings_json"
+    ],
+    "screening_requirement_key": "ScreeningResult.requirement (populated from Requirement.requirement_id)"
+  },
+  "accepted_by": "orchestrator",
+  "orchestrator_acceptance_evidence": {
+    "passed": 154,
+    "failed": 0,
+    "duration_seconds": 21.23,
+    "independent_reviewer": "GO",
+    "artifact_audit": "Repeated Parquet hashes, shared schemas, null propagation, unique keys and mandatory physical fixture passed",
+    "source_config_tests_frozen": true
+  },
+  "source_snapshot_method": "SHA256 of sorted relative UTF-8 path + NUL + hexadecimal file SHA256 + LF for each source/config/test file; documentation and output hashes are recorded separately"
+}

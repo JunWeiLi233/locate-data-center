@@ -1,0 +1,192 @@
+{
+  "phase": 1,
+  "status": "accepted",
+  "accepted_at": "2026-10-03T03:59:43.140802+00:00",
+  "verified_at_utc": "2026-10-03T03:58:52.844368+00:00",
+  "code_revision": "sha256:8def761b3c5b823b5f4e3d55cfd46212b217798df80f858de7ee117a72111488",
+  "revision_method": "sha256 of sorted relative file name + NUL + file SHA256 + LF; source snapshot, no fabricated git commit",
+  "source_file_sha256": {
+    "src/dc_locator/__init__.py": "efc9963ad2fae7111cb9d2f572df1d3e4f0da1b79148daf397b4b93c1af674d5",
+    "src/dc_locator/__main__.py": "08cdacbbb941fd390c5ca9d6d5dd5102f98db02d1bb9e89c5839f67770f1a6bc",
+    "src/dc_locator/cli.py": "467a057f6335fc7c177b0eab68bdeb084bed78cf6ceaf495df02cef7e5067b04",
+    "src/dc_locator/config.py": "595043f190f04015906af3eca9703939aabfdb98df88dcbc42e0fb1fdb06d15c",
+    "src/dc_locator/schemas.py": "609dc4511b9bcf688962fa6d0c8543df16d99b3898b78542854202b98e1b552d",
+    "src/dc_locator/io.py": "4a3b76ed06f169493397cafb7f54a808226cab29ffab393cb6dee3d57df27603",
+    "src/dc_locator/paths.py": "3733e420d093f1bf75f95afae48a8bb3afcde418ea50ce857e22d3b1e8e922ba",
+    "src/dc_locator/provenance.py": "8cb3212915871de04c5c831f96ae0cac0f6ef1f5c058db6061b019d579242b91",
+    "src/dc_locator/geography/__init__.py": "9cacd2296fcb5e919656c83de036b7b86eba745d2c5e638bcb724dad27e15f58",
+    "src/dc_locator/geography/boundary.py": "21ac10ad443a23b5b4ea100622a25c7aca0d0182b986da2cbdf8e4f85c147030",
+    "src/dc_locator/geography/grid.py": "d582e3b2d1cd6cd5ab75a03486316fc3cf3e9cbbf0ba29440030836eac1b0933",
+    "src/dc_locator/geography/distance.py": "4d1d7cf106783e33f965b562625da97aacadb9440ee8e3dbac6d9829401ef993",
+    "configs/grid.yaml": "d8d222197f60513db481814610f96908c2bc71469363368b28e264f69cdac82f"
+  },
+  "schema_versions": {
+    "GridCell": "1.1.0",
+    "saved_GridCell": "1.0.0",
+    "other_shared_schemas": "1.0.0"
+  },
+  "data_versions": [
+    {
+      "source_id": "census_cartographic_boundary",
+      "version": "2023",
+      "filename": "cb_2023_us_state_500k.zip",
+      "url": "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_state_500k.zip",
+      "retrieved_at_utc": "2026-10-03T02:18:15Z",
+      "bytes": 3249332,
+      "sha256": "4a9b4f5cf993cd23738ac49b58fbb556f1f097fcf5e404a9dc10348dd41f7432",
+      "license": "U.S. government public-domain cartographic boundary data",
+      "checksum_verified": true
+    },
+    {
+      "source_id": "census_cartographic_boundary",
+      "version": "2023",
+      "filename": "cb_2023_us_county_500k.zip",
+      "url": "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_county_500k.zip",
+      "retrieved_at_utc": "2026-10-03T02:18:15Z",
+      "bytes": 11630077,
+      "sha256": "99d6597b1fc7767deef62e01d28d8b5dcbd578e151855f7dc0d173cbf5bf0868",
+      "license": "U.S. government public-domain cartographic boundary data",
+      "checksum_verified": true
+    }
+  ],
+  "tests": {
+    "passed": 108,
+    "failed": 0,
+    "skipped": 0,
+    "command": ".venv/Scripts/python.exe -m pytest -q --basetemp=.tmp-phase1-green -p no:cacheprovider --tb=short",
+    "duration_seconds": 20.78,
+    "independent_orchestrator_run": {
+      "passed": 108,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 24.26,
+      "command": ".venv/Scripts/python.exe -m pytest -q --basetemp=.tmp-orchestrator-p1 -p no:cacheprovider",
+      "exit_code": 0
+    }
+  },
+  "regression_red_stage": {
+    "failed": 10,
+    "passed": 0,
+    "purpose": "Reproduced supported-input ID collisions, nonfinite configuration, preallocation limit, strict roundoff validation and materially invalid county shares before fix"
+  },
+  "initial_environment_failure": {
+    "passed": 85,
+    "errors": 13,
+    "reason": "Default pytest temporary/cache directories denied by sandbox; workspace-local basetemp and no cache fixed setup without code changes"
+  },
+  "artifact_checks": {
+    "national_ids_unique": true,
+    "national_geometries_valid": true,
+    "national_geometries_nonempty": true,
+    "national_crs_epsg5070": true,
+    "national_definition_matches_config": true,
+    "national_sorted_row_col": true,
+    "full_cell_areas_match_100km2": true,
+    "coverage_conserved": true,
+    "all_rows_pass_gridcell_1_1_schema": true,
+    "dev_tiny_all_columns_equal_national_selection": true,
+    "dev_default_all_columns_equal_national_selection": true
+  },
+  "outputs": {
+    "data/processed/us_grid.parquet": {
+      "rows": 79888,
+      "bytes": 6130848,
+      "sha256": "f68d54f5beeec65310b1244c5aa92897eea427cd8fb73519f592423891012b05",
+      "metadata": {
+        "schema": "GridCell",
+        "schema_version": "1.0.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "valid_geometry": true,
+      "unique_ids": true,
+      "national_id_overlap": 79888
+    },
+    "data/processed/us_grid__dev_default.parquet": {
+      "rows": 2091,
+      "bytes": 186432,
+      "sha256": "bfb7f7918639be90a0206bb25af383eb386a1c2ff82e4255ebc51292282648af",
+      "metadata": {
+        "schema": "GridCell",
+        "schema_version": "1.0.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "valid_geometry": true,
+      "unique_ids": true,
+      "national_id_overlap": 2091
+    },
+    "data/processed/us_grid__dev_tiny.parquet": {
+      "rows": 42,
+      "bytes": 31937,
+      "sha256": "0f352c4cfd079e84a1fc8c04d8160ef52ef9402df16fa52406790c91c65cfbdb",
+      "metadata": {
+        "schema": "GridCell",
+        "schema_version": "1.0.0",
+        "data_mode": "real",
+        "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+        "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1"
+      },
+      "valid_geometry": true,
+      "unique_ids": true,
+      "national_id_overlap": 42
+    }
+  },
+  "coverage": {
+    "boundary_features_states_dc": 49,
+    "county_features": 3109,
+    "administrative_intersection_km2": 7803932.193254141,
+    "boundary_area_km2": 7803932.193254135,
+    "conservation_error_km2": 6.51925802230835e-09,
+    "census_state_aland_km2": 7655549.287496,
+    "n_county_unknown": 0
+  },
+  "assumptions": [
+    "EPSG:5070 equal-area regular 10 km squares, fixed published origin (-2500000m,3400000m)",
+    "Study boxes select national cells and never change their geometry or ID",
+    "Census 2023 cartographic boundaries at 1:500000 resolution define CONUS administrative extent; no city shortlist",
+    "Existing production grid artifacts retained byte-for-byte; repeat generation is exercised with real cached boundaries at 100 km in the integration suite"
+  ],
+  "known_limitations": [
+    "Administrative intersection includes mapped inland/coastal water; no per-cell land-only or developable-land area exists until Phase2 land-cover masking",
+    "Generalized cartographic boundaries are not parcel survey or buildability evidence",
+    "Existing files have 25 state and 20 county fractions above one by floating roundoff; maximum county excess 4.44e-16 is accepted with explicit 1e-9 tolerance without changing observed areas",
+    "Grid IDs must be treated as opaque; verify matching grid_definition_id before joins; other origins/schemes now include a definition prefix",
+    "The 10 km national file was audited, not regenerated twice; repeat generation testing uses the same algorithm and sources at 100 km",
+    "Fine-resolution resource use is guarded by candidate count before array allocation; actual peak memory was not measured"
+  ],
+  "blockers": [],
+  "next_phase_inputs": {
+    "grid_files": [
+      "data/processed/us_grid.parquet",
+      "data/processed/us_grid__dev_default.parquet",
+      "data/processed/us_grid__dev_tiny.parquet"
+    ],
+    "geometry_crs": "EPSG:5070",
+    "join_key": "grid_id within matching grid_definition_id",
+    "supporting_columns": [
+      "tile_id",
+      "row",
+      "col",
+      "cell_area_km2",
+      "study_area_intersection_km2",
+      "study_area_frac",
+      "state_fips_primary",
+      "county_geoid_primary",
+      "data_mode"
+    ],
+    "apis": [
+      "dc_locator.io.read_geoparquet",
+      "dc_locator.io.write_geoparquet",
+      "dc_locator.io.write_parquet",
+      "dc_locator.io.read_parquet_metadata",
+      "dc_locator.schemas.FeatureMetadata",
+      "dc_locator.provenance.ProvenanceRecord"
+    ]
+  },
+  "accepted_by": "orchestrator",
+  "code_revision_git": "44040ed33f9d3fb9d9837fc8dbbc1f61481a9a9e",
+  "revision_note": "Observed Git HEAD 44040ed33f9d3fb9d9837fc8dbbc1f61481a9a9e is the checkout base. Phase1 sources are untracked/changed, so code_revision uses the recorded content-addressed source snapshot rather than falsely claiming the base commit contains them."
+}

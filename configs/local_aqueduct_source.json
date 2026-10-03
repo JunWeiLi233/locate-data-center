@@ -1,0 +1,11 @@
+{
+  "data_mode": "real",
+  "expected_sha256": "bd3ed2bce88d6ff1b89191632ad134a2436e1e1d49599382f23a04d513624fc3",
+  "layer": "future_annual",
+  "paths": {
+    "future": "data/raw/wri_aqueduct40/aqueduct-4-0-water-risk-data.zip"
+  },
+  "retrieved_at": "2026-10-03T01:39:00Z",
+  "source_version": "Aqueduct4.0 Y2023M07D05",
+  "zip_member": "Aqueduct40_waterrisk_download_Y2023M07D05/GDB/Aq40_Y2023D07M05.gdb"
+}

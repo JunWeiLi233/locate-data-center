@@ -1,0 +1,12 @@
+schema_version: 1.0.0
+basis: project_assumption
+rationale: >-
+  No real facility materials/equipment inventory, product-specific EPD, freight
+  route/mode factor, replacement schedule or end-of-life study was supplied.
+  Those components remain UNKNOWN. Known annual electricity under the separately
+  explicit lifetime extension is an electricity-only partial subtotal; it is
+  not full operating emissions or a complete lifecycle assessment.
+inventory: []
+transport_legs: []
+complete_components: []
+component_evidence: {}

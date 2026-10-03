@@ -1,0 +1,221 @@
+{
+  "analysis_extent": "provided grid subset; source coverage reported separately; current published run is dev_tiny only, national analysis not completed",
+  "data_mode": "real",
+  "input_cells": 42,
+  "output_cells": 42,
+  "processed_tiles": 0,
+  "resumed_tiles": 1,
+  "schema_version": "1.1.0",
+  "sources": {
+    "eia_energy_atlas": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": null,
+      "coverage_min": null,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "gas_pipeline_distance_km": 42,
+        "power_plant_distance_km": 42,
+        "transmission_distance_km": 42
+      },
+      "remaining_requirements": [],
+      "status": "READY",
+      "usable_local_inputs": [
+        "transmission",
+        "power_plants",
+        "pipelines"
+      ]
+    },
+    "epa_egrid": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": 1.0,
+      "coverage_min": 0.9999999999999996,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "egrid_coverage_frac": 42,
+        "egrid_multiple_subregion_labels_json": 42,
+        "egrid_multiple_subregion_overlap_frac": 42,
+        "egrid_n_subregions": 42,
+        "egrid_subregion_primary": 42,
+        "egrid_subregion_shares_json": 42,
+        "grid_carbon_intensity_kg_per_mwh": 42,
+        "grid_co2_intensity_kg_per_mwh": 42
+      },
+      "remaining_requirements": [],
+      "status": "READY",
+      "usable_local_inputs": [
+        "workbook",
+        "regions",
+        "multiple_regions"
+      ]
+    },
+    "fema_nfhl": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": 1.0,
+      "coverage_min": 0.9958347999638387,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "flood_coverage_frac": 42,
+        "flood_overlap_frac": 42,
+        "flood_sfha_area_km2": 42,
+        "flood_surveyed_coverage_frac": 42
+      },
+      "remaining_requirements": [
+        "Inspect metric coverage and source-specific limitations; provide official local files for missing geography/fields"
+      ],
+      "status": "PARTIAL",
+      "usable_local_inputs": [
+        "hazards",
+        "surveyed"
+      ]
+    },
+    "noaa_ncei_climate": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": 1.0,
+      "coverage_min": 0.9999794914035742,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "temperature_annual_max_mean_c": 42,
+        "temperature_annual_min_mean_c": 42,
+        "temperature_mean_c": 42,
+        "temperature_warmest_month_daily_max_c": 42
+      },
+      "remaining_requirements": [
+        "Inspect metric coverage and source-specific limitations; provide official local files for missing geography/fields"
+      ],
+      "status": "PARTIAL",
+      "usable_local_inputs": [
+        "temperature_mean_c",
+        "temperature_annual_max_mean_c",
+        "temperature_annual_min_mean_c",
+        "temperature_warmest_month_daily_max_c"
+      ]
+    },
+    "usfs_whp": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": 1.0,
+      "coverage_min": 1.0,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "wildfire_hazard_potential_whp2023": 42
+      },
+      "remaining_requirements": [],
+      "status": "READY",
+      "usable_local_inputs": [
+        "archive"
+      ]
+    },
+    "usfs_wildfire_risk": {
+      "acquired": true,
+      "analyzed": false,
+      "analyzed_cells": 0,
+      "coverage_max": 0.0,
+      "coverage_min": 0.0,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "wildfire_burn_probability": 0,
+        "wildfire_conditional_flame_length_ft": 0
+      },
+      "remaining_requirements": [
+        "Inspect metric coverage and source-specific limitations; provide official local files for missing geography/fields"
+      ],
+      "status": "PARTIAL",
+      "usable_local_inputs": [
+        "wildfire_burn_probability",
+        "wildfire_conditional_flame_length_ft"
+      ]
+    },
+    "usgs_annual_nlcd": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": 1.0,
+      "coverage_min": 1.0,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "land_cover_barren_frac": 42,
+        "land_cover_cultivated_frac": 42,
+        "land_cover_deciduous_forest_frac": 42,
+        "land_cover_developed_high_frac": 42,
+        "land_cover_developed_low_frac": 42,
+        "land_cover_developed_medium_frac": 42,
+        "land_cover_developed_open_frac": 42,
+        "land_cover_emergent_wetland_frac": 42,
+        "land_cover_evergreen_forest_frac": 42,
+        "land_cover_grassland_frac": 42,
+        "land_cover_ice_snow_frac": 42,
+        "land_cover_mixed_forest_frac": 42,
+        "land_cover_pasture_frac": 42,
+        "land_cover_shrub_frac": 42,
+        "land_cover_water_frac": 42,
+        "land_cover_woody_wetland_frac": 42,
+        "nlcd_coverage_frac": 42,
+        "nlcd_land_area_km2": 42,
+        "nlcd_observed_area_km2": 42,
+        "nlcd_water_area_km2": 42,
+        "potentially_suitable_land_frac": 42,
+        "suitable_land_area_km2": 42
+      },
+      "remaining_requirements": [],
+      "status": "READY",
+      "usable_local_inputs": [
+        "land_cover"
+      ]
+    },
+    "usgs_padus": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": 1.0,
+      "coverage_min": 0.9999652420420955,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "padus_coverage_frac": 42,
+        "padus_gap1_frac": 42,
+        "padus_gap2_frac": 42,
+        "padus_gap3_frac": 42,
+        "padus_gap4_frac": 42,
+        "protected_overlap_frac": 42
+      },
+      "remaining_requirements": [
+        "Inspect metric coverage and source-specific limitations; provide official local files for missing geography/fields"
+      ],
+      "status": "PARTIAL",
+      "usable_local_inputs": [
+        "areas"
+      ]
+    },
+    "wri_aqueduct40": {
+      "acquired": true,
+      "analyzed": true,
+      "analyzed_cells": 42,
+      "coverage_max": 1.0,
+      "coverage_min": 0.9999999999999998,
+      "implemented": true,
+      "metric_nonmissing_cells": {
+        "aqueduct_coverage_frac": 42,
+        "aqueduct_n_subbasins": 42,
+        "aqueduct_subbasin_shares_json": 42,
+        "baseline_water_stress_category": 42,
+        "baseline_water_stress_category_shares_json": 42,
+        "baseline_water_stress_extreme_scarcity_frac": 42,
+        "baseline_water_stress_ratio": 42,
+        "baseline_water_stress_score": 42
+      },
+      "remaining_requirements": [],
+      "status": "READY",
+      "usable_local_inputs": [
+        "baseline"
+      ]
+    }
+  }
+}

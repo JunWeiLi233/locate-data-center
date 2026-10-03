@@ -1,0 +1,31 @@
+.candidate-map { position: relative; width: 100%; height: 100%; min-height: 340px; overflow: hidden; background: #eaf0f2; color: #25353e; isolation: isolate; }
+.candidate-map__canvas { position: absolute; inset: 0; }
+.candidate-map__canvas[aria-hidden=true] { visibility: hidden; }
+.candidate-map__visible-viewport { position: absolute; top: 62px; right: 0; bottom: 24px; left: 0; visibility: hidden; pointer-events: none; }
+.candidate-map__controls { position: absolute; top: 67px; right: 18px; display: flex; flex-direction: column; border: 1px solid #d3dbdd; border-radius: 9px; background: #fff; box-shadow: 0 2px 12px #283f4610; overflow: hidden; }
+.candidate-map__controls button { width: 40px; height: 39px; border: 0; background: #fff; color: #324550; font: 500 22px/1 Arial, sans-serif; cursor: pointer; }
+.candidate-map__controls button:first-child { font-size: 11px; letter-spacing: .04em; }
+.candidate-map__controls button + button { border-top: 1px solid #e4e9eb; }
+.candidate-map button:hover { background: #edf4f4; }
+.candidate-map button:focus-visible, .candidate-map .maplibregl-canvas:focus-visible { outline: 3px solid #167d84; outline-offset: -3px; }
+.candidate-map__context { position: absolute; bottom: 8px; left: 12px; margin: 0; max-width: calc(100% - 240px); color: #6a7981; font: 10px/1.4 Arial, sans-serif; pointer-events: none; }
+.candidate-map__note { position: absolute; left: 14px; right: 74px; top: 118px; max-width: 440px; padding: 9px 12px; margin: 0; border: 1px solid #d0d9dc; border-radius: 7px; background: #fffffff0; color: #586b75; font-size: 12px; line-height: 1.45; }
+.candidate-map__note p { margin: 0; }
+.candidate-map__note button { margin-top: 7px; padding: 5px 8px; border: 1px solid #b7caca; background: #fff; border-radius: 4px; color: #156f77; font-size: 11px; cursor: pointer; }
+.candidate-map__choices { position: absolute; z-index: 2; bottom: 35px; left: 16px; width: min(350px, calc(100% - 32px)); max-height: 60%; overflow: auto; border: 1px solid #ccd9dc; border-radius: 12px; background: #fff; box-shadow: 0 8px 30px #25454a22; padding: 14px; font-size: 12px; }
+.candidate-map__choices-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; }
+.candidate-map__choices-heading button { border: 0; background: transparent; border-radius: 4px; color: #657984; width: 30px; height: 30px; font-size: 22px; cursor: pointer; }
+.candidate-map__choices p { margin: 5px 0 10px; color: #697b84; line-height: 1.45; }
+.candidate-map__choices ul { list-style: none; padding: 0; margin: 0; }
+.candidate-map__choices li + li { margin-top: 4px; }
+.candidate-map__choices li button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px; background: #f8faf9; color: #334950; border: 1px solid transparent; border-radius: 7px; text-align: left; cursor: pointer; }
+.candidate-map__choices li button[aria-pressed=true] { border-color: #167d84; background: #eaf4f2; }
+.candidate-map__choices li button > span:first-child { font-size: 12px; font-weight: 600; min-width: 28px; color: #167d84; }
+.candidate-map__choices small { display: block; margin-top: 4px; color: #71818a; font-size: 10px; }
+.candidate-map__error { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; padding: 32px; text-align: center; background: #eef3f2; }
+.candidate-map__error strong { font-size: 16px; }
+.candidate-map__error p { max-width: 420px; margin: 0; color: #687b84; font-size: 13px; line-height: 1.6; }
+.candidate-map__error button { padding: 10px 16px; border: 1px solid #b7caca; background: #fff; color: #156f77; border-radius: 7px; cursor: pointer; }
+.candidate-map .maplibregl-ctrl-attrib { background: #ffffffe0; font-size: 9px; line-height: 18px; color: #77858c; padding: 0 7px; }
+.candidate-map .maplibregl-ctrl-attrib a { color: #657c85; }
+@media (max-width: 1190px) { .candidate-map__visible-viewport { bottom: var(--mobile-map-bottom,42dvh); } .candidate-map__context { max-width: calc(100% - 26px); bottom: calc(var(--mobile-map-bottom,42dvh) + 8px); } .candidate-map__controls { top: 67px; right: 12px; } .candidate-map__choices { bottom: calc(var(--mobile-map-bottom,42dvh) + 12px); max-height: min(260px,35%); } .candidate-map__error { justify-content: flex-start; padding: 90px 24px 24px; } }

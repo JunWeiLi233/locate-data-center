@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "files": [
+    {
+      "path": "tests/fixtures/phase7/grid.parquet",
+      "bytes": 28889,
+      "sha256": "488f83f67e390a3dd8f4fcc4d0f08992de542315b036cce19461a026daa65ad4",
+      "role": "explicit synthetic fixture"
+    },
+    {
+      "path": "tests/fixtures/phase7/geography.parquet",
+      "bytes": 43922,
+      "sha256": "9e1d003e5ff9007c80b92d105ae531ceb098438150fd6987c2b0c6f1b12339c7",
+      "role": "explicit synthetic fixture"
+    },
+    {
+      "path": "tests/fixtures/phase7/provenance.parquet",
+      "bytes": 13887,
+      "sha256": "e8df4f9356911629db18bed5f6d89a5b40f15607f54d03b55cb36dee6c8e2b7a",
+      "role": "explicit synthetic fixture"
+    }
+  ],
+  "declared_sources": {
+    "synthetic_fixture": {
+      "version": "phase7-v1",
+      "scope": "software behavior only"
+    }
+  }
+}

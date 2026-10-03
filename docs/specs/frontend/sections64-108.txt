@@ -1,0 +1,1336 @@
+==================================================
+64. FINAL AGENT INSTRUCTION
+==================================================
+
+Before writing code:
+
+1. Inspect the existing repository.
+
+2. Determine:
+   - existing frontend framework;
+   - package manager;
+   - styling system;
+   - routing;
+   - backend API implementation;
+   - existing model output schema;
+   - existing environment variables;
+   - existing tests.
+
+3. Preserve useful existing work.
+
+4. Do NOT initialize a second frontend project inside an existing
+   frontend unless absolutely necessary.
+
+5. Do NOT replace working backend/model code.
+
+6. Identify the actual backend response schema before hard-coding
+   frontend assumptions.
+
+7. Write a short implementation plan.
+
+Then begin implementation.
+
+Do not stop after producing the plan.
+
+Implement working code.
+
+==================================================
+65. FRONTEND / MODEL BOUNDARY
+==================================================
+
+Maintain a strict architecture:
+
+GEOGRAPHIC DATA
+       ↓
+DETERMINISTIC MODEL
+       ↓
+BACKEND API
+       ↓
+FRONTEND ADAPTER
+       ↓
+MAP VISUALIZATION
+
+The frontend must NOT contain duplicate copies of:
+
+screening formulas
+PUE calculations
+WUE calculations
+carbon calculations
+Pareto analysis
+AHP calculation
+MCDA ranking
+candidate clustering
+
+Those belong to the backend/model.
+
+Frontend responsibility:
+
+INPUT
+VISUALIZATION
+INTERACTION
+COMPARISON
+EXPLANATION
+
+Backend responsibility:
+
+CALCULATION
+SCREENING
+RANKING
+GEOGRAPHIC ANALYSIS
+SCENARIOS
+
+==================================================
+66. SEARCH REQUEST FLOW
+==================================================
+
+Implement the complete user flow.
+
+USER
+
+enters:
+
+100 MW
+80% load
+2030 opening
+25-year lifetime
+cooling configuration
+decision preferences
+
+        ↓
+
+FRONTEND
+
+validates input
+
+        ↓
+
+POST /api/search
+
+        ↓
+
+BACKEND
+
+runs deterministic location model
+
+        ↓
+
+returns:
+
+run metadata
+candidate regions
+scores
+raw metrics
+screening information
+uncertainties
+
+        ↓
+
+FRONTEND
+
+validates response
+
+        ↓
+
+updates map
+
+        ↓
+
+fits map viewport around returned candidate regions
+
+        ↓
+
+shows ranked candidate list.
+
+Do not reload the page.
+
+==================================================
+67. SEARCH CANCELLATION / STALE RESULTS
+==================================================
+
+Users may change parameters while a previous request is running.
+
+Prevent stale results.
+
+Use AbortController or the framework's equivalent.
+
+Example:
+
+Search A starts.
+
+User changes:
+
+100 MW
+→
+200 MW
+
+and starts Search B.
+
+Cancel Search A if possible.
+
+If Search A later returns anyway, do NOT overwrite Search B.
+
+Track the active request/run identifier.
+
+==================================================
+68. RESULT MAP FITTING
+==================================================
+
+After successful search:
+
+calculate bounds from actual candidate geometries.
+
+Fit map to those bounds with appropriate padding.
+
+If candidates span most of the United States:
+
+use national U.S. view.
+
+If only one region exists:
+
+zoom to a reasonable regional level.
+
+Do not zoom so far that the candidate polygon fills the entire
+screen with no geographic context.
+
+If no geometry exists but centroid exists:
+
+use centroid marker and clearly report:
+
+"Detailed region geometry unavailable."
+
+==================================================
+69. CANDIDATE REGION INTERACTION
+==================================================
+
+Candidate polygons should have three interaction states:
+
+DEFAULT
+
+HOVERED
+desktop enhancement only
+
+SELECTED
+
+Selection must visibly persist.
+
+When candidate #2 is selected:
+
+candidate #2 polygon
+→ highlighted
+
+candidate #2 marker
+→ selected state
+
+candidate #2 list item
+→ selected state
+
+detail panel
+→ candidate #2
+
+All four states must remain synchronized.
+
+==================================================
+70. MARKER CLUTTER
+==================================================
+
+If many candidate markers overlap at national zoom:
+
+use clustering or rank-based filtering.
+
+For example:
+
+National view:
+Top 20 candidate markers
+
+Regional zoom:
+More candidate markers
+
+Do not display hundreds of overlapping numbered markers.
+
+Always make the highest-ranked candidates easy to identify.
+
+==================================================
+71. TOP CANDIDATE PRESENTATION
+==================================================
+
+The highest-ranked candidate may receive stronger visual emphasis.
+
+However:
+
+do not label it:
+
+"Perfect Site"
+
+"Guaranteed Best"
+
+"Optimal Construction Site"
+
+Prefer:
+
+"Top-ranked candidate under current configuration"
+
+or:
+
+"Highest-ranked potential region"
+
+Display:
+
+Rank #1
+
+not:
+
+"The answer."
+
+==================================================
+72. SCORE TERMINOLOGY
+==================================================
+
+Use precise language.
+
+Preferred:
+
+Overall decision score
+
+Factor score
+
+Model ranking
+
+Potential region
+
+Screening status
+
+Scenario
+
+Data quality
+
+Verification required
+
+Avoid:
+
+AI confidence
+
+Probability of success
+
+Guaranteed sustainability
+
+Best place in America
+
+unless the underlying methodology actually supports such claims.
+
+The deterministic MCDA score is NOT a probability.
+
+==================================================
+73. MAP COLOR SEMANTICS
+==================================================
+
+Define one consistent semantic system.
+
+Example categories:
+
+Excluded
+Conditional
+Potential
+High-performing
+Selected
+
+Do not use unrelated colors for the same status across layers.
+
+For continuous scientific layers:
+
+use appropriate continuous scales.
+
+Examples:
+
+Grid carbon intensity
+→ continuous numeric scale
+
+Water stress
+→ source-consistent ordered categories where appropriate
+
+Do not use the candidate ranking color scale for raw scientific
+variables.
+
+Always include legend.
+
+==================================================
+74. MAP BASE STYLE
+==================================================
+
+Choose a restrained basemap.
+
+Requirements:
+
+state boundaries visible
+major geographic context visible
+candidate polygons easy to distinguish
+labels readable
+environmental layers not obscured
+
+Avoid an overly detailed road map at national zoom.
+
+Use a map style compatible with MapLibre.
+
+Keep map style URL/configuration replaceable.
+
+Do not hard-code private map tokens.
+
+==================================================
+75. OPTIONAL SATELLITE VIEW
+==================================================
+
+Satellite imagery is optional.
+
+Do not make it part of MVP.
+
+If implemented:
+
+[ Map ]
+[ Satellite ]
+
+Satellite provider must have appropriate licensing/API access.
+
+Do not scrape Google Maps imagery.
+
+Do not imply satellite imagery proves land availability.
+
+==================================================
+76. REGION DRILL-DOWN
+==================================================
+
+When a candidate region is selected, allow:
+
+"Explore Region"
+
+This should zoom into the region and reveal available higher-resolution
+grid information.
+
+Show:
+
+candidate-region boundary
+member grid cells
+relevant infrastructure layers
+hazard layers
+
+If the backend eventually provides 1 km refinement results:
+
+display them as a separate layer.
+
+Do not manufacture higher-resolution data from the 10 km result.
+
+==================================================
+77. MULTI-RESOLUTION FUTURE SUPPORT
+==================================================
+
+Design the frontend data model so it can eventually support:
+
+LEVEL 1
+
+10 km national grid
+
+        ↓
+
+Candidate region
+
+        ↓
+
+LEVEL 2
+
+1 km regional grid
+
+        ↓
+
+Potential site area
+
+        ↓
+
+LEVEL 3
+
+Parcel-level analysis
+
+Do not require Level 2 or Level 3 for current MVP.
+
+But avoid assumptions such as:
+
+one region = one point.
+
+Use geometry-based interfaces.
+
+==================================================
+78. DATA CENTER MARKER TERMINOLOGY
+==================================================
+
+The model currently identifies potential regions.
+
+Therefore the map marker should represent:
+
+Candidate Region
+
+not:
+
+Existing Data Center
+
+and not:
+
+Construction Site
+
+Use a dedicated candidate-location icon.
+
+Existing real-world data centers, if added later, must use a
+different visual symbol.
+
+==================================================
+79. EXISTING DATA CENTER LAYER — OPTIONAL
+==================================================
+
+If an authoritative dataset of existing data centers becomes
+available, optionally support:
+
+[ ] Existing Data Centers
+
+This layer is informational.
+
+Do not use it as model ground truth.
+
+Clearly distinguish:
+
+Existing facility
+
+from:
+
+Model candidate
+
+This could eventually help users visually compare historical
+development patterns with model-discovered sustainable regions.
+
+==================================================
+80. SEARCH HISTORY
+==================================================
+
+Optional but useful:
+
+maintain recent model runs during the current session.
+
+Example:
+
+Recent Searches
+
+100 MW / Balanced
+RUN-102
+
+200 MW / Water priority
+RUN-103
+
+100 MW / 2050 scenario
+RUN-104
+
+Selecting a run reloads its returned candidate results.
+
+Do not persist huge datasets in browser local storage.
+
+Prefer backend run IDs.
+
+==================================================
+81. SIDE-BY-SIDE MODEL RUN COMPARISON
+==================================================
+
+Optional advanced feature:
+
+allow comparison between two model configurations.
+
+Example:
+
+RUN A
+100 MW / Balanced
+
+vs
+
+RUN B
+100 MW / Water priority
+
+Map visualization:
+
+show candidate regions from both runs.
+
+Allow user to inspect:
+
+regions appearing in both
+regions unique to A
+regions unique to B
+
+This demonstrates how decision preferences affect location results.
+
+Do not implement until single-run comparison is stable.
+
+==================================================
+82. DATA QUALITY VISUALIZATION
+==================================================
+
+Add a Data Quality indicator for each candidate.
+
+Example:
+
+DATA QUALITY
+
+████████░░
+High
+
+Based on backend-provided information such as:
+
+metric coverage
+source availability
+critical UNKNOWN fields
+
+Do not invent a frontend formula unless the backend explicitly
+delegates it.
+
+Prefer backend-provided:
+
+data_quality_score
+data_quality_status
+
+Clicking should show:
+
+Available:
+18 / 21 metrics
+
+Unknown:
+Utility capacity
+Fiber redundancy
+Heat-demand verification
+
+==================================================
+83. PROVENANCE DRAWER
+==================================================
+
+Create a reusable SourceDetails component.
+
+Clicking a source icon beside a metric opens:
+
+SOURCE
+
+EPA eGRID
+
+Metric:
+Grid carbon intensity
+
+Dataset year:
+XXXX
+
+Spatial resolution:
+eGRID subregion
+
+Status:
+Observed dataset value
+
+Method:
+Grid cell associated with eGRID subregion
+
+Limitations:
+Historical average emissions are not guaranteed future or marginal
+emissions.
+
+Link:
+official source URL supplied by backend.
+
+Never construct source URLs from metric names.
+
+Use backend-provided URLs.
+
+==================================================
+84. SCREENING FUNNEL VISUALIZATION
+==================================================
+
+If backend provides screening counts, add a compact visualization:
+
+National Grid
+48,312 cells
+
+↓ Land
+21,840
+
+↓ Ecology
+18,201
+
+↓ Climate
+13,409
+
+↓ Infrastructure
+5,721
+
+↓ Physical Model
+1,238
+
+↓ High-performing
+146
+
+↓ Candidate Regions
+12
+
+The numbers above are EXAMPLES ONLY.
+
+Never hard-code them.
+
+Use only backend-returned values.
+
+This is valuable for explaining how the model searches the entire
+country.
+
+==================================================
+85. SEARCH SUMMARY
+==================================================
+
+After a run, show a compact summary:
+
+ANALYSIS COMPLETE
+
+48,312 grid cells evaluated
+1,238 passed screening
+146 high-performing cells
+12 candidate regions
+
+Again:
+
+only use actual backend values.
+
+If backend does not provide a count:
+
+omit it.
+
+Do not estimate.
+
+==================================================
+86. WHY NOT THIS LOCATION?
+==================================================
+
+Support a useful inverse explanation.
+
+When the user selects an excluded cell:
+
+WHY WAS THIS AREA EXCLUDED?
+
+Example:
+
+FAIL
+
+Land
+Only 0.4 km² potentially suitable land
+Requirement: 1.0 km²
+
+Flood
+Exposure exceeds selected screening threshold
+
+Unknown
+Utility capacity
+
+This is one of the most important explainability features.
+
+The map should show both:
+
+"Why this region?"
+
+and:
+
+"Why not this region?"
+
+==================================================
+87. CLICK-ANYWHERE GRID INSPECTION
+==================================================
+
+When the Suitability Grid layer is active:
+
+allow users to click an evaluated grid cell.
+
+Display:
+
+Grid ID
+Screening status
+Raw geographic metrics
+Physical model metrics if evaluated
+Reasons for rejection
+Data quality
+Sources
+
+Do not run a new backend analysis simply because the user clicked
+a grid cell unless required.
+
+Use already returned or lazily requested data.
+
+==================================================
+88. MAP SEARCH BOX
+==================================================
+
+Optional:
+
+add geographic search.
+
+Example:
+
+Search location
+[ Buffalo, NY ]
+
+This is NOT used to choose model candidates.
+
+It simply navigates the map.
+
+Searching "Buffalo" should:
+
+move the map to Buffalo.
+
+It should NOT:
+
+tell the backend to rank Buffalo unless the user explicitly chooses
+an Evaluate Location feature.
+
+Use a legitimate geocoding provider if implemented.
+
+Do not create fake geocoding.
+
+==================================================
+89. EVALUATE LOCATION MODE — OPTIONAL
+==================================================
+
+Eventually support:
+
+FIND LOCATIONS
+
+and:
+
+EVALUATE LOCATION
+
+FIND LOCATIONS:
+
+Model searches America.
+
+EVALUATE LOCATION:
+
+User selects a specific geographic point/area.
+
+Backend evaluates it under the same model.
+
+Keep these workflows separate.
+
+Do not let the existence of Evaluate Location change the national
+search architecture.
+
+==================================================
+90. COMPARE CANDIDATES
+==================================================
+
+Candidate comparison should include BOTH:
+
+normalized decision scores
+
+and
+
+raw measurements.
+
+Example:
+
+                 Region A     Region B
+
+Decision Score     87.4         85.9
+
+Carbon
+tCO₂e/year        82,100       104,300
+
+Water
+ML/year             220          150
+
+Water Stress        Low         Medium
+
+Flood               Low          Low
+
+Transmission
+distance             8 km         3 km
+
+Power capacity      Unknown      Unknown
+
+This prevents users from making decisions solely from abstract
+scores.
+
+==================================================
+91. HEAT REUSE UI
+==================================================
+
+For heat reuse, show:
+
+HEAT REUSE POTENTIAL
+
+Potential nearby users:
+
+2 campuses
+1 hospital
+1 industrial facility
+
+Only if backend provides those actual objects.
+
+Each heat opportunity may appear as a separate map marker.
+
+Click:
+
+University / Campus
+
+Distance:
+4.2 km
+
+Status:
+Potential
+
+Demand:
+Unknown
+
+Temperature compatibility:
+Unknown
+
+Do not translate proximity alone into confirmed usable heat.
+
+==================================================
+92. COMMUNITY / ECONOMIC UI
+==================================================
+
+Separate:
+
+COMMUNITY EXPOSURE
+
+from:
+
+ECONOMIC OPPORTUNITY
+
+Do not allow an economic score to visually erase community impacts.
+
+Possible display:
+
+Community
+
+Population exposure
+...
+
+Sensitive receptors
+...
+
+Noise assessment
+Unknown
+
+
+Economic opportunity
+
+Workforce indicator
+...
+
+University proximity
+...
+
+Infrastructure investment context
+...
+
+Do not display:
+
+"Community supports project"
+
+unless actual evidence exists.
+
+==================================================
+93. CLIMATE UI
+==================================================
+
+Climate details should remain decomposed.
+
+Show:
+
+Flood
+Wildfire
+Hurricane
+Drought
+Extreme Heat
+Future Climate
+
+Do not show only:
+
+Climate Score = 91
+
+Users must be able to inspect the underlying hazards.
+
+==================================================
+94. WATER UI
+==================================================
+
+Show:
+
+ON-SITE WATER
+
+XXX ML/year
+
+ELECTRICITY-RELATED WATER
+
+XXX ML/year
+or Unknown
+
+WATER STRESS
+
+Current
+...
+
+2030
+...
+
+2050
+...
+
+2080
+...
+
+Only show supported years.
+
+Do not combine site water and electricity-related water into one
+number without preserving both components.
+
+==================================================
+95. ENERGY UI
+==================================================
+
+Show:
+
+Peak IT load
+
+Average IT load
+
+PUE
+
+Annual IT electricity
+
+Annual facility electricity
+
+Grid carbon intensity
+
+Operational electricity emissions
+
+Renewable resource indicators
+
+Grid reliability indicators
+
+Power capacity status
+
+Do not show transmission proximity as:
+
+"Power available."
+
+==================================================
+96. LAND UI
+==================================================
+
+Show:
+
+Candidate region area
+
+Potentially suitable land
+
+Developed land
+
+Wetlands
+
+Protected/ecological overlap
+
+Land data resolution
+
+Do not display:
+
+"Available acreage"
+
+unless actual parcel availability has been verified.
+
+Use:
+
+"Potentially suitable land at screening resolution."
+
+==================================================
+97. CONSTRUCTION / EMBODIED CARBON UI
+==================================================
+
+If backend supports construction analysis, show it as a detailed
+secondary section.
+
+Example:
+
+Construction Carbon
+
+Steel
+XX tCO₂e
+
+Concrete
+XX tCO₂e
+
+Transport
+XX tCO₂e
+
+Other / Unknown
+...
+
+Lifecycle:
+
+Construction
+Operations
+Replacement
+End of life
+
+Never silently show missing lifecycle components as zero.
+
+If lifecycle estimate is partial:
+
+label:
+
+PARTIAL LIFECYCLE ESTIMATE.
+
+==================================================
+98. VISUALIZATION OF UNCERTAINTY
+==================================================
+
+Do not communicate uncertainty only through tiny footnotes.
+
+Use visible labels:
+
+CONFIRMED
+CALCULATED
+SCENARIO
+PROXY
+UNKNOWN
+
+Example:
+
+Power Capacity
+UNKNOWN
+
+Grid Carbon
+OBSERVED DATA
+
+Annual Carbon
+CALCULATED
+
+2050 Water Stress
+SCENARIO
+
+Future Clean Energy
+PROXY
+
+This terminology should match backend metadata.
+
+==================================================
+99. ROBUSTNESS UI
+==================================================
+
+If Phase 6 backend outputs exist:
+
+show:
+
+ROBUSTNESS
+
+Base rank:
+#1
+
+Observed sensitivity range:
+#1–#4
+
+Top drivers:
+1. Future grid carbon
+2. Water weighting
+3. Cooling assumption
+
+If Monte Carlo results exist:
+
+"Top-3 frequency under sampled assumptions: 82%"
+
+Do NOT write:
+
+"82% probability of being a top-3 site."
+
+==================================================
+100. ACCESS TO METHODOLOGY
+==================================================
+
+Provide an:
+
+"About the model"
+
+or:
+
+"Methodology"
+
+panel/page.
+
+Explain concisely:
+
+1. U.S. divided into geographic cells.
+2. Public datasets attached to cells.
+3. Hard constraints applied.
+4. Data-center performance calculated.
+5. Pareto analysis performed.
+6. MCDA/AHP used for preference-dependent ranking.
+7. Adjacent strong cells clustered into candidate regions.
+8. Sensitivity analysis evaluates robustness.
+
+Include:
+
+"This tool identifies potential regions for further investigation.
+It does not replace parcel-level engineering, utility, permitting,
+environmental, or community review."
+
+==================================================
+101. FRONTEND SECURITY
+==================================================
+
+Never expose:
+
+private backend credentials
+private map tokens
+database credentials
+vendor secrets
+
+Use environment variables appropriately.
+
+Only variables intentionally exposed to browser code may use the
+frontend framework's public prefix.
+
+Validate user inputs before sending them.
+
+Treat backend responses as untrusted input.
+
+Do not render arbitrary HTML from backend explanation fields.
+
+==================================================
+102. API FAILURE FALLBACK
+==================================================
+
+If the backend is unavailable in development:
+
+allow explicit DEMO mode.
+
+Do NOT silently switch to demo data.
+
+Production:
+
+backend error
+→ show error.
+
+Development:
+
+developer explicitly enables mock mode
+→ show DEMO DATA banner.
+
+==================================================
+103. LOADING STRATEGY
+==================================================
+
+Load in this priority:
+
+1. Application shell
+2. Base map
+3. Candidate regions
+4. Candidate details
+5. Active thematic layer
+6. Optional secondary layers
+
+Do not delay candidate results because a large optional hazard layer
+is still loading.
+
+==================================================
+104. STATE MANAGEMENT
+==================================================
+
+Keep state conceptually separated:
+
+SearchConfig
+
+SearchRun
+
+MapView
+
+SelectedRegion
+
+SelectedGrid
+
+ActiveLayers
+
+ComparisonSelection
+
+Scenario
+
+Do not create one giant unstructured state object.
+
+Use existing project state-management patterns.
+
+Do not add Redux or another state library unless complexity
+actually requires it.
+
+==================================================
+105. MAP COMPONENT LIFECYCLE
+==================================================
+
+Create the MapLibre map instance once.
+
+Do not destroy and recreate the entire map whenever React state changes.
+
+Update:
+
+sources
+filters
+paint/layout properties
+feature state
+
+as appropriate.
+
+Clean up:
+
+event listeners
+sources/layers where necessary
+map instance on unmount.
+
+Avoid memory leaks.
+
+==================================================
+106. GEOGRAPHIC PRECISION
+==================================================
+
+Preserve coordinate precision from backend.
+
+Do not round coordinates before rendering.
+
+Round only for human-readable display.
+
+Use valid longitude/latitude ordering consistently.
+
+GeoJSON coordinates are:
+
+[longitude, latitude]
+
+Do not reverse them.
+
+Add tests for this.
+
+==================================================
+107. GEOMETRY VALIDATION
+==================================================
+
+Handle:
+
+Polygon
+MultiPolygon
+
+and other expected GeoJSON geometry types.
+
+If geometry is invalid:
+
+do not crash map.
+
+Report affected region.
+
+Fallback to centroid marker where possible.
+
+Do not attempt arbitrary geometry repair in frontend unless there
+is a clearly safe, documented operation.
+
+Prefer backend geometry validation.
+
+==================================================
+108. REGION OVERLAP
+==================================================
+
+If candidate

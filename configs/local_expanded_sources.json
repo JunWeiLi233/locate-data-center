@@ -1,0 +1,351 @@
+{
+  "berkeley_queued_up": {
+    "acquisition_evidence": {
+      "native": {
+        "bytes": 15571236,
+        "license": "CC BY4.0; Lawrence Berkeley National Laboratory and GridTracker",
+        "manifest": "data/raw/berkeley_queued_up/phase5/01c41c5ee800be873bd2/download_log.json",
+        "path": "data\\raw\\berkeley_queued_up\\phase5\\01c41c5ee800be873bd2\\lbnl_ix_queue_data_file_thru2025.xlsx",
+        "request_identity": "01c41c5ee800be873bd2",
+        "retrieved_at_utc": "2026-10-03T06:09:04.519874+00:00",
+        "sha256": "794582d3281c6a305e9615fcfec3fae9dc85be2165216d33760b677e976a08b6",
+        "source_id": "berkeley_queued_up",
+        "url": "https://eta-publications.lbl.gov/sites/default/files/2026-05/lbnl_ix_queue_data_file_thru2025.xlsx",
+        "version": "2026 edition, May2026 through2025"
+      }
+    },
+    "data_mode": "real",
+    "data_year": "through 2025",
+    "implemented": true,
+    "limitation": "Not a comprehensive county inventory; absence is UNKNOWN. Reported MW is neither guaranteed supply nor a future emissions factor.",
+    "native_pattern": "lbnl_ix_queue_data_file_thru2025.xlsx",
+    "paths": {
+      "native": "data/raw/berkeley_queued_up/phase5/01c41c5ee800be873bd2/lbnl_ix_queue_data_file_thru2025.xlsx"
+    },
+    "raw_namespace": "berkeley_queued_up",
+    "retrieved_at": "2026-10-03T06:09:04.519874+00:00",
+    "source_name": "Berkeley Lab and GridTracker Queued Up",
+    "source_url": "https://emp.lbl.gov/queues",
+    "source_version": "2026 edition; May2026 workbook",
+    "spatial_resolution": "first listed project county; incomplete/unlocated projects retained as limitations",
+    "status": "PARTIAL"
+  },
+  "building_transparency_ec3": {
+    "data_mode": "real",
+    "implemented": false,
+    "limitation": "Verified organization/account required; API access terms restrict caching/redistribution. No account/API data acquired or native integration claimed.",
+    "paths": {},
+    "source_url": "https://www.buildingtransparency.org/api-access-pricing/",
+    "source_version": "July2026 access terms",
+    "status": "BLOCKED"
+  },
+  "eia_861": {
+    "acquisition_evidence": {
+      "native": {
+        "bytes": 4568208,
+        "license": "U.S. Government public data",
+        "manifest": "data/raw/eia861/phase5/a8e2f2dbe78584cd90ee/download_log.json",
+        "path": "data\\raw\\eia861\\phase5\\a8e2f2dbe78584cd90ee\\f8612024.zip",
+        "request_identity": "a8e2f2dbe78584cd90ee",
+        "retrieved_at_utc": "2026-10-03T06:05:24.789080+00:00",
+        "sha256": "77ce49c60ac5a6bad50c442fc401aad5404a21da875dc5cbaba353af5ede54de",
+        "source_id": "eia861",
+        "url": "https://www.eia.gov/electricity/data/eia861/zip/f8612024.zip",
+        "version": "2024 final, updated 2025-12-03"
+      }
+    },
+    "data_mode": "real",
+    "data_year": "2024",
+    "implemented": true,
+    "limitation": "State context cannot establish the serving utility or facility outage performance; IEEE and Any Standard remain separate.",
+    "native_pattern": "f8612024.zip",
+    "paths": {
+      "native": "data/raw/eia861/phase5/a8e2f2dbe78584cd90ee/f8612024.zip"
+    },
+    "raw_namespace": "eia861",
+    "retrieved_at": "2026-10-03T06:05:24.789080+00:00",
+    "source_name": "EIA861 reliability State Totals",
+    "source_url": "https://www.eia.gov/electricity/data/eia861/",
+    "source_version": "2024 final; updated 2025-12-03",
+    "spatial_resolution": "state aggregates; customer populations vary by reporting basis",
+    "status": "PARTIAL"
+  },
+  "epa_cwns": {
+    "data_mode": "real",
+    "implemented": false,
+    "limitation": "Native downloads currently open personal-data popup; no submission/bypass. Public scope/manual verified, exact native export headers unverified pending authorized local files. No fabricated normalized CSV adapter.",
+    "paths": {},
+    "source_url": "https://sdwis.epa.gov/ords/sfdw_pub/r/sfdw/cwns_pub/about",
+    "source_version": "2022 survey; snapshot 2022-01-01",
+    "status": "BLOCKED"
+  },
+  "fcc_broadband": {
+    "data_mode": "real",
+    "implemented": false,
+    "limitation": "Native availability/location export not acquired or verified; licensed location linkage needed. Availability would not prove diverse data-center fiber.",
+    "paths": {},
+    "source_url": "https://www.fcc.gov/BroadbandData",
+    "source_version": "latest applicable filing/export must be selected",
+    "status": "NOT_IMPLEMENTED"
+  },
+  "fema_rapt": {
+    "data_mode": "real",
+    "implemented": false,
+    "limitation": "RAPT is available; no user agreement accepted. Appropriate underlying native source/export has not been verified or acquired.",
+    "paths": {},
+    "source_url": "https://content.govdelivery.com/accounts/USDHSFEMA/bulletins/426af63",
+    "source_version": "updated 2026 tool",
+    "status": "NOT_IMPLEMENTED"
+  },
+  "freight_analysis_framework": {
+    "data_mode": "real",
+    "implemented": false,
+    "limitation": "Official native CSV ZIP link verified; server connection reset during acquisition. Exact local CSV headers remain unverified; no native integration claimed. Regional flows are not a delivery route.",
+    "paths": {},
+    "source_url": "https://www.bts.gov/faf/faf5",
+    "source_version": "5.7.1; 2024 preliminary annual estimate",
+    "status": "PARTIAL"
+  },
+  "global_cement_concrete_tracker": {
+    "data_mode": "real",
+    "implemented": false,
+    "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+    "paths": {},
+    "source_url": "https://globalenergymonitor.org/projects/global-cement-and-concrete-tracker/",
+    "source_version": "July2026",
+    "status": "BLOCKED"
+  },
+  "global_iron_steel_tracker": {
+    "data_mode": "real",
+    "implemented": false,
+    "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+    "paths": {},
+    "source_url": "https://globalenergymonitor.org/projects/global-iron-steel-tracker/",
+    "source_version": "September2026",
+    "status": "BLOCKED"
+  },
+  "nasa_nex_gddp_cmip6": {
+    "acquisition_evidence": {
+      "pr": {
+        "bytes": 42480,
+        "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+        "manifest": "data/raw/nasa_nex_gddp_cmip6/phase5/e5a39194b7941795091d/download_log.json",
+        "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\e5a39194b7941795091d\\pr_2030.nc",
+        "request_identity": "e5a39194b7941795091d",
+        "retrieved_at_utc": "2026-10-03T06:14:21.409830+00:00",
+        "sha256": "d56baca4a7a7746d2bec2e7fba6773d8a1511db205eacf3a2ef9d67a48907bbd",
+        "source_id": "nasa_nex_gddp_cmip6",
+        "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/pr/pr_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=pr&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+        "version": "ACCESS-CM2/ssp245/2030"
+      },
+      "tas": {
+        "bytes": 42776,
+        "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+        "manifest": "data/raw/nasa_nex_gddp_cmip6/phase5/4b1fec7b44a805b54eb3/download_log.json",
+        "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\4b1fec7b44a805b54eb3\\tas_2030.nc",
+        "request_identity": "4b1fec7b44a805b54eb3",
+        "retrieved_at_utc": "2026-10-03T06:14:14.935321+00:00",
+        "sha256": "7aa087083f747009de718a210625dffc074d5b04a7b24434d5996c89417e97a1",
+        "source_id": "nasa_nex_gddp_cmip6",
+        "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/tas/tas_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=tas&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+        "version": "ACCESS-CM2/ssp245/2030"
+      },
+      "tasmax": {
+        "bytes": 42796,
+        "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+        "manifest": "data/raw/nasa_nex_gddp_cmip6/phase5/20d67841bc794501af22/download_log.json",
+        "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\20d67841bc794501af22\\tasmax_2030.nc",
+        "request_identity": "20d67841bc794501af22",
+        "retrieved_at_utc": "2026-10-03T06:32:56.785752+00:00",
+        "sha256": "8d55b052f7a2a3f5929a467558b566f7b4fa3e992b5acd3510ddaf3f47d9a966",
+        "source_id": "nasa_nex_gddp_cmip6",
+        "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/tasmax/tasmax_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=tasmax&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+        "version": "ACCESS-CM2/ssp245/2030"
+      },
+      "tasmin": {
+        "bytes": 42208,
+        "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+        "manifest": "data/raw/nasa_nex_gddp_cmip6/phase5/2d34533e539368792500/download_log.json",
+        "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\2d34533e539368792500\\tasmin_2030.nc",
+        "request_identity": "2d34533e539368792500",
+        "retrieved_at_utc": "2026-10-03T06:33:02.946890+00:00",
+        "sha256": "44e648adb62aa7727258bc228f8f7b38e3078f8caab8b1723442a403cb45f865",
+        "source_id": "nasa_nex_gddp_cmip6",
+        "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/tasmin/tasmin_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=tasmin&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+        "version": "ACCESS-CM2/ssp245/2030"
+      }
+    },
+    "analysis_variables": [
+      "tas",
+      "pr"
+    ],
+    "data_mode": "real",
+    "data_year": "2030",
+    "implemented": true,
+    "limitation": "One model/member/SSP and one future year only; 2031-2054 remain unacquired. Native tas CF time-maximum tag conflicts with daily-mean definition; matching native tasmax/tasmin numerical identity is required and recorded. Components are verification dependencies only. No climate-PUE function or parcel engineering claim.",
+    "native_pattern": "*.nc",
+    "paths": {
+      "pr": "data/raw/nasa_nex_gddp_cmip6/phase5/e5a39194b7941795091d/pr_2030.nc",
+      "tas": "data/raw/nasa_nex_gddp_cmip6/phase5/4b1fec7b44a805b54eb3/tas_2030.nc",
+      "tasmax": "data/raw/nasa_nex_gddp_cmip6/phase5/20d67841bc794501af22/tasmax_2030.nc",
+      "tasmin": "data/raw/nasa_nex_gddp_cmip6/phase5/2d34533e539368792500/tasmin_2030.nc"
+    },
+    "raw_namespace": "nasa_nex_gddp_cmip6",
+    "retrieved_at": "2026-10-03T06:14:21.409830+00:00",
+    "source_name": "NASA NEX-GDDP-CMIP6",
+    "source_url": "https://nccs.smce.nasa.gov/data-collections/nex-gddp-cmip6/",
+    "source_version": "2.0; ACCESS-CM2; r1i1p1f1; ssp245",
+    "spatial_resolution": "0.25 degree daily downscaled model grid",
+    "status": "PARTIAL",
+    "verification_dependencies": [
+      "tasmax",
+      "tasmin"
+    ]
+  },
+  "noaa_ibtracs": {
+    "acquisition_evidence": {
+      "native": {
+        "bytes": 57552255,
+        "license": "NOAA public data; cite IBTrACS",
+        "manifest": "data/raw/noaa_ibtracs/phase5/4e74f25b18aba9d567e2/download_log.json",
+        "path": "data\\raw\\noaa_ibtracs\\phase5\\4e74f25b18aba9d567e2\\ibtracs.NA.list.v04r01.csv",
+        "request_identity": "4e74f25b18aba9d567e2",
+        "retrieved_at_utc": "2026-10-03T06:05:47.248800+00:00",
+        "sha256": "9e41cf9d3c4e6ae82fe35f218a3f1baea3e44b9e768857d62149ed9e73348e7b",
+        "source_id": "noaa_ibtracs",
+        "url": "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NA.list.v04r01.csv",
+        "version": "v04r01 snapshot"
+      }
+    },
+    "data_mode": "real",
+    "data_year": "1980-2024",
+    "implemented": true,
+    "limitation": "Historical segment proximity and storm counts, not future landfall or damage probability. 100km is a descriptive project reporting radius.",
+    "native_pattern": "ibtracs.NA.list.v04r01.csv",
+    "paths": {
+      "native": "data/raw/noaa_ibtracs/phase5/4e74f25b18aba9d567e2/ibtracs.NA.list.v04r01.csv"
+    },
+    "raw_namespace": "noaa_ibtracs",
+    "retrieved_at": "2026-10-03T06:05:47.248800+00:00",
+    "source_name": "NOAA IBTrACS North Atlantic MAIN tracks",
+    "source_url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
+    "source_version": "v04r01 retrieved snapshot",
+    "spatial_resolution": "track positions mainly 3 or 6 hourly; no wind-field inference",
+    "status": "PARTIAL"
+  },
+  "nrel_nsrdb": {
+    "data_mode": "real",
+    "data_year": "local native observation period",
+    "implemented": true,
+    "limitation": "Native two-metadata-row CSV parser implemented; no data acquired. Public no-sign S3 exists; API requires key and personal fields, which were not submitted. Solar resource is not purchased power.",
+    "native_pattern": "manual/*.csv",
+    "paths": {},
+    "raw_namespace": "nrel_nsrdb",
+    "source_name": "NLR National Solar Radiation Database",
+    "source_url": "https://developer.nlr.gov/docs/solar/nsrdb/python-examples/",
+    "source_version": "local native CSV version must be supplied",
+    "spatial_resolution": "modeled point time series; not whole-cell areal observation",
+    "status": "PARTIAL"
+  },
+  "nrel_wind_toolkit": {
+    "acquisition_evidence": {
+      "native": {
+        "bytes": 10242519,
+        "license": "Public domain, DOI 10.7799/1329290",
+        "manifest": "data/raw/nlr_wind_toolkit/phase5/5e80ed87cfe12788d7b1/download_log.json",
+        "path": "data\\raw\\nlr_wind_toolkit\\phase5\\5e80ed87cfe12788d7b1\\wtk_site_metadata.csv",
+        "request_identity": "5e80ed87cfe12788d7b1",
+        "retrieved_at_utc": "2026-10-03T06:06:00.703949+00:00",
+        "sha256": "285b46161371974dc88b1f389ec623a5796f1075eb5576336fd951fd7aa82475",
+        "source_id": "nlr_wind_toolkit",
+        "url": "https://data.nlr.gov/system/files/54/wtk_site_metadata.csv",
+        "version": "site index v1 2016-10-17"
+      }
+    },
+    "data_mode": "real",
+    "data_year": "2007-2013 modeled power dataset; index native summary",
+    "implemented": true,
+    "limitation": "WRDB is https://wrdb.nlr.gov/; this older selected-site index is a declared WIND Toolkit subset. Samples do not represent all land or contracted power; SRW hourly local parser is implemented but unacquired.",
+    "native_pattern": "wtk_site_metadata.csv",
+    "paths": {
+      "native": "data/raw/nlr_wind_toolkit/phase5/5e80ed87cfe12788d7b1/wtk_site_metadata.csv"
+    },
+    "raw_namespace": "nlr_wind_toolkit",
+    "retrieved_at": "2026-10-03T06:06:00.703949+00:00",
+    "source_name": "NLR WIND Toolkit Power Data Site Index",
+    "source_url": "https://data.nlr.gov/submissions/54",
+    "source_version": "native site index v1; 2016-10-17; DOI10.7799/1329290",
+    "spatial_resolution": "selected modeled sites from 2km WIND grid; not areal coverage",
+    "status": "PARTIAL"
+  },
+  "ntad": {
+    "acquisition_evidence": {
+      "native": {
+        "bounds_4326": [
+          -97.1,
+          28.9,
+          -94.4,
+          31.6
+        ],
+        "bytes": 4943918,
+        "feature_count": 4173,
+        "license": "Public official data",
+        "manifest": "data/raw/ntad/phase5/80d519ee16bed31da370/download_log.json",
+        "path": "data\\raw\\ntad\\phase5\\80d519ee16bed31da370\\features.esri.json",
+        "request_identity": "80d519ee16bed31da370",
+        "retrieved_at_utc": "2026-10-03T06:08:55.826801+00:00",
+        "sha256": "8c71910a6b8c54fe9028420bb22e112a82fe5e06f925ea2bd13203cd1f84fe33",
+        "source_id": "ntad",
+        "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/NTAD_North_American_Rail_Network_Lines/FeatureServer/0/query?f=json&objectIds=289419%2C289420%2C289426%2C289427%2C289428%2C289470%2C289510%2C289511%2C289512%2C289513%2C289514%2C289515%2C289516%2C289578%2C289581%2C289582%2C289583%2C289595%2C289596%2C289597%2C289630%2C289632%2C289650%2C289651%2C289652%2C289653%2C289654%2C289656%2C289665%2C289666%2C289667%2C289668%2C289669%2C289670%2C289671%2C289696%2C289732%2C289733%2C289752%2C289753%2C301744%2C303155%2C303156%2C303157%2C303158%2C303185%2C303186%2C303187%2C303188%2C303189%2C303190%2C303191%2C303192%2C303193%2C303194%2C303195%2C303196%2C303197%2C303198%2C303199%2C303200%2C303201%2C303202%2C303203%2C303204%2C303205%2C303206%2C303207%2C303208%2C303209%2C303210%2C303211%2C303212&outFields=%2A&outSR=4326&returnGeometry=true",
+        "version": "rail network 2026-07-21"
+      }
+    },
+    "data_mode": "real",
+    "data_year": "2026",
+    "implemented": true,
+    "limitation": "Minimum mapped rail distance is not a delivery route, usable siding, rail service agreement, or capacity.",
+    "native_pattern": "features.esri.json",
+    "paths": {
+      "native": "data/raw/ntad/phase5/80d519ee16bed31da370/features.esri.json"
+    },
+    "raw_namespace": "ntad",
+    "retrieved_at": "2026-10-03T06:08:55.826801+00:00",
+    "source_name": "BTS/FRA NTAD rail network lines",
+    "source_url": "https://www.bts.gov/ntad/continuousupdates",
+    "source_version": "rail network 2026-07-21",
+    "spatial_resolution": "mapped rail network; US 1:24000 or better",
+    "status": "PARTIAL"
+  },
+  "us_drought_monitor": {
+    "acquisition_evidence": {
+      "native": {
+        "bytes": 30182034,
+        "license": "USDM public data; credit NDMC/USDA/NOAA/NASA",
+        "manifest": "data/raw/usdm/phase5/364e8d37b621912e0c1e/download_log.json",
+        "path": "data\\raw\\usdm\\phase5\\364e8d37b621912e0c1e\\county_drought.csv",
+        "request_identity": "364e8d37b621912e0c1e",
+        "retrieved_at_utc": "2026-10-03T06:05:32.382820+00:00",
+        "sha256": "8d062b6f61c41ca7d11c86cff5a459cdd7aa800a639428febc0d27fbec3dc19a",
+        "source_id": "usdm",
+        "url": "https://usdmdataservices.unl.edu/api/CountyStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=TX&startdate=1%2F1%2F2000&enddate=12%2F31%2F2024&statisticsType=1",
+        "version": "weekly county cumulative area, snapshot"
+      }
+    },
+    "data_mode": "real",
+    "data_year": "2000-01-01/2024-12-31",
+    "implemented": true,
+    "limitation": "County historical area context, not committed water or future drought probability.",
+    "native_pattern": "county_drought.csv",
+    "paths": {
+      "native": "data/raw/usdm/phase5/364e8d37b621912e0c1e/county_drought.csv"
+    },
+    "raw_namespace": "usdm",
+    "requested_aoi": "TX",
+    "retrieved_at": "2026-10-03T06:05:32.382820+00:00",
+    "source_name": "USDM cumulative county area percentages",
+    "source_url": "https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx",
+    "source_version": "weekly county cumulative snapshot; statisticsType=1",
+    "spatial_resolution": "county; weekly Tuesdays",
+    "status": "PARTIAL"
+  }
+}

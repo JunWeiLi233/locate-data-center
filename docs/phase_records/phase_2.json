@@ -1,0 +1,532 @@
+{
+  "phase": 2,
+  "status": "accepted",
+  "accepted_by": "orchestrator",
+  "accepted_at": "2026-10-03T04:37:34.573495+00:00",
+  "code_revision": "sha256:cac78bfd076512cca379a09c98579f65216df4a63f495fa79dd28e2fb39bdffa",
+  "code_revision_git_base": "44040ed33f9d3fb9d9837fc8dbbc1f61481a9a9e",
+  "revision_note": "Working source/config snapshot fingerprint; Git base does not contain uncommitted implementation",
+  "source_file_sha256": {
+    "configs/constraints.yaml": "8bf960cc79ee14dc10d35bafaba2efa91a2780c34775fd0d77b52c1c27181d1a",
+    "configs/cooling_designs.yaml": "f4d209669c4e86e7d32d2b6f283dbb994d0dc6ac7eb5026cc73d4bae7c0edc9c",
+    "configs/facility.yaml": "c661102627e61969614d8e99822744ca89c0f594fcc1f6273988b7d55910387e",
+    "configs/geography.yaml": "8a46b1d0ea7b958eeebc29e27563c07485c1ede53a3fb1cc80180e5a1dcf77b2",
+    "configs/grid.yaml": "d8d222197f60513db481814610f96908c2bc71469363368b28e264f69cdac82f",
+    "configs/run.yaml": "5aecd8a09ad1f1bcccf37ac33bb69eb2c1970d165a29b76e604bb0d71b946148",
+    "configs/scenarios.yaml": "4623f29f03b0201e39d109e48d3571c03fce31988acd56c1003a8683b39cf76a",
+    "configs/scoring.yaml": "e87693a1ac50220a17196a2a37d6d07a47402247456d9571a7718269bff15d42",
+    "configs/sources.yaml": "46cf3ebe25db70e3f650415e45c3752fabeff599de8e6c4aa8f3df1cbbfc4397",
+    "src/dc_locator/__init__.py": "efc9963ad2fae7111cb9d2f572df1d3e4f0da1b79148daf397b4b93c1af674d5",
+    "src/dc_locator/__main__.py": "08cdacbbb941fd390c5ca9d6d5dd5102f98db02d1bb9e89c5839f67770f1a6bc",
+    "src/dc_locator/cli.py": "467a057f6335fc7c177b0eab68bdeb084bed78cf6ceaf495df02cef7e5067b04",
+    "src/dc_locator/config.py": "595043f190f04015906af3eca9703939aabfdb98df88dcbc42e0fb1fdb06d15c",
+    "src/dc_locator/geography/__init__.py": "9cacd2296fcb5e919656c83de036b7b86eba745d2c5e638bcb724dad27e15f58",
+    "src/dc_locator/geography/boundary.py": "21ac10ad443a23b5b4ea100622a25c7aca0d0182b986da2cbdf8e4f85c147030",
+    "src/dc_locator/geography/distance.py": "4d1d7cf106783e33f965b562625da97aacadb9440ee8e3dbac6d9829401ef993",
+    "src/dc_locator/geography/features.py": "c90cb52e641d095400c17434d3444a830ffd5d7f095b43a03a506e867d1f268e",
+    "src/dc_locator/geography/grid.py": "d582e3b2d1cd6cd5ab75a03486316fc3cf3e9cbbf0ba29440030836eac1b0933",
+    "src/dc_locator/geography/sources/__init__.py": "0adc31cd854c4bf41a0a4ad59052c6fd5b64734e5304bc92786382e591d60cc9",
+    "src/dc_locator/geography/sources/aqueduct.py": "085ed9e4f53b2d4f74a2352602a1236bf4b097dd194e627b2840d1d517a093d6",
+    "src/dc_locator/geography/sources/climate.py": "a280638cd3215cf3fe9837575e480fad9bda328c8143d31e3032caefe26e9b39",
+    "src/dc_locator/geography/sources/egrid.py": "3f679195b16127dfa248ee8eb768ffb64234cb6d8733603a0bb1f68585328471",
+    "src/dc_locator/geography/sources/flood.py": "741c710ac5a427bc3d7534633b75db8ff0e2e3c4745207212b6f5e1a7a89eebe",
+    "src/dc_locator/geography/sources/infrastructure.py": "e7a1e7cdf8541fca5671ab78e731ba59432067ef5114eb340a7a3a856a625fde",
+    "src/dc_locator/geography/sources/ingestion.py": "3540f0d37b86e842da313eee6f5f4a25c53374fd043596ab973f30ae3deaf7a1",
+    "src/dc_locator/geography/sources/nlcd.py": "e2b0c52c56d31bcfdc966cc92ef3e9b3a589b1b51a538478a6a4fb77fa31c2e9",
+    "src/dc_locator/geography/sources/protected.py": "736351f0112e78a203d8591c0d7989d5f4ecd1d706bdfa19b1f48b4591efc93d",
+    "src/dc_locator/geography/sources/spatial.py": "2fbcc931150bd3a9d24fef71c7ec15314b14921af8d7c394ee27d28090ba1d2c",
+    "src/dc_locator/geography/sources/wildfire.py": "0c0b718f729e65ca9a2a9f257bf1ff11dd7c335e2fb03e10b5d0188487495018",
+    "src/dc_locator/io.py": "4a3b76ed06f169493397cafb7f54a808226cab29ffab393cb6dee3d57df27603",
+    "src/dc_locator/model/__init__.py": "14a55a780832600724f9b4553af41c6e35a1983711be10e60c97dd388af56f7c",
+    "src/dc_locator/paths.py": "3733e420d093f1bf75f95afae48a8bb3afcde418ea50ce857e22d3b1e8e922ba",
+    "src/dc_locator/provenance.py": "397e969289e10a9def3ccd1276abc2329ac7f6ed26e67292bc20b7afb7d8a484",
+    "src/dc_locator/schemas.py": "ea1d055c7947dc8a036ef5393126520c29850fbf27fe10f5f00852c3dea8e8bf"
+  },
+  "schema_versions": {
+    "GeographicFeatureDataset": "1.1.0",
+    "FeatureMetadata": "1.1.0",
+    "GridCell": "1.1.0"
+  },
+  "data_versions": {
+    "eia_energy_atlas": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "transmission archive 2024-09-30; plants 202502; pipeline vintage unverified",
+        "manifest_entries": [
+          {
+            "bytes": 160785995,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia_energy_atlas\\download_log.json",
+            "notes": "U.S. Electric Power Transmission Lines (Archive). ArcGIS item d4090758322c4d32a4cd002ffaa0aa12, owner Federal_User_Community, org FiaPA4ga0iQKduv3 (atlas.eia.gov / atlas-eia.opendata.arcgis.com). Source FeatureServer: https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/US_Electric_Power_Transmission_Lines/FeatureServer/0 (94,619 features; native service spatialReference wkid 102100/3857). This layer is explicitly ARCHIVED by EIA/Esri ('will no longer be updated or maintained'); last data update 2024-09-30. The ArcGIS Hub download API (v1) resolves to a short-lived signed Azure Blob SAS URL (valid ~1 hour) -- the URL recorded here is the stable, re-runnable Hub API endpoint, not the ephemeral blob URL. IMPORTANT CRS GOTCHA (verified by direct test): calling this endpoint WITHOUT '&spatialRefId=4326' silently returns coordinates in EPSG:3857 (Web Mercator meters) while still labeling the file '.geojson' (and even sets crs.properties.name to the string 'EPSG:3857', which is itself non-conformant with the GeoJSON spec, RFC 7946, which mandates WGS84 lon/lat). The URL recorded here includes the explicit 'spatialRefId=4326' parameter, which was verified to produce true EPSG:4326 lon/lat coordinates (sample first vertex [-84.4173197616516, 42.7338682369586], a plausible Michigan location) -- always pass this parameter explicitly, never rely on the default. VOLTAGE=-999999 and OWNER/VOLT_CLASS/STATUS/TYPE='NOT AVAILABLE' are explicit no-data sentinels in this dataset, not genuine zero/blank -- treat as UNKNOWN. SUB_1/SUB_2 (origin/destination 'substation' name strings) frequently contain placeholder values such as 'UNKNOWN######' or 'TAP######' and must NOT be treated as a verified substation inventory or geocoded location.",
+            "path": "data/raw/eia_energy_atlas/eia_electric_power_transmission_lines_archive_national.geojson",
+            "retrieved_at_utc": "2026-10-03T02:00:54Z",
+            "sha256": "da9350f2e2f9017a2b7170bbe37266115279e1f7991fd2afe184f3371936a919",
+            "url": "https://hub.arcgis.com/api/download/v1/items/d4090758322c4d32a4cd002ffaa0aa12/geojson?layers=0&spatialRefId=4326"
+          },
+          {
+            "bytes": 10385398,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia_energy_atlas\\download_log.json",
+            "notes": "Power Plants in the U.S. ArcGIS item b063316fac7345dba4bae96eaa813b2f, owner Federal_User_Community, org FiaPA4ga0iQKduv3 (atlas.eia.gov). Source FeatureServer: https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Power_Plants_in_the_US/FeatureServer/0. Live FeatureServer query (returnCountOnly) reported 13,446 features at query time; this GeoJSON export contains 13,445 features (one fewer), reproduced identically across two independent export requests -- cause not verified (possibly one null/invalid-geometry record silently dropped by the exporter); treat as a small, apparently-stable discrepancy, not a download error. Data vintage: the 'Period' field is uniformly '202502' (February 2025, EIA-860M) across all records -- use this field, not the ArcGIS item 'modified' timestamp, as the authoritative data-currency indicator (the item's 'modified'/'checked monthly' claim does not guarantee the underlying Period has advanced). Same CRS gotcha as the transmission-lines entry above: '&spatialRefId=4326' was required and verified (sample point [-84.2949699996921, 45.3628199997005], Tower, MI) -- the default (no spatialRefId) returns EPSG:3857 meters mislabeled as '.geojson'. Includes ALL operable plants >=1 MW nameplate (operating, standby, and short/long-term out of service are all included per the item description) with NO explicit status/operating-state column exposed in this layer -- Total_MW=0 for a given fuel is not reliable evidence a unit is retired. Several *_MW fields (Bat_MW, Bio_MW, Geo_MW, Other_MW) are declared esriFieldTypeString(4000) in the schema despite carrying unquoted numeric JSON values in query/export responses -- coerce to numeric explicitly and verify null vs 0 handling per field.",
+            "path": "data/raw/eia_energy_atlas/eia_power_plants_national.geojson",
+            "retrieved_at_utc": "2026-10-03T02:01:00Z",
+            "sha256": "ab32783165132dc63c0ede53116bf8d349f96dfd5923fa6978a79f5b05971050",
+            "url": "https://hub.arcgis.com/api/download/v1/items/b063316fac7345dba4bae96eaa813b2f/geojson?layers=0&spatialRefId=4326"
+          },
+          {
+            "bytes": 14773757,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia_energy_atlas\\download_log.json",
+            "notes": "Natural Gas Interstate and Intrastate Pipelines. ArcGIS item 9833ca6c8103490b8ad145a30f0522ee, owner Federal_User_Community, org FiaPA4ga0iQKduv3 (atlas.eia.gov). Source FeatureServer: https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Natural_Gas_Interstate_and_Intrastate_Pipelines_1/FeatureServer/0 (32,892 features; native service spatialReference wkid 102100/3857). Unlike the other two items, this endpoint's default response (no spatialRefId param needed) was verified to already be true EPSG:4326 (crs='urn:ogc:def:crs:OGC:1.3:CRS84'; sample coordinate [-80.588928, 40.397824], a plausible Pennsylvania location) -- the Hub download API's default CRS behavior is inconsistent across items/layers, so always verify crs and coordinate magnitude per file rather than assuming. Minimal attributes only: TYPEPIPE (Interstate/Intrastate), Operator, Status. Observed Status has a single distinct value 'Operating' across all 32,892 features (no inactive/abandoned segments present) even though the field's own description text mentions Active/Inactive/Abandoned as 'common statuses' -- i.e. the described domain is broader than what is actually populated right now. No pipeline diameter, capacity/throughput, or commodity-rate attributes are present. No date/vintage field exists in this layer; data currency can only be inferred from the ArcGIS item 'modified' timestamp (checked monthly per item snippet), which is a weaker provenance signal than the Period field available on the Power Plants layer.",
+            "path": "data/raw/eia_energy_atlas/eia_natural_gas_interstate_intrastate_pipelines_national.geojson",
+            "retrieved_at_utc": "2026-10-03T01:59:06Z",
+            "sha256": "75cb0c7eb24e86c9195d27a9194b355f302d3705ff03fd61f7125e936ee5168f",
+            "url": "https://hub.arcgis.com/api/download/v1/items/9833ca6c8103490b8ad145a30f0522ee/geojson?layers=0"
+          }
+        ],
+        "retrieved_at": "2026-10-03T02:01:00Z",
+        "source_name": "EIA U.S. Energy Atlas",
+        "source_url": "https://atlas.eia.gov/",
+        "source_version": "EIA national vector exports",
+        "spatial_resolution": "mapped line/point vectors"
+      },
+      "inputs": {
+        "pipelines": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia_energy_atlas\\eia_natural_gas_interstate_intrastate_pipelines_national.geojson",
+          "sha256": "75cb0c7eb24e86c9195d27a9194b355f302d3705ff03fd61f7125e936ee5168f"
+        },
+        "power_plants": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia_energy_atlas\\eia_power_plants_national.geojson",
+          "sha256": "ab32783165132dc63c0ede53116bf8d349f96dfd5923fa6978a79f5b05971050"
+        },
+        "transmission": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia_energy_atlas\\eia_electric_power_transmission_lines_archive_national.geojson",
+          "sha256": "da9350f2e2f9017a2b7170bbe37266115279e1f7991fd2afe184f3371936a919"
+        }
+      }
+    },
+    "epa_egrid": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "2023",
+        "manifest_entries": [
+          {
+            "bytes": 21213301,
+            "license": "U.S. Government data; EPA data license",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\epa_egrid\\official_2023\\download_log.json",
+            "path": "data\\raw\\epa_egrid\\official_2023\\egrid2023_data_rev2.xlsx",
+            "retrieved_at_utc": "2026-10-03T04:07:49.262328+00:00",
+            "sha256": "895cd81dd8662406189ad8adf5a2578dcb362cdb5cff7cca81b10ee6bd2447c6",
+            "source_id": "epa_egrid",
+            "url": "https://www.epa.gov/system/files/documents/2025-06/egrid2023_data_rev2.xlsx",
+            "version": "eGRID2023 rev2"
+          },
+          {
+            "bytes": 57260059,
+            "license": "U.S. Government data; EPA data license",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\epa_egrid\\official_2023\\download_log.json",
+            "path": "data\\raw\\epa_egrid\\official_2023\\egrid2023_subregions.zip",
+            "retrieved_at_utc": "2026-10-03T04:07:55.277011+00:00",
+            "sha256": "0e8529937b6c849e490d93f1fb38b465e3ea902ff86d06bfbafe1b7fd67035ba",
+            "source_id": "epa_egrid",
+            "url": "https://www.epa.gov/system/files/other-files/2025-01/egrid2023_subregions.zip",
+            "version": "eGRID2023 rev2"
+          },
+          {
+            "bytes": 16188767,
+            "license": "U.S. Government data; EPA data license",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\epa_egrid\\official_2023\\download_log.json",
+            "path": "data\\raw\\epa_egrid\\official_2023\\egrid2023_multiple_subregions.zip",
+            "retrieved_at_utc": "2026-10-03T04:07:57.246534+00:00",
+            "sha256": "9c7398f84af782c1c1f51d0eed73a1bbe6b4ee8745b96247706f5eecce090168",
+            "source_id": "epa_egrid",
+            "url": "https://www.epa.gov/system/files/other-files/2025-01/egrid2023_multiple_subregions.zip",
+            "version": "eGRID2023 rev2"
+          }
+        ],
+        "region_field": "Subregion",
+        "retrieved_at": "2026-10-03T04:07:57.246534+00:00",
+        "sheet": "SRL23",
+        "source_name": "EPA eGRID",
+        "source_url": "https://www.epa.gov/egrid/detailed-data",
+        "source_version": "eGRID2023 rev2",
+        "spatial_resolution": "eGRID subregion polygon",
+        "unit": "lb_per_mwh"
+      },
+      "inputs": {
+        "multiple_regions": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\epa_egrid\\official_2023\\egrid2023_multiple_subregions.zip",
+          "sha256": "9c7398f84af782c1c1f51d0eed73a1bbe6b4ee8745b96247706f5eecce090168"
+        },
+        "regions": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\epa_egrid\\official_2023\\egrid2023_subregions.zip",
+          "sha256": "0e8529937b6c849e490d93f1fb38b465e3ea902ff86d06bfbafe1b7fd67035ba"
+        },
+        "workbook": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\epa_egrid\\official_2023\\egrid2023_data_rev2.xlsx",
+          "sha256": "895cd81dd8662406189ad8adf5a2578dcb362cdb5cff7cca81b10ee6bd2447c6"
+        }
+      }
+    },
+    "fema_nfhl": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "effective snapshot 2026-10-03",
+        "manifest_entries": [
+          {
+            "bounds_4326": [
+              -96.10444424642762,
+              29.914284552469162,
+              -95.47778381395422,
+              30.545985890071012
+            ],
+            "bytes": 1011842,
+            "feature_count": 8,
+            "license": "U.S. Government work",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\fema_nfhl\\bounded\\download_log.json",
+            "path": "data\\raw\\fema_nfhl\\bounded\\nfhl_layer0_46da3d71b6e206c8f673.geojson",
+            "request_identity": "46da3d71b6e206c8f673",
+            "retrieved_at_utc": "2026-10-03T04:10:36.618573+00:00",
+            "sha256": "6fee3ea859f71feae7bb860361e5b4523dfbfbf3511636e86e00ffc83c7ef99a",
+            "source_id": "fema_nfhl",
+            "url": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/0/query?f=json&where=1%3D1&geometry=-96.10444424642762%2C29.914284552469162%2C-95.47778381395422%2C30.545985890071012&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnIdsOnly=true",
+            "version": "effective NFHL snapshot"
+          },
+          {
+            "bounds_4326": [
+              -96.10444424642762,
+              29.914284552469162,
+              -95.47778381395422,
+              30.545985890071012
+            ],
+            "bytes": 134787811,
+            "feature_count": 6881,
+            "license": "U.S. Government work",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\fema_nfhl\\bounded\\download_log.json",
+            "path": "data\\raw\\fema_nfhl\\bounded\\nfhl_layer28_d61f6f5f26ac79081446.geojson",
+            "request_identity": "d61f6f5f26ac79081446",
+            "retrieved_at_utc": "2026-10-03T04:11:03.563391+00:00",
+            "sha256": "1237484e593dafeedfad172345602204fe73c61c2ba85f3ade8f67d37bf4da16",
+            "source_id": "fema_nfhl",
+            "url": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=1%3D1&geometry=-96.10444424642762%2C29.914284552469162%2C-95.47778381395422%2C30.545985890071012&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnIdsOnly=true",
+            "version": "effective NFHL snapshot"
+          }
+        ],
+        "query_bounds_4326": {
+          "hazards": [
+            -96.10444424642762,
+            29.914284552469162,
+            -95.47778381395422,
+            30.545985890071012
+          ],
+          "surveyed": [
+            -96.10444424642762,
+            29.914284552469162,
+            -95.47778381395422,
+            30.545985890071012
+          ]
+        },
+        "retrieved_at": "2026-10-03T04:11:03.563391+00:00",
+        "source_name": "FEMA effective NFHL",
+        "source_url": "https://www.fema.gov/flood-maps/national-flood-hazard-layer",
+        "source_version": "effective NFHL",
+        "spatial_resolution": "FIRM hazard polygons, panel-dependent map scale"
+      },
+      "inputs": {
+        "hazards": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\fema_nfhl\\bounded\\nfhl_layer28_d61f6f5f26ac79081446.geojson",
+          "sha256": "1237484e593dafeedfad172345602204fe73c61c2ba85f3ade8f67d37bf4da16"
+        },
+        "surveyed": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\fema_nfhl\\bounded\\nfhl_layer0_46da3d71b6e206c8f673.geojson",
+          "sha256": "6fee3ea859f71feae7bb860361e5b4523dfbfbf3511636e86e00ffc83c7ef99a"
+        }
+      }
+    },
+    "noaa_ncei_climate": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "1991-2020",
+        "manifest_entries": [
+          {
+            "bytes": 791736,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\download_log.json",
+            "notes": "Annual-frequency 1991-2020 Gridded Climate Normal, Cloud-Optimized GeoTIFF, fetched via Microsoft Planetary Computer anonymous SAS token for the NODD-hosted noaanormals/gridded-normals-cogs container (https://planetarycomputer.microsoft.com/api/sas/v1/token/noaanormals/gridded-normals-cogs; no login, API key, or account required; token is short-lived and must be re-requested for future access, it is not embedded in the stored URL below). Underlying data: NOAA NCEI U.S. Climate Normals 1991-2020, Monthly/Annual/Seasonal Gridded Normals (nClimGrid-based), NCEI Accession 0245564, DOI 10.25921/yya9-9769. Verified directly from file: GeoTIFF tag 42113 (GDAL_NODATA)=NaN; CRS EPSG:4326/WGS84 (GeoKey 2048=4326); pixel size 0.04166667 deg (~4.6 km); shape 596 rows x 1385 cols; origin (-124.70833333, 49.37500127); dtype float32. 'tmax_max' band verified empirically (3 sample pixels) to equal max(monthly tmax_norm, 12 months) i.e. the mean daily max of the warmest month. '_flag' bands = number of months/years of input data behind each cell's normal (QA/coverage/confidence input).",
+            "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tavg_norm.tif",
+            "retrieved_at_utc": "2026-10-03T02:13:11Z",
+            "sha256": "221db3be503a50c5c1d2796f4e489f1a46d1eabf78023bad4ca5a8a77d15acbd",
+            "url": "https://noaanormals.blob.core.windows.net/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tavg_norm.tif"
+          },
+          {
+            "bytes": 885191,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\download_log.json",
+            "notes": "Annual-frequency 1991-2020 Gridded Climate Normal, Cloud-Optimized GeoTIFF, fetched via Microsoft Planetary Computer anonymous SAS token for the NODD-hosted noaanormals/gridded-normals-cogs container (https://planetarycomputer.microsoft.com/api/sas/v1/token/noaanormals/gridded-normals-cogs; no login, API key, or account required; token is short-lived and must be re-requested for future access, it is not embedded in the stored URL below). Underlying data: NOAA NCEI U.S. Climate Normals 1991-2020, Monthly/Annual/Seasonal Gridded Normals (nClimGrid-based), NCEI Accession 0245564, DOI 10.25921/yya9-9769. Verified directly from file: GeoTIFF tag 42113 (GDAL_NODATA)=NaN; CRS EPSG:4326/WGS84 (GeoKey 2048=4326); pixel size 0.04166667 deg (~4.6 km); shape 596 rows x 1385 cols; origin (-124.70833333, 49.37500127); dtype float32. 'tmax_max' band verified empirically (3 sample pixels) to equal max(monthly tmax_norm, 12 months) i.e. the mean daily max of the warmest month. '_flag' bands = number of months/years of input data behind each cell's normal (QA/coverage/confidence input).",
+            "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_max.tif",
+            "retrieved_at_utc": "2026-10-03T02:13:11Z",
+            "sha256": "4b00d1c63b839f86eb605434dfd31ddd449dcfa3b74e5c9b5077b77a28d66f0e",
+            "url": "https://noaanormals.blob.core.windows.net/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_max.tif"
+          },
+          {
+            "bytes": 859134,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\download_log.json",
+            "notes": "Annual-frequency 1991-2020 Gridded Climate Normal, Cloud-Optimized GeoTIFF, fetched via Microsoft Planetary Computer anonymous SAS token for the NODD-hosted noaanormals/gridded-normals-cogs container (https://planetarycomputer.microsoft.com/api/sas/v1/token/noaanormals/gridded-normals-cogs; no login, API key, or account required; token is short-lived and must be re-requested for future access, it is not embedded in the stored URL below). Underlying data: NOAA NCEI U.S. Climate Normals 1991-2020, Monthly/Annual/Seasonal Gridded Normals (nClimGrid-based), NCEI Accession 0245564, DOI 10.25921/yya9-9769. Verified directly from file: GeoTIFF tag 42113 (GDAL_NODATA)=NaN; CRS EPSG:4326/WGS84 (GeoKey 2048=4326); pixel size 0.04166667 deg (~4.6 km); shape 596 rows x 1385 cols; origin (-124.70833333, 49.37500127); dtype float32. 'tmax_max' band verified empirically (3 sample pixels) to equal max(monthly tmax_norm, 12 months) i.e. the mean daily max of the warmest month. '_flag' bands = number of months/years of input data behind each cell's normal (QA/coverage/confidence input).",
+            "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_norm.tif",
+            "retrieved_at_utc": "2026-10-03T02:13:11Z",
+            "sha256": "865fd37d6946c26fbda1461cb0746b459c603b0e572131834fa140dfff5317b5",
+            "url": "https://noaanormals.blob.core.windows.net/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmax_norm.tif"
+          },
+          {
+            "bytes": 849735,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\download_log.json",
+            "notes": "Annual-frequency 1991-2020 Gridded Climate Normal, Cloud-Optimized GeoTIFF, fetched via Microsoft Planetary Computer anonymous SAS token for the NODD-hosted noaanormals/gridded-normals-cogs container (https://planetarycomputer.microsoft.com/api/sas/v1/token/noaanormals/gridded-normals-cogs; no login, API key, or account required; token is short-lived and must be re-requested for future access, it is not embedded in the stored URL below). Underlying data: NOAA NCEI U.S. Climate Normals 1991-2020, Monthly/Annual/Seasonal Gridded Normals (nClimGrid-based), NCEI Accession 0245564, DOI 10.25921/yya9-9769. Verified directly from file: GeoTIFF tag 42113 (GDAL_NODATA)=NaN; CRS EPSG:4326/WGS84 (GeoKey 2048=4326); pixel size 0.04166667 deg (~4.6 km); shape 596 rows x 1385 cols; origin (-124.70833333, 49.37500127); dtype float32. 'tmax_max' band verified empirically (3 sample pixels) to equal max(monthly tmax_norm, 12 months) i.e. the mean daily max of the warmest month. '_flag' bands = number of months/years of input data behind each cell's normal (QA/coverage/confidence input).",
+            "path": "data/raw/noaa_ncei_climate/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmin_norm.tif",
+            "retrieved_at_utc": "2026-10-03T02:13:11Z",
+            "sha256": "5b193a4126a33cd87df2dcace3722c06ed8980f42a19225720c121fbe6d402a7",
+            "url": "https://noaanormals.blob.core.windows.net/gridded-normals-cogs/normals-annual/1991-2020/1991_2020-annual-tmin_norm.tif"
+          }
+        ],
+        "retrieved_at": "2026-10-03T02:13:11Z",
+        "source_name": "NOAA NCEI gridded normals",
+        "source_url": "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals",
+        "source_version": "Gridded normals v1.0",
+        "spatial_resolution": "1/24 degree (~4.63 km)"
+      },
+      "inputs": {
+        "temperature_annual_max_mean_c": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tmax_norm.tif",
+          "sha256": "865fd37d6946c26fbda1461cb0746b459c603b0e572131834fa140dfff5317b5"
+        },
+        "temperature_annual_min_mean_c": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tmin_norm.tif",
+          "sha256": "5b193a4126a33cd87df2dcace3722c06ed8980f42a19225720c121fbe6d402a7"
+        },
+        "temperature_mean_c": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tavg_norm.tif",
+          "sha256": "221db3be503a50c5c1d2796f4e489f1a46d1eabf78023bad4ca5a8a77d15acbd"
+        },
+        "temperature_warmest_month_daily_max_c": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tmax_max.tif",
+          "sha256": "4b00d1c63b839f86eb605434dfd31ddd449dcfa3b74e5c9b5077b77a28d66f0e"
+        }
+      }
+    },
+    "usfs_whp": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "2023",
+        "manifest_entries": [
+          {
+            "bytes": 368424961,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usfs_wildfire_risk\\download_log.json",
+            "notes": "Wildfire Hazard Potential for the United States (270-m), version 2023, 4th Edition (DOI 10.2737/RDS-2015-0047-4). Contains whp2023.gdb (file geodatabase) and whp2023_GeoTIF/ with classified+continuous GeoTIFFs for CONUS, AK, HI. sha256 matches the value published on the RDS-2015-0047-4 catalog page (verified before and after download). Content-Length header matched exactly (368,424,961 bytes). Verified by direct rasterio inspection after extraction: whp2023_cls_conus.tif and whp2023_cnt_conus.tif are both EPSG:5070, 270 m pixels, 11283 x 17372, single seamless CONUS rasters.",
+            "path": "data/raw/usfs_wildfire_risk/whp/RDS-2015-0047-4_Data.zip",
+            "retrieved_at_utc": "2026-10-03T02:06:00Z",
+            "sha256": "7f10f1f8dd97551b8be1458fe0ec924df60b2cea7ece2d1af4c3c1166d1895ab",
+            "url": "https://www.fs.usda.gov/rds/archive/products/RDS-2015-0047-4/RDS-2015-0047-4_Data.zip"
+          }
+        ],
+        "retrieved_at": "2026-10-03T02:06:00Z",
+        "source_name": "USFS Wildfire Hazard Potential",
+        "source_url": "https://www.fs.usda.gov/rds/archive/catalog/RDS-2015-0047-4",
+        "source_version": "WHP 4th edition",
+        "spatial_resolution": "270 m EPSG:5070; not WRC",
+        "zip_member": "Data/whp2023_GeoTIF/whp2023_cnt_conus.tif"
+      },
+      "inputs": {
+        "archive": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usfs_wildfire_risk\\whp\\RDS-2015-0047-4_Data.zip",
+          "sha256": "7f10f1f8dd97551b8be1458fe0ec924df60b2cea7ece2d1af4c3c1166d1895ab"
+        }
+      }
+    },
+    "usfs_wildfire_risk": {
+      "config": {
+        "blocker_detail": "ImageServer U16 packed values/scale and missing-data mask unverified; BP export0..35 is not probability. Provide native WRC archive rasters with documented units and nodata.",
+        "data_mode": "real",
+        "data_year": "unverified service packing",
+        "manifest_entries": [
+          {
+            "bounds_5070": [
+              -10000.0,
+              760000.0,
+              50000.0,
+              830000.0
+            ],
+            "bytes": 19926570,
+            "license": "USDA Forest Service public data",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\download_log.json",
+            "path": "data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\BurnProbability_2a6aa73069a81e8a3250_5070.tif",
+            "request_identity": "2a6aa73069a81e8a3250",
+            "retrieved_at_utc": "2026-10-03T04:07:45.571331+00:00",
+            "sha256": "21325e2c39bf0d7ff27c84723f431610b503411ee61df6c9002712d0bc3b4d85",
+            "source_id": "usfs_wildfire_risk",
+            "stable_export_url": "https://imagery.geoplatform.gov/iipp/rest/services/Fire_Aviation/USFS_EDW_RMRS_WRC_BurnProbability/ImageServer/exportImage?bbox=-10000.0%2C760000.0%2C50000.0%2C830000.0&bboxSR=5070&imageSR=5070&size=2001%2C2334&format=tiff&pixelType=F32&interpolation=RSP_NearestNeighbor&f=json",
+            "url": "https://imagery.geoplatform.gov/iipp/rest/directories/system/arcgisoutput/_ags_759be013_5768_4030_980f_5b9cfeca06c5.tif",
+            "version": "public WRC ImageServer, observed 2026-10-03"
+          },
+          {
+            "bounds_5070": [
+              -10000.0,
+              760000.0,
+              50000.0,
+              830000.0
+            ],
+            "bytes": 19926570,
+            "license": "USDA Forest Service public data",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\download_log.json",
+            "path": "data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\ConditionalFlameLength_60e2e205bbd7899b0d02_5070.tif",
+            "request_identity": "60e2e205bbd7899b0d02",
+            "retrieved_at_utc": "2026-10-03T04:07:50.142286+00:00",
+            "sha256": "29908918949af117189093ddffe9c9e852ebf9a19cfdb0bed066180859241cdf",
+            "source_id": "usfs_wildfire_risk",
+            "stable_export_url": "https://imagery.geoplatform.gov/iipp/rest/services/Fire_Aviation/USFS_EDW_RMRS_WRC_ConditionalFlameLength/ImageServer/exportImage?bbox=-10000.0%2C760000.0%2C50000.0%2C830000.0&bboxSR=5070&imageSR=5070&size=2001%2C2334&format=tiff&pixelType=F32&interpolation=RSP_NearestNeighbor&f=json",
+            "url": "https://imagery.geoplatform.gov/iipp/rest/directories/0123456789abcdef/arcgisoutput/_ags_db094672_ace2_4068_8d58_0ae9c7b0ee2c.tif",
+            "version": "public WRC ImageServer, observed 2026-10-03"
+          }
+        ],
+        "quality_blocker": "invalid_source_value",
+        "retrieved_at": "2026-10-03T04:07:50.142286+00:00",
+        "source_name": "USFS Wildfire Risk to Communities",
+        "source_url": "https://www.fs.usda.gov/rds/archive/catalog/RDS-2020-0016-2",
+        "source_version": "WRC public ImageServer export (unverified scale/mask)",
+        "spatial_resolution": "30 m service; nearest-neighbor EPSG:5070 export"
+      },
+      "inputs": {
+        "wildfire_burn_probability": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\BurnProbability_2a6aa73069a81e8a3250_5070.tif",
+          "sha256": "21325e2c39bf0d7ff27c84723f431610b503411ee61df6c9002712d0bc3b4d85"
+        },
+        "wildfire_conditional_flame_length_ft": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\ConditionalFlameLength_60e2e205bbd7899b0d02_5070.tif",
+          "sha256": "29908918949af117189093ddffe9c9e852ebf9a19cfdb0bed066180859241cdf"
+        }
+      }
+    },
+    "usgs_annual_nlcd": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "2024",
+        "manifest_entries": [
+          {
+            "bytes": 230367480,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usgs_annual_nlcd\\download_log.json",
+            "notes": "Annual NLCD Land Cover, map year 2024 (time=1704067200000 = 2024-01-01T00:00:00Z, the instant used by the service's time-enabled mosaic to select the 2024 catalog item; this is the latest year this ImageServer currently exposes). Output EPSG:5070 (wikd 5070 confirmed in the exportImage JSON response), exact 30 m pixel grid (487680 m x 449160 m / 30 m = 16256 x 14972 px), nearest-neighbor resampling requested, pixelType U8, declared NoData=250. The 'url' field is the reproducible exportImage request (f=json); the actual bytes were fetched from the ephemeral 'href' the server returned in that JSON response (ArcGIS temp-output URLs expire and are not themselves stable, so do not re-request the href -- re-issue the exportImage call instead). Verified open+valid: 16256x14972 px, uint8, single band, via Pillow/numpy. Histogram cross-check: all 16 official CONUS classes (11,12,21,22,23,24,31,41,42,43,52,71,81,82,90,95) present in plausible proportions for this Gulf-coast bbox, plus 250 NoData (0.267% of pixels) and a notable 2.70% of pixels at value 0, which is NOT a documented Land Cover class (see known_issues).",
+            "path": "data/raw/usgs_annual_nlcd/Annual_NLCD_LndCov_2024_devbbox_5070.tif",
+            "retrieved_at_utc": "2026-10-03T02:04:00Z",
+            "sha256": "d60479c1d5ee951d8caa2fb211ad2f87da1a1a41aa178ac25ed98d94a93c83ba",
+            "url": "https://di-nlcd.img.arcgis.com/arcgis/rest/services/USA_NLCD_Annual_LandCover/ImageServer/exportImage?bbox=-195082.5394010234,658531.4116934312,292597.4605989766,1107691.4116934312&bboxSR=5070&imageSR=5070&size=16256,14972&format=tiff&pixelType=U8&noData=250&noDataInterpretation=esriNoDataMatchAny&interpolation=RSP_NearestNeighbor&time=1704067200000&f=json"
+          }
+        ],
+        "retrieved_at": "2026-10-03T02:04:00Z",
+        "source_name": "USGS Annual NLCD",
+        "source_url": "https://www.usgs.gov/centers/eros/science/annual-national-land-cover-database",
+        "source_version": "Collection 1.1 public ImageServer export",
+        "spatial_resolution": "30 m categorical; EPSG:5070 export"
+      },
+      "inputs": {
+        "land_cover": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usgs_annual_nlcd\\Annual_NLCD_LndCov_2024_devbbox_5070.tif",
+          "sha256": "d60479c1d5ee951d8caa2fb211ad2f87da1a1a41aa178ac25ed98d94a93c83ba"
+        }
+      }
+    },
+    "usgs_padus": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "2024",
+        "layer": "PADUS4_1_VectorAnalysis_CONUS",
+        "manifest_entries": [
+          {
+            "bytes": 441838654,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usgs_padus\\download_log.json",
+            "notes": "NOT a separate download -- this is the 'PADUS4_1VectorAnalysis_CONUS.gdb' folder (63 files, 441,838,654 bytes uncompressed) extracted in this session from the already-verified PADUS4_1_Raster_CONUS.zip (see first entry above) using 'unzip ... \"PADUS4_1VectorAnalysis_CONUS.gdb/*\"', deliberately skipping the zip's huge external raster payload (.ige/.rde/.rrd, ~80 GB uncompressed). Extracted pre-emptively for Phase 2 convenience because this single layer (PADUS4_1_VectorAnalysis_CONUS, 322,263 MultiPolygon features, ESRI:102039 / functionally EPSG:5070) is the recommended primary adapter input -- see docs/research/phase2/usgs_padus.md. sha256 is not meaningful for a directory; integrity is inherited from the parent zip's verified checksum. Safe to delete and re-extract from PADUS4_1_Raster_CONUS.zip at any time if disk space is needed; not required to keep both copies long-term.",
+            "path": "data/raw/usgs_padus/PADUS4_1VectorAnalysis_CONUS.gdb/",
+            "retrieved_at_utc": "2026-10-02T22:00:00Z",
+            "sha256": null,
+            "url": null
+          }
+        ],
+        "retrieved_at": "2026-10-02T22:00:00Z",
+        "source_name": "USGS PAD-US",
+        "source_url": "https://doi.org/10.5066/P96WBCHS",
+        "source_version": "PAD-US 4.1 flattened vector analysis",
+        "spatial_resolution": "flattened protected-area polygons"
+      },
+      "inputs": {
+        "areas": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usgs_padus\\PADUS4_1VectorAnalysis_CONUS.gdb",
+          "sha256": "a5435b6cfdc3ea74c1231bc6d470416845d436bb842c630ee5c26f4182fee9f2"
+        }
+      }
+    },
+    "wri_aqueduct40": {
+      "config": {
+        "data_mode": "real",
+        "data_year": "1979-2019 baseline",
+        "layer": "baseline_annual",
+        "manifest_entries": [
+          {
+            "bytes": 261527511,
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\wri_aqueduct40\\download_log.json",
+            "notes": "Direct public download, no login/form/terms click-through required. Verified via HTTP HEAD before download: HTTP/1.1 200 OK, Content-Type application/zip, Content-Length 261527511, Last-Modified Mon 07 Aug 2023 16:11:26 GMT, Server AmazonS3 via CloudFront. Full download exit 0, downloaded size matches Content-Length exactly. Archive contains: Aqueduct40_README.xlsx (data dictionary/readme workbook); CVS/Aqueduct40_baseline_annual_y2023m07d05.csv (202,140,225 bytes); CVS/Aqueduct40_baseline_monthly_y2023m07d05.csv (29,243,354 bytes); CVS/Aqueduct40_future_annual_y2023m07d05.csv (29,009,593 bytes); GDB/Aq40_Y2023D07M05.gdb/ (Esri File Geodatabase with 3 polygon layers: baseline_annual [68,506 features, 236 fields, EPSG:4326], baseline_monthly [16,395 features, 149 fields, EPSG:4326], future_annual [16,395 features, 186 fields, EPSG:4326]). Uncompressed total ~772.6 MB across 59 files; compressed zip 261.5 MB (249.4 MiB). CRS, feature counts and field lists verified directly by opening the extracted GDB with pyogrio 0.13.0 (GDAL OpenFileGDB driver) on 2026-10-02; see docs/research/phase2/wri_aqueduct40.md for full detail.",
+            "path": "data/raw/wri_aqueduct40/aqueduct-4-0-water-risk-data.zip",
+            "retrieved_at_utc": "2026-10-03T01:39:00Z",
+            "sha256": "bd3ed2bce88d6ff1b89191632ad134a2436e1e1d49599382f23a04d513624fc3",
+            "url": "https://files.wri.org/aqueduct/aqueduct-4-0-water-risk-data.zip"
+          }
+        ],
+        "retrieved_at": "2026-10-03T01:39:00Z",
+        "source_name": "WRI Aqueduct 4.0",
+        "source_url": "https://www.wri.org/data/aqueduct-water-risk-atlas",
+        "source_version": "4.0 Y2023M07D05",
+        "spatial_resolution": "HydroBASINS Level 6 subbasin polygons",
+        "zip_member": "Aqueduct40_waterrisk_download_Y2023M07D05/GDB/Aq40_Y2023D07M05.gdb"
+      },
+      "inputs": {
+        "baseline": {
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\wri_aqueduct40\\aqueduct-4-0-water-risk-data.zip",
+          "sha256": "bd3ed2bce88d6ff1b89191632ad134a2436e1e1d49599382f23a04d513624fc3"
+        }
+      }
+    }
+  },
+  "tests": {
+    "command": ".venv/Scripts/python.exe -m pytest -q --basetemp=.tmp-orchestrator-p2-final -p no:cacheprovider",
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 20.8
+  },
+  "outputs": {
+    "feature_provenance.parquet": {
+      "bytes": 34686,
+      "sha256": "cbadbc001a38751190c88353e90b1058172f7d747ef64dfca61309f3055960c1"
+    },
+    "us_grid_dataset.parquet": {
+      "bytes": 215642,
+      "sha256": "bcfd82314d0c09c39c494ae23f374cdfc4a74311931fce61e65cf2f6efd878ae"
+    }
+  },
+  "artifact_verification": {
+    "cells": 42,
+    "provenance_rows": 2436,
+    "unique_ids": true,
+    "valid_provenance": true,
+    "no_unknown_numeric_or_text_values": true,
+    "independent_repeat_both_parquet_sha256_identical": true
+  },
+  "known_limitations": [
+    "Development-area analysis only; national geometry is not national feature/model completion",
+    "WRC BP/CFL exports have unverified packing/mask semantics and remain UNKNOWN",
+    "NLCD service collection1.1 clip; collection1.2 bulk access manual",
+    "Partial NOAA/PADUS/FEMA coverage visible per metric",
+    "National vector memory/runtime unvalidated",
+    "Mapped infrastructure and Aqueduct are proxies, not capacity/supply commitments"
+  ],
+  "blockers": [
+    "Verified native WRC rasters/units/masks needed for wildfire observations"
+  ],
+  "next_phase_inputs": [
+    "data/processed/us_grid_dataset.parquet",
+    "data/processed/feature_provenance.parquet",
+    "data/processed/coverage_report.json",
+    "data/processed/data_manifest.json"
+  ]
+}

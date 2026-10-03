@@ -1,0 +1,1118 @@
+==================================================
+34. DEFINITION OF SUCCESS
+==================================================
+
+The frontend succeeds when:
+
+1. The backend returns candidate geographic regions.
+
+2. The frontend automatically plots those regions in their real
+   geographic positions.
+
+3. The user can zoom from the United States into a candidate region.
+
+4. Candidate regions use actual GeoJSON geometry from the backend,
+   not manually drawn shapes.
+
+5. Ranked candidates display map markers such as:
+
+   #1
+   #2
+   #3
+
+6. Clicking either a marker, polygon, or result-list item selects
+   the same candidate.
+
+7. Selecting a candidate displays:
+
+   - overall score;
+   - six challenge-factor scores;
+   - raw physical measurements;
+   - screening status;
+   - Pareto status;
+   - uncertainty;
+   - missing information;
+   - verification requirements;
+   - source provenance.
+
+8. The user can enable and disable geographic layers.
+
+9. The user can change the data-center configuration and execute:
+
+   FIND LOCATIONS
+
+10. The frontend sends that configuration to the actual backend
+    instead of calculating the ranking itself.
+
+11. New backend results replace the old candidate visualization.
+
+12. Loading, error, partial-data, and zero-candidate states work.
+
+13. The interface works on desktop and mobile.
+
+14. The frontend remains usable with thousands of grid cells.
+
+15. UNKNOWN values remain visibly unknown.
+
+16. The UI never implies that a candidate region is a verified
+    construction parcel.
+
+17. The UI never invents geographic or model values.
+
+18. Mock data are clearly identified as DEMO DATA.
+
+19. A user can compare up to three candidate regions.
+
+20. Source information is accessible for important metrics.
+
+21. The application can visualize current and future scenarios when
+    those scenarios are actually returned by the backend.
+
+22. The application can run without the optional globe mode.
+
+23. The main U.S. map remains the primary functional interface.
+
+==================================================
+35. BACKEND INTEGRATION
+==================================================
+
+Do NOT tightly couple map components to one API response.
+
+Create an API/data transformation layer:
+
+Backend Response
+       ↓
+API Adapter
+       ↓
+Frontend Domain Model
+       ↓
+Map + UI Components
+
+For example:
+
+backend:
+snake_case
+
+frontend:
+camelCase
+
+Conversion should happen in the API adapter.
+
+Create TypeScript domain types similar to:
+
+type CandidateRegion = {
+    id: string;
+    rank: number | null;
+    overallScore: number | null;
+
+    centroid: {
+        latitude: number;
+        longitude: number;
+    };
+
+    geometry: GeoJSON.Geometry;
+
+    screeningStatus:
+        | "PASS"
+        | "FAIL"
+        | "CONDITIONAL"
+        | "UNKNOWN";
+
+    paretoOptimal: boolean | null;
+
+    factorScores: {
+        powerCarbon?: number;
+        water?: number;
+        land?: number;
+        climate?: number;
+        heatReuse?: number;
+        communityEconomic?: number;
+    };
+
+    rawMetrics: Record<string, MetricValue>;
+
+    uncertainties: string[];
+
+    verificationRequired: string[];
+
+    sources: MetricSource[];
+};
+
+type MetricValue = {
+    value: number | string | null;
+    unit?: string;
+    status:
+        | "observed"
+        | "calculated"
+        | "scenario"
+        | "proxy"
+        | "unknown";
+};
+
+Do not spread arbitrary backend JSON throughout React components.
+
+Validate incoming API data.
+
+If the project already uses a schema-validation library, use it.
+
+Otherwise choose a lightweight TypeScript-compatible validation
+approach.
+
+Invalid records should fail gracefully rather than crash the map.
+
+==================================================
+36. API ENDPOINTS
+==================================================
+
+Create the frontend around a small backend interface.
+
+Preferred conceptual endpoints:
+
+POST /api/search
+
+Request:
+
+{
+    "facility": {
+        "peak_it_power_mw": 100,
+        "average_load_factor": 0.8,
+        "target_opening_year": 2030,
+        "operating_lifetime_years": 25,
+        "cooling_mode": "optimize"
+    },
+
+    "decision": {
+        "weighting_method": "equal"
+    },
+
+    "scenario": {
+        "year": "current"
+    }
+}
+
+Response:
+
+{
+    "run_id": "...",
+    "status": "SUCCESS",
+    "regions": [...]
+}
+
+Additional optional endpoints:
+
+GET /api/runs/{run_id}
+
+GET /api/regions/{region_id}
+
+GET /api/grid
+
+GET /api/layers/{layer_name}
+
+GET /api/regions/{region_id}/sources
+
+GET /api/regions/{region_id}/sensitivity
+
+The frontend must not require every optional endpoint for the MVP.
+
+==================================================
+37. LARGE GEOGRAPHIC DATA
+==================================================
+
+Do NOT send the complete scientific source datasets to the browser.
+
+For national grid visualization:
+
+prefer:
+
+vector tiles
+
+or
+
+simplified GeoJSON based on zoom level.
+
+If vector tiles are not yet available:
+
+implement a temporary bounded GeoJSON solution.
+
+Do not attempt to render hundreds of thousands of React markers.
+
+Use MapLibre sources and layers.
+
+Architecture:
+
+Backend
+   ↓
+GeoJSON / vector tiles
+   ↓
+MapLibre Source
+   ↓
+MapLibre Layer
+
+NOT:
+
+Backend
+   ↓
+100,000 React <Marker> components
+
+==================================================
+38. ZOOM-DEPENDENT VISUALIZATION
+==================================================
+
+Implement level-of-detail behavior.
+
+At national zoom:
+
+show:
+
+candidate regions
+rank markers
+coarse suitability visualization
+
+Do NOT show every detailed grid boundary.
+
+At regional zoom:
+
+show:
+
+candidate-region boundaries
+higher-resolution suitability grid
+major infrastructure
+
+At local zoom:
+
+show available higher-resolution geographic information.
+
+Do not invent parcel boundaries.
+
+Example:
+
+zoom < 5
+→ candidate regions only
+
+zoom 5–8
+→ regional suitability cells
+
+zoom > 8
+→ detailed cells/infrastructure if available
+
+Use appropriate actual zoom thresholds after testing.
+
+==================================================
+39. SEARCH ANIMATION
+==================================================
+
+If model-stage information is available, visualize the search process.
+
+For example:
+
+U.S. Grid
+↓
+Land screening
+↓
+Environmental screening
+↓
+Infrastructure screening
+↓
+Physical simulation
+↓
+Candidate regions
+
+This can be represented through status text or progressive layer
+updates.
+
+Do NOT fake model computation.
+
+If the backend only returns the final result, use an indeterminate
+loading state.
+
+Do not artificially delay results for animation.
+
+==================================================
+40. MAP LEGEND
+==================================================
+
+Always provide a visible map legend appropriate to active layers.
+
+Example:
+
+SUITABILITY
+
+High potential
+Potential
+Conditional
+Excluded
+Unknown
+
+For continuous layers such as water stress or carbon intensity,
+show the actual numeric range and units.
+
+Do not display:
+
+"Good → Bad"
+
+without explaining the underlying variable.
+
+==================================================
+41. MAP TOOLTIP
+==================================================
+
+Hover on desktop may display a lightweight tooltip.
+
+Example:
+
+Grid G10382
+
+Status: Potential
+Score: 84.2
+
+But clicking must persist the selection.
+
+Hover cannot be required to access information.
+
+Mobile must work without hover.
+
+==================================================
+42. REGION LABELS
+==================================================
+
+Do not invent city names for model-generated regions.
+
+Preferred naming hierarchy:
+
+1. Backend-provided verified geographic label.
+
+2. County/state intersection derived from authoritative geography.
+
+3. Generic identifier:
+
+Candidate Region 014
+
+Potentially display:
+
+Candidate Region 014
+Western New York
+
+only when "Western New York" is actually provided or derived by a
+documented geographic-labeling system.
+
+==================================================
+43. SEARCH RESULT FILTERING
+==================================================
+
+Allow frontend filtering without rerunning the backend when the
+filter does not affect the model.
+
+Examples:
+
+Show:
+[✓] Top 10
+[ ] Pareto only
+[ ] Conditional candidates
+
+Minimum score:
+[ 75 ]
+
+However:
+
+changing facility capacity,
+cooling design,
+hard constraints,
+AHP weights,
+or scenario
+
+must trigger backend recalculation.
+
+Do not recalculate those model results in JavaScript.
+
+==================================================
+44. AHP INTERFACE
+==================================================
+
+If weighting method = AHP:
+
+provide a separate expandable configuration interface.
+
+Display top-level criteria:
+
+Power & Carbon
+Water
+Land
+Climate
+Heat Reuse
+Community / Economic
+
+Allow pairwise comparisons.
+
+Example:
+
+Power & Carbon
+
+[ Equal ]
+[ Moderately more important ]
+[ Strongly more important ]
+
+than
+
+Water
+
+Do not require users to manually enter matrix reciprocals.
+
+Frontend should construct the reciprocal matrix.
+
+Send the matrix to the backend.
+
+Backend calculates:
+
+weights
+lambda_max
+CI
+CR
+
+Frontend displays:
+
+Derived weights
+
+Power & Carbon        28%
+Water                 22%
+Climate               19%
+...
+
+Consistency ratio:
+
+CR = 0.07
+Acceptable
+
+If backend returns:
+
+REVIEW_REQUIRED
+
+display:
+
+"Your pairwise priorities are internally inconsistent.
+Review highlighted comparisons."
+
+Do not silently modify user preferences.
+
+==================================================
+45. PARETO VISUALIZATION
+==================================================
+
+Allow:
+
+[✓] Show Pareto-optimal candidates
+
+Candidate detail should display:
+
+Pareto efficient: YES / NO
+
+Provide a short explanation:
+
+"Pareto-efficient means no compared candidate performs at least as
+well on every selected objective while performing better on at least
+one."
+
+Do not imply Pareto-efficient means objectively best.
+
+==================================================
+46. FUTURE SCENARIO CONTROL
+==================================================
+
+If backend provides scenarios:
+
+create:
+
+Scenario
+
+[ Current ▼ ]
+
+Possible values:
+
+Current
+2030
+2040
+2050
+
+Only display supported years.
+
+Changing scenario should either:
+
+request appropriate backend results
+
+or
+
+switch between already returned scenario results.
+
+Do not interpolate values in frontend.
+
+When future scenario is selected, visibly display:
+
+Scenario result
+
+not:
+
+Forecast certainty.
+
+==================================================
+47. TIME COMPARISON
+==================================================
+
+For a selected candidate, if multiple scenario years exist, provide
+small trend visualizations for:
+
+grid carbon
+water stress
+temperature/climate
+facility carbon
+facility water
+
+Do not generate values between supplied years.
+
+Example:
+
+Current ── 2030 ── 2040 ── 2050
+
+Use actual backend values.
+
+==================================================
+48. SEARCH CONFIGURATION SUMMARY
+==================================================
+
+The result screen should always show what was searched.
+
+Example:
+
+SEARCH CONFIGURATION
+
+100 MW AI data center
+80% average IT load
+Opening: 2030
+Lifetime: 25 years
+Cooling: Optimized
+Weighting: AHP
+Scenario: Current
+
+This prevents users from forgetting what assumptions generated
+the ranking.
+
+==================================================
+49. MODEL RUN IDENTIFIER
+==================================================
+
+Display the backend run ID unobtrusively.
+
+Example:
+
+Model Run
+RUN-2026-10-03-0012
+
+This allows results to be reproduced.
+
+If available, source details should include:
+
+model version
+dataset version
+run timestamp
+
+==================================================
+50. SHAREABLE RESULT STATE
+==================================================
+
+Support URL state where practical.
+
+Example:
+
+/map?run=RUN123&region=REGION014&layer=water
+
+Opening the URL should restore:
+
+model run
+selected region
+active layer
+
+Do not serialize the entire result dataset into the URL.
+
+==================================================
+51. ACCESSIBILITY
+==================================================
+
+All major workflows must be keyboard accessible.
+
+Requirements:
+
+visible focus states
+
+semantic buttons
+
+accessible labels
+
+ARIA where necessary
+
+sufficient contrast
+
+do not communicate status through color alone
+
+candidate results must also exist in an accessible list outside the
+map
+
+Map interaction cannot be the only way to select a candidate.
+
+==================================================
+52. ERROR HANDLING
+==================================================
+
+Handle:
+
+backend unavailable
+network timeout
+invalid API response
+empty candidate list
+partial geographic data
+unsupported scenario
+missing geometry
+missing metric
+map style unavailable
+
+Examples:
+
+"Model service unavailable."
+
+"No regions satisfy the current constraints."
+
+"Region geometry unavailable. Metrics can still be viewed."
+
+"Water data unavailable for this candidate."
+
+Do not crash the entire application because one region is malformed.
+
+==================================================
+53. PERFORMANCE
+==================================================
+
+Targets:
+
+Initial UI should become interactive quickly.
+
+Do not block rendering while large optional layers load.
+
+Load:
+
+candidate results first.
+
+Then load optional:
+
+grid
+water
+climate
+infrastructure
+
+layers on demand.
+
+Cache unchanged results.
+
+Abort stale requests if the user submits a new search.
+
+Do not rerender the entire map for a small panel-state change.
+
+==================================================
+54. DEVELOPMENT MODE
+==================================================
+
+Support two modes:
+
+REAL API
+
+and
+
+DEMO API.
+
+Environment example:
+
+VITE_API_BASE_URL=...
+
+VITE_USE_MOCK_DATA=false
+
+Mock mode must show:
+
+DEMO DATA
+
+prominently enough that screenshots cannot easily be mistaken for
+real model results.
+
+==================================================
+55. TEST DATA
+==================================================
+
+Create synthetic test candidates with:
+
+different ranks
+different geometries
+PASS
+CONDITIONAL
+UNKNOWN values
+missing metrics
+different factor scores
+
+These fixtures exist ONLY for development/testing.
+
+Do not use actual city names for synthetic candidates if doing so
+could make screenshots appear to contain real model findings.
+
+Use:
+
+Candidate Alpha
+Candidate Beta
+Candidate Gamma
+
+==================================================
+56. TESTING
+==================================================
+
+Implement unit/component tests for:
+
+API parsing
+domain conversion
+missing values
+region selection
+marker selection
+result-list selection
+layer visibility
+AHP matrix construction
+configuration submission
+scenario switching
+comparison mode
+error states
+empty state
+partial state
+demo-data banner
+
+Add at least one integration test:
+
+User loads application
+→ sees map
+→ submits facility configuration
+→ backend/mock responds
+→ candidate regions appear
+→ selects #1
+→ map moves to region
+→ details appear
+→ raw metrics are visible
+→ unknown values remain UNKNOWN.
+
+==================================================
+57. MVP ACCEPTANCE TEST
+==================================================
+
+The MVP is complete when this exact workflow works:
+
+1. Open application.
+
+2. See interactive United States map.
+
+3. Enter:
+
+   Peak IT Power: 100 MW
+   Average Load: 80%
+   Opening: 2030
+   Lifetime: 25 years
+
+4. Click:
+
+   FIND LOCATIONS
+
+5. Frontend calls backend.
+
+6. Backend returns candidate regions.
+
+7. Map displays those candidate regions geographically.
+
+8. Rank markers appear.
+
+9. Results panel lists candidates.
+
+10. Click candidate #1.
+
+11. Map zooms to candidate #1.
+
+12. Candidate polygon is highlighted.
+
+13. Detail panel shows:
+
+    Power & Carbon
+    Water
+    Land
+    Climate
+    Heat Reuse
+    Community / Economic
+
+14. Raw measurements are shown.
+
+15. UNKNOWN requirements are clearly shown.
+
+16. User returns to national map.
+
+17. User selects another candidate.
+
+18. Correct region and metrics appear.
+
+If this workflow does not work, do not claim the frontend MVP is
+complete.
+
+==================================================
+58. SECONDARY ACCEPTANCE TEST
+==================================================
+
+Enable:
+
+Suitability Grid
+
+The map should visually show how national grid cells relate to the
+final candidate regions.
+
+Enable:
+
+Water
+
+The map should display backend-provided water data.
+
+Select:
+
+2050
+
+if supported.
+
+The visualization updates using actual 2050 backend values.
+
+Disable:
+
+Water.
+
+Enable:
+
+Climate.
+
+The water layer disappears and climate information appears.
+
+No page refresh should be necessary.
+
+==================================================
+59. VISUAL PRIORITY
+==================================================
+
+The application is a MAP-FIRST product.
+
+Do not turn it into a dashboard where the map occupies a small card.
+
+The map should occupy most available screen area.
+
+Desktop target concept:
+
+┌──────────────────────────────────────────────────────────────┐
+│ Sustainable Data Center Locator           Run: RUN-001     │
+├────────────────┬─────────────────────────────────────────────┤
+│                │                                             │
+│ Configuration  │                                             │
+│                │                                             │
+│ Find Locations │                                             │
+│                │                 MAP                         │
+│ Results        │                                             │
+│ #1 Region A    │                                             │
+│ #2 Region B    │                                             │
+│ #3 Region C    │                                             │
+│                │                                             │
+│ Layers         │                                             │
+│ □ Water        │                                             │
+│ □ Climate      │                                             │
+│ □ Grid         │                                             │
+│                │                                             │
+└────────────────┴─────────────────────────────────────────────┘
+
+When a candidate is selected:
+
+┌──────────────────────────────────────────────────────────────┐
+│                         MAP                                  │
+│                                                             │
+│             ┌──────── Candidate Region ────────┐             │
+│             │                                  │             │
+│             └──────────────────────────────────┘             │
+│                          #1                                 │
+│                                                             │
+├──────────────────────────────────────────────────────────────┤
+│ Candidate details / six factors / raw metrics / uncertainty │
+└──────────────────────────────────────────────────────────────┘
+
+Exact layout may be improved based on usability.
+
+==================================================
+60. OPTIONAL GLOBE MODE
+==================================================
+
+Only after the functional 2D U.S. map works:
+
+add:
+
+Map | Globe
+
+If supported by the selected MapLibre version/style.
+
+The globe should allow users to rotate Earth and zoom toward the
+United States.
+
+Candidate markers should remain geographically correct.
+
+Do not create a fake CSS sphere.
+
+Do not implement globe mode if it compromises the core map.
+
+The model currently searches the United States, so other countries
+should not display fake candidate results.
+
+==================================================
+61. DO NOT IMPLEMENT
+==================================================
+
+Do NOT:
+
+rebuild the deterministic location model in frontend
+
+calculate AHP final weights independently when backend owns AHP
+
+invent candidate regions
+
+invent city names
+
+invent power capacity
+
+invent fiber availability
+
+invent environmental measurements
+
+call an LLM to choose the winner
+
+use random numbers as production values
+
+draw fake transmission lines
+
+draw fake heat-reuse facilities
+
+pretend a centroid is the construction site
+
+load enormous scientific raster files directly into browser
+
+make the globe more important than the actual decision interface
+
+==================================================
+62. IMPLEMENTATION ORDER
+==================================================
+
+Execute in this order.
+
+PHASE F1
+
+Project setup
+MapLibre
+U.S. map
+responsive layout
+
+PHASE F2
+
+API/domain types
+mock adapter
+candidate polygons
+rank markers
+selection
+
+PHASE F3
+
+configuration form
+Find Locations
+backend integration
+loading/error/empty states
+
+PHASE F4
+
+candidate details
+six factors
+raw metrics
+uncertainty
+sources
+
+PHASE F5
+
+grid layer
+water layer
+climate layer
+infrastructure layer
+layer controls
+
+PHASE F6
+
+comparison
+AHP interface
+future scenarios
+sensitivity display
+
+PHASE F7
+
+performance optimization
+accessibility
+responsive/mobile
+testing
+
+PHASE F8 — OPTIONAL
+
+globe projection
+presentation polish
+
+After every phase:
+
+run tests
+fix regressions
+commit/update handoff documentation.
+
+Do not skip directly to visual polish.
+
+==================================================
+63. FINAL DELIVERABLE
+==================================================
+
+Deliver a working frontend that connects:
+
+DATA CENTER REQUIREMENTS
+
+        ↓
+
+BACKEND LOCATION MODEL
+
+        ↓
+
+CANDIDATE REGIONS
+
+        ↓
+
+INTERACTIVE U.S. MAP
+
+        ↓
+
+REGION EXPLORATION
+
+        ↓
+
+WHY THIS LOCATION?
+
+        ↓
+
+RAW DATA + UNCERTAINTY + SOURCES
+
+
+The central experience must be:
+
+"I specify the data center I want to build, the model searches the
+United States, and the map shows me where the promising regions are."
+
+==================================================
+64. FINAL AGENT INSTRUCTION
+==================================================
+
+Before writing code:
+
+1. Inspect

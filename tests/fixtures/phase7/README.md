@@ -1,0 +1,1 @@
+Explicit synthetic software fixture only. Geometry is copied from 3 accepted development cells; all metric quantities are invented, labeled synthetic and quarantined. Cell 1 is complete with critical UNKNOWN requirements, cell 2 lacks water stress, cell 3 fails the regional land-proxy threshold. This is not geographic or engineering evidence.

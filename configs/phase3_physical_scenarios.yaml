@@ -1,0 +1,13 @@
+scenarios:
+  - scenario_id: historical_static_2023
+    carbon_data_year: "2023"
+    historical_static: true
+    grid_water_l_per_kwh: null
+    grid_water_basis: consumption
+    grid_water_geography: null
+    basis: project_assumption
+    rationale: >-
+      Reuse EPA eGRID2023 CO2e intensity unchanged for illustrative opening2030
+      annual operation. Historical-static comparison, not future/marginal carbon
+      forecast. Electricity water is unknown because defensible generation
+      mix/geography consumption factors are unavailable.

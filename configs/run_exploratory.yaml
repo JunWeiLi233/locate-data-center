@@ -1,0 +1,166 @@
+schema_version: 2.0.0
+delivery_version: phase7_delivery_v1
+run_name: development_exploratory
+data_mode: real
+grid_config: configs/grid.yaml
+grid_path: data/processed/us_grid__dev_tiny.parquet
+grid_definition_id: conus-epsg5070-ox-2500000-oy3400000-s10000m-v1
+study_area: dev_tiny
+source_registry: configs/sources.yaml
+local_sources: configs/local_sources.json
+core_source_inputs: configs/local_core_sources.json
+expanded_source_inputs: configs/local_expanded_sources.json
+aqueduct_source_input: configs/local_aqueduct_source.json
+expanded_features: true
+facility: configs/facility.yaml
+cooling_designs: configs/cooling_designs.yaml
+physical_scenarios: configs/phase3_physical_scenarios.yaml
+constraints: configs/constraints.yaml
+scoring_profile: configs/scoring_profile.yaml
+screening_mode: EXPLORATORY
+weighting_method: equal
+user_group_weights: null
+ahp_input: null
+future:
+  enabled: true
+  pathways:
+  - bau
+  - opt
+  - pes
+  milestone_years:
+  - 2030
+  - 2040
+  - 2050
+  - 2080
+  profiles_directory: configs/phase5_scoring_profiles
+  profile_declaration: docs/phase_records/phase5_profiles_predeclared.json
+  annual_extension:
+    enabled: true
+    method: repeat_opening_year_annual_scenario
+    basis: project_assumption
+    rationale: Repeat the opening-year historical-static eGRID2023 annual carbon and
+      explicitly constant cooling-design PUE/WUE assumptions for exactly 25 modeled
+      years from 2030 through 2054, each with 8,760 hours. This is an illustrative
+      constant project scenario, not a future-grid forecast or calendar leap-year
+      model. Missing opening-year factors remain UNKNOWN. Aqueduct trend windows and
+      NASA climate context are never copied/interpolated to annual physical years.
+  lifecycle: configs/phase5_lifecycle.yaml
+validation:
+  enabled: true
+  validation_revision: phase7_current_v1
+  top_k: 10
+  cases:
+  - case_id: weight_energy_focus
+    group_weights:
+      energy_carbon: 0.4
+      water_stewardship: 0.2
+      grid_infrastructure: 0.2
+      land: 0.2
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: weight_water_focus
+    group_weights:
+      energy_carbon: 0.2
+      water_stewardship: 0.4
+      grid_infrastructure: 0.2
+      land: 0.2
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: weight_infrastructure_focus
+    group_weights:
+      energy_carbon: 0.2
+      water_stewardship: 0.2
+      grid_infrastructure: 0.4
+      land: 0.2
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: weight_land_focus
+    group_weights:
+      energy_carbon: 0.2
+      water_stewardship: 0.2
+      grid_infrastructure: 0.2
+      land: 0.4
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: pue_minus_10pct
+    category: pue
+    multiplier: 0.9
+    basis: project_assumption
+    rationale: Multiplicative stress around each declared constant annual PUE; not
+      an empirical confidence interval.
+  - case_id: pue_plus_10pct
+    category: pue
+    multiplier: 1.1
+    basis: project_assumption
+    rationale: Multiplicative stress around each declared constant annual PUE; not
+      an empirical confidence interval.
+  - case_id: wue_minus_50pct
+    category: wue
+    multiplier: 0.5
+    basis: project_assumption
+    rationale: Multiplicative stress around each declared constant WUE; a declared
+      zero remains zero.
+  - case_id: wue_plus_50pct
+    category: wue
+    multiplier: 1.5
+    basis: project_assumption
+    rationale: Multiplicative stress around each declared constant WUE; not an empirical
+      confidence interval.
+  - case_id: load_minus_10pct
+    category: load
+    multiplier: 0.9
+    basis: project_assumption
+    rationale: Multiplicative stress around the declared average IT load factor.
+  - case_id: load_plus_10pct
+    category: load
+    multiplier: 1.1
+    basis: project_assumption
+    rationale: Multiplicative stress around the declared average IT load factor.
+  - case_id: carbon_half_historical_intensity
+    category: carbon
+    multiplier: 0.5
+    basis: project_assumption
+    rationale: Counterfactual multiplier on the historical eGRID2023 factor; explicitly
+      not a future-grid forecast.
+  - case_id: carbon_one_point_five_historical_intensity
+    category: carbon
+    multiplier: 1.5
+    basis: project_assumption
+    rationale: Counterfactual multiplier on the historical eGRID2023 factor; explicitly
+      not a future-grid forecast.
+  - case_id: land_threshold_half
+    category: land
+    multiplier: 0.5
+    basis: project_assumption
+    rationale: Screening-policy stress at half the declared regional land-plausibility
+      threshold; not parcel engineering.
+  - case_id: land_threshold_double
+    category: land
+    multiplier: 2.0
+    basis: project_assumption
+    rationale: Screening-policy stress at twice the declared regional land-plausibility
+      threshold; not parcel engineering.
+  - case_id: screening_strict
+    mode: STRICT
+    basis: project_assumption
+    rationale: Apply the accepted strict treatment of critical UNKNOWN evidence; every
+      hard failure remains excluded.
+    category: screening
+  allow_synthetic: false
+  max_cases: 64
+  future_contexts:
+  - bau_2030
+  - bau_2040
+  - bau_2050
+  - opt_2030
+  - pes_2030
+maximum_model_cells: 1000
+resource_policy_basis: project_assumption
+resource_policy_rationale: Bound current delivery to the configured development subset
+  below1000cells; national source coverage and vector RAM are unvalidated. This is
+  an execution budget, not an engineering threshold.
+random_seed: null

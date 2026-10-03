@@ -1,0 +1,2623 @@
+{
+  "accepted_at": "2026-10-03T07:18:57.636930+00:00",
+  "accepted_by": "main_orchestrator_root",
+  "artifact_audit": {
+    "path": "docs/phase_records/phase5_artifact_audit.json",
+    "result": {
+      "all_lifecycle_rows_schema_valid": true,
+      "all_provenance_rows_schema_valid": true,
+      "all_temporal_rows_schema_valid": true,
+      "annual_periods_per_group": 25,
+      "artifacts_identical": 353,
+      "baseline_preserved": true,
+      "carbon_full_coverage_tolerance": 1e-06,
+      "carbon_groups": 1008,
+      "code_revision": "sha256:c37565852deccd28af146c46918aadfb055ea1e1b82f371482b082b45b40c6de",
+      "comparison_rows": 2016,
+      "files": {
+        "baseline_vs_enhanced.parquet": {
+          "bytes": 38700,
+          "metadata": {
+            "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+            "data_mode": "real",
+            "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+            "schema": "BaselineEnhancedComparison",
+            "schema_version": "1.0.0"
+          },
+          "sha256": "b6f54755de43bf93528d06abe765e5ac7388cddacfc72a7bffc20e678f4bb75a"
+        },
+        "enhanced_feature_provenance.parquet": {
+          "bytes": 53101,
+          "metadata": {
+            "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+            "data_mode": "real",
+            "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+            "schema": "FeatureMetadata",
+            "schema_version": "1.1.0"
+          },
+          "sha256": "7eee462f8514e26fff80e42bd492eb939f7328a821744c739007e4f2fd43d6fd"
+        },
+        "enhanced_grid_dataset.parquet": {
+          "bytes": 593160,
+          "metadata": {
+            "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+            "data_mode": "real",
+            "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+            "schema": "GeographicFeatureDataset",
+            "schema_version": "1.2.0"
+          },
+          "sha256": "96add7295bc5f8728513f7b562d2c211cfc8c05f52c01196bdfd91596900da14"
+        },
+        "future_scenarios.parquet": {
+          "bytes": 5062910,
+          "metadata": {
+            "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+            "data_mode": "real",
+            "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+            "schema": "FutureScenarioValue",
+            "schema_version": "1.0.0"
+          },
+          "sha256": "0420d3e0afa920d73cc63f615e5b030c8f5f0d7eab53b1237060925c9e0f1a38"
+        },
+        "lifecycle_results.parquet": {
+          "bytes": 696448,
+          "metadata": {
+            "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+            "data_mode": "real",
+            "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+            "schema": "LifecycleResult",
+            "schema_version": "1.0.0"
+          },
+          "sha256": "764214f8505398c0f7a8d4a735f27ca0c6a8a2a23c4247444f7ffbb1f53cf0de"
+        }
+      },
+      "final_code_hashes": {
+        "src\\dc_locator\\geography\\sources\\aqueduct_future.py": "f3d15881f1299727647d968d1d3e69c312c269de3bb99b2798ecdd88f14f7bab",
+        "src\\dc_locator\\model\\enhanced.py": "b2f793e7b27ae9c1f4186c73d44702aa9b28b5d1d4cee15ddf46698fab705565",
+        "src\\dc_locator\\model\\lifecycle.py": "c07836cb4b69d9a50bfba4d92d85de6b47fdc76f0f0b5a86d9f2a59a8cc2bd3f",
+        "src\\dc_locator\\model\\scenarios.py": "3259c9ca1f90b97f610248db51ff5ba48dd994175ba2b3b926a240ef6b95b978",
+        "src\\dc_locator\\schemas.py": "aec9ed5a4683e73f9ebad2fbc2b687317eb321fd3c3c8929862d86681248734a",
+        "src\\dc_locator\\source_periods.py": "a5cf962312b106327fb6364212e3e346bdef722db316dbf5b2dc97d042bc0eaa",
+        "src\\dc_locator\\validation.py": "2b05c23840ff1dea5e85abdacf0f6bc4bcaadb03b5c7f30281b90e325c53e448"
+      },
+      "final_module_accounting_evidence": "Inventory accounting modules exactly equal compatible factor modules; boolean component values rejected before coercion",
+      "first_year": 2030,
+      "full_lifecycle_null": 1008,
+      "geography_columns": 681,
+      "geography_rows": 42,
+      "last_year": 2054,
+      "lifecycle_rows": 1008,
+      "peak_working_set_bytes": [
+        1901715456,
+        1900687360
+      ],
+      "provenance_rows": 6636,
+      "source_ids_registered": true,
+      "status": "PASS",
+      "temporal_kind_counts": {
+        "annual_operating": 176400,
+        "source_projection_window": 4662,
+        "unsupported_requested_period": 1512
+      },
+      "temporal_rows": 182574,
+      "test_hashes": {
+        "tests/conftest.py": "0d42cdd10ba666cb86c99997190efd63b6d9c36c9f5e500cf97ccae12ebf676d",
+        "tests/test_aqueduct_future.py": "d327163650cbfd61839d13eb2ac1f10a1ae0ce670ad931d1118a3500e4ebb612",
+        "tests/test_boundary.py": "2dbc163ed370d4fa1d4cc5e553d121837551fce78705d3f4c994efc3624f5441",
+        "tests/test_cli.py": "55b2381fa2fd183098511626683cb42519b469d31365149435941c4fc50787ce",
+        "tests/test_cli_build_grid_real.py": "e5d2c6cbd9646f78059c3de705e6b0e90c3d1da6dc5dfbf3a8a288eb9f2c2c4e",
+        "tests/test_config.py": "4c8a6ee6d0e45234952d8c9cf7269a98eb4b10c7bd197e7bfe8e0de592c94994",
+        "tests/test_distance.py": "3c8d2c1c0a5e022e4d71be904b802471adb60027a079096ec5b031c15cafdc52",
+        "tests/test_expanded_builder.py": "b062123de05f0ae354864508a1ca670d0f8633b99d9121c5663f2e982436eaf0",
+        "tests/test_expanded_native.py": "b6e717f894cfe8fc6e055b7640bf139eceb68f9be720069df2a2aba01610c9d9",
+        "tests/test_geography_features.py": "d7af79526d1057e8c12713be191845251d9c5430b64d365ae29dc2fd110c4b7a",
+        "tests/test_grid.py": "48f31bd1afde72f6bd870f58313c13d7c54fb1c39b156de006b181c937d3b64e",
+        "tests/test_grid_audit.py": "916b3bfb928446961a79c1d99c4388091153fd45cf80e7e54fe9db742973d4b3",
+        "tests/test_io.py": "8e1eb62a1e120a22214731b8f9b786c5c85b982ad61608f67fa74b836fb4772c",
+        "tests/test_model_ahp.py": "53f7a58cf34a78e41845a860b5dd53e2e689423d3ede037d1ff6d2360b3e3f8c",
+        "tests/test_model_lifecycle.py": "282a834951b73e93f2e2e040f338962d6a050be718e585dab699d2bcacd0b104",
+        "tests/test_model_physics.py": "f2fa0a4c78fe396821696a236f3f2a921899305e5e6c12864a0d30de628e4321",
+        "tests/test_model_scenarios.py": "93149ef358354d07dcc2a2e7c9238c329ffa22eaa36a8a4b7fe3add0234b6600",
+        "tests/test_model_screening.py": "1fad429a62c62727d865c77c7ec4d74b4ecbef761746ea5acedf003d707b3191",
+        "tests/test_phase4.py": "ca9316ec9106e2a157b972cba972a4250a77ea43cadd259bcf10e9cd674d735e",
+        "tests/test_phase5_integration.py": "3b3c7011faa962d614ffc86b4abd4c1959334ed15b0d6822a4869c8beaf2a5dd",
+        "tests/test_provenance.py": "7935e3c0042952984fae9fd8db094248626046c79942009a9a750f633b70496d",
+        "tests/test_schemas.py": "16932794fb0198af90997bc791460236d2f46d0d1a9e769477dae0715e640f0d"
+      },
+      "verified_at_utc": "2026-10-03T07:16:19.299591+00:00"
+    },
+    "sha256": "6c87f563b704a8b720e521545dd8334516931ae1bfc00c653cd3a1e0e0f96305"
+  },
+  "baseline_preserved": {
+    "configs\\constraints.yaml": "04b33be0bdf2aaaa269efcc86b2d85f7a6b8b4537ca1073822ab2ea4e3dfbb7c",
+    "configs\\cooling_designs.yaml": "19912691adfa3e0fb9b02a78663673af2bd9ea0640e6f964af8b7b40ee9f7802",
+    "configs\\facility.yaml": "1d869378aecb77a76b1c5d0cf17f94786d86c8ceab8b9eb170ed7eba88744949",
+    "configs\\geography.yaml": "8a46b1d0ea7b958eeebc29e27563c07485c1ede53a3fb1cc80180e5a1dcf77b2",
+    "configs\\grid.yaml": "d8d222197f60513db481814610f96908c2bc71469363368b28e264f69cdac82f",
+    "configs\\phase3_physical_scenarios.yaml": "a3b22ce83ddfb0602eca842dcc06004e7a6f7af88dc74987ded9eddc824c3cbe",
+    "configs\\run.yaml": "5aecd8a09ad1f1bcccf37ac33bb69eb2c1970d165a29b76e604bb0d71b946148",
+    "configs\\scenarios.yaml": "4623f29f03b0201e39d109e48d3571c03fce31988acd56c1003a8683b39cf76a",
+    "configs\\scoring.yaml": "e1c6fd84d54c79ea2c8188142c0c086352fdaec97fa5e0ad825f8faf77a2d3f9",
+    "configs\\scoring_profile.yaml": "3f7c2102e9212008ee4d1082ab679ec8deedd94851a10a3127da81369a2481f0",
+    "configs\\sources.yaml": "d134ac32f843ef67a21c1d5d5c804a2ca64799f2a25d8adcf97fa4594381fbd2",
+    "data\\processed\\feature_provenance.parquet": "cbadbc001a38751190c88353e90b1058172f7d747ef64dfca61309f3055960c1",
+    "data\\processed\\us_grid_dataset.parquet": "bcfd82314d0c09c39c494ae23f374cdfc4a74311931fce61e65cf2f6efd878ae",
+    "runs\\phase3\\exploratory\\screening_eligibility.parquet": "a38a00028d21d224ac7fbd63bcb613a862698e59f9cd5105548c3b6742ab396b",
+    "runs\\phase3\\exploratory\\screening_results.parquet": "3347aa6c553c8d7d1ed5f73994966202ea2da63b4e80ff6207fd748817e967dc",
+    "runs\\phase3\\exploratory\\screening_summary.json": "f14b2bd4578fb9e1e62a7f872ac819cc3d47ae33c880a424f458fde128211595",
+    "runs\\phase3\\exploratory\\site_performance.parquet": "ea6363d6028e59d418a57dcb32c95a766a4c795e75f556a9fae7f4f31dfaff55",
+    "runs\\phase3\\screening_eligibility.parquet": "8c9a9ae4af134f6a6d9b749d6c5fdaee61467372202c241ae9409518acf13996",
+    "runs\\phase3\\screening_results.parquet": "480e5796f0cacbfce12f18297ace425d3f35cceff8240bc19442c9b838ce5d30",
+    "runs\\phase3\\screening_summary.json": "3fb44d82d97843e0b62c01d5a43f97d708c5be7e35a7be44a885eeecc557cc1f",
+    "runs\\phase3\\site_performance.parquet": "ea6363d6028e59d418a57dcb32c95a766a4c795e75f556a9fae7f4f31dfaff55",
+    "runs\\phase4\\exploratory\\ahp_template.json": "0a7420fddfef1fa877928ba82b58ca0b91424065a77a3a012fc6395c131a8af0",
+    "runs\\phase4\\exploratory\\candidate_regions.geojson": "b7e2e176600e27bf8efd67dfcecfc6356d1fd352010a8ead4dc7d621ead06e3e",
+    "runs\\phase4\\exploratory\\normalized_metrics.parquet": "d67e22b976cb3fca10060651dc5732952ac35088930ee81c7479e6198bad705d",
+    "runs\\phase4\\exploratory\\pareto_results.parquet": "1dd8da94af226ffa70a041627e88a3e3ffc6e1c59dcad68dd55c32aeed87964c",
+    "runs\\phase4\\exploratory\\profile_snapshot.json": "a4fe771001e7ecc7400b76ac8442107995f4a7494dd0b081736c5cb7b65e7cfd",
+    "runs\\phase4\\exploratory\\ranked_cells.parquet": "7a0ed971b52ea4eb8edcda85563ab422c4261dec7c793f40fe7b6307839b45a5",
+    "runs\\phase4\\exploratory\\ranking.csv": "066c818d58e298b036e472a2afcb01d20e9f8b2d538a43738224349cd0ca0dac",
+    "runs\\phase4\\exploratory\\region_membership.parquet": "59b2ee226608e2fdb2519707d744bac3b1773381534952f0a9891d64cee0a0ed",
+    "runs\\phase4\\exploratory\\run_metadata.json": "8ebad9a9e36b6b61a6c4edb5ab78e01a72ce8da6a8d9666418ff0ee85579ce81",
+    "runs\\phase4\\repeat_exploratory\\ahp_template.json": "0a7420fddfef1fa877928ba82b58ca0b91424065a77a3a012fc6395c131a8af0",
+    "runs\\phase4\\repeat_exploratory\\candidate_regions.geojson": "b7e2e176600e27bf8efd67dfcecfc6356d1fd352010a8ead4dc7d621ead06e3e",
+    "runs\\phase4\\repeat_exploratory\\normalized_metrics.parquet": "d67e22b976cb3fca10060651dc5732952ac35088930ee81c7479e6198bad705d",
+    "runs\\phase4\\repeat_exploratory\\pareto_results.parquet": "1dd8da94af226ffa70a041627e88a3e3ffc6e1c59dcad68dd55c32aeed87964c",
+    "runs\\phase4\\repeat_exploratory\\profile_snapshot.json": "a4fe771001e7ecc7400b76ac8442107995f4a7494dd0b081736c5cb7b65e7cfd",
+    "runs\\phase4\\repeat_exploratory\\ranked_cells.parquet": "7a0ed971b52ea4eb8edcda85563ab422c4261dec7c793f40fe7b6307839b45a5",
+    "runs\\phase4\\repeat_exploratory\\ranking.csv": "066c818d58e298b036e472a2afcb01d20e9f8b2d538a43738224349cd0ca0dac",
+    "runs\\phase4\\repeat_exploratory\\region_membership.parquet": "59b2ee226608e2fdb2519707d744bac3b1773381534952f0a9891d64cee0a0ed",
+    "runs\\phase4\\repeat_exploratory\\run_metadata.json": "3456ced2ffd323adfc9cb3202197b2d0b663159f47c75e9ccc5463f561ea835b",
+    "runs\\phase4\\repeat_strict\\ahp_template.json": "0a7420fddfef1fa877928ba82b58ca0b91424065a77a3a012fc6395c131a8af0",
+    "runs\\phase4\\repeat_strict\\candidate_regions.geojson": "6afaca9d7f590f3ae46e8eb6fb16af04b49c5f53984829fd10a0852a9a24607c",
+    "runs\\phase4\\repeat_strict\\normalized_metrics.parquet": "d67e22b976cb3fca10060651dc5732952ac35088930ee81c7479e6198bad705d",
+    "runs\\phase4\\repeat_strict\\pareto_results.parquet": "f72b854db88e4f8c458448d6381d092c3bc088bdb7113e50d62460248dd73c18",
+    "runs\\phase4\\repeat_strict\\profile_snapshot.json": "a4fe771001e7ecc7400b76ac8442107995f4a7494dd0b081736c5cb7b65e7cfd",
+    "runs\\phase4\\repeat_strict\\ranked_cells.parquet": "607be6652518b196e3827b5898bf4f939f18d6a0b6b245346092be11dee22566",
+    "runs\\phase4\\repeat_strict\\ranking.csv": "c92e258f0b9ad748017fe9c32b4d3affcd773059e2b5df5184c7e1aabce55d1b",
+    "runs\\phase4\\repeat_strict\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+    "runs\\phase4\\repeat_strict\\run_metadata.json": "d5f2bc6e026d68e5d3be20b62669a586b81015b218576d3db800aaa496f4d1fd",
+    "runs\\phase4\\strict\\ahp_template.json": "0a7420fddfef1fa877928ba82b58ca0b91424065a77a3a012fc6395c131a8af0",
+    "runs\\phase4\\strict\\candidate_regions.geojson": "6afaca9d7f590f3ae46e8eb6fb16af04b49c5f53984829fd10a0852a9a24607c",
+    "runs\\phase4\\strict\\normalized_metrics.parquet": "d67e22b976cb3fca10060651dc5732952ac35088930ee81c7479e6198bad705d",
+    "runs\\phase4\\strict\\pareto_results.parquet": "f72b854db88e4f8c458448d6381d092c3bc088bdb7113e50d62460248dd73c18",
+    "runs\\phase4\\strict\\profile_snapshot.json": "a4fe771001e7ecc7400b76ac8442107995f4a7494dd0b081736c5cb7b65e7cfd",
+    "runs\\phase4\\strict\\ranked_cells.parquet": "607be6652518b196e3827b5898bf4f939f18d6a0b6b245346092be11dee22566",
+    "runs\\phase4\\strict\\ranking.csv": "c92e258f0b9ad748017fe9c32b4d3affcd773059e2b5df5184c7e1aabce55d1b",
+    "runs\\phase4\\strict\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+    "runs\\phase4\\strict\\run_metadata.json": "f2e261cd5ecc7b563158a9a3360b06f06fad8e15d3fe244cf8e78b1f2e624360"
+  },
+  "baseline_profile_sha256": "3f7c2102e9212008ee4d1082ab679ec8deedd94851a10a3127da81369a2481f0",
+  "baseline_repeat_artifacts_identical": {
+    "EXPLORATORY": {
+      "decision/ahp_template.json": true,
+      "decision/candidate_regions.geojson": true,
+      "decision/normalized_metrics.parquet": true,
+      "decision/pareto_results.parquet": true,
+      "decision/profile_snapshot.json": true,
+      "decision/ranked_cells.parquet": true,
+      "decision/ranking.csv": true,
+      "decision/region_membership.parquet": true,
+      "physical/screening_eligibility.parquet": true,
+      "physical/screening_results.parquet": true,
+      "physical/screening_summary.json": true,
+      "physical/site_performance.parquet": true
+    },
+    "STRICT": {
+      "decision/ahp_template.json": true,
+      "decision/candidate_regions.geojson": true,
+      "decision/normalized_metrics.parquet": true,
+      "decision/pareto_results.parquet": true,
+      "decision/profile_snapshot.json": true,
+      "decision/ranked_cells.parquet": true,
+      "decision/ranking.csv": true,
+      "decision/region_membership.parquet": true,
+      "physical/screening_eligibility.parquet": true,
+      "physical/screening_results.parquet": true,
+      "physical/screening_summary.json": true,
+      "physical/site_performance.parquet": true
+    }
+  },
+  "blockers": [],
+  "code_and_config_hashes": {
+    "configs/constraints.yaml": "04b33be0bdf2aaaa269efcc86b2d85f7a6b8b4537ca1073822ab2ea4e3dfbb7c",
+    "configs/cooling_designs.yaml": "19912691adfa3e0fb9b02a78663673af2bd9ea0640e6f964af8b7b40ee9f7802",
+    "configs/expanded_sources.yaml": "6ecc513068e300577b0068988f5d534876eff25eec0f322cbc24ef511647127c",
+    "configs/facility.yaml": "1d869378aecb77a76b1c5d0cf17f94786d86c8ceab8b9eb170ed7eba88744949",
+    "configs/geography.yaml": "8a46b1d0ea7b958eeebc29e27563c07485c1ede53a3fb1cc80180e5a1dcf77b2",
+    "configs/grid.yaml": "d8d222197f60513db481814610f96908c2bc71469363368b28e264f69cdac82f",
+    "configs/phase3_physical_scenarios.yaml": "a3b22ce83ddfb0602eca842dcc06004e7a6f7af88dc74987ded9eddc824c3cbe",
+    "configs/phase5.yaml": "a52b34b62f6e7ca23db080a8c3f60561e7290573d5bc1eb94570f2cffd0fd3f8",
+    "configs/phase5_lifecycle.yaml": "de39b15afa2082c5d833c4dc12476cea5b22d75b766670fe31c1840b623138bd",
+    "configs/phase5_scoring_profiles/bau_2030.yaml": "65259c53674f6060e71a15ddf029696d41ad3b9afbe73f562a911e0fd021ffa5",
+    "configs/phase5_scoring_profiles/bau_2040.yaml": "3aa62a964cf6b05cd0b014a8b0c1ee00905c41d683ef7d54aa0621e665294521",
+    "configs/phase5_scoring_profiles/bau_2050.yaml": "fceffea854eb685aef2298eea434fad865aa8e0599ab98e0ada4547af1908b5e",
+    "configs/phase5_scoring_profiles/bau_2080.yaml": "b813998636bbfcc858a4c1d7919dd300c867d55be2719dd51e7b180944920d78",
+    "configs/phase5_scoring_profiles/opt_2030.yaml": "843db8b486dd02ff3caaf4510a0aed7d05fb69deb6163807ab7dd4722d84c712",
+    "configs/phase5_scoring_profiles/opt_2040.yaml": "55dc9d41eb664f4fcdb50d7fe645da9a1aaf9622517fbc0452e8a0f581ea05fd",
+    "configs/phase5_scoring_profiles/opt_2050.yaml": "d3e826963fcd90e12158020b0593fdb3765d48eea00b14c3f4ff234313e5d886",
+    "configs/phase5_scoring_profiles/opt_2080.yaml": "66ef2c1df4dcebd5da3a5d202cd73dbfb8d4ecd73f37f4ce294ef961864374ad",
+    "configs/phase5_scoring_profiles/pes_2030.yaml": "9ceec6a6477e68bcf2177a3351e0a84fb323f82761c77f595ba8ed70df9b11a1",
+    "configs/phase5_scoring_profiles/pes_2040.yaml": "3223090af20313f07e239bd3d29d09bd001302a57cd61b6797532be65ae227f3",
+    "configs/phase5_scoring_profiles/pes_2050.yaml": "f1f0b3059fea1e707f084a02c21a2fc448b88a496918f1c1ec611da2162a24e9",
+    "configs/phase5_scoring_profiles/pes_2080.yaml": "04b8f666d0e5b7ac7d3f2210a9121bbf91c68f61d829eaff1ab7eb0fd5a9723c",
+    "configs/run.yaml": "5aecd8a09ad1f1bcccf37ac33bb69eb2c1970d165a29b76e604bb0d71b946148",
+    "configs/scenarios.yaml": "4623f29f03b0201e39d109e48d3571c03fce31988acd56c1003a8683b39cf76a",
+    "configs/scoring.yaml": "e1c6fd84d54c79ea2c8188142c0c086352fdaec97fa5e0ad825f8faf77a2d3f9",
+    "configs/scoring_profile.yaml": "3f7c2102e9212008ee4d1082ab679ec8deedd94851a10a3127da81369a2481f0",
+    "configs/sources.yaml": "d134ac32f843ef67a21c1d5d5c804a2ca64799f2a25d8adcf97fa4594381fbd2",
+    "src/dc_locator/__init__.py": "efc9963ad2fae7111cb9d2f572df1d3e4f0da1b79148daf397b4b93c1af674d5",
+    "src/dc_locator/__main__.py": "08cdacbbb941fd390c5ca9d6d5dd5102f98db02d1bb9e89c5839f67770f1a6bc",
+    "src/dc_locator/cli.py": "467a057f6335fc7c177b0eab68bdeb084bed78cf6ceaf495df02cef7e5067b04",
+    "src/dc_locator/config.py": "907378e7d93d3fb0fb3b7330ae3294605c5f1d7368829f0ed96a974c55e88c0c",
+    "src/dc_locator/geography/__init__.py": "9cacd2296fcb5e919656c83de036b7b86eba745d2c5e638bcb724dad27e15f58",
+    "src/dc_locator/geography/boundary.py": "21ac10ad443a23b5b4ea100622a25c7aca0d0182b986da2cbdf8e4f85c147030",
+    "src/dc_locator/geography/distance.py": "4d1d7cf106783e33f965b562625da97aacadb9440ee8e3dbac6d9829401ef993",
+    "src/dc_locator/geography/features.py": "c90cb52e641d095400c17434d3444a830ffd5d7f095b43a03a506e867d1f268e",
+    "src/dc_locator/geography/grid.py": "d582e3b2d1cd6cd5ab75a03486316fc3cf3e9cbbf0ba29440030836eac1b0933",
+    "src/dc_locator/geography/sources/__init__.py": "0adc31cd854c4bf41a0a4ad59052c6fd5b64734e5304bc92786382e591d60cc9",
+    "src/dc_locator/geography/sources/aqueduct.py": "085ed9e4f53b2d4f74a2352602a1236bf4b097dd194e627b2840d1d517a093d6",
+    "src/dc_locator/geography/sources/aqueduct_future.py": "f3d15881f1299727647d968d1d3e69c312c269de3bb99b2798ecdd88f14f7bab",
+    "src/dc_locator/geography/sources/climate.py": "a280638cd3215cf3fe9837575e480fad9bda328c8143d31e3032caefe26e9b39",
+    "src/dc_locator/geography/sources/egrid.py": "3f679195b16127dfa248ee8eb768ffb64234cb6d8733603a0bb1f68585328471",
+    "src/dc_locator/geography/sources/expanded.py": "6d8d150e4e2292a71a2e6763798c46f593b02066f9740953fa0bd884819deeea",
+    "src/dc_locator/geography/sources/expanded_ingestion.py": "d71c907b34572ef55bba62abb8395def292be7d3624bba2264881acc85ad0cee",
+    "src/dc_locator/geography/sources/flood.py": "741c710ac5a427bc3d7534633b75db8ff0e2e3c4745207212b6f5e1a7a89eebe",
+    "src/dc_locator/geography/sources/infrastructure.py": "e7a1e7cdf8541fca5671ab78e731ba59432067ef5114eb340a7a3a856a625fde",
+    "src/dc_locator/geography/sources/ingestion.py": "3540f0d37b86e842da313eee6f5f4a25c53374fd043596ab973f30ae3deaf7a1",
+    "src/dc_locator/geography/sources/native_climate.py": "cd2bac877230e585ba31bbbdc4a7684273ad3c4373c6236855951581fed39b0e",
+    "src/dc_locator/geography/sources/native_expanded.py": "00e03c0c178d622d32307b75c2fe21aaada14c6a108a078507b0bc82102aea67",
+    "src/dc_locator/geography/sources/nlcd.py": "e2b0c52c56d31bcfdc966cc92ef3e9b3a589b1b51a538478a6a4fb77fa31c2e9",
+    "src/dc_locator/geography/sources/protected.py": "736351f0112e78a203d8591c0d7989d5f4ecd1d706bdfa19b1f48b4591efc93d",
+    "src/dc_locator/geography/sources/spatial.py": "2fbcc931150bd3a9d24fef71c7ec15314b14921af8d7c394ee27d28090ba1d2c",
+    "src/dc_locator/geography/sources/wildfire.py": "0c0b718f729e65ca9a2a9f257bf1ff11dd7c335e2fb03e10b5d0188487495018",
+    "src/dc_locator/io.py": "4a3b76ed06f169493397cafb7f54a808226cab29ffab393cb6dee3d57df27603",
+    "src/dc_locator/model/__init__.py": "99fff79931dde4a52e2a786e854d14f0c215b3c3da7cab5b5e18ed9edc7fbaaa",
+    "src/dc_locator/model/ahp.py": "d065d2212624ea62460763104a6c116ef2691025c00ce5ccb234a4404bee62fa",
+    "src/dc_locator/model/cooling.py": "31f6d3d48196d6cead6976ba205b2390146b34bcea3a0bf611f08901f18e8ecd",
+    "src/dc_locator/model/decision.py": "c6ca86608281fa02aaa5625181d9dc416805e607288e53c3ba861a8911efac66",
+    "src/dc_locator/model/enhanced.py": "b2f793e7b27ae9c1f4186c73d44702aa9b28b5d1d4cee15ddf46698fab705565",
+    "src/dc_locator/model/lifecycle.py": "c07836cb4b69d9a50bfba4d92d85de6b47fdc76f0f0b5a86d9f2a59a8cc2bd3f",
+    "src/dc_locator/model/mcda.py": "313a8e5e6ed62a4d6eb3a15633e75ed1d7f5b6f279b83de55b9d6b0f61af4aed",
+    "src/dc_locator/model/metrics.py": "4e0de3d136ff9c28d04b9721332efb4708b3781df0712ca146fb27a5101f4241",
+    "src/dc_locator/model/normalization.py": "f0bd85ade869c3297d70aa52739de85a7d01df32defba4529e8bfc738e6b3add",
+    "src/dc_locator/model/pareto.py": "e8ba3e7acff1783511f00ed5c6626781b432c153b27909467f18e72d90cc0a5f",
+    "src/dc_locator/model/physics.py": "8afdcba59ced1110f44fe568cf101a8c47a67c1938a6d3594cbdbb9881c7ea46",
+    "src/dc_locator/model/regions.py": "af4217f174a61f527f99a927f550094394ea9e3670acfa3037dfc18137501e7a",
+    "src/dc_locator/model/scenarios.py": "3259c9ca1f90b97f610248db51ff5ba48dd994175ba2b3b926a240ef6b95b978",
+    "src/dc_locator/model/screening.py": "6170902c7620da385cecbcf1338a689f5e6e5d43e71de5b0b5f8d4a1dddbaf37",
+    "src/dc_locator/paths.py": "3733e420d093f1bf75f95afae48a8bb3afcde418ea50ce857e22d3b1e8e922ba",
+    "src/dc_locator/provenance.py": "0a7ae9d15fc417956e2c8313030656b770ea40fb3b304f6b970315b8478ff46a",
+    "src/dc_locator/schemas.py": "aec9ed5a4683e73f9ebad2fbc2b687317eb321fd3c3c8929862d86681248734a",
+    "src/dc_locator/source_periods.py": "a5cf962312b106327fb6364212e3e346bdef722db316dbf5b2dc97d042bc0eaa",
+    "src/dc_locator/validation.py": "2b05c23840ff1dea5e85abdacf0f6bc4bcaadb03b5c7f30281b90e325c53e448"
+  },
+  "code_revision": "sha256:c37565852deccd28af146c46918aadfb055ea1e1b82f371482b082b45b40c6de",
+  "code_revision_git_base": "44040ed33f9d3fb9d9837fc8dbbc1f61481a9a9e",
+  "data_versions": {
+    "aqueduct_future": {
+      "acquired": true,
+      "analyzed": true,
+      "implemented": true,
+      "license": "CC BY4.0; World Resources Institute2023",
+      "retrieved_at": "2026-10-03T01:39:00Z",
+      "sha256": "bd3ed2bce88d6ff1b89191632ad134a2436e1e1d49599382f23a04d513624fc3",
+      "source_id": "wri_aqueduct40_future",
+      "source_layer": "future_annual",
+      "source_url": "https://www.wri.org/aqueduct/help-center/understanding-future-projections",
+      "source_version": "Aqueduct4.0 Y2023M07D05",
+      "status": "READY"
+    },
+    "native_source_configuration": {
+      "berkeley_queued_up": {
+        "acquisition_evidence": {
+          "native": {
+            "bytes": 15571236,
+            "license": "CC BY4.0; Lawrence Berkeley National Laboratory and GridTracker",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\berkeley_queued_up\\phase5\\01c41c5ee800be873bd2\\download_log.json",
+            "path": "data\\raw\\berkeley_queued_up\\phase5\\01c41c5ee800be873bd2\\lbnl_ix_queue_data_file_thru2025.xlsx",
+            "request_identity": "01c41c5ee800be873bd2",
+            "retrieved_at_utc": "2026-10-03T06:09:04.519874+00:00",
+            "sha256": "794582d3281c6a305e9615fcfec3fae9dc85be2165216d33760b677e976a08b6",
+            "source_id": "berkeley_queued_up",
+            "url": "https://eta-publications.lbl.gov/sites/default/files/2026-05/lbnl_ix_queue_data_file_thru2025.xlsx",
+            "version": "2026 edition, May2026 through2025"
+          }
+        },
+        "data_mode": "real",
+        "data_year": "through 2025",
+        "implemented": true,
+        "limitation": "Not a comprehensive county inventory; absence is UNKNOWN. Reported MW is neither guaranteed supply nor a future emissions factor.",
+        "native_pattern": "lbnl_ix_queue_data_file_thru2025.xlsx",
+        "paths": {
+          "native": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\berkeley_queued_up\\phase5\\01c41c5ee800be873bd2\\lbnl_ix_queue_data_file_thru2025.xlsx"
+        },
+        "raw_namespace": "berkeley_queued_up",
+        "retrieved_at": "2026-10-03T06:09:04.519874+00:00",
+        "source_name": "Berkeley Lab and GridTracker Queued Up",
+        "source_url": "https://emp.lbl.gov/queues",
+        "source_version": "2026 edition; May2026 workbook",
+        "spatial_resolution": "first listed project county; incomplete/unlocated projects retained as limitations",
+        "status": "PARTIAL"
+      },
+      "building_transparency_ec3": {
+        "data_mode": "real",
+        "implemented": false,
+        "limitation": "Verified organization/account required; API access terms restrict caching/redistribution. No account/API data acquired or native integration claimed.",
+        "paths": {},
+        "source_url": "https://www.buildingtransparency.org/api-access-pricing/",
+        "source_version": "July2026 access terms",
+        "status": "BLOCKED"
+      },
+      "eia_861": {
+        "acquisition_evidence": {
+          "native": {
+            "bytes": 4568208,
+            "license": "U.S. Government public data",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia861\\phase5\\a8e2f2dbe78584cd90ee\\download_log.json",
+            "path": "data\\raw\\eia861\\phase5\\a8e2f2dbe78584cd90ee\\f8612024.zip",
+            "request_identity": "a8e2f2dbe78584cd90ee",
+            "retrieved_at_utc": "2026-10-03T06:05:24.789080+00:00",
+            "sha256": "77ce49c60ac5a6bad50c442fc401aad5404a21da875dc5cbaba353af5ede54de",
+            "source_id": "eia861",
+            "url": "https://www.eia.gov/electricity/data/eia861/zip/f8612024.zip",
+            "version": "2024 final, updated 2025-12-03"
+          }
+        },
+        "data_mode": "real",
+        "data_year": "2024",
+        "implemented": true,
+        "limitation": "State context cannot establish the serving utility or facility outage performance; IEEE and Any Standard remain separate.",
+        "native_pattern": "f8612024.zip",
+        "paths": {
+          "native": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia861\\phase5\\a8e2f2dbe78584cd90ee\\f8612024.zip"
+        },
+        "raw_namespace": "eia861",
+        "retrieved_at": "2026-10-03T06:05:24.789080+00:00",
+        "source_name": "EIA861 reliability State Totals",
+        "source_url": "https://www.eia.gov/electricity/data/eia861/",
+        "source_version": "2024 final; updated 2025-12-03",
+        "spatial_resolution": "state aggregates; customer populations vary by reporting basis",
+        "status": "PARTIAL"
+      },
+      "epa_cwns": {
+        "data_mode": "real",
+        "implemented": false,
+        "limitation": "Native downloads currently open personal-data popup; no submission/bypass. Public scope/manual verified, exact native export headers unverified pending authorized local files. No fabricated normalized CSV adapter.",
+        "paths": {},
+        "source_url": "https://sdwis.epa.gov/ords/sfdw_pub/r/sfdw/cwns_pub/about",
+        "source_version": "2022 survey; snapshot 2022-01-01",
+        "status": "BLOCKED"
+      },
+      "fcc_broadband": {
+        "data_mode": "real",
+        "implemented": false,
+        "limitation": "Native availability/location export not acquired or verified; licensed location linkage needed. Availability would not prove diverse data-center fiber.",
+        "paths": {},
+        "source_url": "https://www.fcc.gov/BroadbandData",
+        "source_version": "latest applicable filing/export must be selected",
+        "status": "NOT_IMPLEMENTED"
+      },
+      "fema_rapt": {
+        "data_mode": "real",
+        "implemented": false,
+        "limitation": "RAPT is available; no user agreement accepted. Appropriate underlying native source/export has not been verified or acquired.",
+        "paths": {},
+        "source_url": "https://content.govdelivery.com/accounts/USDHSFEMA/bulletins/426af63",
+        "source_version": "updated 2026 tool",
+        "status": "NOT_IMPLEMENTED"
+      },
+      "freight_analysis_framework": {
+        "data_mode": "real",
+        "implemented": false,
+        "limitation": "Official native CSV ZIP link verified; server connection reset during acquisition. Exact local CSV headers remain unverified; no native integration claimed. Regional flows are not a delivery route.",
+        "paths": {},
+        "source_url": "https://www.bts.gov/faf/faf5",
+        "source_version": "5.7.1; 2024 preliminary annual estimate",
+        "status": "PARTIAL"
+      },
+      "global_cement_concrete_tracker": {
+        "data_mode": "real",
+        "implemented": false,
+        "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+        "paths": {},
+        "source_url": "https://globalenergymonitor.org/projects/global-cement-and-concrete-tracker/",
+        "source_version": "July2026",
+        "status": "BLOCKED"
+      },
+      "global_iron_steel_tracker": {
+        "data_mode": "real",
+        "implemented": false,
+        "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+        "paths": {},
+        "source_url": "https://globalenergymonitor.org/projects/global-iron-steel-tracker/",
+        "source_version": "September2026",
+        "status": "BLOCKED"
+      },
+      "nasa_nex_gddp_cmip6": {
+        "acquisition_evidence": {
+          "pr": {
+            "bytes": 42480,
+            "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\e5a39194b7941795091d\\download_log.json",
+            "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\e5a39194b7941795091d\\pr_2030.nc",
+            "request_identity": "e5a39194b7941795091d",
+            "retrieved_at_utc": "2026-10-03T06:14:21.409830+00:00",
+            "sha256": "d56baca4a7a7746d2bec2e7fba6773d8a1511db205eacf3a2ef9d67a48907bbd",
+            "source_id": "nasa_nex_gddp_cmip6",
+            "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/pr/pr_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=pr&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+            "version": "ACCESS-CM2/ssp245/2030"
+          },
+          "tas": {
+            "bytes": 42776,
+            "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\4b1fec7b44a805b54eb3\\download_log.json",
+            "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\4b1fec7b44a805b54eb3\\tas_2030.nc",
+            "request_identity": "4b1fec7b44a805b54eb3",
+            "retrieved_at_utc": "2026-10-03T06:14:14.935321+00:00",
+            "sha256": "7aa087083f747009de718a210625dffc074d5b04a7b24434d5996c89417e97a1",
+            "source_id": "nasa_nex_gddp_cmip6",
+            "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/tas/tas_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=tas&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+            "version": "ACCESS-CM2/ssp245/2030"
+          },
+          "tasmax": {
+            "bytes": 42796,
+            "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\20d67841bc794501af22\\download_log.json",
+            "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\20d67841bc794501af22\\tasmax_2030.nc",
+            "request_identity": "20d67841bc794501af22",
+            "retrieved_at_utc": "2026-10-03T06:32:56.785752+00:00",
+            "sha256": "8d55b052f7a2a3f5929a467558b566f7b4fa3e992b5acd3510ddaf3f47d9a966",
+            "source_id": "nasa_nex_gddp_cmip6",
+            "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/tasmax/tasmax_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=tasmax&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+            "version": "ACCESS-CM2/ssp245/2030"
+          },
+          "tasmin": {
+            "bytes": 42208,
+            "license": "NASA NEX-GDDP-CMIP6 public data; cite model and dataset",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\2d34533e539368792500\\download_log.json",
+            "path": "data\\raw\\nasa_nex_gddp_cmip6\\phase5\\2d34533e539368792500\\tasmin_2030.nc",
+            "request_identity": "2d34533e539368792500",
+            "retrieved_at_utc": "2026-10-03T06:33:02.946890+00:00",
+            "sha256": "44e648adb62aa7727258bc228f8f7b38e3078f8caab8b1723442a403cb45f865",
+            "source_id": "nasa_nex_gddp_cmip6",
+            "url": "https://ds.nccs.nasa.gov/thredds/ncss/grid/AMES/NEX/GDDP-CMIP6/ACCESS-CM2/ssp245/r1i1p1f1/tasmin/tasmin_day_ACCESS-CM2_ssp245_r1i1p1f1_gn_2030_v2.0.nc?var=tasmin&north=30.75&south=29.75&west=-96.25&east=-95.25&horizStride=1&time_start=2030-01-01T00%3A00%3A00Z&time_end=2030-12-31T23%3A59%3A59Z&accept=netcdf3&addLatLon=true",
+            "version": "ACCESS-CM2/ssp245/2030"
+          }
+        },
+        "analysis_variables": [
+          "tas",
+          "pr"
+        ],
+        "data_mode": "real",
+        "data_year": "2030",
+        "implemented": true,
+        "limitation": "One model/member/SSP and one future year only; 2031-2054 remain unacquired. Native tas CF time-maximum tag conflicts with daily-mean definition; matching native tasmax/tasmin numerical identity is required and recorded. Components are verification dependencies only. No climate-PUE function or parcel engineering claim.",
+        "native_pattern": "*.nc",
+        "paths": {
+          "pr": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\e5a39194b7941795091d\\pr_2030.nc",
+          "tas": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\4b1fec7b44a805b54eb3\\tas_2030.nc",
+          "tasmax": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\20d67841bc794501af22\\tasmax_2030.nc",
+          "tasmin": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\2d34533e539368792500\\tasmin_2030.nc"
+        },
+        "raw_namespace": "nasa_nex_gddp_cmip6",
+        "retrieved_at": "2026-10-03T06:14:21.409830+00:00",
+        "source_name": "NASA NEX-GDDP-CMIP6",
+        "source_url": "https://nccs.smce.nasa.gov/data-collections/nex-gddp-cmip6/",
+        "source_version": "2.0; ACCESS-CM2; r1i1p1f1; ssp245",
+        "spatial_resolution": "0.25 degree daily downscaled model grid",
+        "status": "PARTIAL",
+        "verification_dependencies": [
+          "tasmax",
+          "tasmin"
+        ]
+      },
+      "noaa_ibtracs": {
+        "acquisition_evidence": {
+          "native": {
+            "bytes": 57552255,
+            "license": "NOAA public data; cite IBTrACS",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ibtracs\\phase5\\4e74f25b18aba9d567e2\\download_log.json",
+            "path": "data\\raw\\noaa_ibtracs\\phase5\\4e74f25b18aba9d567e2\\ibtracs.NA.list.v04r01.csv",
+            "request_identity": "4e74f25b18aba9d567e2",
+            "retrieved_at_utc": "2026-10-03T06:05:47.248800+00:00",
+            "sha256": "9e41cf9d3c4e6ae82fe35f218a3f1baea3e44b9e768857d62149ed9e73348e7b",
+            "source_id": "noaa_ibtracs",
+            "url": "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NA.list.v04r01.csv",
+            "version": "v04r01 snapshot"
+          }
+        },
+        "data_mode": "real",
+        "data_year": "1980-2024",
+        "implemented": true,
+        "limitation": "Historical segment proximity and storm counts, not future landfall or damage probability. 100km is a descriptive project reporting radius.",
+        "native_pattern": "ibtracs.NA.list.v04r01.csv",
+        "paths": {
+          "native": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ibtracs\\phase5\\4e74f25b18aba9d567e2\\ibtracs.NA.list.v04r01.csv"
+        },
+        "raw_namespace": "noaa_ibtracs",
+        "retrieved_at": "2026-10-03T06:05:47.248800+00:00",
+        "source_name": "NOAA IBTrACS North Atlantic MAIN tracks",
+        "source_url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
+        "source_version": "v04r01 retrieved snapshot",
+        "spatial_resolution": "track positions mainly 3 or 6 hourly; no wind-field inference",
+        "status": "PARTIAL"
+      },
+      "nrel_nsrdb": {
+        "data_mode": "real",
+        "data_year": "local native observation period",
+        "implemented": true,
+        "limitation": "Native two-metadata-row CSV parser implemented; no data acquired. Public no-sign S3 exists; API requires key and personal fields, which were not submitted. Solar resource is not purchased power.",
+        "native_pattern": "manual/*.csv",
+        "paths": {},
+        "raw_namespace": "nrel_nsrdb",
+        "source_name": "NLR National Solar Radiation Database",
+        "source_url": "https://developer.nlr.gov/docs/solar/nsrdb/python-examples/",
+        "source_version": "local native CSV version must be supplied",
+        "spatial_resolution": "modeled point time series; not whole-cell areal observation",
+        "status": "PARTIAL"
+      },
+      "nrel_wind_toolkit": {
+        "acquisition_evidence": {
+          "native": {
+            "bytes": 10242519,
+            "license": "Public domain, DOI 10.7799/1329290",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nlr_wind_toolkit\\phase5\\5e80ed87cfe12788d7b1\\download_log.json",
+            "path": "data\\raw\\nlr_wind_toolkit\\phase5\\5e80ed87cfe12788d7b1\\wtk_site_metadata.csv",
+            "request_identity": "5e80ed87cfe12788d7b1",
+            "retrieved_at_utc": "2026-10-03T06:06:00.703949+00:00",
+            "sha256": "285b46161371974dc88b1f389ec623a5796f1075eb5576336fd951fd7aa82475",
+            "source_id": "nlr_wind_toolkit",
+            "url": "https://data.nlr.gov/system/files/54/wtk_site_metadata.csv",
+            "version": "site index v1 2016-10-17"
+          }
+        },
+        "data_mode": "real",
+        "data_year": "2007-2013 modeled power dataset; index native summary",
+        "implemented": true,
+        "limitation": "WRDB is https://wrdb.nlr.gov/; this older selected-site index is a declared WIND Toolkit subset. Samples do not represent all land or contracted power; SRW hourly local parser is implemented but unacquired.",
+        "native_pattern": "wtk_site_metadata.csv",
+        "paths": {
+          "native": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nlr_wind_toolkit\\phase5\\5e80ed87cfe12788d7b1\\wtk_site_metadata.csv"
+        },
+        "raw_namespace": "nlr_wind_toolkit",
+        "retrieved_at": "2026-10-03T06:06:00.703949+00:00",
+        "source_name": "NLR WIND Toolkit Power Data Site Index",
+        "source_url": "https://data.nlr.gov/submissions/54",
+        "source_version": "native site index v1; 2016-10-17; DOI10.7799/1329290",
+        "spatial_resolution": "selected modeled sites from 2km WIND grid; not areal coverage",
+        "status": "PARTIAL"
+      },
+      "ntad": {
+        "acquisition_evidence": {
+          "native": {
+            "bounds_4326": [
+              -97.1,
+              28.9,
+              -94.4,
+              31.6
+            ],
+            "bytes": 4943918,
+            "feature_count": 4173,
+            "license": "Public official data",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\ntad\\phase5\\80d519ee16bed31da370\\download_log.json",
+            "path": "data\\raw\\ntad\\phase5\\80d519ee16bed31da370\\features.esri.json",
+            "request_identity": "80d519ee16bed31da370",
+            "retrieved_at_utc": "2026-10-03T06:08:55.826801+00:00",
+            "sha256": "8c71910a6b8c54fe9028420bb22e112a82fe5e06f925ea2bd13203cd1f84fe33",
+            "source_id": "ntad",
+            "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/NTAD_North_American_Rail_Network_Lines/FeatureServer/0/query?f=json&objectIds=289419%2C289420%2C289426%2C289427%2C289428%2C289470%2C289510%2C289511%2C289512%2C289513%2C289514%2C289515%2C289516%2C289578%2C289581%2C289582%2C289583%2C289595%2C289596%2C289597%2C289630%2C289632%2C289650%2C289651%2C289652%2C289653%2C289654%2C289656%2C289665%2C289666%2C289667%2C289668%2C289669%2C289670%2C289671%2C289696%2C289732%2C289733%2C289752%2C289753%2C301744%2C303155%2C303156%2C303157%2C303158%2C303185%2C303186%2C303187%2C303188%2C303189%2C303190%2C303191%2C303192%2C303193%2C303194%2C303195%2C303196%2C303197%2C303198%2C303199%2C303200%2C303201%2C303202%2C303203%2C303204%2C303205%2C303206%2C303207%2C303208%2C303209%2C303210%2C303211%2C303212&outFields=%2A&outSR=4326&returnGeometry=true",
+            "version": "rail network 2026-07-21"
+          }
+        },
+        "data_mode": "real",
+        "data_year": "2026",
+        "implemented": true,
+        "limitation": "Minimum mapped rail distance is not a delivery route, usable siding, rail service agreement, or capacity.",
+        "native_pattern": "features.esri.json",
+        "paths": {
+          "native": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\ntad\\phase5\\80d519ee16bed31da370\\features.esri.json"
+        },
+        "raw_namespace": "ntad",
+        "retrieved_at": "2026-10-03T06:08:55.826801+00:00",
+        "source_name": "BTS/FRA NTAD rail network lines",
+        "source_url": "https://www.bts.gov/ntad/continuousupdates",
+        "source_version": "rail network 2026-07-21",
+        "spatial_resolution": "mapped rail network; US 1:24000 or better",
+        "status": "PARTIAL"
+      },
+      "us_drought_monitor": {
+        "acquisition_evidence": {
+          "native": {
+            "bytes": 30182034,
+            "license": "USDM public data; credit NDMC/USDA/NOAA/NASA",
+            "manifest": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usdm\\phase5\\364e8d37b621912e0c1e\\download_log.json",
+            "path": "data\\raw\\usdm\\phase5\\364e8d37b621912e0c1e\\county_drought.csv",
+            "request_identity": "364e8d37b621912e0c1e",
+            "retrieved_at_utc": "2026-10-03T06:05:32.382820+00:00",
+            "sha256": "8d062b6f61c41ca7d11c86cff5a459cdd7aa800a639428febc0d27fbec3dc19a",
+            "source_id": "usdm",
+            "url": "https://usdmdataservices.unl.edu/api/CountyStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=TX&startdate=1%2F1%2F2000&enddate=12%2F31%2F2024&statisticsType=1",
+            "version": "weekly county cumulative area, snapshot"
+          }
+        },
+        "data_mode": "real",
+        "data_year": "2000-01-01/2024-12-31",
+        "implemented": true,
+        "limitation": "County historical area context, not committed water or future drought probability.",
+        "native_pattern": "county_drought.csv",
+        "paths": {
+          "native": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usdm\\phase5\\364e8d37b621912e0c1e\\county_drought.csv"
+        },
+        "raw_namespace": "usdm",
+        "requested_aoi": "TX",
+        "retrieved_at": "2026-10-03T06:05:32.382820+00:00",
+        "source_name": "USDM cumulative county area percentages",
+        "source_url": "https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx",
+        "source_version": "weekly county cumulative snapshot; statisticsType=1",
+        "spatial_resolution": "county; weekly Tuesdays",
+        "status": "PARTIAL"
+      }
+    },
+    "native_source_files": {
+      "berkeley_queued_up": {
+        "native": {
+          "bytes": 15571236,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\berkeley_queued_up\\phase5\\01c41c5ee800be873bd2\\lbnl_ix_queue_data_file_thru2025.xlsx",
+          "sha256": "794582d3281c6a305e9615fcfec3fae9dc85be2165216d33760b677e976a08b6"
+        }
+      },
+      "eia_861": {
+        "native": {
+          "bytes": 4568208,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\eia861\\phase5\\a8e2f2dbe78584cd90ee\\f8612024.zip",
+          "sha256": "77ce49c60ac5a6bad50c442fc401aad5404a21da875dc5cbaba353af5ede54de"
+        }
+      },
+      "nasa_nex_gddp_cmip6": {
+        "pr": {
+          "bytes": 42480,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\e5a39194b7941795091d\\pr_2030.nc",
+          "sha256": "d56baca4a7a7746d2bec2e7fba6773d8a1511db205eacf3a2ef9d67a48907bbd"
+        },
+        "tas": {
+          "bytes": 42776,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\4b1fec7b44a805b54eb3\\tas_2030.nc",
+          "sha256": "7aa087083f747009de718a210625dffc074d5b04a7b24434d5996c89417e97a1"
+        },
+        "tasmax": {
+          "bytes": 42796,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\20d67841bc794501af22\\tasmax_2030.nc",
+          "sha256": "8d55b052f7a2a3f5929a467558b566f7b4fa3e992b5acd3510ddaf3f47d9a966"
+        },
+        "tasmin": {
+          "bytes": 42208,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\2d34533e539368792500\\tasmin_2030.nc",
+          "sha256": "44e648adb62aa7727258bc228f8f7b38e3078f8caab8b1723442a403cb45f865"
+        }
+      },
+      "noaa_ibtracs": {
+        "native": {
+          "bytes": 57552255,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\noaa_ibtracs\\phase5\\4e74f25b18aba9d567e2\\ibtracs.NA.list.v04r01.csv",
+          "sha256": "9e41cf9d3c4e6ae82fe35f218a3f1baea3e44b9e768857d62149ed9e73348e7b"
+        }
+      },
+      "nrel_nsrdb": {},
+      "nrel_wind_toolkit": {
+        "native": {
+          "bytes": 10242519,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\nlr_wind_toolkit\\phase5\\5e80ed87cfe12788d7b1\\wtk_site_metadata.csv",
+          "sha256": "285b46161371974dc88b1f389ec623a5796f1075eb5576336fd951fd7aa82475"
+        }
+      },
+      "ntad": {
+        "native": {
+          "bytes": 4943918,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\ntad\\phase5\\80d519ee16bed31da370\\features.esri.json",
+          "sha256": "8c71910a6b8c54fe9028420bb22e112a82fe5e06f925ea2bd13203cd1f84fe33"
+        }
+      },
+      "us_drought_monitor": {
+        "native": {
+          "bytes": 30182034,
+          "path": "D:\\locate-data-center\\U.S. Sustainable Data Center Location Discovery Model\\data\\raw\\usdm\\phase5\\364e8d37b621912e0c1e\\county_drought.csv",
+          "sha256": "8d062b6f61c41ca7d11c86cff5a459cdd7aa800a639428febc0d27fbec3dc19a"
+        }
+      }
+    }
+  },
+  "enhanced_profiles_predeclaration_sha256": "f7fc521e3739db160316c6078a44bdf54434118ceb45207fa9934ec93869ef9a",
+  "git_revision": null,
+  "implementation_verified_at_utc": "2026-10-03T07:16:19.299591+00:00",
+  "independent_verification": {
+    "review": "GO",
+    "reviewer": "phase1_review",
+    "reviewer_full_tests": 376,
+    "reviewer_seconds": 31.25,
+    "root_full_tests": {
+      "command": ".venv/Scripts/python.exe -m pytest -q --basetemp=.tmp-root-phase5-final-numeric -p no:cacheprovider --tb=short",
+      "failed": 0,
+      "passed": 376,
+      "seconds": 31.82,
+      "skipped": 0
+    },
+    "root_repeat": {
+      "directory": "runs/orchestrator_phase5_accepted_candidate",
+      "identical_substantive_artifacts": 353,
+      "peak_working_set_bytes": 1923461120
+    },
+    "snapshot_sha256": "c37565852deccd28af146c46918aadfb055ea1e1b82f371482b082b45b40c6de"
+  },
+  "inherited_phase2_data_manifest_sha256": "975f46260d29afab7d421e5715c43bae15c7e00837eb1d2823989047341e80a2",
+  "interim_total_bytes": 144017588,
+  "known_limitations": [
+    "Development42-cell subset only; national runtime/peak RAM unvalidated",
+    "Critical parcel/power/water/fiber evidence UNKNOWN; exploratory regions remain conditional",
+    "Historical2023 carbon repeated2030..2054 only by explicit constant scenario assumption; not future grid forecast",
+    "Aqueduct native trend windows are never individual operating-year observations",
+    "Independent NASA model/ssp245 source context does not form coherent combined weather with every Aqueduct pathway",
+    "Electricity-only partial lifetime carbon is not complete operating or lifecycle emissions",
+    "Expanded native datasets informational; only predeclared future water binding changes ranking",
+    "Seven expanded native products acquired/analyzed; native NSRDB parser exists but no product acquired",
+    "CWNS/GEMsteel/GEMcement/EC3 access remains blocked; FCC/RAPT native adapters remain NOT_IMPLEMENTED; FAF has no implemented native adapter",
+    "Native source context is regional/selected/bounded, not national utility/site engineering proof",
+    "No supplied real materials/equipment/product-factor/transport/replacement/end-of-life inventory; total lifecycle UNKNOWN"
+  ],
+  "next_gate": "Phase 6 independently freezes and validates the accepted model; no physical-accuracy claim without independent observations.",
+  "outputs": {
+    "all_substantive_output_hashes": {
+      "baseline\\exploratory\\decision\\ahp_template.json": "0a7420fddfef1fa877928ba82b58ca0b91424065a77a3a012fc6395c131a8af0",
+      "baseline\\exploratory\\decision\\candidate_regions.geojson": "b7e2e176600e27bf8efd67dfcecfc6356d1fd352010a8ead4dc7d621ead06e3e",
+      "baseline\\exploratory\\decision\\normalized_metrics.parquet": "d67e22b976cb3fca10060651dc5732952ac35088930ee81c7479e6198bad705d",
+      "baseline\\exploratory\\decision\\pareto_results.parquet": "1dd8da94af226ffa70a041627e88a3e3ffc6e1c59dcad68dd55c32aeed87964c",
+      "baseline\\exploratory\\decision\\profile_snapshot.json": "a4fe771001e7ecc7400b76ac8442107995f4a7494dd0b081736c5cb7b65e7cfd",
+      "baseline\\exploratory\\decision\\ranked_cells.parquet": "7a0ed971b52ea4eb8edcda85563ab422c4261dec7c793f40fe7b6307839b45a5",
+      "baseline\\exploratory\\decision\\ranking.csv": "066c818d58e298b036e472a2afcb01d20e9f8b2d538a43738224349cd0ca0dac",
+      "baseline\\exploratory\\decision\\region_membership.parquet": "59b2ee226608e2fdb2519707d744bac3b1773381534952f0a9891d64cee0a0ed",
+      "baseline\\exploratory\\physical\\screening_eligibility.parquet": "a38a00028d21d224ac7fbd63bcb613a862698e59f9cd5105548c3b6742ab396b",
+      "baseline\\exploratory\\physical\\screening_results.parquet": "3347aa6c553c8d7d1ed5f73994966202ea2da63b4e80ff6207fd748817e967dc",
+      "baseline\\exploratory\\physical\\screening_summary.json": "f14b2bd4578fb9e1e62a7f872ac819cc3d47ae33c880a424f458fde128211595",
+      "baseline\\exploratory\\physical\\site_performance.parquet": "ea6363d6028e59d418a57dcb32c95a766a4c795e75f556a9fae7f4f31dfaff55",
+      "baseline\\strict\\decision\\ahp_template.json": "0a7420fddfef1fa877928ba82b58ca0b91424065a77a3a012fc6395c131a8af0",
+      "baseline\\strict\\decision\\candidate_regions.geojson": "6afaca9d7f590f3ae46e8eb6fb16af04b49c5f53984829fd10a0852a9a24607c",
+      "baseline\\strict\\decision\\normalized_metrics.parquet": "d67e22b976cb3fca10060651dc5732952ac35088930ee81c7479e6198bad705d",
+      "baseline\\strict\\decision\\pareto_results.parquet": "f72b854db88e4f8c458448d6381d092c3bc088bdb7113e50d62460248dd73c18",
+      "baseline\\strict\\decision\\profile_snapshot.json": "a4fe771001e7ecc7400b76ac8442107995f4a7494dd0b081736c5cb7b65e7cfd",
+      "baseline\\strict\\decision\\ranked_cells.parquet": "607be6652518b196e3827b5898bf4f939f18d6a0b6b245346092be11dee22566",
+      "baseline\\strict\\decision\\ranking.csv": "c92e258f0b9ad748017fe9c32b4d3affcd773059e2b5df5184c7e1aabce55d1b",
+      "baseline\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "baseline\\strict\\physical\\screening_eligibility.parquet": "8c9a9ae4af134f6a6d9b749d6c5fdaee61467372202c241ae9409518acf13996",
+      "baseline\\strict\\physical\\screening_results.parquet": "480e5796f0cacbfce12f18297ace425d3f35cceff8240bc19442c9b838ce5d30",
+      "baseline\\strict\\physical\\screening_summary.json": "3fb44d82d97843e0b62c01d5a43f97d708c5be7e35a7be44a885eeecc557cc1f",
+      "baseline\\strict\\physical\\site_performance.parquet": "ea6363d6028e59d418a57dcb32c95a766a4c795e75f556a9fae7f4f31dfaff55",
+      "baseline_vs_enhanced.csv": "019879d8deee2252c7bb64d1714d880301616fb4aff0626b9fff7a95052c9a63",
+      "baseline_vs_enhanced.parquet": "b6f54755de43bf93528d06abe765e5ac7388cddacfc72a7bffc20e678f4bb75a",
+      "configuration\\bau_2030.yaml": "65259c53674f6060e71a15ddf029696d41ad3b9afbe73f562a911e0fd021ffa5",
+      "configuration\\bau_2030_declaration.json": "fcd428196dd5464bae6b801edac1aa99a9143760580feb88c68a875181bd637e",
+      "configuration\\bau_2040.yaml": "3aa62a964cf6b05cd0b014a8b0c1ee00905c41d683ef7d54aa0621e665294521",
+      "configuration\\bau_2040_declaration.json": "4dcf6fd614ab15ebced02b0fc95cfb03c05e39e2958ae0ad6805072912dc8a81",
+      "configuration\\bau_2050.yaml": "fceffea854eb685aef2298eea434fad865aa8e0599ab98e0ada4547af1908b5e",
+      "configuration\\bau_2050_declaration.json": "4fb6c886f1fb3b46bff7676b8a47711e45f94d284d25b9efd0ee75bceb3cf209",
+      "configuration\\bau_2080.yaml": "b813998636bbfcc858a4c1d7919dd300c867d55be2719dd51e7b180944920d78",
+      "configuration\\bau_2080_declaration.json": "c1fc45165c5c187326ff14bf3a52cfb82093346b9f762f2ac525bcae05d31fda",
+      "configuration\\constraints.yaml": "04b33be0bdf2aaaa269efcc86b2d85f7a6b8b4537ca1073822ab2ea4e3dfbb7c",
+      "configuration\\cooling_designs.yaml": "19912691adfa3e0fb9b02a78663673af2bd9ea0640e6f964af8b7b40ee9f7802",
+      "configuration\\expanded_sources.yaml": "6ecc513068e300577b0068988f5d534876eff25eec0f322cbc24ef511647127c",
+      "configuration\\facility.yaml": "1d869378aecb77a76b1c5d0cf17f94786d86c8ceab8b9eb170ed7eba88744949",
+      "configuration\\opt_2030.yaml": "843db8b486dd02ff3caaf4510a0aed7d05fb69deb6163807ab7dd4722d84c712",
+      "configuration\\opt_2030_declaration.json": "7003a4ee00e2fddf3c9f0e3bf89093eedc5032d55bdf0a30befed8caa2ac46c5",
+      "configuration\\opt_2040.yaml": "55dc9d41eb664f4fcdb50d7fe645da9a1aaf9622517fbc0452e8a0f581ea05fd",
+      "configuration\\opt_2040_declaration.json": "2ba077d3bca85d7ea1317e10e80970a04767d29d36789874470444578c33d8bb",
+      "configuration\\opt_2050.yaml": "d3e826963fcd90e12158020b0593fdb3765d48eea00b14c3f4ff234313e5d886",
+      "configuration\\opt_2050_declaration.json": "00c2750b6012d09b78eacbad279f352afc47ad7ee5f1c3cb8f1390c1ec8e7cf9",
+      "configuration\\opt_2080.yaml": "66ef2c1df4dcebd5da3a5d202cd73dbfb8d4ecd73f37f4ce294ef961864374ad",
+      "configuration\\opt_2080_declaration.json": "49331a209bb235c9bb4629429ca8f951f11ffa97bd0b3207225359597ca65b1d",
+      "configuration\\pes_2030.yaml": "9ceec6a6477e68bcf2177a3351e0a84fb323f82761c77f595ba8ed70df9b11a1",
+      "configuration\\pes_2030_declaration.json": "4af7b4e8f8e3acf07e364e11aacd978e53ff88cf1008e15456347f9f80f7040f",
+      "configuration\\pes_2040.yaml": "3223090af20313f07e239bd3d29d09bd001302a57cd61b6797532be65ae227f3",
+      "configuration\\pes_2040_declaration.json": "e6f82805d27bf0a1104fcd2e272cedb3be7c1897a64aeae2bf6a26bdb3085e1b",
+      "configuration\\pes_2050.yaml": "f1f0b3059fea1e707f084a02c21a2fc448b88a496918f1c1ec611da2162a24e9",
+      "configuration\\pes_2050_declaration.json": "a33eea4f62c217223f553528af7beb0715a4a78c3bee35d281186446f9ca8853",
+      "configuration\\pes_2080.yaml": "04b8f666d0e5b7ac7d3f2210a9121bbf91c68f61d829eaff1ab7eb0fd5a9723c",
+      "configuration\\pes_2080_declaration.json": "4438a3f025f6359d35d2c47be681a64b6956eab5dd3557151b2d588a783755a7",
+      "configuration\\phase3_physical_scenarios.yaml": "a3b22ce83ddfb0602eca842dcc06004e7a6f7af88dc74987ded9eddc824c3cbe",
+      "configuration\\phase5.yaml": "a52b34b62f6e7ca23db080a8c3f60561e7290573d5bc1eb94570f2cffd0fd3f8",
+      "configuration\\phase5_lifecycle.yaml": "de39b15afa2082c5d833c4dc12476cea5b22d75b766670fe31c1840b623138bd",
+      "configuration\\phase5_profiles_predeclared.json": "f7fc521e3739db160316c6078a44bdf54434118ceb45207fa9934ec93869ef9a",
+      "configuration\\scoring_profile.yaml": "3f7c2102e9212008ee4d1082ab679ec8deedd94851a10a3127da81369a2481f0",
+      "enhanced\\bau_2030\\exploratory\\decision\\ahp_template.json": "1acd8d17074a8316c6b58e730ff80623fef3f76a30302c50fec1a92c6706e050",
+      "enhanced\\bau_2030\\exploratory\\decision\\candidate_regions.geojson": "cbabe179c4fec7b803f8b6145af8610757a33eafabef1989abf6f97bf488a0c1",
+      "enhanced\\bau_2030\\exploratory\\decision\\normalized_metrics.parquet": "2fd054fa3bdcffa79454804960b1b8e145edfd50f38f4248a5531e0b733032be",
+      "enhanced\\bau_2030\\exploratory\\decision\\pareto_results.parquet": "88b93ddc5bb3088fba00f3ef91c2c08fb6551bb25edee4c2aabbfde565cf018b",
+      "enhanced\\bau_2030\\exploratory\\decision\\profile_snapshot.json": "fcd428196dd5464bae6b801edac1aa99a9143760580feb88c68a875181bd637e",
+      "enhanced\\bau_2030\\exploratory\\decision\\ranked_cells.parquet": "03f379b7e5924440acdc0f34875b7d55e4a07c780a6bd9c9cc2843cfc60d0341",
+      "enhanced\\bau_2030\\exploratory\\decision\\ranking.csv": "29ddeb14ca9beb7f8eeacc5372e9e6d90da4f6e614b98196d3c1480f6eb3dee1",
+      "enhanced\\bau_2030\\exploratory\\decision\\region_membership.parquet": "b19eb8cdd863d0bc1819bb7541b3f6da32204af429828adbb72bcfb0d7b18ef8",
+      "enhanced\\bau_2030\\exploratory\\external_scenario.json": "a18852b3c4f11613b1198a099840e01cba3f994900025a6b5789ad2d92215ae6",
+      "enhanced\\bau_2030\\exploratory\\screening_eligibility.parquet": "cc3e2be69c20a4d2a34d09b17bf234b9d121085d52200415de4743e4c5172850",
+      "enhanced\\bau_2030\\exploratory\\screening_results.parquet": "519ed11a1d239fe07e0877a8093a529f880e2dd06d85ee6a5e52115434702ac0",
+      "enhanced\\bau_2030\\exploratory\\site_performance.parquet": "e08a368c0f03659aa805c15d1f12ce3556a0d01650f8cde802cb741320ccceb7",
+      "enhanced\\bau_2030\\strict\\decision\\ahp_template.json": "1acd8d17074a8316c6b58e730ff80623fef3f76a30302c50fec1a92c6706e050",
+      "enhanced\\bau_2030\\strict\\decision\\candidate_regions.geojson": "b3858f97619e11effcf93e0c23c8a099c1e13864bea22dd3f07d71a6beabe590",
+      "enhanced\\bau_2030\\strict\\decision\\normalized_metrics.parquet": "2fd054fa3bdcffa79454804960b1b8e145edfd50f38f4248a5531e0b733032be",
+      "enhanced\\bau_2030\\strict\\decision\\pareto_results.parquet": "710b63314148d49dae50298e02553ac53871c06f0fb2219eaea51eab491da10f",
+      "enhanced\\bau_2030\\strict\\decision\\profile_snapshot.json": "fcd428196dd5464bae6b801edac1aa99a9143760580feb88c68a875181bd637e",
+      "enhanced\\bau_2030\\strict\\decision\\ranked_cells.parquet": "5fde85dcb7bb63ea8ff79d9ab15ef69ed4e92b905efa29bbe0793ca4bf0cc012",
+      "enhanced\\bau_2030\\strict\\decision\\ranking.csv": "d4061349c2a0d7f49288b574b5f0163f275a021dd20376d1b72597a946639395",
+      "enhanced\\bau_2030\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\bau_2030\\strict\\external_scenario.json": "a18852b3c4f11613b1198a099840e01cba3f994900025a6b5789ad2d92215ae6",
+      "enhanced\\bau_2030\\strict\\screening_eligibility.parquet": "d605898f93243ec1128aa1d4e886158b5fbc5f7f3910c6dfcb2181769cedef60",
+      "enhanced\\bau_2030\\strict\\screening_results.parquet": "98d6344489e9a8d4c851bb26b1e8dfbdaa0682f35e692a6bc05eb68f4c17994c",
+      "enhanced\\bau_2030\\strict\\site_performance.parquet": "e08a368c0f03659aa805c15d1f12ce3556a0d01650f8cde802cb741320ccceb7",
+      "enhanced\\bau_2040\\exploratory\\decision\\ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+      "enhanced\\bau_2040\\exploratory\\decision\\candidate_regions.geojson": "85f100385ffac59fcf15de50d8197b03796373d7d8194c438cbe21324021df32",
+      "enhanced\\bau_2040\\exploratory\\decision\\normalized_metrics.parquet": "5097f2f4f67f1c9c6a7e80975ae1239f7d1e02ff1028952b1b4289cec1009fca",
+      "enhanced\\bau_2040\\exploratory\\decision\\pareto_results.parquet": "7fb066aa764cb160f2dc3764cdca2bd3298c6e4f3aa80b95afb4a22dae7eedd5",
+      "enhanced\\bau_2040\\exploratory\\decision\\profile_snapshot.json": "4dcf6fd614ab15ebced02b0fc95cfb03c05e39e2958ae0ad6805072912dc8a81",
+      "enhanced\\bau_2040\\exploratory\\decision\\ranked_cells.parquet": "9c60335cf971ad016611adaed8ea7893cd3f0b189ee17e337107541bd97734ac",
+      "enhanced\\bau_2040\\exploratory\\decision\\ranking.csv": "7deae54daa65fd1236032aa1c54a422e222f1a0fc6022df5edcca6c265a8e53e",
+      "enhanced\\bau_2040\\exploratory\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\bau_2040\\exploratory\\external_scenario.json": "a615ece41d954ec8ae6b4ecfda52f3c8c2d8875989ef4b7f8ce79f9341ec11d5",
+      "enhanced\\bau_2040\\exploratory\\screening_eligibility.parquet": "994d3b43b4b69da1fce229629e635a83e6a12be6671a8d171c706588a364e130",
+      "enhanced\\bau_2040\\exploratory\\screening_results.parquet": "52d3a50d5608105e0bd9a3474037f6b1ab90205dce18bb61c08311ecff512aa8",
+      "enhanced\\bau_2040\\exploratory\\site_performance.parquet": "e16ef967624e2c343c946c10009711b9b62d73942e0dc9b98558ac85c03e0528",
+      "enhanced\\bau_2040\\strict\\decision\\ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+      "enhanced\\bau_2040\\strict\\decision\\candidate_regions.geojson": "85f100385ffac59fcf15de50d8197b03796373d7d8194c438cbe21324021df32",
+      "enhanced\\bau_2040\\strict\\decision\\normalized_metrics.parquet": "5097f2f4f67f1c9c6a7e80975ae1239f7d1e02ff1028952b1b4289cec1009fca",
+      "enhanced\\bau_2040\\strict\\decision\\pareto_results.parquet": "220da23d0cdc4d7afccb06d9ea2ff264d2edf590e04f9c8d65415c8fdad7680d",
+      "enhanced\\bau_2040\\strict\\decision\\profile_snapshot.json": "4dcf6fd614ab15ebced02b0fc95cfb03c05e39e2958ae0ad6805072912dc8a81",
+      "enhanced\\bau_2040\\strict\\decision\\ranked_cells.parquet": "4e1f4bd8c8a40d383e2c7363da6a642cd139e932589ec378d01f383072bd6b10",
+      "enhanced\\bau_2040\\strict\\decision\\ranking.csv": "90a8f4edc8667fb15cbaedf362481a8165ae74f5969aba302b284d81c78c776f",
+      "enhanced\\bau_2040\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\bau_2040\\strict\\external_scenario.json": "a615ece41d954ec8ae6b4ecfda52f3c8c2d8875989ef4b7f8ce79f9341ec11d5",
+      "enhanced\\bau_2040\\strict\\screening_eligibility.parquet": "0f5a2b0424bfdea60ff690b9f784feec19a8aa8b92491d37aaae8acb91c1f332",
+      "enhanced\\bau_2040\\strict\\screening_results.parquet": "acca866683d9f666217397b6cfad89c981523610e564503668bdfbeb77b0d561",
+      "enhanced\\bau_2040\\strict\\site_performance.parquet": "e16ef967624e2c343c946c10009711b9b62d73942e0dc9b98558ac85c03e0528",
+      "enhanced\\bau_2050\\exploratory\\decision\\ahp_template.json": "7df2fafa4dea3799dbd3b46ada87711e553a8249801f7d72e52f300af2342a1a",
+      "enhanced\\bau_2050\\exploratory\\decision\\candidate_regions.geojson": "03ae82ce56abd95361a0b256bdcd110b5bec5e19d1835f2004bab5392c2fe0e1",
+      "enhanced\\bau_2050\\exploratory\\decision\\normalized_metrics.parquet": "6baf33017755e8f3866bc954bc828cc108762bdf7a32c0048dea3decbebb7d50",
+      "enhanced\\bau_2050\\exploratory\\decision\\pareto_results.parquet": "7a8f7cf51b350252163f082b0e560f438de37a8a3d5cd2e81c0063174e70e126",
+      "enhanced\\bau_2050\\exploratory\\decision\\profile_snapshot.json": "4fb6c886f1fb3b46bff7676b8a47711e45f94d284d25b9efd0ee75bceb3cf209",
+      "enhanced\\bau_2050\\exploratory\\decision\\ranked_cells.parquet": "a7e5e83d5f479b94867244b02a6a64b8c377c0f4b28efca483a6c2b161737cc5",
+      "enhanced\\bau_2050\\exploratory\\decision\\ranking.csv": "502915a528d400159a799be92fb8d74306d9bcbf9f1d47cadde3a717e060251a",
+      "enhanced\\bau_2050\\exploratory\\decision\\region_membership.parquet": "9551983bbf162f22172f71e0e1b6723095c17f56aa7080c48ef63d4204fab787",
+      "enhanced\\bau_2050\\exploratory\\external_scenario.json": "c979ae26c279cc6fb1ab468f6f8eb68553c1dd4fb3e1d6b09d8f5509f9421b54",
+      "enhanced\\bau_2050\\exploratory\\screening_eligibility.parquet": "f4db66a5333d6f7af67be8d1046f910feffa33adcf15229e50ce3efc0df82084",
+      "enhanced\\bau_2050\\exploratory\\screening_results.parquet": "9942dc1fa5b924d5915310505c31188c3b282c159c67da8052c2716f65b37ef1",
+      "enhanced\\bau_2050\\exploratory\\site_performance.parquet": "2cd56d128b4f03a61e4d6176408013ae6e317b5b153942b383e54452689893bf",
+      "enhanced\\bau_2050\\strict\\decision\\ahp_template.json": "7df2fafa4dea3799dbd3b46ada87711e553a8249801f7d72e52f300af2342a1a",
+      "enhanced\\bau_2050\\strict\\decision\\candidate_regions.geojson": "63267fcbecf27253959c88fb19bea5a92da1c43c3cb47e8974ce5b3120849156",
+      "enhanced\\bau_2050\\strict\\decision\\normalized_metrics.parquet": "6baf33017755e8f3866bc954bc828cc108762bdf7a32c0048dea3decbebb7d50",
+      "enhanced\\bau_2050\\strict\\decision\\pareto_results.parquet": "aafb112439b227d82fa1c7cdfcd8ef093493a5d59b3c4373e03fd6b7cd68b4e6",
+      "enhanced\\bau_2050\\strict\\decision\\profile_snapshot.json": "4fb6c886f1fb3b46bff7676b8a47711e45f94d284d25b9efd0ee75bceb3cf209",
+      "enhanced\\bau_2050\\strict\\decision\\ranked_cells.parquet": "796a21f2f3d9effad0f3066cfa9f0fddbbff377a4b36628b7c8ffbfbe8631daf",
+      "enhanced\\bau_2050\\strict\\decision\\ranking.csv": "0fe8d7285f453a02571b079a187bc00276931a66c8562869a70f33daae68c725",
+      "enhanced\\bau_2050\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\bau_2050\\strict\\external_scenario.json": "c979ae26c279cc6fb1ab468f6f8eb68553c1dd4fb3e1d6b09d8f5509f9421b54",
+      "enhanced\\bau_2050\\strict\\screening_eligibility.parquet": "9d4406950161d14228454c42219c50d3d31814f97a01e998fac746358e860953",
+      "enhanced\\bau_2050\\strict\\screening_results.parquet": "5994a5cd5365a11b3a6b00a5503642036fcfd2d249ed676e557a27a4645b5f27",
+      "enhanced\\bau_2050\\strict\\site_performance.parquet": "2cd56d128b4f03a61e4d6176408013ae6e317b5b153942b383e54452689893bf",
+      "enhanced\\bau_2080\\exploratory\\decision\\ahp_template.json": "08464d013dfa7e5940e853bf90a586ea9941664a041ec178ee095e142a4260d7",
+      "enhanced\\bau_2080\\exploratory\\decision\\candidate_regions.geojson": "050058ef112e18e3828ffd8c8ad983e9797467927f487963486df1f9e91f6e7d",
+      "enhanced\\bau_2080\\exploratory\\decision\\normalized_metrics.parquet": "dba17eeadbbf43a320ad3da16dc681b21a567b83b5be8d4c9491b59c3b85082d",
+      "enhanced\\bau_2080\\exploratory\\decision\\pareto_results.parquet": "8ecbee6691399a832ce6cbc1143dd938e00679669bd26e32f711570b3b445bf7",
+      "enhanced\\bau_2080\\exploratory\\decision\\profile_snapshot.json": "c1fc45165c5c187326ff14bf3a52cfb82093346b9f762f2ac525bcae05d31fda",
+      "enhanced\\bau_2080\\exploratory\\decision\\ranked_cells.parquet": "f4215cb95f72b05637d3f20b79fe9dcae58654d8a623e63e24a98cb5e3491d64",
+      "enhanced\\bau_2080\\exploratory\\decision\\ranking.csv": "2bcd52b1f6c7d2751d8b5fcc4cc051d3b083e3073893e62ab04e0ef524b58c97",
+      "enhanced\\bau_2080\\exploratory\\decision\\region_membership.parquet": "795cf3aa4a1fc328cc39bf12fbe0953f6e53da1f88825a678a49bd5c9e88c370",
+      "enhanced\\bau_2080\\exploratory\\external_scenario.json": "cc215b1215132a9e7eec888863966151be55b5fc74d6d6e270858dcd0b7d91f9",
+      "enhanced\\bau_2080\\exploratory\\screening_eligibility.parquet": "f6fc7d7bb3b6a5c4e6eb15cb3ec523383e61b7b60672a90971594875c6cf3982",
+      "enhanced\\bau_2080\\exploratory\\screening_results.parquet": "70cf4b29b18e4fcbe0938329eb203ed28ec7ff6dfd1002237a3cbe5039bcacdd",
+      "enhanced\\bau_2080\\exploratory\\site_performance.parquet": "f61c5fff7405deed4f74998cadc066d68e33c671d72f47b0c8ba94eff0cf6530",
+      "enhanced\\bau_2080\\strict\\decision\\ahp_template.json": "08464d013dfa7e5940e853bf90a586ea9941664a041ec178ee095e142a4260d7",
+      "enhanced\\bau_2080\\strict\\decision\\candidate_regions.geojson": "cbe6fad30b0b67cdf26674009cceaa1409d1cd422ee1ff22779fbf9c510f4ceb",
+      "enhanced\\bau_2080\\strict\\decision\\normalized_metrics.parquet": "dba17eeadbbf43a320ad3da16dc681b21a567b83b5be8d4c9491b59c3b85082d",
+      "enhanced\\bau_2080\\strict\\decision\\pareto_results.parquet": "d30a354929c395c40450ad0a9a1a9a6f0ac74d7341576acb0a6c2d378cbe967a",
+      "enhanced\\bau_2080\\strict\\decision\\profile_snapshot.json": "c1fc45165c5c187326ff14bf3a52cfb82093346b9f762f2ac525bcae05d31fda",
+      "enhanced\\bau_2080\\strict\\decision\\ranked_cells.parquet": "7f4c56c864491e506bc90f3b6b8c3300190377babbd67d0588b01875d43f66ed",
+      "enhanced\\bau_2080\\strict\\decision\\ranking.csv": "ff703404da6d305cf09807d1c35483e23714a265f75967b636f3f4970ca8ad18",
+      "enhanced\\bau_2080\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\bau_2080\\strict\\external_scenario.json": "cc215b1215132a9e7eec888863966151be55b5fc74d6d6e270858dcd0b7d91f9",
+      "enhanced\\bau_2080\\strict\\screening_eligibility.parquet": "52385a44bc82a811a7e2408a8d85992d1664867ba6fba8ef410b8ced5f355e9d",
+      "enhanced\\bau_2080\\strict\\screening_results.parquet": "07682c805c551ff862815887ac82d6a016cb71507b96a08b7525a629e9db9ebe",
+      "enhanced\\bau_2080\\strict\\site_performance.parquet": "f61c5fff7405deed4f74998cadc066d68e33c671d72f47b0c8ba94eff0cf6530",
+      "enhanced\\opt_2030\\exploratory\\decision\\ahp_template.json": "3fee39010698303ed40b0fc50385446849b4080b996d8f823ebd0b0efe03977b",
+      "enhanced\\opt_2030\\exploratory\\decision\\candidate_regions.geojson": "e9ddcaa8242f234e7991fe6afdd116536457d0184e2d5f8bc0968b14bc47da59",
+      "enhanced\\opt_2030\\exploratory\\decision\\normalized_metrics.parquet": "77cb0949465347e95b14b8337ef4e07e242bf5232f8792d1b72bd85859c4bc0a",
+      "enhanced\\opt_2030\\exploratory\\decision\\pareto_results.parquet": "cec27b4c556ace25612a345a51efe8b054991500e262c48dcc61024bc217c5a5",
+      "enhanced\\opt_2030\\exploratory\\decision\\profile_snapshot.json": "7003a4ee00e2fddf3c9f0e3bf89093eedc5032d55bdf0a30befed8caa2ac46c5",
+      "enhanced\\opt_2030\\exploratory\\decision\\ranked_cells.parquet": "acb0bffd8ac49fabb91f491e6e67d17b28e45a833d4a479139da117f1731dd93",
+      "enhanced\\opt_2030\\exploratory\\decision\\ranking.csv": "a57ac428cc32548c94c6647465d4ebdbb2ca4d73e74612b732bda9542a8156da",
+      "enhanced\\opt_2030\\exploratory\\decision\\region_membership.parquet": "0beeaeb13f6aad4e333ef20cccf3fb632175f24aabbaf38ad77ef84a4a7b54ce",
+      "enhanced\\opt_2030\\exploratory\\external_scenario.json": "f1250b699aca2455e62fe1afb0110d2cb9c7522f19fa0c7834d5d69b1ef71d3d",
+      "enhanced\\opt_2030\\exploratory\\screening_eligibility.parquet": "4a6ad5d01dc9890b03e1543a6db814ca177e7e9199eb5f85eb5d86b051ab9970",
+      "enhanced\\opt_2030\\exploratory\\screening_results.parquet": "de70b554564249914fc48341dbc8697a301df8dc6cd6d973da143e45af1fec79",
+      "enhanced\\opt_2030\\exploratory\\site_performance.parquet": "cd9141939925d839cc4e8e079553c5f0baae4c374669fd97659e0fdb4809fdd2",
+      "enhanced\\opt_2030\\strict\\decision\\ahp_template.json": "3fee39010698303ed40b0fc50385446849b4080b996d8f823ebd0b0efe03977b",
+      "enhanced\\opt_2030\\strict\\decision\\candidate_regions.geojson": "4f40424420cd9058dd2afd7ee544eb58551c6fde48435ed9ae96d9097856717d",
+      "enhanced\\opt_2030\\strict\\decision\\normalized_metrics.parquet": "77cb0949465347e95b14b8337ef4e07e242bf5232f8792d1b72bd85859c4bc0a",
+      "enhanced\\opt_2030\\strict\\decision\\pareto_results.parquet": "02fca1f8c81a06b7206cf0cbe09eeb176c77d916d0c63975c524d96bf193f453",
+      "enhanced\\opt_2030\\strict\\decision\\profile_snapshot.json": "7003a4ee00e2fddf3c9f0e3bf89093eedc5032d55bdf0a30befed8caa2ac46c5",
+      "enhanced\\opt_2030\\strict\\decision\\ranked_cells.parquet": "6331e8b830f80a323fc6c019194c523d04c3ee54eea46793aab80fe2bc80d6df",
+      "enhanced\\opt_2030\\strict\\decision\\ranking.csv": "f8068e3b9da27e39205ff82a9af2cc7a897ad6d73620c0f9b28b31c555eec261",
+      "enhanced\\opt_2030\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\opt_2030\\strict\\external_scenario.json": "f1250b699aca2455e62fe1afb0110d2cb9c7522f19fa0c7834d5d69b1ef71d3d",
+      "enhanced\\opt_2030\\strict\\screening_eligibility.parquet": "52d1c384799c8206d698cc9fc6625b0c9b600f4b65a54362946316bd8d1651d8",
+      "enhanced\\opt_2030\\strict\\screening_results.parquet": "1b892b1632a10298b20b66f34c9baae8d6ee0fe553e79c0108ca8f1605d19d52",
+      "enhanced\\opt_2030\\strict\\site_performance.parquet": "cd9141939925d839cc4e8e079553c5f0baae4c374669fd97659e0fdb4809fdd2",
+      "enhanced\\opt_2040\\exploratory\\decision\\ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+      "enhanced\\opt_2040\\exploratory\\decision\\candidate_regions.geojson": "b7ccd605577ce039848267c35087020d11e81efbd31001a6305e579fb6e48b6b",
+      "enhanced\\opt_2040\\exploratory\\decision\\normalized_metrics.parquet": "ac173d768cce45e9cd22bcff85c110b7db564e42e376a41f0c5c0798fb7c2da9",
+      "enhanced\\opt_2040\\exploratory\\decision\\pareto_results.parquet": "ee97e4502a5fdee625c75c76e12fb32fa3ad88d73b566145d952e3b908121793",
+      "enhanced\\opt_2040\\exploratory\\decision\\profile_snapshot.json": "2ba077d3bca85d7ea1317e10e80970a04767d29d36789874470444578c33d8bb",
+      "enhanced\\opt_2040\\exploratory\\decision\\ranked_cells.parquet": "362cc0bb27eef96b04263b8f125ad382dc49efdc336292e5562c2513a206f9cf",
+      "enhanced\\opt_2040\\exploratory\\decision\\ranking.csv": "2bddcf61d10db4033e480b38da3677e0e9323686c2183ca38011766e6955a9b5",
+      "enhanced\\opt_2040\\exploratory\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\opt_2040\\exploratory\\external_scenario.json": "b0ad0c4e766aace167e2716da198cc10e7b728b779ff8d01be15f60b33d2ea4b",
+      "enhanced\\opt_2040\\exploratory\\screening_eligibility.parquet": "4f1b932bc455687ae3ac95896fdc33a8f6d4b83beede052b12a26dad442dd4eb",
+      "enhanced\\opt_2040\\exploratory\\screening_results.parquet": "c799a159ea1752f2c1386a9ef7204ee3fc66c386addb17ab95582e79190bfb5e",
+      "enhanced\\opt_2040\\exploratory\\site_performance.parquet": "fba594bf225c214c1a725bd4daaffe65ebb918b383594345b859ba9e543349b8",
+      "enhanced\\opt_2040\\strict\\decision\\ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+      "enhanced\\opt_2040\\strict\\decision\\candidate_regions.geojson": "b7ccd605577ce039848267c35087020d11e81efbd31001a6305e579fb6e48b6b",
+      "enhanced\\opt_2040\\strict\\decision\\normalized_metrics.parquet": "ac173d768cce45e9cd22bcff85c110b7db564e42e376a41f0c5c0798fb7c2da9",
+      "enhanced\\opt_2040\\strict\\decision\\pareto_results.parquet": "fbfa0b5aa7be1450d553bdc227cd05e643ef854ba79fc6cce8f15668bb236611",
+      "enhanced\\opt_2040\\strict\\decision\\profile_snapshot.json": "2ba077d3bca85d7ea1317e10e80970a04767d29d36789874470444578c33d8bb",
+      "enhanced\\opt_2040\\strict\\decision\\ranked_cells.parquet": "7ce0bd9357acae55471ce8cd1f76cc7e66c13658fc29fa74e4bfe375decf746a",
+      "enhanced\\opt_2040\\strict\\decision\\ranking.csv": "7f77010c45e0828aabd91faea40a598c022e8fd5e1f252ea335c600ab475db08",
+      "enhanced\\opt_2040\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\opt_2040\\strict\\external_scenario.json": "b0ad0c4e766aace167e2716da198cc10e7b728b779ff8d01be15f60b33d2ea4b",
+      "enhanced\\opt_2040\\strict\\screening_eligibility.parquet": "bf65443ff36de48df83cd669c6def55c79fe39186b5a6ad52b7055f7b425b3cd",
+      "enhanced\\opt_2040\\strict\\screening_results.parquet": "89aab705b0bae5091ebc831f868e0ea3517c04943cf3b1fb19062dbc8f7ad25b",
+      "enhanced\\opt_2040\\strict\\site_performance.parquet": "fba594bf225c214c1a725bd4daaffe65ebb918b383594345b859ba9e543349b8",
+      "enhanced\\opt_2050\\exploratory\\decision\\ahp_template.json": "a73cb3d297c103a18019bf7db6ded477808371cfb198d0aeda829046dbd83a8e",
+      "enhanced\\opt_2050\\exploratory\\decision\\candidate_regions.geojson": "4dba4f267161820bdd425c4ab8c75c3af49a9dc6df477064b9ea880a7e3a8b73",
+      "enhanced\\opt_2050\\exploratory\\decision\\normalized_metrics.parquet": "be0f7aaa94584fac319f5716ef55cec8906bf39de9a4fd990b1ca8aee0ce9734",
+      "enhanced\\opt_2050\\exploratory\\decision\\pareto_results.parquet": "2ba7a985824805f35a41ddc05c8c4fe552724e4c2a2b621520015fec8db43444",
+      "enhanced\\opt_2050\\exploratory\\decision\\profile_snapshot.json": "00c2750b6012d09b78eacbad279f352afc47ad7ee5f1c3cb8f1390c1ec8e7cf9",
+      "enhanced\\opt_2050\\exploratory\\decision\\ranked_cells.parquet": "6da7da5e55dac039971189c8cc49091523cbd3a9d77a56839ddc39aecf6b82bc",
+      "enhanced\\opt_2050\\exploratory\\decision\\ranking.csv": "7f05054e42585aa45f901e1718d56f88bd66549f21ecffbbea35042df1f8f341",
+      "enhanced\\opt_2050\\exploratory\\decision\\region_membership.parquet": "5bdc9ae1db726c3395df76d6137c376f05292814656931294e5f7ce20fe3f483",
+      "enhanced\\opt_2050\\exploratory\\external_scenario.json": "5421b2a60262a3757c803b96a16f6cd5461f6e14f9cf9edebd61986098498c36",
+      "enhanced\\opt_2050\\exploratory\\screening_eligibility.parquet": "02c4eedb659aabf179a9f1cb0f332054a3f8d01219c521896b46df724ae0c841",
+      "enhanced\\opt_2050\\exploratory\\screening_results.parquet": "061a35f70cbc85e85579be1375fc9b96aef390ad3d43b7c38fd464dfc9b2e3f6",
+      "enhanced\\opt_2050\\exploratory\\site_performance.parquet": "33dc668c97b36b47f3bde9e5bf6187611c4dfe0c2ac786578238f739325d855f",
+      "enhanced\\opt_2050\\strict\\decision\\ahp_template.json": "a73cb3d297c103a18019bf7db6ded477808371cfb198d0aeda829046dbd83a8e",
+      "enhanced\\opt_2050\\strict\\decision\\candidate_regions.geojson": "14f5322504e441c03668b6536dcb5a6626a74cdd0fbcad421234a2cb3238b159",
+      "enhanced\\opt_2050\\strict\\decision\\normalized_metrics.parquet": "be0f7aaa94584fac319f5716ef55cec8906bf39de9a4fd990b1ca8aee0ce9734",
+      "enhanced\\opt_2050\\strict\\decision\\pareto_results.parquet": "86a4654c11f825e0a620ab2393e34f6063781ea32326de490a941f80cdee9158",
+      "enhanced\\opt_2050\\strict\\decision\\profile_snapshot.json": "00c2750b6012d09b78eacbad279f352afc47ad7ee5f1c3cb8f1390c1ec8e7cf9",
+      "enhanced\\opt_2050\\strict\\decision\\ranked_cells.parquet": "2866cac3fc9300ce6c40e44783c340d3979f74ece80874eb58137123a6697a77",
+      "enhanced\\opt_2050\\strict\\decision\\ranking.csv": "4bf5ac07e0731f924c9f3d69e996e2d8a46d3727a9be6f8720450db115a8ee79",
+      "enhanced\\opt_2050\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\opt_2050\\strict\\external_scenario.json": "5421b2a60262a3757c803b96a16f6cd5461f6e14f9cf9edebd61986098498c36",
+      "enhanced\\opt_2050\\strict\\screening_eligibility.parquet": "2c0c42e230fbde456dbd4e83acc3a342c71737d47005f6d48ae0e3b7bd4d4128",
+      "enhanced\\opt_2050\\strict\\screening_results.parquet": "3d7f08bf8a51243470840ad72a39f3e580da806ae4b9a2c24eeca14a297f8e36",
+      "enhanced\\opt_2050\\strict\\site_performance.parquet": "33dc668c97b36b47f3bde9e5bf6187611c4dfe0c2ac786578238f739325d855f",
+      "enhanced\\opt_2080\\exploratory\\decision\\ahp_template.json": "3e81ae281fb369ea17d730597c7f911becf06066ef30f1c83998082c3a841a7b",
+      "enhanced\\opt_2080\\exploratory\\decision\\candidate_regions.geojson": "97db5ff1306dd38f227a28844786505c33f4df50d432c6057056fe6da8a94be7",
+      "enhanced\\opt_2080\\exploratory\\decision\\normalized_metrics.parquet": "b3513c76cb82175747b4e378f2183204437c6d98fd054ca9aaedefcc6b084bdc",
+      "enhanced\\opt_2080\\exploratory\\decision\\pareto_results.parquet": "895fc37c9aadd1693596ccfbd453ef08bbd4e29c80fc4df21189a95ba58679b3",
+      "enhanced\\opt_2080\\exploratory\\decision\\profile_snapshot.json": "49331a209bb235c9bb4629429ca8f951f11ffa97bd0b3207225359597ca65b1d",
+      "enhanced\\opt_2080\\exploratory\\decision\\ranked_cells.parquet": "627d156f9e4792f5c84b7d90abf263697dc07c970de837a5905b3efd8a7fee6e",
+      "enhanced\\opt_2080\\exploratory\\decision\\ranking.csv": "038958c4cd888333d22f54597fc96f7cc4afc3a56a3ea5e36f6434862c5217ab",
+      "enhanced\\opt_2080\\exploratory\\decision\\region_membership.parquet": "8b1a4b9f52d1751a2e260149c46fdbb2f4bf5b36429825f7ab01c8ac4bca0796",
+      "enhanced\\opt_2080\\exploratory\\external_scenario.json": "546103fa8d77716e35a3d8338eb9b38c788f1a77d385519ce6db451464b241d3",
+      "enhanced\\opt_2080\\exploratory\\screening_eligibility.parquet": "07bcc5b281f41865d01b1fc14ecbecd057e38ee9aca5925e08d0f925f3fc5057",
+      "enhanced\\opt_2080\\exploratory\\screening_results.parquet": "b6ad0b033c76ca1b1da36186e8d0412e5ea478389ac20c770281c6cb2cb7dcea",
+      "enhanced\\opt_2080\\exploratory\\site_performance.parquet": "be4c9616e5ae5a16fca4d4995a2f90104aa1a01a27ae3d54cebec34453a01445",
+      "enhanced\\opt_2080\\strict\\decision\\ahp_template.json": "3e81ae281fb369ea17d730597c7f911becf06066ef30f1c83998082c3a841a7b",
+      "enhanced\\opt_2080\\strict\\decision\\candidate_regions.geojson": "df24342196c4922be530e984ab830adb1632751ad2a178ab0125f908e06d32ae",
+      "enhanced\\opt_2080\\strict\\decision\\normalized_metrics.parquet": "b3513c76cb82175747b4e378f2183204437c6d98fd054ca9aaedefcc6b084bdc",
+      "enhanced\\opt_2080\\strict\\decision\\pareto_results.parquet": "5b29f3b55ccffaaa049ff0e8d84c075f4e4bb36d6e3866c5473561ba46952274",
+      "enhanced\\opt_2080\\strict\\decision\\profile_snapshot.json": "49331a209bb235c9bb4629429ca8f951f11ffa97bd0b3207225359597ca65b1d",
+      "enhanced\\opt_2080\\strict\\decision\\ranked_cells.parquet": "08957eb082b2ede5ec1980b8b742fc1ccea42078be4ab12f803a00a970e43808",
+      "enhanced\\opt_2080\\strict\\decision\\ranking.csv": "f563771fa4f57f8a14738130b8e57a0f92f88d5508a0e7b4a8895bb5a24a8ee2",
+      "enhanced\\opt_2080\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\opt_2080\\strict\\external_scenario.json": "546103fa8d77716e35a3d8338eb9b38c788f1a77d385519ce6db451464b241d3",
+      "enhanced\\opt_2080\\strict\\screening_eligibility.parquet": "20483e11a6a1e04c2a3046ee62ef3064000d4f62544f346f52cd655e0b2537dd",
+      "enhanced\\opt_2080\\strict\\screening_results.parquet": "345fb3f5d6ad4a9eda23748bde00f72d59b4014fa586450c5311683f6e200965",
+      "enhanced\\opt_2080\\strict\\site_performance.parquet": "be4c9616e5ae5a16fca4d4995a2f90104aa1a01a27ae3d54cebec34453a01445",
+      "enhanced\\pes_2030\\exploratory\\decision\\ahp_template.json": "1b599d5f1fb62e60203b6ddabebbc096885b80924a14071e67ca2fd0d36ea021",
+      "enhanced\\pes_2030\\exploratory\\decision\\candidate_regions.geojson": "7b6ea0d456bf336167aa2117766d4f5f60b40a1bc347d285e00c5f7b1c10a7b0",
+      "enhanced\\pes_2030\\exploratory\\decision\\normalized_metrics.parquet": "0fc5a0ff28b9ea6bb9a10cf4fe4043dcbf3149a3ea945f9734af7067781f78df",
+      "enhanced\\pes_2030\\exploratory\\decision\\pareto_results.parquet": "d3b7f678ba48674a167bdc64ee97692fc644d6c044d254006827b2c4ce4ff524",
+      "enhanced\\pes_2030\\exploratory\\decision\\profile_snapshot.json": "4af7b4e8f8e3acf07e364e11aacd978e53ff88cf1008e15456347f9f80f7040f",
+      "enhanced\\pes_2030\\exploratory\\decision\\ranked_cells.parquet": "ffbc1e5abc7f9f178802ee2b80299d47cb655d5c86a782338baa8b1ba059c97f",
+      "enhanced\\pes_2030\\exploratory\\decision\\ranking.csv": "2d0c5fcc6a7035bb0911e5925243d1fff50f5400d891efc678247d0bbc9238d2",
+      "enhanced\\pes_2030\\exploratory\\decision\\region_membership.parquet": "d8f1609f7468d535bedc6d59781bbc2b5c43a85bcde142ed47c8bbd10f3058e6",
+      "enhanced\\pes_2030\\exploratory\\external_scenario.json": "2de5c439c505b5e60c82c123f2bb9bfbcf1518b05fe0be3199b18d1daf1fd90d",
+      "enhanced\\pes_2030\\exploratory\\screening_eligibility.parquet": "e154feea0b93ce6c8c1a4da78bf86cd7730ce2324d800e8b790a1dbec100f119",
+      "enhanced\\pes_2030\\exploratory\\screening_results.parquet": "b7368f028f5a003c43538db5c01170971d8224270eb1a70c861a8ed86278f238",
+      "enhanced\\pes_2030\\exploratory\\site_performance.parquet": "170b5d8b66bbfada66815f342b0e398f0fe95ffaadeeac5b18e58b064a8e9c2c",
+      "enhanced\\pes_2030\\strict\\decision\\ahp_template.json": "1b599d5f1fb62e60203b6ddabebbc096885b80924a14071e67ca2fd0d36ea021",
+      "enhanced\\pes_2030\\strict\\decision\\candidate_regions.geojson": "d33765f42ad66e89ec2e910dce3b0ec282a738299cd237ab4134519c641649f7",
+      "enhanced\\pes_2030\\strict\\decision\\normalized_metrics.parquet": "0fc5a0ff28b9ea6bb9a10cf4fe4043dcbf3149a3ea945f9734af7067781f78df",
+      "enhanced\\pes_2030\\strict\\decision\\pareto_results.parquet": "6107ba133201a427b3469f11007cda0590ab6626ea9bf5d1458e78568a0388d5",
+      "enhanced\\pes_2030\\strict\\decision\\profile_snapshot.json": "4af7b4e8f8e3acf07e364e11aacd978e53ff88cf1008e15456347f9f80f7040f",
+      "enhanced\\pes_2030\\strict\\decision\\ranked_cells.parquet": "4558db8c4fb24ac9626bf7215e8d0b42beacb549e2891a2c3a18153f08ba794d",
+      "enhanced\\pes_2030\\strict\\decision\\ranking.csv": "d39cca6007f564466b605b2e930f0563b42e46d2aaec9e08f593ad19e75831dc",
+      "enhanced\\pes_2030\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\pes_2030\\strict\\external_scenario.json": "2de5c439c505b5e60c82c123f2bb9bfbcf1518b05fe0be3199b18d1daf1fd90d",
+      "enhanced\\pes_2030\\strict\\screening_eligibility.parquet": "a0be1fbaf6fee79c2c4397290ecf15499d5770ceed0ad106b14a2776ba6b67e3",
+      "enhanced\\pes_2030\\strict\\screening_results.parquet": "8cca5924aab239befecaa927cf0cfd7d9b76d82dc7e2532a687944c9df9a41df",
+      "enhanced\\pes_2030\\strict\\site_performance.parquet": "170b5d8b66bbfada66815f342b0e398f0fe95ffaadeeac5b18e58b064a8e9c2c",
+      "enhanced\\pes_2040\\exploratory\\decision\\ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+      "enhanced\\pes_2040\\exploratory\\decision\\candidate_regions.geojson": "17860e1b8ac2351e35283e5b35bc5a2cc94625666403003482d6f4cba32e580f",
+      "enhanced\\pes_2040\\exploratory\\decision\\normalized_metrics.parquet": "2c8c6ae421933abf76269ca3c542194c0a8a0a2620897b03dbaef700a154f757",
+      "enhanced\\pes_2040\\exploratory\\decision\\pareto_results.parquet": "d811ff39450190f718b4135c99e2c1c45da584b43c2bb651b2b7bc527dafcc16",
+      "enhanced\\pes_2040\\exploratory\\decision\\profile_snapshot.json": "e6f82805d27bf0a1104fcd2e272cedb3be7c1897a64aeae2bf6a26bdb3085e1b",
+      "enhanced\\pes_2040\\exploratory\\decision\\ranked_cells.parquet": "6571f0678687cadb652c04907b05b40aa1b5745cbf9ee3b3449142fbd4e7eecf",
+      "enhanced\\pes_2040\\exploratory\\decision\\ranking.csv": "0351975da438f922c929be18e57c9104e20a3299068c3570eabd9b9847e1cd9a",
+      "enhanced\\pes_2040\\exploratory\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\pes_2040\\exploratory\\external_scenario.json": "998690b44fb25fea8971f918b572256c527733d31c227f2e8103fa4bd1a35967",
+      "enhanced\\pes_2040\\exploratory\\screening_eligibility.parquet": "20421171f76020bddda97ea347e3756cd5817098f02012e1f95e6bfb11212dec",
+      "enhanced\\pes_2040\\exploratory\\screening_results.parquet": "9243f626da05b5c60a68fcb718c9375c3b67d0a8ef4d04b861aa99d37d102e63",
+      "enhanced\\pes_2040\\exploratory\\site_performance.parquet": "cc521b3a83bcc8b25492f682e28d94e9015916094b5f5801623d2776226ea2c6",
+      "enhanced\\pes_2040\\strict\\decision\\ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+      "enhanced\\pes_2040\\strict\\decision\\candidate_regions.geojson": "17860e1b8ac2351e35283e5b35bc5a2cc94625666403003482d6f4cba32e580f",
+      "enhanced\\pes_2040\\strict\\decision\\normalized_metrics.parquet": "2c8c6ae421933abf76269ca3c542194c0a8a0a2620897b03dbaef700a154f757",
+      "enhanced\\pes_2040\\strict\\decision\\pareto_results.parquet": "b5efb83f65c89ab31494e9afd2ba8b6177742e09c3ec292430be8357615bbb4f",
+      "enhanced\\pes_2040\\strict\\decision\\profile_snapshot.json": "e6f82805d27bf0a1104fcd2e272cedb3be7c1897a64aeae2bf6a26bdb3085e1b",
+      "enhanced\\pes_2040\\strict\\decision\\ranked_cells.parquet": "effc51c1d2b397edd1d636356db92ec88ee8f736fff6352ed3f22f35c8d48e43",
+      "enhanced\\pes_2040\\strict\\decision\\ranking.csv": "25ff9c80393d2c8085abcfcf368be1e3a6d8fe57d6cc501ee4238da5efaeb10b",
+      "enhanced\\pes_2040\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\pes_2040\\strict\\external_scenario.json": "998690b44fb25fea8971f918b572256c527733d31c227f2e8103fa4bd1a35967",
+      "enhanced\\pes_2040\\strict\\screening_eligibility.parquet": "fba81e35eeb869cf3f47bd5f122d52489190293eb24df36a00b226e755ccd186",
+      "enhanced\\pes_2040\\strict\\screening_results.parquet": "a5431b50371155e04e0fc58e3a8a099ff79c6eb200efdb4d91f0ebba63f7426c",
+      "enhanced\\pes_2040\\strict\\site_performance.parquet": "cc521b3a83bcc8b25492f682e28d94e9015916094b5f5801623d2776226ea2c6",
+      "enhanced\\pes_2050\\exploratory\\decision\\ahp_template.json": "5f1c353d1cc9eddefa34cdb44df1f3ed57a63ff1a8e817870a2ebdcb367f1f9b",
+      "enhanced\\pes_2050\\exploratory\\decision\\candidate_regions.geojson": "8572e7dfeb7066c9635e3edada5634d5f14fa7f35e5ea327798e992e92006f10",
+      "enhanced\\pes_2050\\exploratory\\decision\\normalized_metrics.parquet": "8e99af3d68bdd80895e8c81d7a8980d755e8e0e069bf2d32901da61efbdd8d6a",
+      "enhanced\\pes_2050\\exploratory\\decision\\pareto_results.parquet": "1bd3cafd5271135830c1c2872c3b9598e7fda5c5783ed61406eb3efc06f24edf",
+      "enhanced\\pes_2050\\exploratory\\decision\\profile_snapshot.json": "a33eea4f62c217223f553528af7beb0715a4a78c3bee35d281186446f9ca8853",
+      "enhanced\\pes_2050\\exploratory\\decision\\ranked_cells.parquet": "c44335b734542c3d1ed4fcf597abb6fe62579b435a56e756f6d3ce7ee95db08e",
+      "enhanced\\pes_2050\\exploratory\\decision\\ranking.csv": "0ea1b8973cdd80bba9db8e5d0c661e80a1240214c273adc14d75633dc8d87e28",
+      "enhanced\\pes_2050\\exploratory\\decision\\region_membership.parquet": "4e7b129c4cb01b4cef445ad166d089f3c15bb8c2f24ca8e2afacb7703ec9582f",
+      "enhanced\\pes_2050\\exploratory\\external_scenario.json": "d233172b4fba217d4586691a4d1a08c5d555e3b55d3407d5148e676be498b5f2",
+      "enhanced\\pes_2050\\exploratory\\screening_eligibility.parquet": "3591cfe653311a08e2780b05b173eb42240e6244b0edcc2c025a34c02e5bfb8d",
+      "enhanced\\pes_2050\\exploratory\\screening_results.parquet": "41e29bc4ad05704ace56fd34f45d229c70fb936981cd998e2b58987e01c5b4ba",
+      "enhanced\\pes_2050\\exploratory\\site_performance.parquet": "4b92fa5ca00390bc860fa0bdd57f82dd90268de9e9da81b367aebf59cc14a6fc",
+      "enhanced\\pes_2050\\strict\\decision\\ahp_template.json": "5f1c353d1cc9eddefa34cdb44df1f3ed57a63ff1a8e817870a2ebdcb367f1f9b",
+      "enhanced\\pes_2050\\strict\\decision\\candidate_regions.geojson": "65aacc5e6028e5d0e697d2e5798f76cdf77676cf6ab8b31b6209b7ba2574dbd7",
+      "enhanced\\pes_2050\\strict\\decision\\normalized_metrics.parquet": "8e99af3d68bdd80895e8c81d7a8980d755e8e0e069bf2d32901da61efbdd8d6a",
+      "enhanced\\pes_2050\\strict\\decision\\pareto_results.parquet": "0be7f6e86a06a4e0a9514629e313dbabd19511a29a1708f76120016722ce28c2",
+      "enhanced\\pes_2050\\strict\\decision\\profile_snapshot.json": "a33eea4f62c217223f553528af7beb0715a4a78c3bee35d281186446f9ca8853",
+      "enhanced\\pes_2050\\strict\\decision\\ranked_cells.parquet": "cf4106e71950fb35acf7f1398207ab29c02584faac6922c7865adb0f38fc3a8e",
+      "enhanced\\pes_2050\\strict\\decision\\ranking.csv": "08b4235334031289103b10851432e6189752f7a021b9c0ee8b5636fb77672af9",
+      "enhanced\\pes_2050\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\pes_2050\\strict\\external_scenario.json": "d233172b4fba217d4586691a4d1a08c5d555e3b55d3407d5148e676be498b5f2",
+      "enhanced\\pes_2050\\strict\\screening_eligibility.parquet": "5ad43ceb4e60020033087d77a39b22f078955b43d02db5a263402f6999913f1a",
+      "enhanced\\pes_2050\\strict\\screening_results.parquet": "f610bf8dd4749442173c8932587d9b85c157437543fdb6aa728ca5fa5358e5aa",
+      "enhanced\\pes_2050\\strict\\site_performance.parquet": "4b92fa5ca00390bc860fa0bdd57f82dd90268de9e9da81b367aebf59cc14a6fc",
+      "enhanced\\pes_2080\\exploratory\\decision\\ahp_template.json": "e011b244cb83c576ba60aaead76679500fcf76dd07f287a9d733acade4735376",
+      "enhanced\\pes_2080\\exploratory\\decision\\candidate_regions.geojson": "020edff8601bf102baffc28cb6e1d9d7761a6c17fe8ada0f369dbbcf5dde6fca",
+      "enhanced\\pes_2080\\exploratory\\decision\\normalized_metrics.parquet": "2d4ae67c99a81295fced7fb941b87e34a028f368822c8e889208bdd6c8552acd",
+      "enhanced\\pes_2080\\exploratory\\decision\\pareto_results.parquet": "84e2638701adbabca36cf22e820cd61576815a25ffbb5960a9ed635710dafb39",
+      "enhanced\\pes_2080\\exploratory\\decision\\profile_snapshot.json": "4438a3f025f6359d35d2c47be681a64b6956eab5dd3557151b2d588a783755a7",
+      "enhanced\\pes_2080\\exploratory\\decision\\ranked_cells.parquet": "8a801d3e3c8068f5234593dbad2fbc84fa606a7219a304a8a0b0a79d4ff42a91",
+      "enhanced\\pes_2080\\exploratory\\decision\\ranking.csv": "c87b6a5010a580688046e9b7ad1a2bcca62954fc34a8a0c8c7a92222406ab28b",
+      "enhanced\\pes_2080\\exploratory\\decision\\region_membership.parquet": "d282d6304c5f90d5bbccadef8aeff24ef56ab8241606a846e19946c6befc0f7a",
+      "enhanced\\pes_2080\\exploratory\\external_scenario.json": "20b1bb1739c1dacb57c415c055d7b7850708e12c32f839551c255336f87f8e9c",
+      "enhanced\\pes_2080\\exploratory\\screening_eligibility.parquet": "0ffa082c76d482595b4b25340ff676ddc7ceebccf617a1dfcebe89757a138fd3",
+      "enhanced\\pes_2080\\exploratory\\screening_results.parquet": "e8245f94551345559bf498c6d77ee6aa24e7c0685ec23a233e1e7e1d8cf92f20",
+      "enhanced\\pes_2080\\exploratory\\site_performance.parquet": "fa474830a96898cc00daf11f61bddf94d7d64530e35c88b5d54f2ba7d149cfdb",
+      "enhanced\\pes_2080\\strict\\decision\\ahp_template.json": "e011b244cb83c576ba60aaead76679500fcf76dd07f287a9d733acade4735376",
+      "enhanced\\pes_2080\\strict\\decision\\candidate_regions.geojson": "e7b6047cdaa6fcd89fa2eecb4851034952090dbc7b62e5cb5d9280cf3fabadcd",
+      "enhanced\\pes_2080\\strict\\decision\\normalized_metrics.parquet": "2d4ae67c99a81295fced7fb941b87e34a028f368822c8e889208bdd6c8552acd",
+      "enhanced\\pes_2080\\strict\\decision\\pareto_results.parquet": "773cffad8a3553ce56f13ed05acd0bf21df652302b4fb36d3e61c0ef65265d77",
+      "enhanced\\pes_2080\\strict\\decision\\profile_snapshot.json": "4438a3f025f6359d35d2c47be681a64b6956eab5dd3557151b2d588a783755a7",
+      "enhanced\\pes_2080\\strict\\decision\\ranked_cells.parquet": "a1212074b6e14e6d9c0055d1a3a83067bfde2a53165e17517c9be7991afe808c",
+      "enhanced\\pes_2080\\strict\\decision\\ranking.csv": "98110b15b8c43c61b48cc1fa9d8a6eec44e99d68484d9e469d5696b030677b96",
+      "enhanced\\pes_2080\\strict\\decision\\region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f",
+      "enhanced\\pes_2080\\strict\\external_scenario.json": "20b1bb1739c1dacb57c415c055d7b7850708e12c32f839551c255336f87f8e9c",
+      "enhanced\\pes_2080\\strict\\screening_eligibility.parquet": "2007f53a292a6f7d0a147a86493ad937c4d23e48947487872c996b17f8754e07",
+      "enhanced\\pes_2080\\strict\\screening_results.parquet": "03c19fbecff639773e81248368578acf454751c0df139000ce804b281839ee3d",
+      "enhanced\\pes_2080\\strict\\site_performance.parquet": "fa474830a96898cc00daf11f61bddf94d7d64530e35c88b5d54f2ba7d149cfdb",
+      "enhanced_feature_provenance.parquet": "7eee462f8514e26fff80e42bd492eb939f7328a821744c739007e4f2fd43d6fd",
+      "enhanced_grid_dataset.parquet": "96add7295bc5f8728513f7b562d2c211cfc8c05f52c01196bdfd91596900da14",
+      "future_scenarios.parquet": "0420d3e0afa920d73cc63f615e5b030c8f5f0d7eab53b1237060925c9e0f1a38",
+      "lifecycle_results.parquet": "764214f8505398c0f7a8d4a735f27ca0c6a8a2a23c4247444f7ffbb1f53cf0de",
+      "source_coverage.json": "c0ba66153e1b53a126835f422390ece123354981466f0cfc4927b22d68bd4d5c",
+      "source_manifest.json": "6d49c1a2e559c8d2b6c80f6f1be7a3683cd9a9ea0e2e565982de3766418da227"
+    },
+    "comparison_rows": 2016,
+    "directory": "runs/phase5/integrated",
+    "enhanced_columns": 681,
+    "enhanced_packages": {
+      "bau_2030/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 2,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "1acd8d17074a8316c6b58e730ff80623fef3f76a30302c50fec1a92c6706e050",
+          "candidate_regions.geojson": "cbabe179c4fec7b803f8b6145af8610757a33eafabef1989abf6f97bf488a0c1",
+          "normalized_metrics.parquet": "2fd054fa3bdcffa79454804960b1b8e145edfd50f38f4248a5531e0b733032be",
+          "pareto_results.parquet": "88b93ddc5bb3088fba00f3ef91c2c08fb6551bb25edee4c2aabbfde565cf018b",
+          "profile_snapshot.json": "fcd428196dd5464bae6b801edac1aa99a9143760580feb88c68a875181bd637e",
+          "ranked_cells.parquet": "03f379b7e5924440acdc0f34875b7d55e4a07c780a6bd9c9cc2843cfc60d0341",
+          "ranking.csv": "29ddeb14ca9beb7f8eeacc5372e9e6d90da4f6e614b98196d3c1480f6eb3dee1",
+          "region_membership.parquet": "b19eb8cdd863d0bc1819bb7541b3f6da32204af429828adbb72bcfb0d7b18ef8"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "bau_2030/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "1acd8d17074a8316c6b58e730ff80623fef3f76a30302c50fec1a92c6706e050",
+          "candidate_regions.geojson": "b3858f97619e11effcf93e0c23c8a099c1e13864bea22dd3f07d71a6beabe590",
+          "normalized_metrics.parquet": "2fd054fa3bdcffa79454804960b1b8e145edfd50f38f4248a5531e0b733032be",
+          "pareto_results.parquet": "710b63314148d49dae50298e02553ac53871c06f0fb2219eaea51eab491da10f",
+          "profile_snapshot.json": "fcd428196dd5464bae6b801edac1aa99a9143760580feb88c68a875181bd637e",
+          "ranked_cells.parquet": "5fde85dcb7bb63ea8ff79d9ab15ef69ed4e92b905efa29bbe0793ca4bf0cc012",
+          "ranking.csv": "d4061349c2a0d7f49288b574b5f0163f275a021dd20376d1b72597a946639395",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "bau_2040/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+          "candidate_regions.geojson": "85f100385ffac59fcf15de50d8197b03796373d7d8194c438cbe21324021df32",
+          "normalized_metrics.parquet": "5097f2f4f67f1c9c6a7e80975ae1239f7d1e02ff1028952b1b4289cec1009fca",
+          "pareto_results.parquet": "7fb066aa764cb160f2dc3764cdca2bd3298c6e4f3aa80b95afb4a22dae7eedd5",
+          "profile_snapshot.json": "4dcf6fd614ab15ebced02b0fc95cfb03c05e39e2958ae0ad6805072912dc8a81",
+          "ranked_cells.parquet": "9c60335cf971ad016611adaed8ea7893cd3f0b189ee17e337107541bd97734ac",
+          "ranking.csv": "7deae54daa65fd1236032aa1c54a422e222f1a0fc6022df5edcca6c265a8e53e",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "bau_2040/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+          "candidate_regions.geojson": "85f100385ffac59fcf15de50d8197b03796373d7d8194c438cbe21324021df32",
+          "normalized_metrics.parquet": "5097f2f4f67f1c9c6a7e80975ae1239f7d1e02ff1028952b1b4289cec1009fca",
+          "pareto_results.parquet": "220da23d0cdc4d7afccb06d9ea2ff264d2edf590e04f9c8d65415c8fdad7680d",
+          "profile_snapshot.json": "4dcf6fd614ab15ebced02b0fc95cfb03c05e39e2958ae0ad6805072912dc8a81",
+          "ranked_cells.parquet": "4e1f4bd8c8a40d383e2c7363da6a642cd139e932589ec378d01f383072bd6b10",
+          "ranking.csv": "90a8f4edc8667fb15cbaedf362481a8165ae74f5969aba302b284d81c78c776f",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "bau_2050/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 2,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "7df2fafa4dea3799dbd3b46ada87711e553a8249801f7d72e52f300af2342a1a",
+          "candidate_regions.geojson": "03ae82ce56abd95361a0b256bdcd110b5bec5e19d1835f2004bab5392c2fe0e1",
+          "normalized_metrics.parquet": "6baf33017755e8f3866bc954bc828cc108762bdf7a32c0048dea3decbebb7d50",
+          "pareto_results.parquet": "7a8f7cf51b350252163f082b0e560f438de37a8a3d5cd2e81c0063174e70e126",
+          "profile_snapshot.json": "4fb6c886f1fb3b46bff7676b8a47711e45f94d284d25b9efd0ee75bceb3cf209",
+          "ranked_cells.parquet": "a7e5e83d5f479b94867244b02a6a64b8c377c0f4b28efca483a6c2b161737cc5",
+          "ranking.csv": "502915a528d400159a799be92fb8d74306d9bcbf9f1d47cadde3a717e060251a",
+          "region_membership.parquet": "9551983bbf162f22172f71e0e1b6723095c17f56aa7080c48ef63d4204fab787"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "bau_2050/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "7df2fafa4dea3799dbd3b46ada87711e553a8249801f7d72e52f300af2342a1a",
+          "candidate_regions.geojson": "63267fcbecf27253959c88fb19bea5a92da1c43c3cb47e8974ce5b3120849156",
+          "normalized_metrics.parquet": "6baf33017755e8f3866bc954bc828cc108762bdf7a32c0048dea3decbebb7d50",
+          "pareto_results.parquet": "aafb112439b227d82fa1c7cdfcd8ef093493a5d59b3c4373e03fd6b7cd68b4e6",
+          "profile_snapshot.json": "4fb6c886f1fb3b46bff7676b8a47711e45f94d284d25b9efd0ee75bceb3cf209",
+          "ranked_cells.parquet": "796a21f2f3d9effad0f3066cfa9f0fddbbff377a4b36628b7c8ffbfbe8631daf",
+          "ranking.csv": "0fe8d7285f453a02571b079a187bc00276931a66c8562869a70f33daae68c725",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "bau_2080/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 4,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "08464d013dfa7e5940e853bf90a586ea9941664a041ec178ee095e142a4260d7",
+          "candidate_regions.geojson": "050058ef112e18e3828ffd8c8ad983e9797467927f487963486df1f9e91f6e7d",
+          "normalized_metrics.parquet": "dba17eeadbbf43a320ad3da16dc681b21a567b83b5be8d4c9491b59c3b85082d",
+          "pareto_results.parquet": "8ecbee6691399a832ce6cbc1143dd938e00679669bd26e32f711570b3b445bf7",
+          "profile_snapshot.json": "c1fc45165c5c187326ff14bf3a52cfb82093346b9f762f2ac525bcae05d31fda",
+          "ranked_cells.parquet": "f4215cb95f72b05637d3f20b79fe9dcae58654d8a623e63e24a98cb5e3491d64",
+          "ranking.csv": "2bcd52b1f6c7d2751d8b5fcc4cc051d3b083e3073893e62ab04e0ef524b58c97",
+          "region_membership.parquet": "795cf3aa4a1fc328cc39bf12fbe0953f6e53da1f88825a678a49bd5c9e88c370"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "bau_2080/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "08464d013dfa7e5940e853bf90a586ea9941664a041ec178ee095e142a4260d7",
+          "candidate_regions.geojson": "cbe6fad30b0b67cdf26674009cceaa1409d1cd422ee1ff22779fbf9c510f4ceb",
+          "normalized_metrics.parquet": "dba17eeadbbf43a320ad3da16dc681b21a567b83b5be8d4c9491b59c3b85082d",
+          "pareto_results.parquet": "d30a354929c395c40450ad0a9a1a9a6f0ac74d7341576acb0a6c2d378cbe967a",
+          "profile_snapshot.json": "c1fc45165c5c187326ff14bf3a52cfb82093346b9f762f2ac525bcae05d31fda",
+          "ranked_cells.parquet": "7f4c56c864491e506bc90f3b6b8c3300190377babbd67d0588b01875d43f66ed",
+          "ranking.csv": "ff703404da6d305cf09807d1c35483e23714a265f75967b636f3f4970ca8ad18",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "opt_2030/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 4,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "3fee39010698303ed40b0fc50385446849b4080b996d8f823ebd0b0efe03977b",
+          "candidate_regions.geojson": "e9ddcaa8242f234e7991fe6afdd116536457d0184e2d5f8bc0968b14bc47da59",
+          "normalized_metrics.parquet": "77cb0949465347e95b14b8337ef4e07e242bf5232f8792d1b72bd85859c4bc0a",
+          "pareto_results.parquet": "cec27b4c556ace25612a345a51efe8b054991500e262c48dcc61024bc217c5a5",
+          "profile_snapshot.json": "7003a4ee00e2fddf3c9f0e3bf89093eedc5032d55bdf0a30befed8caa2ac46c5",
+          "ranked_cells.parquet": "acb0bffd8ac49fabb91f491e6e67d17b28e45a833d4a479139da117f1731dd93",
+          "ranking.csv": "a57ac428cc32548c94c6647465d4ebdbb2ca4d73e74612b732bda9542a8156da",
+          "region_membership.parquet": "0beeaeb13f6aad4e333ef20cccf3fb632175f24aabbaf38ad77ef84a4a7b54ce"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "opt_2030/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "3fee39010698303ed40b0fc50385446849b4080b996d8f823ebd0b0efe03977b",
+          "candidate_regions.geojson": "4f40424420cd9058dd2afd7ee544eb58551c6fde48435ed9ae96d9097856717d",
+          "normalized_metrics.parquet": "77cb0949465347e95b14b8337ef4e07e242bf5232f8792d1b72bd85859c4bc0a",
+          "pareto_results.parquet": "02fca1f8c81a06b7206cf0cbe09eeb176c77d916d0c63975c524d96bf193f453",
+          "profile_snapshot.json": "7003a4ee00e2fddf3c9f0e3bf89093eedc5032d55bdf0a30befed8caa2ac46c5",
+          "ranked_cells.parquet": "6331e8b830f80a323fc6c019194c523d04c3ee54eea46793aab80fe2bc80d6df",
+          "ranking.csv": "f8068e3b9da27e39205ff82a9af2cc7a897ad6d73620c0f9b28b31c555eec261",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "opt_2040/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+          "candidate_regions.geojson": "b7ccd605577ce039848267c35087020d11e81efbd31001a6305e579fb6e48b6b",
+          "normalized_metrics.parquet": "ac173d768cce45e9cd22bcff85c110b7db564e42e376a41f0c5c0798fb7c2da9",
+          "pareto_results.parquet": "ee97e4502a5fdee625c75c76e12fb32fa3ad88d73b566145d952e3b908121793",
+          "profile_snapshot.json": "2ba077d3bca85d7ea1317e10e80970a04767d29d36789874470444578c33d8bb",
+          "ranked_cells.parquet": "362cc0bb27eef96b04263b8f125ad382dc49efdc336292e5562c2513a206f9cf",
+          "ranking.csv": "2bddcf61d10db4033e480b38da3677e0e9323686c2183ca38011766e6955a9b5",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "opt_2040/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+          "candidate_regions.geojson": "b7ccd605577ce039848267c35087020d11e81efbd31001a6305e579fb6e48b6b",
+          "normalized_metrics.parquet": "ac173d768cce45e9cd22bcff85c110b7db564e42e376a41f0c5c0798fb7c2da9",
+          "pareto_results.parquet": "fbfa0b5aa7be1450d553bdc227cd05e643ef854ba79fc6cce8f15668bb236611",
+          "profile_snapshot.json": "2ba077d3bca85d7ea1317e10e80970a04767d29d36789874470444578c33d8bb",
+          "ranked_cells.parquet": "7ce0bd9357acae55471ce8cd1f76cc7e66c13658fc29fa74e4bfe375decf746a",
+          "ranking.csv": "7f77010c45e0828aabd91faea40a598c022e8fd5e1f252ea335c600ab475db08",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "opt_2050/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 2,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "a73cb3d297c103a18019bf7db6ded477808371cfb198d0aeda829046dbd83a8e",
+          "candidate_regions.geojson": "4dba4f267161820bdd425c4ab8c75c3af49a9dc6df477064b9ea880a7e3a8b73",
+          "normalized_metrics.parquet": "be0f7aaa94584fac319f5716ef55cec8906bf39de9a4fd990b1ca8aee0ce9734",
+          "pareto_results.parquet": "2ba7a985824805f35a41ddc05c8c4fe552724e4c2a2b621520015fec8db43444",
+          "profile_snapshot.json": "00c2750b6012d09b78eacbad279f352afc47ad7ee5f1c3cb8f1390c1ec8e7cf9",
+          "ranked_cells.parquet": "6da7da5e55dac039971189c8cc49091523cbd3a9d77a56839ddc39aecf6b82bc",
+          "ranking.csv": "7f05054e42585aa45f901e1718d56f88bd66549f21ecffbbea35042df1f8f341",
+          "region_membership.parquet": "5bdc9ae1db726c3395df76d6137c376f05292814656931294e5f7ce20fe3f483"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "opt_2050/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "a73cb3d297c103a18019bf7db6ded477808371cfb198d0aeda829046dbd83a8e",
+          "candidate_regions.geojson": "14f5322504e441c03668b6536dcb5a6626a74cdd0fbcad421234a2cb3238b159",
+          "normalized_metrics.parquet": "be0f7aaa94584fac319f5716ef55cec8906bf39de9a4fd990b1ca8aee0ce9734",
+          "pareto_results.parquet": "86a4654c11f825e0a620ab2393e34f6063781ea32326de490a941f80cdee9158",
+          "profile_snapshot.json": "00c2750b6012d09b78eacbad279f352afc47ad7ee5f1c3cb8f1390c1ec8e7cf9",
+          "ranked_cells.parquet": "2866cac3fc9300ce6c40e44783c340d3979f74ece80874eb58137123a6697a77",
+          "ranking.csv": "4bf5ac07e0731f924c9f3d69e996e2d8a46d3727a9be6f8720450db115a8ee79",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "opt_2080/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 2,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "3e81ae281fb369ea17d730597c7f911becf06066ef30f1c83998082c3a841a7b",
+          "candidate_regions.geojson": "97db5ff1306dd38f227a28844786505c33f4df50d432c6057056fe6da8a94be7",
+          "normalized_metrics.parquet": "b3513c76cb82175747b4e378f2183204437c6d98fd054ca9aaedefcc6b084bdc",
+          "pareto_results.parquet": "895fc37c9aadd1693596ccfbd453ef08bbd4e29c80fc4df21189a95ba58679b3",
+          "profile_snapshot.json": "49331a209bb235c9bb4629429ca8f951f11ffa97bd0b3207225359597ca65b1d",
+          "ranked_cells.parquet": "627d156f9e4792f5c84b7d90abf263697dc07c970de837a5905b3efd8a7fee6e",
+          "ranking.csv": "038958c4cd888333d22f54597fc96f7cc4afc3a56a3ea5e36f6434862c5217ab",
+          "region_membership.parquet": "8b1a4b9f52d1751a2e260149c46fdbb2f4bf5b36429825f7ab01c8ac4bca0796"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "opt_2080/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "3e81ae281fb369ea17d730597c7f911becf06066ef30f1c83998082c3a841a7b",
+          "candidate_regions.geojson": "df24342196c4922be530e984ab830adb1632751ad2a178ab0125f908e06d32ae",
+          "normalized_metrics.parquet": "b3513c76cb82175747b4e378f2183204437c6d98fd054ca9aaedefcc6b084bdc",
+          "pareto_results.parquet": "5b29f3b55ccffaaa049ff0e8d84c075f4e4bb36d6e3866c5473561ba46952274",
+          "profile_snapshot.json": "49331a209bb235c9bb4629429ca8f951f11ffa97bd0b3207225359597ca65b1d",
+          "ranked_cells.parquet": "08957eb082b2ede5ec1980b8b742fc1ccea42078be4ab12f803a00a970e43808",
+          "ranking.csv": "f563771fa4f57f8a14738130b8e57a0f92f88d5508a0e7b4a8895bb5a24a8ee2",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "pes_2030/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 4,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "1b599d5f1fb62e60203b6ddabebbc096885b80924a14071e67ca2fd0d36ea021",
+          "candidate_regions.geojson": "7b6ea0d456bf336167aa2117766d4f5f60b40a1bc347d285e00c5f7b1c10a7b0",
+          "normalized_metrics.parquet": "0fc5a0ff28b9ea6bb9a10cf4fe4043dcbf3149a3ea945f9734af7067781f78df",
+          "pareto_results.parquet": "d3b7f678ba48674a167bdc64ee97692fc644d6c044d254006827b2c4ce4ff524",
+          "profile_snapshot.json": "4af7b4e8f8e3acf07e364e11aacd978e53ff88cf1008e15456347f9f80f7040f",
+          "ranked_cells.parquet": "ffbc1e5abc7f9f178802ee2b80299d47cb655d5c86a782338baa8b1ba059c97f",
+          "ranking.csv": "2d0c5fcc6a7035bb0911e5925243d1fff50f5400d891efc678247d0bbc9238d2",
+          "region_membership.parquet": "d8f1609f7468d535bedc6d59781bbc2b5c43a85bcde142ed47c8bbd10f3058e6"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "pes_2030/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "1b599d5f1fb62e60203b6ddabebbc096885b80924a14071e67ca2fd0d36ea021",
+          "candidate_regions.geojson": "d33765f42ad66e89ec2e910dce3b0ec282a738299cd237ab4134519c641649f7",
+          "normalized_metrics.parquet": "0fc5a0ff28b9ea6bb9a10cf4fe4043dcbf3149a3ea945f9734af7067781f78df",
+          "pareto_results.parquet": "6107ba133201a427b3469f11007cda0590ab6626ea9bf5d1458e78568a0388d5",
+          "profile_snapshot.json": "4af7b4e8f8e3acf07e364e11aacd978e53ff88cf1008e15456347f9f80f7040f",
+          "ranked_cells.parquet": "4558db8c4fb24ac9626bf7215e8d0b42beacb549e2891a2c3a18153f08ba794d",
+          "ranking.csv": "d39cca6007f564466b605b2e930f0563b42e46d2aaec9e08f593ad19e75831dc",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "pes_2040/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+          "candidate_regions.geojson": "17860e1b8ac2351e35283e5b35bc5a2cc94625666403003482d6f4cba32e580f",
+          "normalized_metrics.parquet": "2c8c6ae421933abf76269ca3c542194c0a8a0a2620897b03dbaef700a154f757",
+          "pareto_results.parquet": "d811ff39450190f718b4135c99e2c1c45da584b43c2bb651b2b7bc527dafcc16",
+          "profile_snapshot.json": "e6f82805d27bf0a1104fcd2e272cedb3be7c1897a64aeae2bf6a26bdb3085e1b",
+          "ranked_cells.parquet": "6571f0678687cadb652c04907b05b40aa1b5745cbf9ee3b3449142fbd4e7eecf",
+          "ranking.csv": "0351975da438f922c929be18e57c9104e20a3299068c3570eabd9b9847e1cd9a",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "pes_2040/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "6e5c22b6a4bcb0a55d6df76d3cb7d5d65453b0f336ec6a61379df05084b49a28",
+          "candidate_regions.geojson": "17860e1b8ac2351e35283e5b35bc5a2cc94625666403003482d6f4cba32e580f",
+          "normalized_metrics.parquet": "2c8c6ae421933abf76269ca3c542194c0a8a0a2620897b03dbaef700a154f757",
+          "pareto_results.parquet": "b5efb83f65c89ab31494e9afd2ba8b6177742e09c3ec292430be8357615bbb4f",
+          "profile_snapshot.json": "e6f82805d27bf0a1104fcd2e272cedb3be7c1897a64aeae2bf6a26bdb3085e1b",
+          "ranked_cells.parquet": "effc51c1d2b397edd1d636356db92ec88ee8f736fff6352ed3f22f35c8d48e43",
+          "ranking.csv": "25ff9c80393d2c8085abcfcf368be1e3a6d8fe57d6cc501ee4238da5efaeb10b",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "pes_2050/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 2,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "5f1c353d1cc9eddefa34cdb44df1f3ed57a63ff1a8e817870a2ebdcb367f1f9b",
+          "candidate_regions.geojson": "8572e7dfeb7066c9635e3edada5634d5f14fa7f35e5ea327798e992e92006f10",
+          "normalized_metrics.parquet": "8e99af3d68bdd80895e8c81d7a8980d755e8e0e069bf2d32901da61efbdd8d6a",
+          "pareto_results.parquet": "1bd3cafd5271135830c1c2872c3b9598e7fda5c5783ed61406eb3efc06f24edf",
+          "profile_snapshot.json": "a33eea4f62c217223f553528af7beb0715a4a78c3bee35d281186446f9ca8853",
+          "ranked_cells.parquet": "c44335b734542c3d1ed4fcf597abb6fe62579b435a56e756f6d3ce7ee95db08e",
+          "ranking.csv": "0ea1b8973cdd80bba9db8e5d0c661e80a1240214c273adc14d75633dc8d87e28",
+          "region_membership.parquet": "4e7b129c4cb01b4cef445ad166d089f3c15bb8c2f24ca8e2afacb7703ec9582f"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "pes_2050/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "5f1c353d1cc9eddefa34cdb44df1f3ed57a63ff1a8e817870a2ebdcb367f1f9b",
+          "candidate_regions.geojson": "65aacc5e6028e5d0e697d2e5798f76cdf77676cf6ab8b31b6209b7ba2574dbd7",
+          "normalized_metrics.parquet": "8e99af3d68bdd80895e8c81d7a8980d755e8e0e069bf2d32901da61efbdd8d6a",
+          "pareto_results.parquet": "0be7f6e86a06a4e0a9514629e313dbabd19511a29a1708f76120016722ce28c2",
+          "profile_snapshot.json": "a33eea4f62c217223f553528af7beb0715a4a78c3bee35d281186446f9ca8853",
+          "ranked_cells.parquet": "cf4106e71950fb35acf7f1398207ab29c02584faac6922c7865adb0f38fc3a8e",
+          "ranking.csv": "08b4235334031289103b10851432e6189752f7a021b9c0ee8b5636fb77672af9",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      },
+      "pes_2080/EXPLORATORY": {
+        "alternatives": 84,
+        "candidate_regions": 2,
+        "conditional_ranked": 84,
+        "output_hashes": {
+          "ahp_template.json": "e011b244cb83c576ba60aaead76679500fcf76dd07f287a9d733acade4735376",
+          "candidate_regions.geojson": "020edff8601bf102baffc28cb6e1d9d7761a6c17fe8ada0f369dbbcf5dde6fca",
+          "normalized_metrics.parquet": "2d4ae67c99a81295fced7fb941b87e34a028f368822c8e889208bdd6c8552acd",
+          "pareto_results.parquet": "84e2638701adbabca36cf22e820cd61576815a25ffbb5960a9ed635710dafb39",
+          "profile_snapshot.json": "4438a3f025f6359d35d2c47be681a64b6956eab5dd3557151b2d588a783755a7",
+          "ranked_cells.parquet": "8a801d3e3c8068f5234593dbad2fbc84fa606a7219a304a8a0b0a79d4ff42a91",
+          "ranking.csv": "c87b6a5010a580688046e9b7ad1a2bcca62954fc34a8a0c8c7a92222406ab28b",
+          "region_membership.parquet": "d282d6304c5f90d5bbccadef8aeff24ef56ab8241606a846e19946c6befc0f7a"
+        },
+        "rankable": 84,
+        "region_memberships": 22
+      },
+      "pes_2080/STRICT": {
+        "alternatives": 84,
+        "candidate_regions": 0,
+        "conditional_ranked": 0,
+        "output_hashes": {
+          "ahp_template.json": "e011b244cb83c576ba60aaead76679500fcf76dd07f287a9d733acade4735376",
+          "candidate_regions.geojson": "e7b6047cdaa6fcd89fa2eecb4851034952090dbc7b62e5cb5d9280cf3fabadcd",
+          "normalized_metrics.parquet": "2d4ae67c99a81295fced7fb941b87e34a028f368822c8e889208bdd6c8552acd",
+          "pareto_results.parquet": "773cffad8a3553ce56f13ed05acd0bf21df652302b4fb36d3e61c0ef65265d77",
+          "profile_snapshot.json": "4438a3f025f6359d35d2c47be681a64b6956eab5dd3557151b2d588a783755a7",
+          "ranked_cells.parquet": "a1212074b6e14e6d9c0055d1a3a83067bfde2a53165e17517c9be7991afe808c",
+          "ranking.csv": "98110b15b8c43c61b48cc1fa9d8a6eec44e99d68484d9e469d5696b030677b96",
+          "region_membership.parquet": "ebdb17e4f04949ba80368ec279da1fd6311cb2ddd3a10c4c9830841a51709a3f"
+        },
+        "rankable": 0,
+        "region_memberships": 0
+      }
+    },
+    "geographic_cells": 42,
+    "lifecycle_rows": 1008,
+    "null_full_lifecycle_count": 1008,
+    "provenance_rows": 6636,
+    "repeat_directory": "runs/phase5/repeat_integrated",
+    "temporal_kind_counts": {
+      "annual_operating": 176400,
+      "source_projection_window": 4662,
+      "unsupported_requested_period": 1512
+    },
+    "temporal_rows": 182574,
+    "top_level_files": {
+      "baseline_vs_enhanced.parquet": {
+        "bytes": 38700,
+        "metadata": {
+          "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+          "data_mode": "real",
+          "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+          "schema": "BaselineEnhancedComparison",
+          "schema_version": "1.0.0"
+        },
+        "sha256": "b6f54755de43bf93528d06abe765e5ac7388cddacfc72a7bffc20e678f4bb75a"
+      },
+      "enhanced_feature_provenance.parquet": {
+        "bytes": 53101,
+        "metadata": {
+          "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+          "data_mode": "real",
+          "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+          "schema": "FeatureMetadata",
+          "schema_version": "1.1.0"
+        },
+        "sha256": "7eee462f8514e26fff80e42bd492eb939f7328a821744c739007e4f2fd43d6fd"
+      },
+      "enhanced_grid_dataset.parquet": {
+        "bytes": 593160,
+        "metadata": {
+          "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+          "data_mode": "real",
+          "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+          "schema": "GeographicFeatureDataset",
+          "schema_version": "1.2.0"
+        },
+        "sha256": "96add7295bc5f8728513f7b562d2c211cfc8c05f52c01196bdfd91596900da14"
+      },
+      "future_scenarios.parquet": {
+        "bytes": 5062910,
+        "metadata": {
+          "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+          "data_mode": "real",
+          "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+          "schema": "FutureScenarioValue",
+          "schema_version": "1.0.0"
+        },
+        "sha256": "0420d3e0afa920d73cc63f615e5b030c8f5f0d7eab53b1237060925c9e0f1a38"
+      },
+      "lifecycle_results.parquet": {
+        "bytes": 696448,
+        "metadata": {
+          "created_by": "dc_locator/0.1.0 (DESKTOP-PV1NNUD/Junwei)",
+          "data_mode": "real",
+          "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+          "schema": "LifecycleResult",
+          "schema_version": "1.0.0"
+        },
+        "sha256": "764214f8505398c0f7a8d4a735f27ca0c6a8a2a23c4247444f7ffbb1f53cf0de"
+      }
+    }
+  },
+  "peak_working_set_bytes": [
+    1901715456,
+    1900687360
+  ],
+  "phase": 5,
+  "raw_total_bytes": 3456939412,
+  "repeatability": {
+    "exclusions": "run_metadata.json timestamps and measured process peak differ; all substantive outputs and configuration snapshots match",
+    "final_code_hashes_identical": true,
+    "final_runs": [
+      "runs/phase5/integrated",
+      "runs/phase5/repeat_integrated"
+    ],
+    "mismatches": 0,
+    "substantive_artifacts_identical": 353
+  },
+  "revision_basis": "SHA256 of canonical JSON (sorted keys, compact separators) path/content-SHA mapping of current src/**/*.py and configs/**/*.yaml; paths use forward slashes; no Git repository revision available",
+  "revision_note": "Git base plus SHA256 of actual uncommitted src/config content; full snapshot is authoritative.",
+  "schema_versions": {
+    "BaselineEnhancedComparison": "1.0.0",
+    "CandidateRegion": "1.1.0",
+    "FeatureMetadata": "1.1.0",
+    "FutureScenarioValue": "1.0.0",
+    "GeographicFeatureDataset": "1.2.0",
+    "LifecycleResult": "1.0.0",
+    "RankedCellDataset": "1.1.0",
+    "ScreeningEligibility": "1.0.0",
+    "SitePerformance": "1.1.0"
+  },
+  "source_coverage": {
+    "aqueduct_future": {
+      "analyzed_cells": 42,
+      "future_metric_rows": 3024,
+      "known_scenario_rows": 2268,
+      "metrics": {
+        "aqueduct_bau_2030_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2030_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2030_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2030_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2030_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2030_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2040_water_stress_category": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_bau_2040_water_stress_category_shares_json": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_bau_2040_water_stress_extreme_scarcity_frac": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_bau_2040_water_stress_label": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_bau_2040_water_stress_ratio": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_bau_2040_water_stress_score": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_bau_2050_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2050_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2050_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2050_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2050_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2050_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2080_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2080_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2080_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2080_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2080_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_bau_2080_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2030_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2030_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2030_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2030_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2030_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2030_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2040_water_stress_category": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_opt_2040_water_stress_category_shares_json": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_opt_2040_water_stress_extreme_scarcity_frac": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_opt_2040_water_stress_label": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_opt_2040_water_stress_ratio": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_opt_2040_water_stress_score": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_opt_2050_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2050_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2050_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2050_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2050_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2050_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2080_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2080_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2080_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2080_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2080_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_opt_2080_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2030_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2030_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2030_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2030_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2030_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2030_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2040_water_stress_category": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_pes_2040_water_stress_category_shares_json": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_pes_2040_water_stress_extreme_scarcity_frac": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_pes_2040_water_stress_label": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_pes_2040_water_stress_ratio": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_pes_2040_water_stress_score": {
+          "known": 0,
+          "mean_coverage_frac": 0.0,
+          "unknown": 42
+        },
+        "aqueduct_pes_2050_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2050_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2050_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2050_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2050_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2050_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2080_water_stress_category": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2080_water_stress_category_shares_json": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2080_water_stress_extreme_scarcity_frac": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2080_water_stress_label": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2080_water_stress_ratio": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        },
+        "aqueduct_pes_2080_water_stress_score": {
+          "known": 42,
+          "mean_coverage_frac": 1.0,
+          "unknown": 0
+        }
+      },
+      "unsupported_years": [
+        2040
+      ]
+    },
+    "expanded": {
+      "analysis_extent": "provided development subset; no national analysis claim",
+      "baseline_columns_preserved": [
+        "grid_id",
+        "grid_definition_id",
+        "row",
+        "col",
+        "tile_id",
+        "geometry",
+        "cell_area_km2",
+        "study_area_intersection_km2",
+        "study_area_frac",
+        "is_boundary_cell",
+        "centroid_x_m",
+        "centroid_y_m",
+        "centroid_lat",
+        "centroid_lon",
+        "rep_point_lat",
+        "rep_point_lon",
+        "state_fips_primary",
+        "state_abbr_primary",
+        "state_share_primary_frac",
+        "state_fips_all",
+        "n_states",
+        "county_geoid_primary",
+        "county_name_primary",
+        "county_share_primary_frac",
+        "county_geoid_all",
+        "n_counties",
+        "data_mode",
+        "land_cover_water_frac",
+        "land_cover_water_frac_status",
+        "land_cover_water_frac_confidence",
+        "land_cover_water_frac_coverage_frac",
+        "land_cover_ice_snow_frac",
+        "land_cover_ice_snow_frac_status",
+        "land_cover_ice_snow_frac_confidence",
+        "land_cover_ice_snow_frac_coverage_frac",
+        "land_cover_developed_open_frac",
+        "land_cover_developed_open_frac_status",
+        "land_cover_developed_open_frac_confidence",
+        "land_cover_developed_open_frac_coverage_frac",
+        "land_cover_developed_low_frac",
+        "land_cover_developed_low_frac_status",
+        "land_cover_developed_low_frac_confidence",
+        "land_cover_developed_low_frac_coverage_frac",
+        "land_cover_developed_medium_frac",
+        "land_cover_developed_medium_frac_status",
+        "land_cover_developed_medium_frac_confidence",
+        "land_cover_developed_medium_frac_coverage_frac",
+        "land_cover_developed_high_frac",
+        "land_cover_developed_high_frac_status",
+        "land_cover_developed_high_frac_confidence",
+        "land_cover_developed_high_frac_coverage_frac",
+        "land_cover_barren_frac",
+        "land_cover_barren_frac_status",
+        "land_cover_barren_frac_confidence",
+        "land_cover_barren_frac_coverage_frac",
+        "land_cover_deciduous_forest_frac",
+        "land_cover_deciduous_forest_frac_status",
+        "land_cover_deciduous_forest_frac_confidence",
+        "land_cover_deciduous_forest_frac_coverage_frac",
+        "land_cover_evergreen_forest_frac",
+        "land_cover_evergreen_forest_frac_status",
+        "land_cover_evergreen_forest_frac_confidence",
+        "land_cover_evergreen_forest_frac_coverage_frac",
+        "land_cover_mixed_forest_frac",
+        "land_cover_mixed_forest_frac_status",
+        "land_cover_mixed_forest_frac_confidence",
+        "land_cover_mixed_forest_frac_coverage_frac",
+        "land_cover_shrub_frac",
+        "land_cover_shrub_frac_status",
+        "land_cover_shrub_frac_confidence",
+        "land_cover_shrub_frac_coverage_frac",
+        "land_cover_grassland_frac",
+        "land_cover_grassland_frac_status",
+        "land_cover_grassland_frac_confidence",
+        "land_cover_grassland_frac_coverage_frac",
+        "land_cover_pasture_frac",
+        "land_cover_pasture_frac_status",
+        "land_cover_pasture_frac_confidence",
+        "land_cover_pasture_frac_coverage_frac",
+        "land_cover_cultivated_frac",
+        "land_cover_cultivated_frac_status",
+        "land_cover_cultivated_frac_confidence",
+        "land_cover_cultivated_frac_coverage_frac",
+        "land_cover_woody_wetland_frac",
+        "land_cover_woody_wetland_frac_status",
+        "land_cover_woody_wetland_frac_confidence",
+        "land_cover_woody_wetland_frac_coverage_frac",
+        "land_cover_emergent_wetland_frac",
+        "land_cover_emergent_wetland_frac_status",
+        "land_cover_emergent_wetland_frac_confidence",
+        "land_cover_emergent_wetland_frac_coverage_frac",
+        "nlcd_coverage_frac",
+        "nlcd_coverage_frac_status",
+        "nlcd_coverage_frac_confidence",
+        "nlcd_observed_area_km2",
+        "nlcd_observed_area_km2_status",
+        "nlcd_observed_area_km2_confidence",
+        "nlcd_observed_area_km2_coverage_frac",
+        "nlcd_water_area_km2",
+        "nlcd_water_area_km2_status",
+        "nlcd_water_area_km2_confidence",
+        "nlcd_water_area_km2_coverage_frac",
+        "nlcd_land_area_km2",
+        "nlcd_land_area_km2_status",
+        "nlcd_land_area_km2_confidence",
+        "nlcd_land_area_km2_coverage_frac",
+        "potentially_suitable_land_frac",
+        "potentially_suitable_land_frac_status",
+        "potentially_suitable_land_frac_confidence",
+        "potentially_suitable_land_frac_coverage_frac",
+        "suitable_land_area_km2",
+        "suitable_land_area_km2_status",
+        "suitable_land_area_km2_confidence",
+        "suitable_land_area_km2_coverage_frac",
+        "grid_carbon_intensity_kg_per_mwh",
+        "grid_carbon_intensity_kg_per_mwh_status",
+        "grid_carbon_intensity_kg_per_mwh_confidence",
+        "grid_carbon_intensity_kg_per_mwh_coverage_frac",
+        "grid_co2_intensity_kg_per_mwh",
+        "grid_co2_intensity_kg_per_mwh_status",
+        "grid_co2_intensity_kg_per_mwh_confidence",
+        "grid_co2_intensity_kg_per_mwh_coverage_frac",
+        "egrid_coverage_frac",
+        "egrid_coverage_frac_status",
+        "egrid_coverage_frac_confidence",
+        "egrid_n_subregions",
+        "egrid_n_subregions_status",
+        "egrid_n_subregions_confidence",
+        "egrid_n_subregions_coverage_frac",
+        "egrid_subregion_primary",
+        "egrid_subregion_primary_status",
+        "egrid_subregion_primary_confidence",
+        "egrid_subregion_primary_coverage_frac",
+        "egrid_subregion_shares_json",
+        "egrid_subregion_shares_json_status",
+        "egrid_subregion_shares_json_confidence",
+        "egrid_subregion_shares_json_coverage_frac",
+        "egrid_multiple_subregion_labels_json",
+        "egrid_multiple_subregion_labels_json_status",
+        "egrid_multiple_subregion_labels_json_confidence",
+        "egrid_multiple_subregion_labels_json_coverage_frac",
+        "egrid_multiple_subregion_overlap_frac",
+        "egrid_multiple_subregion_overlap_frac_status",
+        "egrid_multiple_subregion_overlap_frac_confidence",
+        "egrid_multiple_subregion_overlap_frac_coverage_frac",
+        "baseline_water_stress_ratio",
+        "baseline_water_stress_ratio_status",
+        "baseline_water_stress_ratio_confidence",
+        "baseline_water_stress_ratio_coverage_frac",
+        "baseline_water_stress_score",
+        "baseline_water_stress_score_status",
+        "baseline_water_stress_score_confidence",
+        "baseline_water_stress_score_coverage_frac",
+        "baseline_water_stress_category",
+        "baseline_water_stress_category_status",
+        "baseline_water_stress_category_confidence",
+        "baseline_water_stress_category_coverage_frac",
+        "baseline_water_stress_extreme_scarcity_frac",
+        "baseline_water_stress_extreme_scarcity_frac_status",
+        "baseline_water_stress_extreme_scarcity_frac_confidence",
+        "baseline_water_stress_extreme_scarcity_frac_coverage_frac",
+        "baseline_water_stress_category_shares_json",
+        "baseline_water_stress_category_shares_json_status",
+        "baseline_water_stress_category_shares_json_confidence",
+        "baseline_water_stress_category_shares_json_coverage_frac",
+        "aqueduct_coverage_frac",
+        "aqueduct_coverage_frac_status",
+        "aqueduct_coverage_frac_confidence",
+        "aqueduct_n_subbasins",
+        "aqueduct_n_subbasins_status",
+        "aqueduct_n_subbasins_confidence",
+        "aqueduct_n_subbasins_coverage_frac",
+        "aqueduct_subbasin_shares_json",
+        "aqueduct_subbasin_shares_json_status",
+        "aqueduct_subbasin_shares_json_confidence",
+        "aqueduct_subbasin_shares_json_coverage_frac",
+        "temperature_mean_c",
+        "temperature_mean_c_status",
+        "temperature_mean_c_confidence",
+        "temperature_mean_c_coverage_frac",
+        "temperature_annual_max_mean_c",
+        "temperature_annual_max_mean_c_status",
+        "temperature_annual_max_mean_c_confidence",
+        "temperature_annual_max_mean_c_coverage_frac",
+        "temperature_annual_min_mean_c",
+        "temperature_annual_min_mean_c_status",
+        "temperature_annual_min_mean_c_confidence",
+        "temperature_annual_min_mean_c_coverage_frac",
+        "temperature_warmest_month_daily_max_c",
+        "temperature_warmest_month_daily_max_c_status",
+        "temperature_warmest_month_daily_max_c_confidence",
+        "temperature_warmest_month_daily_max_c_coverage_frac",
+        "flood_overlap_frac",
+        "flood_overlap_frac_status",
+        "flood_overlap_frac_confidence",
+        "flood_overlap_frac_coverage_frac",
+        "flood_sfha_area_km2",
+        "flood_sfha_area_km2_status",
+        "flood_sfha_area_km2_confidence",
+        "flood_sfha_area_km2_coverage_frac",
+        "flood_coverage_frac",
+        "flood_coverage_frac_status",
+        "flood_coverage_frac_confidence",
+        "flood_surveyed_coverage_frac",
+        "flood_surveyed_coverage_frac_status",
+        "flood_surveyed_coverage_frac_confidence",
+        "wildfire_burn_probability",
+        "wildfire_burn_probability_status",
+        "wildfire_burn_probability_confidence",
+        "wildfire_burn_probability_coverage_frac",
+        "wildfire_conditional_flame_length_ft",
+        "wildfire_conditional_flame_length_ft_status",
+        "wildfire_conditional_flame_length_ft_confidence",
+        "wildfire_conditional_flame_length_ft_coverage_frac",
+        "transmission_distance_km",
+        "transmission_distance_km_status",
+        "transmission_distance_km_confidence",
+        "transmission_distance_km_coverage_frac",
+        "power_plant_distance_km",
+        "power_plant_distance_km_status",
+        "power_plant_distance_km_confidence",
+        "power_plant_distance_km_coverage_frac",
+        "gas_pipeline_distance_km",
+        "gas_pipeline_distance_km_status",
+        "gas_pipeline_distance_km_confidence",
+        "gas_pipeline_distance_km_coverage_frac",
+        "padus_gap1_frac",
+        "padus_gap1_frac_status",
+        "padus_gap1_frac_confidence",
+        "padus_gap1_frac_coverage_frac",
+        "padus_gap2_frac",
+        "padus_gap2_frac_status",
+        "padus_gap2_frac_confidence",
+        "padus_gap2_frac_coverage_frac",
+        "padus_gap3_frac",
+        "padus_gap3_frac_status",
+        "padus_gap3_frac_confidence",
+        "padus_gap3_frac_coverage_frac",
+        "padus_gap4_frac",
+        "padus_gap4_frac_status",
+        "padus_gap4_frac_confidence",
+        "padus_gap4_frac_coverage_frac",
+        "protected_overlap_frac",
+        "protected_overlap_frac_status",
+        "protected_overlap_frac_confidence",
+        "protected_overlap_frac_coverage_frac",
+        "padus_coverage_frac",
+        "padus_coverage_frac_status",
+        "padus_coverage_frac_confidence",
+        "wildfire_hazard_potential_whp2023",
+        "wildfire_hazard_potential_whp2023_status",
+        "wildfire_hazard_potential_whp2023_confidence",
+        "wildfire_hazard_potential_whp2023_coverage_frac"
+      ],
+      "baseline_provenance_rows_preserved": 2436,
+      "data_mode": "real",
+      "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s10000m-v1",
+      "input_cells": 42,
+      "output_cells": 42,
+      "schema_version": "1.0.0",
+      "sources": {
+        "berkeley_queued_up": {
+          "acquired": true,
+          "analyzed": true,
+          "analyzed_cells": 42,
+          "implemented": true,
+          "limitation": "Not a comprehensive county inventory; absence is UNKNOWN. Reported MW is neither guaranteed supply nor a future emissions factor.",
+          "metric_nonmissing_cells": {
+            "queued_active_project_count": 42,
+            "queued_active_reported_capacity_mw": 16,
+            "queued_capacity_reporting_frac": 42
+          },
+          "native_quality": {
+            "county_assignment": "native first-listed county only",
+            "incomplete_active_capacity_projects": 1533,
+            "invalid_active_capacity_project_ids": [
+              "ERCOT:18INR0064",
+              "ERCOT:19INR0120",
+              "ERCOT:20INR0019",
+              "ERCOT:24INR0372",
+              "MISO:L002",
+              "MISO:L003",
+              "MISO:L004",
+              "MISO:L006",
+              "MISO:L008",
+              "MISO:L009",
+              "MISO:L010"
+            ],
+            "invalid_active_capacity_projects": 10,
+            "invalid_active_capacity_projects_total_before_location_filter": 11,
+            "located_active_projects": 8424,
+            "native_active_projects": 8513,
+            "unlocated_active_projects": 89
+          },
+          "nonmissing_cells": 42,
+          "source_url": "https://emp.lbl.gov/queues",
+          "source_version": "2026 edition; May2026 workbook",
+          "status": "PARTIAL"
+        },
+        "building_transparency_ec3": {
+          "acquired": false,
+          "analyzed": false,
+          "implemented": false,
+          "limitation": "Verified organization/account required; API access terms restrict caching/redistribution. No account/API data acquired or native integration claimed.",
+          "source_url": "https://www.buildingtransparency.org/api-access-pricing/",
+          "source_version": "July2026 access terms",
+          "status": "BLOCKED"
+        },
+        "eia_861": {
+          "acquired": true,
+          "analyzed": true,
+          "analyzed_cells": 42,
+          "implemented": true,
+          "limitation": "State context cannot establish the serving utility or facility outage performance; IEEE and Any Standard remain separate.",
+          "metric_nonmissing_cells": {
+            "eia861_any_reporting_customers": 42,
+            "eia861_any_with_med_saidi_minutes_per_year": 42,
+            "eia861_any_with_med_saifi_interruptions_per_year": 42,
+            "eia861_any_without_med_saidi_minutes_per_year": 42,
+            "eia861_any_without_med_saifi_interruptions_per_year": 42,
+            "eia861_ieee_loss_supply_removed_with_med_saidi_minutes_per_year": 42,
+            "eia861_ieee_loss_supply_removed_with_med_saifi_interruptions_per_year": 42,
+            "eia861_ieee_reporting_customers": 42,
+            "eia861_ieee_with_med_saidi_minutes_per_year": 42,
+            "eia861_ieee_with_med_saifi_interruptions_per_year": 42,
+            "eia861_ieee_without_med_saidi_minutes_per_year": 42,
+            "eia861_ieee_without_med_saifi_interruptions_per_year": 42
+          },
+          "nonmissing_cells": 42,
+          "source_url": "https://www.eia.gov/electricity/data/eia861/",
+          "source_version": "2024 final; updated 2025-12-03",
+          "status": "PARTIAL"
+        },
+        "epa_cwns": {
+          "acquired": false,
+          "analyzed": false,
+          "implemented": false,
+          "limitation": "Native downloads currently open personal-data popup; no submission/bypass. Public scope/manual verified, exact native export headers unverified pending authorized local files. No fabricated normalized CSV adapter.",
+          "source_url": "https://sdwis.epa.gov/ords/sfdw_pub/r/sfdw/cwns_pub/about",
+          "source_version": "2022 survey; snapshot 2022-01-01",
+          "status": "BLOCKED"
+        },
+        "fcc_broadband": {
+          "acquired": false,
+          "analyzed": false,
+          "implemented": false,
+          "limitation": "Native availability/location export not acquired or verified; licensed location linkage needed. Availability would not prove diverse data-center fiber.",
+          "source_url": "https://www.fcc.gov/BroadbandData",
+          "source_version": "latest applicable filing/export must be selected",
+          "status": "NOT_IMPLEMENTED"
+        },
+        "fema_rapt": {
+          "acquired": false,
+          "analyzed": false,
+          "implemented": false,
+          "limitation": "RAPT is available; no user agreement accepted. Appropriate underlying native source/export has not been verified or acquired.",
+          "source_url": "https://content.govdelivery.com/accounts/USDHSFEMA/bulletins/426af63",
+          "source_version": "updated 2026 tool",
+          "status": "NOT_IMPLEMENTED"
+        },
+        "freight_analysis_framework": {
+          "acquired": false,
+          "analyzed": false,
+          "implemented": false,
+          "limitation": "Official native CSV ZIP link verified; server connection reset during acquisition. Exact local CSV headers remain unverified; no native integration claimed. Regional flows are not a delivery route.",
+          "source_url": "https://www.bts.gov/faf/faf5",
+          "source_version": "5.7.1; 2024 preliminary annual estimate",
+          "status": "PARTIAL"
+        },
+        "global_cement_concrete_tracker": {
+          "acquired": false,
+          "analyzed": false,
+          "implemented": false,
+          "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+          "source_url": "https://globalenergymonitor.org/projects/global-cement-and-concrete-tracker/",
+          "source_version": "July2026",
+          "status": "BLOCKED"
+        },
+        "global_iron_steel_tracker": {
+          "acquired": false,
+          "analyzed": false,
+          "implemented": false,
+          "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+          "source_url": "https://globalenergymonitor.org/projects/global-iron-steel-tracker/",
+          "source_version": "September2026",
+          "status": "BLOCKED"
+        },
+        "nasa_nex_gddp_cmip6": {
+          "acquired": true,
+          "analyzed": true,
+          "analyzed_cells": 42,
+          "implemented": true,
+          "limitation": "One model/member/SSP and one future year only; 2031-2054 remain unacquired. Native tas CF time-maximum tag conflicts with daily-mean definition; matching native tasmax/tasmin numerical identity is required and recorded. Components are verification dependencies only. No climate-PUE function or parcel engineering claim.",
+          "metric_nonmissing_cells": {
+            "nex_access_cm2_ssp245_2030_pr_mean_mm_per_day": 42,
+            "nex_access_cm2_ssp245_2030_tas_mean_c": 42,
+            "nex_access_cm2_ssp245_2030_temporal_coverage_frac": 42
+          },
+          "nonmissing_cells": 42,
+          "source_url": "https://nccs.smce.nasa.gov/data-collections/nex-gddp-cmip6/",
+          "source_version": "2.0; ACCESS-CM2; r1i1p1f1; ssp245",
+          "status": "PARTIAL"
+        },
+        "noaa_ibtracs": {
+          "acquired": true,
+          "analyzed": true,
+          "analyzed_cells": 42,
+          "implemented": true,
+          "limitation": "Historical segment proximity and storm counts, not future landfall or damage probability. 100km is a descriptive project reporting radius.",
+          "metric_nonmissing_cells": {
+            "ibtracs_track_count_within_100km": 42,
+            "ibtracs_track_distance_km": 42
+          },
+          "nonmissing_cells": 42,
+          "source_url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
+          "source_version": "v04r01 retrieved snapshot",
+          "status": "PARTIAL"
+        },
+        "nrel_nsrdb": {
+          "acquired": false,
+          "analyzed": false,
+          "analyzed_cells": 0,
+          "implemented": true,
+          "limitation": "Native two-metadata-row CSV parser implemented; no data acquired. Public no-sign S3 exists; API requires key and personal fields, which were not submitted. Solar resource is not purchased power.",
+          "metric_nonmissing_cells": {
+            "nsrdb_point_ghi_mean_w_per_m2": 0
+          },
+          "nonmissing_cells": 0,
+          "source_url": "https://developer.nlr.gov/docs/solar/nsrdb/python-examples/",
+          "source_version": "local native CSV version must be supplied",
+          "status": "PARTIAL"
+        },
+        "nrel_wind_toolkit": {
+          "acquired": true,
+          "analyzed": true,
+          "analyzed_cells": 42,
+          "implemented": true,
+          "limitation": "WRDB is https://wrdb.nlr.gov/; this older selected-site index is a declared WIND Toolkit subset. Samples do not represent all land or contracted power; SRW hourly local parser is implemented but unacquired.",
+          "metric_nonmissing_cells": {
+            "wind_toolkit_index_capacity_factor_mean_frac": 3,
+            "wind_toolkit_index_site_count": 42,
+            "wind_toolkit_index_wind_speed_mean_m_per_s": 3
+          },
+          "nonmissing_cells": 42,
+          "source_url": "https://data.nlr.gov/submissions/54",
+          "source_version": "native site index v1; 2016-10-17; DOI10.7799/1329290",
+          "status": "PARTIAL"
+        },
+        "ntad": {
+          "acquired": true,
+          "analyzed": true,
+          "analyzed_cells": 42,
+          "implemented": true,
+          "limitation": "Minimum mapped rail distance is not a delivery route, usable siding, rail service agreement, or capacity.",
+          "metric_nonmissing_cells": {
+            "ntad_rail_distance_km": 42
+          },
+          "nonmissing_cells": 42,
+          "source_url": "https://www.bts.gov/ntad/continuousupdates",
+          "source_version": "rail network 2026-07-21",
+          "status": "PARTIAL"
+        },
+        "us_drought_monitor": {
+          "acquired": true,
+          "analyzed": true,
+          "analyzed_cells": 42,
+          "implemented": true,
+          "limitation": "County historical area context, not committed water or future drought probability.",
+          "metric_nonmissing_cells": {
+            "usdm_d2plus_any_area_week_frac": 42,
+            "usdm_d2plus_area_time_frac": 42,
+            "usdm_temporal_coverage_frac": 42
+          },
+          "nonmissing_cells": 42,
+          "source_url": "https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx",
+          "source_version": "weekly county cumulative snapshot; statisticsType=1",
+          "status": "PARTIAL"
+        }
+      }
+    }
+  },
+  "source_file_sha256": {
+    "configs/constraints.yaml": "04b33be0bdf2aaaa269efcc86b2d85f7a6b8b4537ca1073822ab2ea4e3dfbb7c",
+    "configs/cooling_designs.yaml": "19912691adfa3e0fb9b02a78663673af2bd9ea0640e6f964af8b7b40ee9f7802",
+    "configs/expanded_sources.yaml": "6ecc513068e300577b0068988f5d534876eff25eec0f322cbc24ef511647127c",
+    "configs/facility.yaml": "1d869378aecb77a76b1c5d0cf17f94786d86c8ceab8b9eb170ed7eba88744949",
+    "configs/geography.yaml": "8a46b1d0ea7b958eeebc29e27563c07485c1ede53a3fb1cc80180e5a1dcf77b2",
+    "configs/grid.yaml": "d8d222197f60513db481814610f96908c2bc71469363368b28e264f69cdac82f",
+    "configs/phase3_physical_scenarios.yaml": "a3b22ce83ddfb0602eca842dcc06004e7a6f7af88dc74987ded9eddc824c3cbe",
+    "configs/phase5.yaml": "a52b34b62f6e7ca23db080a8c3f60561e7290573d5bc1eb94570f2cffd0fd3f8",
+    "configs/phase5_lifecycle.yaml": "de39b15afa2082c5d833c4dc12476cea5b22d75b766670fe31c1840b623138bd",
+    "configs/phase5_scoring_profiles/bau_2030.yaml": "65259c53674f6060e71a15ddf029696d41ad3b9afbe73f562a911e0fd021ffa5",
+    "configs/phase5_scoring_profiles/bau_2040.yaml": "3aa62a964cf6b05cd0b014a8b0c1ee00905c41d683ef7d54aa0621e665294521",
+    "configs/phase5_scoring_profiles/bau_2050.yaml": "fceffea854eb685aef2298eea434fad865aa8e0599ab98e0ada4547af1908b5e",
+    "configs/phase5_scoring_profiles/bau_2080.yaml": "b813998636bbfcc858a4c1d7919dd300c867d55be2719dd51e7b180944920d78",
+    "configs/phase5_scoring_profiles/opt_2030.yaml": "843db8b486dd02ff3caaf4510a0aed7d05fb69deb6163807ab7dd4722d84c712",
+    "configs/phase5_scoring_profiles/opt_2040.yaml": "55dc9d41eb664f4fcdb50d7fe645da9a1aaf9622517fbc0452e8a0f581ea05fd",
+    "configs/phase5_scoring_profiles/opt_2050.yaml": "d3e826963fcd90e12158020b0593fdb3765d48eea00b14c3f4ff234313e5d886",
+    "configs/phase5_scoring_profiles/opt_2080.yaml": "66ef2c1df4dcebd5da3a5d202cd73dbfb8d4ecd73f37f4ce294ef961864374ad",
+    "configs/phase5_scoring_profiles/pes_2030.yaml": "9ceec6a6477e68bcf2177a3351e0a84fb323f82761c77f595ba8ed70df9b11a1",
+    "configs/phase5_scoring_profiles/pes_2040.yaml": "3223090af20313f07e239bd3d29d09bd001302a57cd61b6797532be65ae227f3",
+    "configs/phase5_scoring_profiles/pes_2050.yaml": "f1f0b3059fea1e707f084a02c21a2fc448b88a496918f1c1ec611da2162a24e9",
+    "configs/phase5_scoring_profiles/pes_2080.yaml": "04b8f666d0e5b7ac7d3f2210a9121bbf91c68f61d829eaff1ab7eb0fd5a9723c",
+    "configs/run.yaml": "5aecd8a09ad1f1bcccf37ac33bb69eb2c1970d165a29b76e604bb0d71b946148",
+    "configs/scenarios.yaml": "4623f29f03b0201e39d109e48d3571c03fce31988acd56c1003a8683b39cf76a",
+    "configs/scoring.yaml": "e1c6fd84d54c79ea2c8188142c0c086352fdaec97fa5e0ad825f8faf77a2d3f9",
+    "configs/scoring_profile.yaml": "3f7c2102e9212008ee4d1082ab679ec8deedd94851a10a3127da81369a2481f0",
+    "configs/sources.yaml": "d134ac32f843ef67a21c1d5d5c804a2ca64799f2a25d8adcf97fa4594381fbd2",
+    "src/dc_locator/__init__.py": "efc9963ad2fae7111cb9d2f572df1d3e4f0da1b79148daf397b4b93c1af674d5",
+    "src/dc_locator/__main__.py": "08cdacbbb941fd390c5ca9d6d5dd5102f98db02d1bb9e89c5839f67770f1a6bc",
+    "src/dc_locator/cli.py": "467a057f6335fc7c177b0eab68bdeb084bed78cf6ceaf495df02cef7e5067b04",
+    "src/dc_locator/config.py": "907378e7d93d3fb0fb3b7330ae3294605c5f1d7368829f0ed96a974c55e88c0c",
+    "src/dc_locator/geography/__init__.py": "9cacd2296fcb5e919656c83de036b7b86eba745d2c5e638bcb724dad27e15f58",
+    "src/dc_locator/geography/boundary.py": "21ac10ad443a23b5b4ea100622a25c7aca0d0182b986da2cbdf8e4f85c147030",
+    "src/dc_locator/geography/distance.py": "4d1d7cf106783e33f965b562625da97aacadb9440ee8e3dbac6d9829401ef993",
+    "src/dc_locator/geography/features.py": "c90cb52e641d095400c17434d3444a830ffd5d7f095b43a03a506e867d1f268e",
+    "src/dc_locator/geography/grid.py": "d582e3b2d1cd6cd5ab75a03486316fc3cf3e9cbbf0ba29440030836eac1b0933",
+    "src/dc_locator/geography/sources/__init__.py": "0adc31cd854c4bf41a0a4ad59052c6fd5b64734e5304bc92786382e591d60cc9",
+    "src/dc_locator/geography/sources/aqueduct.py": "085ed9e4f53b2d4f74a2352602a1236bf4b097dd194e627b2840d1d517a093d6",
+    "src/dc_locator/geography/sources/aqueduct_future.py": "f3d15881f1299727647d968d1d3e69c312c269de3bb99b2798ecdd88f14f7bab",
+    "src/dc_locator/geography/sources/climate.py": "a280638cd3215cf3fe9837575e480fad9bda328c8143d31e3032caefe26e9b39",
+    "src/dc_locator/geography/sources/egrid.py": "3f679195b16127dfa248ee8eb768ffb64234cb6d8733603a0bb1f68585328471",
+    "src/dc_locator/geography/sources/expanded.py": "6d8d150e4e2292a71a2e6763798c46f593b02066f9740953fa0bd884819deeea",
+    "src/dc_locator/geography/sources/expanded_ingestion.py": "d71c907b34572ef55bba62abb8395def292be7d3624bba2264881acc85ad0cee",
+    "src/dc_locator/geography/sources/flood.py": "741c710ac5a427bc3d7534633b75db8ff0e2e3c4745207212b6f5e1a7a89eebe",
+    "src/dc_locator/geography/sources/infrastructure.py": "e7a1e7cdf8541fca5671ab78e731ba59432067ef5114eb340a7a3a856a625fde",
+    "src/dc_locator/geography/sources/ingestion.py": "3540f0d37b86e842da313eee6f5f4a25c53374fd043596ab973f30ae3deaf7a1",
+    "src/dc_locator/geography/sources/native_climate.py": "cd2bac877230e585ba31bbbdc4a7684273ad3c4373c6236855951581fed39b0e",
+    "src/dc_locator/geography/sources/native_expanded.py": "00e03c0c178d622d32307b75c2fe21aaada14c6a108a078507b0bc82102aea67",
+    "src/dc_locator/geography/sources/nlcd.py": "e2b0c52c56d31bcfdc966cc92ef3e9b3a589b1b51a538478a6a4fb77fa31c2e9",
+    "src/dc_locator/geography/sources/protected.py": "736351f0112e78a203d8591c0d7989d5f4ecd1d706bdfa19b1f48b4591efc93d",
+    "src/dc_locator/geography/sources/spatial.py": "2fbcc931150bd3a9d24fef71c7ec15314b14921af8d7c394ee27d28090ba1d2c",
+    "src/dc_locator/geography/sources/wildfire.py": "0c0b718f729e65ca9a2a9f257bf1ff11dd7c335e2fb03e10b5d0188487495018",
+    "src/dc_locator/io.py": "4a3b76ed06f169493397cafb7f54a808226cab29ffab393cb6dee3d57df27603",
+    "src/dc_locator/model/__init__.py": "99fff79931dde4a52e2a786e854d14f0c215b3c3da7cab5b5e18ed9edc7fbaaa",
+    "src/dc_locator/model/ahp.py": "d065d2212624ea62460763104a6c116ef2691025c00ce5ccb234a4404bee62fa",
+    "src/dc_locator/model/cooling.py": "31f6d3d48196d6cead6976ba205b2390146b34bcea3a0bf611f08901f18e8ecd",
+    "src/dc_locator/model/decision.py": "c6ca86608281fa02aaa5625181d9dc416805e607288e53c3ba861a8911efac66",
+    "src/dc_locator/model/enhanced.py": "b2f793e7b27ae9c1f4186c73d44702aa9b28b5d1d4cee15ddf46698fab705565",
+    "src/dc_locator/model/lifecycle.py": "c07836cb4b69d9a50bfba4d92d85de6b47fdc76f0f0b5a86d9f2a59a8cc2bd3f",
+    "src/dc_locator/model/mcda.py": "313a8e5e6ed62a4d6eb3a15633e75ed1d7f5b6f279b83de55b9d6b0f61af4aed",
+    "src/dc_locator/model/metrics.py": "4e0de3d136ff9c28d04b9721332efb4708b3781df0712ca146fb27a5101f4241",
+    "src/dc_locator/model/normalization.py": "f0bd85ade869c3297d70aa52739de85a7d01df32defba4529e8bfc738e6b3add",
+    "src/dc_locator/model/pareto.py": "e8ba3e7acff1783511f00ed5c6626781b432c153b27909467f18e72d90cc0a5f",
+    "src/dc_locator/model/physics.py": "8afdcba59ced1110f44fe568cf101a8c47a67c1938a6d3594cbdbb9881c7ea46",
+    "src/dc_locator/model/regions.py": "af4217f174a61f527f99a927f550094394ea9e3670acfa3037dfc18137501e7a",
+    "src/dc_locator/model/scenarios.py": "3259c9ca1f90b97f610248db51ff5ba48dd994175ba2b3b926a240ef6b95b978",
+    "src/dc_locator/model/screening.py": "6170902c7620da385cecbcf1338a689f5e6e5d43e71de5b0b5f8d4a1dddbaf37",
+    "src/dc_locator/paths.py": "3733e420d093f1bf75f95afae48a8bb3afcde418ea50ce857e22d3b1e8e922ba",
+    "src/dc_locator/provenance.py": "0a7ae9d15fc417956e2c8313030656b770ea40fb3b304f6b970315b8478ff46a",
+    "src/dc_locator/schemas.py": "aec9ed5a4683e73f9ebad2fbc2b687317eb321fd3c3c8929862d86681248734a",
+    "src/dc_locator/source_periods.py": "a5cf962312b106327fb6364212e3e346bdef722db316dbf5b2dc97d042bc0eaa",
+    "src/dc_locator/validation.py": "2b05c23840ff1dea5e85abdacf0f6bc4bcaadb03b5c7f30281b90e325c53e448"
+  },
+  "status": "accepted",
+  "test_hashes": {
+    "tests/conftest.py": "0d42cdd10ba666cb86c99997190efd63b6d9c36c9f5e500cf97ccae12ebf676d",
+    "tests/test_aqueduct_future.py": "d327163650cbfd61839d13eb2ac1f10a1ae0ce670ad931d1118a3500e4ebb612",
+    "tests/test_boundary.py": "2dbc163ed370d4fa1d4cc5e553d121837551fce78705d3f4c994efc3624f5441",
+    "tests/test_cli.py": "55b2381fa2fd183098511626683cb42519b469d31365149435941c4fc50787ce",
+    "tests/test_cli_build_grid_real.py": "e5d2c6cbd9646f78059c3de705e6b0e90c3d1da6dc5dfbf3a8a288eb9f2c2c4e",
+    "tests/test_config.py": "4c8a6ee6d0e45234952d8c9cf7269a98eb4b10c7bd197e7bfe8e0de592c94994",
+    "tests/test_distance.py": "3c8d2c1c0a5e022e4d71be904b802471adb60027a079096ec5b031c15cafdc52",
+    "tests/test_expanded_builder.py": "b062123de05f0ae354864508a1ca670d0f8633b99d9121c5663f2e982436eaf0",
+    "tests/test_expanded_native.py": "b6e717f894cfe8fc6e055b7640bf139eceb68f9be720069df2a2aba01610c9d9",
+    "tests/test_geography_features.py": "d7af79526d1057e8c12713be191845251d9c5430b64d365ae29dc2fd110c4b7a",
+    "tests/test_grid.py": "48f31bd1afde72f6bd870f58313c13d7c54fb1c39b156de006b181c937d3b64e",
+    "tests/test_grid_audit.py": "916b3bfb928446961a79c1d99c4388091153fd45cf80e7e54fe9db742973d4b3",
+    "tests/test_io.py": "8e1eb62a1e120a22214731b8f9b786c5c85b982ad61608f67fa74b836fb4772c",
+    "tests/test_model_ahp.py": "53f7a58cf34a78e41845a860b5dd53e2e689423d3ede037d1ff6d2360b3e3f8c",
+    "tests/test_model_lifecycle.py": "282a834951b73e93f2e2e040f338962d6a050be718e585dab699d2bcacd0b104",
+    "tests/test_model_physics.py": "f2fa0a4c78fe396821696a236f3f2a921899305e5e6c12864a0d30de628e4321",
+    "tests/test_model_scenarios.py": "93149ef358354d07dcc2a2e7c9238c329ffa22eaa36a8a4b7fe3add0234b6600",
+    "tests/test_model_screening.py": "1fad429a62c62727d865c77c7ec4d74b4ecbef761746ea5acedf003d707b3191",
+    "tests/test_phase4.py": "ca9316ec9106e2a157b972cba972a4250a77ea43cadd259bcf10e9cd674d735e",
+    "tests/test_phase5_integration.py": "3b3c7011faa962d614ffc86b4abd4c1959334ed15b0d6822a4869c8beaf2a5dd",
+    "tests/test_provenance.py": "7935e3c0042952984fae9fd8db094248626046c79942009a9a750f633b70496d",
+    "tests/test_schemas.py": "16932794fb0198af90997bc791460236d2f46d0d1a9e769477dae0715e640f0d"
+  },
+  "tests": {
+    "command": ".venv\\Scripts\\python.exe -m pytest -q --basetemp=.tmp-phase5-final-frozen -p no:cacheprovider --tb=short",
+    "earlier_baseline_tests": 253,
+    "elapsed_seconds": 32.25,
+    "failed": 0,
+    "independent_orchestrator": {
+      "artifacts_identical": 353,
+      "elapsed_seconds": 31.82,
+      "output_directory": "runs/orchestrator_phase5_accepted_candidate",
+      "passed": 376,
+      "peak_working_set_bytes": 1923461120
+    },
+    "independent_reviewer": {
+      "elapsed_seconds": 31.25,
+      "focused_elapsed_seconds": 7.77,
+      "focused_phase5_passed": 123,
+      "passed": 376
+    },
+    "passed": 376,
+    "phase5_tests": 123,
+    "prior_verification_versions": [
+      {
+        "elapsed_seconds": 31.18,
+        "passed": 374,
+        "stage": "Before late exact accounting-module and component numeric guards; superseded for final gate"
+      },
+      {
+        "elapsed_seconds": 30.81,
+        "passed": 375,
+        "stage": "After module equality guard, before ComponentEvidence numeric guard; superseded for final gate"
+      }
+    ],
+    "skipped": 0,
+    "warnings": 0
+  }
+}
