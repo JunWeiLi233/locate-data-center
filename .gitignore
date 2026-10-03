@@ -18,6 +18,7 @@ data/processed/*
 !data/processed/*.json
 runs/*
 !runs/.gitkeep
+!runs/README.md
 
 # Secrets
 .env
@@ -29,11 +30,12 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Local workspace tools and verification scratch files
+# Local workspace tools
 .claude/
 .omx/
-.pytest-work/
-.tmp-*/
-.tmp-*.py
-.tmp-*.html
-.tmp-*.xml
+
+# Scratch belongs in .pytest-work/<task>/ (see .pytest-work/README.md). Root-level .tmp-*
+# is the retired scratch convention; it stays ignored in case an old recorded command recreates it.
+.pytest-work/*
+!.pytest-work/README.md
+.tmp-*

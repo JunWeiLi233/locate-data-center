@@ -858,3 +858,35 @@ Windows approval permits it. The remaining six folders and verification evidence
 `frontend/output/relocation-report.json`.
 An earlier persistent ACL proposal was rejected by automatic approval review. Subsequent
 temporary ACL checks restored the original settings; no permission changes remain.
+
+### Workspace cleanup — 2026-10-03
+
+The user reported a messy file system and asked for a workspace that is clear to work with. This was
+housekeeping only. It changed no model code, configuration, source data, phase record or run evidence.
+After the cleanup the backend audit matched 59/59 executable/dependency hashes and 33/33 configuration
+hashes, and the Phase 7 record is unchanged.
+
+- **Removed scratch, sent to the Windows Recycle Bin so it can be restored.**
+  - 55 root `.tmp-*` items: 40 pytest temp folders from Phase 5–7 reviews and the relocation, and
+    15 Phase 5 exploration scripts and HTML/XML snapshots.
+  - 24 readable old pytest folders and two one-off audit scripts in `.pytest-work/`.
+  - 9 stale pytest folders in `runs/frontend_service/`. The documented `server_test_tmp/` was kept.
+  - The stale root `.pytest_cache/`.
+  - Phase records cite these folders only as `--basetemp` arguments of recorded commands, and
+    nothing references their contents.
+- **Moved the old wrapper.** The empty-looking `U.S. Sustainable Data Center Location Discovery Model/`
+  wrapper looked like a second project root. It was renamed as a whole to
+  `.pytest-work/old-root-wrapper-locked/`. Renaming a parent needs no access to its locked children,
+  so no administrator was needed. This completes the relocation. `frontend/scripts/complete-relocation.ps1`
+  would have moved those six folders into the root, so it was removed as obsolete. It can be recovered
+  from commit `29ace50`.
+- **Still locked.** 19 pytest folders remain: `.pytest-work/old-root-wrapper-locked/.tmp-orchestrator-*`
+  (6) and `.pytest-work/review-phase1`…`4-*` (13). The sandboxed reviewer account created them with
+  Python 3.12's private `mkdir(0o700)` ACL, which grants access only to SYSTEM, Administrators and the
+  owner. The normal user cannot open them. An elevated PowerShell can delete them with the one-line
+  command in `.pytest-work/README.md`.
+- **New conventions.** `.pytest-work/<task>/` is the only scratch location; its README is tracked so the
+  folder exists in a fresh clone. The README test command is now
+  `--basetemp=.pytest-work/tests`, replacing `.tmp-phase7-user`. `runs/README.md` indexes run folders
+  and marks accepted evidence. AGENTS.md §5 gains workspace-hygiene rules: no new top-level entries,
+  delete your own scratch, and never touch evidence or hash-bound files.

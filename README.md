@@ -25,11 +25,31 @@ uv venv --python 3.12 .venv
 uv pip install --python .venv/Scripts/python.exe -r requirements.lock.txt
 uv pip install --python .venv/Scripts/python.exe --no-deps -e .
 .venv\Scripts\python.exe -m dc_locator --help
-.venv\Scripts\python.exe -m pytest -q --basetemp=.tmp-phase7-user -p no:cacheprovider
+.venv\Scripts\python.exe -m pytest -q -p no:cacheprovider --basetemp=.pytest-work/tests
 ```
+
+Always pass a `--basetemp` under `.pytest-work/`. The pipeline accepts outputs only inside the project,
+so with pytest's default system temp folder the pipeline tests fail.
 
 [environment.md](docs/environment.md) records package/GDAL/PROJ/GEOS versions. Raw caches and run folders
 are git-ignored, so a clean checkout requires official native files or documented manual exports.
+
+## Repository layout
+
+| Path | Contents |
+|---|---|
+| `src/dc_locator/` | Python package. `geography/` holds the grid, source adapters and features; `model/` holds screening through regions, plus `validation/`. |
+| `configs/` | Run, facility, cooling, constraint, scoring and source configurations |
+| `tests/` | pytest suite. Synthetic fixtures live only in `tests/fixtures/`. |
+| `data/` | `raw/` cached downloads, `interim/` resumable builds, `processed/` real geography outputs. Git-ignored except small JSON manifests. |
+| `runs/` | One folder per model run. [runs/README.md](runs/README.md) lists which are accepted evidence. |
+| `docs/` | Methodology, contracts, dictionary, sources, limitations and the [phase handoff](docs/phase_handoff.md). `phase_records/` holds acceptance records, which the code reads. Also `research/` (per-phase source research), `specs/` (original requirements) and `superpowers/plans/` (implementation plans). |
+| `frontend/` | Separate map interface and local model API. See [frontend/README.md](frontend/README.md). |
+| `.pytest-work/` | The only scratch location (pytest temp folders, one-off scripts). See [its README](.pytest-work/README.md). |
+
+`src/dc_locator/`, `configs/`, `pyproject.toml` and `requirements.lock.txt` are hash-bound by the accepted
+`runs/phase7/executable_freeze_v2.json`. Changing them starts a new delivery revision. Create no new
+top-level files or folders. Workspace rules for agents are in [AGENTS.md](AGENTS.md) §5.
 
 ## Data access and configuration
 
