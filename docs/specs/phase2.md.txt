@@ -1,0 +1,141 @@
+You are implementing PHASE 2 of the existing dc_locator project.
+
+Read AGENTS.md, docs/data_contracts.md, docs/phase_handoff.md,
+and the existing code before making changes.
+
+Continue the project. Do not rebuild Phase 1.
+
+GOAL
+
+Turn the U.S. grid into a geographic feature dataset.
+
+This phase belongs to the geography component.
+Do not rank locations or invent sustainability scores.
+
+INPUT
+
+data/processed/us_grid.parquet
+Existing schemas and configurations.
+
+CORE SOURCES
+
+Implement adapters for:
+
+- USGS Annual NLCD: land-cover composition.
+- EPA eGRID: historical grid-emissions intensity.
+- WRI Aqueduct 4.0: baseline water-risk indicators.
+- NOAA/NCEI climate data: historical cooling-related conditions.
+- FEMA flood data: flood-hazard screening.
+- Wildfire Risk to Communities: wildfire screening.
+- EIA/U.S. Energy Atlas: energy-infrastructure proximity.
+- An authoritative protected-area dataset: ecological screening.
+
+Locate official documentation and download endpoints.
+Verify fields, units, geography, coverage, and access requirements.
+
+DATA ACCESS
+
+Use cached downloads and batch geospatial processing.
+
+Do not issue an unnecessary separate network request for every cell.
+Do not download unlimited nationwide high-resolution data without
+estimating volume and supporting bounded processing.
+
+Support local-file inputs when a source requires credentials,
+manual access, or a large external download.
+
+Never bypass access controls or fabricate unavailable data.
+Mark adapters and data coverage as READY, PARTIAL, or BLOCKED.
+
+FEATURE ENGINEERING
+
+For each cell derive, where supported:
+
+land-cover fractions
+potentially suitable land fraction
+protected-area overlap
+grid-emissions intensity
+eGRID subregion association
+baseline water stress
+historical temperature summaries
+flood-hazard overlap
+wildfire indicators
+distance to mapped energy infrastructure
+
+Preserve source values before normalization.
+
+Use spatial intersections or zonal statistics when appropriate.
+Do not assign all heterogeneous land and hazard information from
+the cell centroid alone.
+
+When a cell intersects multiple source regions, record that fact.
+Store documented summaries and source-region shares where useful.
+Do not imply a blended screening value is a confirmed site value.
+
+Keep source no-data masks distinct from genuine zero values.
+Unmapped flood coverage is UNKNOWN, not zero flood risk.
+
+Aqueduct ratios, scores, categories, and missing-value codes must
+remain distinguishable. Do not assume every field is a 0–1 index.
+
+NO DECISION LOGIC
+
+Land-cover composition is a geographic feature.
+Whether it satisfies a project's requirements belongs to the model.
+
+Do not exclude an entire cell merely because a small portion
+overlaps water, wetlands, or protected land.
+
+Record overlap and coverage so the model can evaluate usable areas.
+
+PROVENANCE
+
+For every metric preserve:
+
+grid_id
+metric_name
+value and units
+source and source URL
+source field
+data year or period
+retrieval date
+native spatial resolution
+aggregation method
+coverage fraction
+status
+missing-data reason
+
+A long-form provenance table may accompany the wide feature table.
+
+LIMITATIONS
+
+- Infrastructure proximity is not confirmed power capacity.
+- Aqueduct is not a water-supply commitment.
+- Climate normals are not an hourly operating-year simulation.
+- eGRID historical averages are not automatically future or
+  marginal emissions.
+- Source resolution must remain visible after joining to the grid.
+
+OUTPUTS
+
+data/processed/us_grid_dataset.parquet
+data/processed/feature_provenance.parquet
+data/processed/coverage_report.json
+data/processed/data_manifest.json
+docs/sources.md
+docs/data_dictionary.md
+updated handoff
+
+ACCEPTANCE CHECKS
+
+- Every Phase 1 cell is retained or accounted for explicitly.
+- Core adapters work on real data over a documented test area.
+- Unit conversions and spatial joins have tests.
+- Missing information remains missing.
+- National processing is configurable and resumable.
+- Coverage reports distinguish implemented code from acquired data.
+- Synthetic data never appear in real-data outputs.
+
+If nationwide data acquisition is incomplete, produce an honestly
+labeled partial-coverage dataset and list remaining requirements.
+Do not claim national analysis was completed.

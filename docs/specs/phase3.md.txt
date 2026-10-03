@@ -1,0 +1,165 @@
+You are implementing PHASE 3 of dc_locator.
+
+Read AGENTS.md, the data contracts, previous handoff, configurations,
+and actual Phase 2 outputs.
+
+GOAL
+
+Implement the first location-model components:
+
+geographic features
+→ feasibility screening
+→ facility energy, carbon, and water calculations.
+
+Do not implement ranking or AHP yet.
+
+INPUTS
+
+us_grid_dataset.parquet
+feature provenance
+facility configuration
+constraint configuration
+
+FACILITY CONFIGURATION
+
+Support:
+
+peak_it_power_mw
+average_it_load_factor
+target_opening_year
+operating_lifetime_years
+hours_in_modeled_year
+minimum_land_area_km2
+cooling_designs
+screening_mode
+
+Illustrative project assumptions:
+
+peak IT power = 100 MW
+average IT load factor = 0.80
+opening year = 2030
+operating lifetime = 25 years
+
+These are configurable examples, not industry requirements.
+
+SCREENING
+
+Each requirement returns PASS, FAIL, or UNKNOWN, with evidence
+and a reason.
+
+Support:
+
+STRICT:
+An unknown critical requirement prevents acceptance.
+
+EXPLORATORY:
+Unknown requirements retain a conditional candidate, visibly flagged.
+
+Never turn an unknown requirement into a pass.
+
+Evaluate explicit requirements for land, ecological exclusions,
+hazards, water strategy, and infrastructure.
+
+Thresholds must come from configuration with a stated rationale.
+Do not invent scientific or regulatory limits.
+
+Separate:
+
+potentially suitable total area
+largest contiguous suitable area
+confirmed developable parcel area
+
+If contiguous land cannot be established from available data,
+leave that requirement UNKNOWN.
+
+Do not add scattered suitable pixels and call them a buildable parcel.
+
+POWER AND CONNECTIVITY
+
+Keep confirmed utility capacity and data-center-grade fiber
+verification separate from geographic proximity proxies.
+
+Power-capacity checks require peak facility demand.
+Do not use annual-average IT demand as the required connection size.
+
+If peak facility demand or utility availability is unverified,
+record that limitation.
+
+PHYSICAL CALCULATIONS
+
+Use these explicit units:
+
+E_IT_MWh =
+peak_it_power_mw × average_it_load_factor × hours_in_modeled_year
+
+E_facility_MWh =
+E_IT_MWh × PUE
+
+C_electricity_tonnes =
+E_facility_MWh × grid_carbon_kg_per_MWh / 1000
+
+W_site_liters =
+E_IT_MWh × 1000 × WUE_liters_per_IT_kWh
+
+If supported:
+
+W_electricity_liters =
+E_facility_MWh × 1000 × grid_water_liters_per_kWh
+
+Keep water consumption distinct from withdrawal.
+
+Do not apply local water stress to all electricity-related water
+unless its generation-water geography supports that treatment.
+
+COOLING CONFIGURATIONS
+
+Represent a complete cooling design, including heat transport
+and heat rejection, rather than treating "liquid" as a complete
+water-consumption specification.
+
+Allow documented engineering functions or explicit PUE/WUE
+scenario assumptions.
+
+If climate-dependent relationships are unavailable, use a clearly
+labeled constant-assumption scenario. Do not claim that it models
+geographic cooling differences.
+
+Never generate engineering coefficients from an LLM guess.
+
+Produce one performance record per:
+
+grid_id + design_id + scenario_id
+
+Do not mix the best electricity result from one design with the
+best water result from another.
+
+OUTPUTS
+
+screening_results.parquet
+site_performance.parquet
+screening_summary.json
+updated methodology and handoff
+
+MANDATORY NUMERICAL TEST
+
+For a synthetic test fixture only:
+
+100 MW IT
+0.80 average IT load factor
+8760 hours
+PUE 1.20
+grid carbon 100 kg/MWh
+WUE 0.30 L/IT-kWh
+
+Expected:
+
+E_IT = 700800 MWh
+E_facility = 840960 MWh
+electricity carbon = 84096 tonnes
+on-site water = 210240000 liters
+
+Also test invalid inputs, missing inputs, zero-load behavior,
+and monotonic relationships.
+
+Do not label electricity emissions alone as a complete lifecycle
+carbon footprint.

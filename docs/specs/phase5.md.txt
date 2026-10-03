@@ -1,0 +1,156 @@
+You are implementing PHASE 5 of dc_locator.
+
+Read AGENTS.md and all previous handoffs.
+Preserve the working Phase 4 baseline.
+
+GOAL
+
+Extend the same two components:
+
+geography:
+richer source adapters and features.
+
+model:
+future scenarios and construction/lifecycle calculations.
+
+Do not create a third independent system or rebuild the locator.
+
+SOURCE EXPANSION
+
+Implement adapters in manageable batches:
+
+ENERGY
+- NSRDB: solar resource.
+- Official wind-resource database/WIND Toolkit:
+  verify the exact source intended by "WRDB".
+- EIA-861: historical reliability.
+- Berkeley Lab Queued Up: generation/interconnection pipeline.
+
+WATER
+- Aqueduct future scenarios.
+- EPA CWNS: wastewater and reuse-infrastructure context.
+- U.S. Drought Monitor: historical drought frequency.
+
+CLIMATE
+- NOAA IBTrACS: historical cyclone exposure.
+- NASA NEX-GDDP-CMIP6: future temperature/precipitation scenarios.
+- FEMA RAPT only where available and applicable.
+
+INFRASTRUCTURE
+- FCC broadband data: preliminary connectivity indicators.
+- National Transportation Atlas Database: transport access.
+
+CONSTRUCTION
+- Global Iron and Steel Tracker.
+- Global Cement and Concrete Tracker.
+- Freight Analysis Framework.
+- Building Transparency/EC3 where accessible.
+
+For every source, verify actual documentation, geographic scope,
+data fields, units, access conditions, and availability.
+
+Do not treat an adapter stub as completed data integration.
+
+INTERPRETATION REQUIREMENTS
+
+Solar/wind resource is not contracted electricity.
+
+Queued generation is not guaranteed future supply.
+Do not convert queue MW directly into future emissions intensity.
+
+Preserve EIA-861 reporting definitions and comparability.
+Do not mix interruption metrics with incompatible reporting bases.
+
+FCC availability is not proof of diverse data-center fiber routes.
+
+CWNS proximity is not a reclaimed-water supply agreement.
+
+Material plant technology/proximity is not a product-specific EPD.
+
+FAF regional flows are not an exact delivery route.
+
+Historical cyclone exposure is not a future landfall probability.
+
+Future climate grids are not parcel-scale engineering assessments.
+
+TEMPORAL MODEL
+
+Store scenarios in a structured long-format table with:
+
+grid_id
+design_id
+scenario_id
+model
+time period
+variable
+value
+source and assumptions
+
+Distinguish decision alternatives, such as cooling design,
+from external scenarios, such as future climate.
+
+Do not let the optimizer choose favorable weather as though
+the weather were a design choice.
+
+Use documented time windows and interpolation methods.
+Do not silently extrapolate past source coverage.
+
+For 25 operating years beginning in 2030, use exactly 25 annual
+periods, not an accidentally inclusive 26-year sum.
+
+If the selected sources do not cover the entire lifetime,
+report the gap or an explicitly labeled extension assumption.
+
+Only produce future electricity-carbon estimates when supported
+by a documented emissions scenario or an explicit user assumption.
+
+CONSTRUCTION AND LIFECYCLE MODEL
+
+Where evidence supports it, calculate:
+
+material emissions =
+quantity × compatible product emissions factor
+
+transport emissions =
+mass × distance × compatible mode emissions factor
+
+Track material units and accounting boundaries.
+Avoid counting transport twice when an EPD already includes it.
+
+Report construction, equipment, operations, replacements, and
+end-of-life separately.
+
+Missing lifecycle components are UNKNOWN, not zero.
+Label partial totals accordingly.
+
+MODEL INTEGRATION
+
+Add richer metrics through the existing registry and schemas.
+
+Do not automatically give every new dataset a separate weight.
+
+Compare baseline and enhanced results under disclosed scoring
+profiles. Explain which changes arise from new data versus
+changed preferences.
+
+Keep optional vendor-specific technology scenarios outside
+the required baseline. Do not add vendor-benefit bonus points.
+
+OUTPUTS
+
+Versioned enhanced grid dataset
+future_scenarios.parquet
+lifecycle_results.parquet
+updated source/coverage manifests
+enhanced ranking outputs
+baseline-versus-enhanced comparison
+updated methodology and handoff
+
+ACCEPTANCE CHECKS
+
+- The earlier baseline still runs.
+- Implemented, downloaded, and analyzed coverage are distinguished.
+- Future model/scenario labels survive every join and export.
+- Unsupported future metrics remain unknown.
+- New data do not silently alter the active weighting profile.
+- Source-specific assumptions and limitations are documented.

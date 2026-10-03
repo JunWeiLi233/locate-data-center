@@ -1,0 +1,170 @@
+You are implementing PHASE 7, the integration and delivery phase,
+of dc_locator.
+
+Read AGENTS.md and all previous handoffs.
+Inspect the repository and actual outputs.
+
+GOAL
+
+Make the existing system executable end to end without manual
+notebook editing.
+
+Do not expand the project into a frontend or AI-agent platform.
+
+PRIMARY WORKFLOW
+
+A user supplies facility requirements and configuration.
+
+The application:
+
+loads/builds the U.S. grid
+→ loads acquired source data
+→ constructs geographic features
+→ evaluates constraints
+→ calculates facility impacts
+→ applies decision preferences
+→ identifies candidate regions
+→ runs requested robustness checks
+→ exports results and limitations.
+
+CLI
+
+Provide documented commands for:
+
+build-grid
+ingest
+build-features
+screen
+simulate
+rank
+cluster
+validate
+run
+
+An example top-level command should resemble:
+
+python -m dc_locator run \
+    --config configs/run.yaml \
+    --output runs/example
+
+Implement the actual entry point rather than only documenting it.
+
+CONFIGURATION
+
+The run configuration must reference:
+
+study area and grid definition
+source-data versions/paths
+facility requirements
+cooling designs
+constraints
+active scoring profile
+weighting mode
+AHP input when applicable
+future scenarios
+validation settings
+
+Keep credentials outside committed configuration.
+
+Separate real-data execution from explicit synthetic-fixture mode.
+A real-data run must never silently fall back to fake data.
+
+REPRODUCIBILITY
+
+Record:
+
+run ID and timestamp
+source-code revision
+environment/package versions
+dataset versions and checksums
+configuration snapshot
+source coverage
+random seed where applicable
+phase completion status
+warnings and blockers
+
+Reuse caches safely and invalidate derived results when their
+source data or relevant configuration changes.
+
+Distinguish reproducible substantive results from timestamps
+and other intentionally changing metadata.
+
+FINAL OUTPUT PACKAGE
+
+Produce, as applicable:
+
+us_grid_dataset.parquet
+screening_results.parquet
+site_performance.parquet
+ranked_cells.parquet
+candidate_regions.geojson
+region_membership.parquet
+ranking.csv
+feature_provenance.parquet
+run_metadata.json
+validation_report.json
+sensitivity_results.parquet
+recommendation_report.md
+
+OUTPUT MEANING
+
+Every ranked region must identify:
+
+representative evaluated cell/design
+raw performance quantities
+criterion scores and weighted contributions
+screening status
+Pareto status
+ranking basis
+source dates and coverage
+important unknowns
+required local verification
+sensitivity summary
+
+Mark region geometry as a search area.
+Do not present its centroid as an approved construction site.
+
+When no candidates qualify, produce valid empty outputs and an
+explanation. Never invent a winner to make the demo succeed.
+
+DOCUMENTATION
+
+Complete:
+
+README.md
+docs/methodology.md
+docs/data_dictionary.md
+docs/sources.md
+docs/limitations.md
+docs/phase_handoff.md
+
+The README must explain installation, required data access,
+configuration, execution, expected files, and interpretation.
+
+ACCEPTANCE RUNS
+
+Run and document:
+
+1. A fully tested synthetic fixture for software behavior.
+2. A real-data run over the area actually supported by acquired data.
+3. A national run only when coverage and resources support it.
+
+Label each scope accurately.
+
+Do not claim the whole United States was analyzed when only a
+development area was processed.
+
+FINAL HANDOFF
+
+Report:
+
+what was implemented;
+what was actually executed;
+where outputs are saved;
+which checks passed or failed;
+which datasets/modules remain blocked;
+what the model can currently support.
+
+The final deliverable is a reproducible potential-region locator,
+not a claim that a nationally optimal, buildable parcel has been
+proven.

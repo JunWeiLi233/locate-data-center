@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+build/
+dist/
+
+# Data and run outputs (large; reproducible from code + manifests)
+data/raw/
+data/interim/
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/*.json
+runs/*
+!runs/.gitkeep
+
+# Secrets
+.env
+*.key
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

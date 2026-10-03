@@ -1,0 +1,214 @@
+You are implementing PHASE 4 of dc_locator.
+
+Read AGENTS.md, the previous handoff, metric definitions, and
+Phase 3 screening/performance outputs.
+
+GOAL
+
+Complete the first working locator:
+
+screened grid/design alternatives
+→ normalized metrics
+→ Pareto analysis
+→ configurable weights
+→ ranking
+→ candidate regions.
+
+Do not replace physical calculations with generated scores.
+
+1. METRIC REGISTRY
+
+Define each metric's:
+
+name
+units
+direction
+normalization function
+thresholds or reference bounds
+role
+source requirements
+
+Roles:
+
+physical-model input
+decision metric
+informational proxy
+hard constraint
+
+Prevent unintended double counting.
+
+For example, temperature that already changes modeled cooling
+energy should not automatically receive an additional cold-climate bonus.
+
+Define the scoring profile before inspecting the winning locations.
+
+2. NORMALIZATION
+
+Preserve raw measurements.
+
+Implement documented 0–100 value functions with consistent direction:
+higher normalized values mean better performance.
+
+Prefer fixed, declared reference bounds.
+
+If candidate-relative normalization is supported, label it clearly.
+Handle constant columns and out-of-range values explicitly.
+
+Define one active metric set for each ranking run.
+
+Do not silently remove missing metrics and renormalize weights
+separately for each candidate.
+
+Candidates missing required scoring inputs must be unranked or
+reported with explicitly bounded/conditional results.
+
+A reduced-data profile may be defined for the whole run, with its
+omitted criteria disclosed.
+
+3. PARETO ANALYSIS
+
+Use documented objective directions and comparable alternatives.
+
+An alternative is dominated only when another is no worse on
+every selected objective and strictly better on at least one.
+
+Respect numerical tolerances.
+
+Preserve all alternatives in storage, including dominated ones.
+Do not permanently discard them: changed assumptions may change
+the Pareto frontier.
+
+Keep alternatives from different external future scenarios separate.
+
+4. WEIGHTING MODES
+
+Implement:
+
+equal weights
+explicit user weights
+AHP-derived weights
+
+Equal weights are a transparent baseline, not verified importance.
+
+Keep criteria configurable. The full project hierarchy may include:
+
+Energy and Carbon
+Water Stewardship
+Climate Resilience
+Grid and Infrastructure
+Land and Ecology
+Construction and Embodied Carbon
+
+Only activate criteria supported by the run's declared data profile.
+
+If using subcriteria, define their local weights explicitly.
+Multiply parent and local weights to obtain global leaf weights.
+
+5. COMPLETE AHP IMPLEMENTATION
+
+AHP compares criteria, not every pair of U.S. grid cells.
+
+Accept a complete positive reciprocal matrix with stable criterion IDs.
+
+Validate:
+
+square shape
+finite positive values
+diagonal entries equal to 1
+A_ij × A_ji approximately equal to 1
+criterion IDs matching the active scoring profile
+
+Support the standard 1–9 judgment scale and reciprocals for
+elicitation. Preserve numerical ratios needed for tests.
+
+Before elicitation, show criterion definitions and performance
+ranges so users understand the trade-offs being compared.
+
+Derive weights from the normalized principal right eigenvector:
+
+A × w = lambda_max × w
+sum(w) = 1
+
+For n >= 3:
+
+CI = (lambda_max - n) / (n - 1)
+CR = CI / RI(n)
+
+Use a documented, versioned Random Index table.
+Record its source.
+
+For n = 1 or n = 2, avoid division by zero and report the CR
+check as not applicable.
+
+Use CR <= 0.10 as a configurable review convention, not proof
+of validity.
+
+If CR exceeds the threshold:
+
+- return REVIEW_REQUIRED;
+- preserve the user's comparisons;
+- do not silently repair the matrix;
+- prohibit labeling those weights accepted unless an explicit
+  provisional-use override is recorded.
+
+Do not fabricate expert comparisons.
+
+If no AHP judgments are supplied, run the equal-weight baseline
+and provide an empty AHP template. Do not pretend AHP was used.
+
+Optionally support multiple supplied stakeholder matrices through
+geometric-mean aggregation, preserving individual results.
+
+6. MCDA
+
+Calculate:
+
+Score = sum(weight_j × normalized_metric_j)
+
+Export every weighted contribution.
+
+A failed hard constraint cannot be compensated for by a good score.
+
+Keep conditional screening status visible alongside ranking.
+
+7. CLUSTERING
+
+Select high-performing cells through an explicit configurable rule.
+
+Cluster spatially adjacent cells, using a documented adjacency rule.
+
+Preserve member grid IDs and underlying suitable-area information.
+
+A region is a search zone, not one giant confirmed parcel.
+
+Store a representative evaluated cell/design and its score.
+Also store regional metric distributions.
+
+Do not create a fictional site by combining the best individual
+metrics from different cells.
+
+8. OUTPUTS
+
+normalized_metrics.parquet
+ahp_result.json, when AHP is supplied
+ranked_cells.parquet
+pareto_results.parquet
+candidate_regions.geojson
+region_membership.parquet
+ranking.csv
+updated handoff
+
+9. ACCEPTANCE TESTS
+
+- All-equal AHP comparisons produce equal weights.
+- A_ij = v_i/v_j for v = [0.5, 0.3, 0.2] recovers those weights
+  and approximately zero inconsistency.
+- Invalid and inconsistent matrices are handled explicitly.
+- Known dominated alternatives are correctly identified.
+- No failed candidate receives an accepted ranking.
+- Adjacent and disconnected synthetic cells cluster correctly.
+- Repeated runs reproduce results, including tie handling.
+
+End this phase with a working command that produces potential
+candidate regions from actual available geographic data.
+Report the analyzed coverage and remaining uncertainties.

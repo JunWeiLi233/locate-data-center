@@ -1,0 +1,157 @@
+You are implementing PHASE 1 of a U.S. Sustainable Data Center
+Location Discovery Model.
+
+Build working code, tests, configuration, and documentation.
+Do not stop at an architecture proposal.
+
+PROJECT GOAL
+
+Search the contiguous United States geographically to identify
+potential regions for sustainable data-center construction.
+
+The system must have exactly two main components:
+
+1. geography:
+   U.S. grid generation, data ingestion, and geographic features.
+
+2. model:
+   Screening, physical calculations, decision analysis,
+   clustering, and validation.
+
+Do not build a frontend, chatbot, autonomous research-agent system,
+or machine-learning location predictor.
+
+THIS PHASE
+
+Create the repository foundation, shared data contracts, and
+configurable U.S. geographic grid.
+
+FIRST
+
+Inspect the current workspace. Preserve existing useful work.
+Do not overwrite unrelated files.
+
+IMPLEMENT
+
+1. Create a Python package named dc_locator.
+
+Suggested structure:
+
+src/dc_locator/
+    geography/
+    model/
+    schemas.py
+    cli.py
+
+configs/
+data/raw/
+data/interim/
+data/processed/
+tests/
+docs/
+runs/
+
+Select compatible package versions and record the environment.
+
+2. Create AGENTS.md containing project-wide rules:
+
+- Continue existing work instead of rebuilding the project.
+- Keep geographic features separate from decision logic.
+- Never fabricate source data or expert judgments.
+- Preserve missing values and their reasons.
+- Distinguish dataset values, calculations, scenarios, proxies,
+  and unknown information.
+- Keep synthetic fixtures separate from real-data outputs.
+- Treat national results as potential regions, not verified parcels.
+- Record assumptions, source versions, and calculation methods.
+- Add tests during every phase.
+- Update docs/phase_handoff.md after every phase.
+
+3. Define versioned schemas for:
+
+GridCell
+FeatureMetadata
+FacilityConfig
+ScreeningResult
+SitePerformance
+DecisionResult
+CandidateRegion
+RunManifest
+
+Later phases may extend schemas through documented changes.
+
+4. Obtain an authoritative contiguous-U.S. boundary.
+
+Record the source, data version, download date, and license.
+
+5. Generate a configurable regular grid.
+
+Illustrative starting resolution:
+10 km × 10 km.
+
+Use a suitable projected coordinate system for grid construction
+and area calculations. Use an appropriate projected or geodesic
+method for distances.
+
+Do not calculate kilometers directly from latitude/longitude.
+
+6. Assign stable grid IDs based on the grid definition and row/column,
+not the processing order.
+
+Store:
+
+grid_id
+geometry
+centroid_lat
+centroid_lon
+cell_area_km2
+study_area_intersection_km2
+state identifiers where available
+grid_definition_id
+
+Distinguish full cell area from its intersection with the study area.
+
+7. Support:
+
+- a small development bounding box;
+- the full contiguous-U.S. grid.
+
+A development bounding box must not become a hard-coded city shortlist.
+
+8. Create configuration files for:
+
+grid
+sources
+facility
+constraints
+scoring
+scenarios
+run
+
+Allow later phases to use these files without redesigning the package.
+
+OUTPUTS
+
+data/processed/us_grid.parquet
+docs/data_contracts.md
+docs/methodology.md
+docs/phase_handoff.md
+AGENTS.md
+grid configuration
+grid-generation tests
+
+ACCEPTANCE CHECKS
+
+- Identical grid configuration produces identical IDs and geometries.
+- Changing the development area does not change IDs of retained cells.
+- Geometries are valid and IDs are unique.
+- Area and distance units are explicit.
+- A full national grid can be generated without a selected city list.
+- The pipeline can save and reload its grid.
+
+HANDOFF
+
+Document commands executed, output paths, tests passed or failed,
+assumptions, blockers, and the next phase's required inputs.
+
+Implement only this phase, then report actual completion status.

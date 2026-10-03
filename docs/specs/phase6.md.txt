@@ -1,0 +1,159 @@
+You are implementing PHASE 6 of dc_locator.
+
+Read AGENTS.md, the previous handoff, the mathematical methods,
+and actual baseline/enhanced results.
+
+GOAL
+
+Test whether the implementation is correct, whether its estimates
+have independent support, and how sensitive its recommendations
+are to assumptions.
+
+Do not report a fabricated overall model "accuracy."
+
+Keep software verification, external validation, and sensitivity
+analysis as separate results.
+
+1. SOFTWARE VERIFICATION
+
+Expand automated tests for:
+
+grid generation
+coordinate transformations
+spatial joins and coverage
+unit conversions
+screening logic
+energy/carbon/water formulas
+normalization
+AHP and consistency checks
+Pareto dominance
+clustering
+scenario indexing
+output schemas
+
+Test missing data, ties, invalid geometries, boundary cells,
+empty candidate sets, and unavailable sources.
+
+Use the hand-calculated fixtures from earlier phases.
+
+2. PROPERTY TESTS
+
+Holding other inputs fixed:
+
+higher PUE must not reduce facility electricity;
+higher WUE must not reduce on-site water consumption;
+higher grid emissions intensity must not reduce electricity emissions;
+worsening a cost-type metric must not improve its normalized score;
+a hard failure must never be offset by another criterion.
+
+Test that missing information cannot improve an alternative's
+score through candidate-specific weight renormalization.
+
+3. INDEPENDENT VALIDATION
+
+Where available, compare predicted physical quantities against
+independent facility measurements or engineering benchmarks.
+
+Record provenance, comparable system boundaries, and uncertainty.
+
+Re-querying the same source used as input only verifies the
+lookup/join. Do not call that independent physical validation.
+
+Report module-specific errors only where genuine observations exist.
+
+Existing data-center locations are not labels for "optimal."
+Use them to investigate known characteristics and missing factors,
+not to calculate a classifier accuracy.
+
+If independent observations are unavailable, explicitly mark
+the relevant module as externally unvalidated.
+
+4. HOLDOUT PROCEDURE
+
+Freeze a model/configuration version before evaluating selected
+holdout regions.
+
+Preserve the frozen version and results.
+
+Any change after inspecting holdout results creates a new version.
+Do not continue describing the changed model as an untouched test.
+
+5. SENSITIVITY ANALYSIS
+
+Vary documented assumptions:
+
+weights
+PUE/WUE design assumptions
+load factor
+future grid-emissions scenarios
+future water/climate scenarios
+construction factors
+screening thresholds where appropriate
+grid resolution in selected test areas
+
+Renormalize changed weights transparently.
+
+Recompute affected physical quantities and constraints.
+Do not merely shuffle final scores.
+
+Reconsider all eligible alternatives, including those dominated
+in the baseline.
+
+For regional rank-stability statistics, use fixed baseline region
+membership or a documented matching method. Do not compare
+unrelated region IDs.
+
+Report:
+
+base rank
+rank range
+rank changes
+eligibility changes
+main sensitivity drivers
+top-k overlap
+weighting-method agreement
+
+6. ABLATION
+
+Compare the full model with selected criteria removed.
+
+Document weight renormalization and the resulting changes.
+
+Do not describe an ablation result as proof that the omitted
+criterion is unimportant.
+
+7. OPTIONAL MONTE CARLO
+
+Keep this separate from the deterministic core.
+
+Use explicit distributions or scenario-sampling rules, a fixed
+seed, and documented dependencies.
+
+Do not independently sample combinations that contradict the
+cooling design or climate scenario.
+
+Report selection frequencies under the sampled assumptions,
+not probabilities that a location is objectively best.
+
+8. OUTPUTS
+
+validation_report.json
+validation_report.md
+sensitivity_results.parquet
+robustness_summary.csv
+ablation_results.csv
+optional Monte Carlo outputs
+updated limitations and handoff
+
+FINAL REQUIREMENT
+
+Report separately:
+
+software tests passed/failed;
+data quality;
+externally validated modules;
+externally unvalidated modules;
+ranking stability;
+remaining blockers.
+
+Do not hide failed tests or unsupported model components.
