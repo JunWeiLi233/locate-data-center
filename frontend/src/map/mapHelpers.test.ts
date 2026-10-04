@@ -1,10 +1,10 @@
-import { describe, expect, it, vi } from 'vitest';
-import type { Geometry, Polygon } from 'geojson';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { FeatureCollection, Geometry, Polygon } from 'geojson';
 import type { Map as LibreMap } from 'maplibre-gl';
 import type { CandidateRegion, LayerData, MapCamera } from '../types/domain';
 import { geometryBounds, initialMapView, polygonGeometry, regionCoordinate, selectionViewport, US_CAMERA, validCoordinate, viewportPadding } from './geometry';
 import { candidatePayloads, layerPayload, overlapRegions, selectedLayerIds, statusColor } from './mapData';
-import { CANDIDATE_SOURCE, BADGE_SOURCE, SELECTED_BADGE_SOURCE, indicatorColor, syncCandidates, syncIndicators } from './mapStyle';
+import { CANDIDATE_SOURCE, BADGE_SOURCE, SELECTED_BADGE_SOURCE, CONTEXT_LAYERS, FOREST_SOURCE, TERRAIN_SOURCE, indicatorColor, isContextSourceError, setBasemapVisibility, syncCandidates, syncContext, syncIndicators } from './mapStyle';
 
 const polygon: Polygon = { type: 'Polygon', coordinates: [[[-106, 35], [-105, 35], [-105, 36], [-106, 36], [-106, 35]]] };
 function region(patch: Partial<CandidateRegion> = {}): CandidateRegion {
@@ -96,12 +96,13 @@ describe('candidate payloads', () => {
     expect(payload.areas.features[0].properties?.selected).toBe(false);
     expect(candidatePayloads([region()], 'region-a').areas.features[0].properties?.selected).toBe(true);
   });
-  it('limits rank badges to actual top 20 ranks and the selected result', () => {
+  it('shows every regional centroid regardless of its representative cell rank', () => {
     const payload = candidatePayloads([
       region({ id: 'one', rank: 1 }), region({ id: 'twenty', rank: 20 }), region({ id: 'twenty-one', rank: 21 }),
       region({ id: 'selected', rank: 30 }), region({ id: 'unknown', rank: null }), region({ id: 'no-centroid', centroid: null }),
     ], 'selected');
-    expect(payload.badges.features.map((feature) => feature.id)).toEqual(['one', 'twenty', 'selected']);
+    expect(payload.badges.features.map((feature) => feature.id)).toEqual(['one', 'twenty', 'twenty-one', 'selected', 'unknown']);
+    expect(payload.badges.features.find(feature => feature.id === 'twenty-one')?.properties?.rank).toBe(21);
     expect(candidatePayloads([region({ geometry: null, centroid: null })], 'region-a').areas.features).toEqual([]);
   });
   it('retains every identical cooling region as a selectable alternative', () => {
@@ -167,5 +168,88 @@ describe('indicator updates', () => {
     expect(sources.get('indicator-source-water')?.setData).not.toHaveBeenCalled();
     syncIndicators(map, [layer({ label: 'Different water sublayer' })], new Set(['water']));
     expect(sources.get('indicator-source-water')?.setData).toHaveBeenCalledTimes(1);
+  });
+});
+
+/** A map double that keeps real layer order, honouring addLayer's `before` argument. */
+function orderedMap(existing: string[] = []) {
+  const sources = new Map<string, Record<string, unknown>>();
+  const order = [...existing];
+  const visibility = new Map<string, string>();
+  const layerSources = new Map<string, string | undefined>();
+  const map = {
+    getSource: (id: string) => sources.get(id),
+    addSource: (id: string, spec: Record<string, unknown>) => sources.set(id, { ...spec, setData: vi.fn() }),
+    getLayer: (id: string) => (order.includes(id) ? { id, source: layerSources.get(id) } : undefined),
+    addLayer: (data: { id: string; source?: string; layout?: { visibility?: string } }, before?: string) => {
+      const index = before ? order.indexOf(before) : -1;
+      if (index >= 0) order.splice(index, 0, data.id); else order.push(data.id);
+      layerSources.set(data.id, data.source);
+      if (data.layout?.visibility) visibility.set(data.id, data.layout.visibility);
+    },
+    removeLayer: (id: string) => { order.splice(order.indexOf(id), 1); layerSources.delete(id); },
+    hasImage: () => true, addImage: vi.fn(),
+    getStyle: () => ({ layers: order.map((id) => ({ id })) }),
+    setLayoutProperty: (id: string, _property: string, value: string) => visibility.set(id, value),
+  };
+  return { map: map as unknown as LibreMap, sources, order, visibility, layerSources };
+}
+const states: FeatureCollection = { type: 'FeatureCollection', features: [
+  { type: 'Feature', id: 'TX', geometry: polygon, properties: { name: 'Texas', label_lon: -99, label_lat: 31 } },
+] };
+
+describe('physical basemap context', () => {
+  // jsdom has no 2D canvas; state-label images are simply skipped, as when a browser cannot draw them.
+  beforeEach(() => { vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null); });
+  it('draws forest canopy and terrain relief above the land fill but beneath every result layer', () => {
+    const { map, sources, order, visibility } = orderedMap(['indicator-fill-water', 'candidate-fill']);
+    syncContext(map, states, true, { relief: true, forest: false }, { land: states, national: null });
+    expect(order).toEqual(['context-state-fill', 'context-shoreline', CONTEXT_LAYERS.forest, CONTEXT_LAYERS.relief, 'context-state-lines',
+      'context-state-labels', 'indicator-fill-water', 'candidate-fill']);
+    expect(sources.get(TERRAIN_SOURCE)).toMatchObject({ type: 'raster-dem', encoding: 'terrarium' });
+    expect(sources.get(FOREST_SOURCE)).toMatchObject({ type: 'raster' });
+    expect(String(sources.get(FOREST_SOURCE)?.attribution)).toContain('tree canopy');
+    expect(visibility.get(CONTEXT_LAYERS.relief)).toBe('visible');
+    expect(visibility.get(CONTEXT_LAYERS.forest)).toBe('none');
+    setBasemapVisibility(map, { relief: false, forest: true });
+    expect(visibility.get(CONTEXT_LAYERS.relief)).toBe('none');
+    expect(visibility.get(CONTEXT_LAYERS.forest)).toBe('visible');
+  });
+  it('draws shared state borders and tile-cut shoreline, switching sources in place when they arrive late', () => {
+    const { map, order, layerSources } = orderedMap(['candidate-fill']);
+    const lines: FeatureCollection = { type: 'FeatureCollection', features: [] };
+    syncContext(map, states, true, { relief: false, forest: false }, { land: states, national: null });
+    expect(layerSources.get('context-state-lines')).toBe('context-states');
+    expect(layerSources.get('context-shoreline')).toBe('context-land');
+    const before = [...order];
+    syncContext(map, states, true, { relief: false, forest: false }, { land: states, national: null, borders: lines, shoreline: lines });
+    expect(layerSources.get('context-state-lines')).toBe('context-borders');
+    expect(layerSources.get('context-shoreline')).toBe('context-shore-overview');
+    expect(order).toEqual(before);
+  });
+  it('draws other countries as a plain fill above relief, beneath U.S. borders and results', () => {
+    const { map, order } = orderedMap(['candidate-fill']);
+    const foreign: FeatureCollection = { type: 'FeatureCollection', features: [] };
+    syncContext(map, states, true, { relief: true, forest: true }, { land: states, national: null, foreign });
+    const at = (id: string) => order.indexOf(id);
+    expect(at('context-foreign-fill')).toBeGreaterThan(at(CONTEXT_LAYERS.relief));
+    expect(at('context-foreign-fill')).toBeGreaterThan(at(CONTEXT_LAYERS.forest));
+    expect(at('context-foreign-borders')).toBeGreaterThan(at('context-foreign-fill'));
+    expect(at('context-state-lines')).toBeGreaterThan(at('context-foreign-borders'));
+    expect(at('candidate-fill')).toBeGreaterThan(at('context-state-lines'));
+  });
+  it('leaves a configured custom basemap style without the bundled physical context', () => {
+    const { map, sources, order } = orderedMap();
+    syncContext(map, states, false);
+    expect(sources.has(TERRAIN_SOURCE)).toBe(false);
+    expect(sources.has(FOREST_SOURCE)).toBe(false);
+    expect(order).toEqual(['context-state-lines']);
+  });
+  it('treats only optional context tile failures as non-fatal map errors', () => {
+    expect(isContextSourceError({ sourceId: TERRAIN_SOURCE })).toBe(true);
+    expect(isContextSourceError({ sourceId: FOREST_SOURCE })).toBe(true);
+    expect(isContextSourceError({ sourceId: CANDIDATE_SOURCE })).toBe(false);
+    expect(isContextSourceError({ sourceId: 'context-states' })).toBe(false);
+    expect(isContextSourceError({})).toBe(false);
   });
 });

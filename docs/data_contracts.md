@@ -10,8 +10,6 @@ as a changelog entry (AGENTS.md section 9) before any later phase relies on the 
 
 ## Changelog
 
-- **County backend integration, 2026-10-04** — adds a separately packaged `dataclocator` HTTP API **1.0** and an optional frontend presentation adapter. Its model schema **0.2.0** and model version **0.2.1** are retained from the existing backend. Optional frontend fields identify county scope and carry verbatim model evidence/actual scenario IDs; county score/rank/polygon remain null. None of the accepted `dc_locator` scientific tables/config schemas below are changed. See [integration setup and mapping](county-backend-integration.md).
-
 - **Phase7 delivery, 2026-10-03** — active `RunConfig` **2.0.0** is a reference-based
   `DeliveryConfig` rather than the legacy embedded Phase1 run shape. The legacy loader still reads1.0.0;
   `load_run_config` dispatches explicit `delivery_version` documents to the new contract. Native geographic,
@@ -412,6 +410,250 @@ measured `run_metadata.resource_diagnostics`, including cached executions. Nativ
 hashes remain authoritative substantive evidence; the native adapters themselves were not changed.
 Only intermediate `geography_core/coverage_report.json` processed/resumed counters and execution metadata
 are intentionally varying. Final source manifest and all substantive stage hashes repeat exactly.
+# National discovery revision (2026-10-03)
+
+Delivery configuration schema **2.1.0** / `phase8_national_v1` enables bounded CONUS execution;
+schema 2.0.0 preserves the historical development resource bounds. National real grids must cover
+all 49 CONUS states/DC jurisdictions, so naming a development grid `conus` is rejected. Geographic,
+performance, screening and ranking table column contracts and UNKNOWN semantics are unchanged.
+The new 50 km grid has its own `grid_definition_id`; no 10 km IDs are reassigned or mixed.
+
+The transport API adds per-run external-context availability in **1.1.0**, while the frontend still
+reads archived 1.0.0 responses. Coverage reports include actual projected extent and study area.
+Categorical NLCD reprojection records native/output CRS, resampling, checksums and bounded memory
+in its preparation manifest. Native classifications are aggregated using the existing land proxy
+formula; no source value, weight or screening threshold is invented.
+# Phase 9 regional refinement migration (2026-10-03)
+
+The additive wrapper configuration schema3.0.0 composes a real schema2.1.0
+national discovery with bounded child analysis. Child snapshot schema2.2.0
+requires `phase9_regional_v1` and `study_area: regional_refinement`.
+Existing2.0/2.1 serialized configurations retain their contracts.
+
+`GridCell` remains1.1.0: the fixed national EPSG:5070 origin defines 1km rows,
+columns and IDs; a window selects full cells and never changes their geometry
+or CONUS intersection area. `RegionalRefinementWindows`1.0.0 records the
+selected 50km parent geometry and retains the parent grid identity.
+
+`CandidateRegion`1.2.0 adds a semantic constraint for bounded policies:
+connected components are formed inside deterministic global lattice partitions,
+with projected bounding-box spans at most the declared 20 km per axis. Columns
+remain compatible; this limit is a project search-area assumption. Legacy
+unbounded policies still emit1.1.0. Neither version identifies approved parcels.
+
+`RegionalPreparedDecisionDataset`1.0.0 persists validated fixed-reference batch
+values/statuses with unset global ranks/frontiers. `RegionalRankedCellDataset`
+1.0.0 stores the complete compact fine universe and globally recomputed ranks
+and Pareto flags, retaining all failed/unranked alternatives. Native wide
+`RankedCellDataset`1.1.0 batch outputs are reconciled to those global decisions.
+`RegionalGridIndex`1.0.0 holds geometry and clustering fields, while all native
+geographic metrics/provenance remain in the checksum-bound batch files.
+
+`regional_catalog.json`1.0.0 binds selected parents, parent run/output identity,
+child definition, per-part output hashes, representative-to-part lookup, actual
+fine coverage and omitted shortlist coverage. Global ranking applies only to
+the explicitly evaluated refined alternatives, separately per external scenario.
+Source native resolution is retained; finer cells do not increase source detail.
+
+Regional validation streams complete per-case compact decisions and numeric
+comparisons (`RegionalSensitivityDataset`1.0.0). `sensitivity_results.parquet`
+contains the existing full sensitivity schema for evaluated representatives;
+`RegionalRankRangeDataset`1.0.0 covers every fine alternative. This extract scope
+is explicit in the validation report. Fresh batch physics/screening/baseline and
+fresh global ranking are checked before completion. API 1.2.0 introduces analysis
+resolution, regional coverage and parent lineage; indicator requests select one
+bounded parent window, with a10000feature response limit.
+# Additive submission contracts — 2026-10-03
+
+`SubmissionBrief` JSON schema 1.0.0 is a presentation of verified saved model outputs,
+separate from scientific table schema versions. It retains one selected external
+scenario, stored representative ordering, paired design/physical quantities, actual
+leaf weights/contributions and archived source/config/code hashes. Representative
+cell coordinates and connected region coordinates are separate fields. An empty
+STRICT finding contains no manufactured recommendation. The frontend API adds
+optional `decision_brief` and unavailable reason under additive version 1.3.0;
+older 1.x saved responses remain loadable.
+
+National root tables and regional catalog/native-part tables are supported. Regional
+briefs verify full global ranks against selected native representative parts; source
+rows and physical metadata come from those same cells. Read only completed artifacts,
+verify every consumed checksum/data mode/grid identity, and include native part
+ranked tables in the presentation cache identity. No cross-scope evidence is borrowed.
+
+`HeatReuseInputs` and heat-result JSON schema 1.0.0 are optional alternative-bound
+contracts. No numerical defaults are supplied. Factors require a project-assumption
+basis/rationale or document reference plus table/page/section. Output quantities carry
+unit, status, confidence, method and missing reason. Delivered heat is demand capped;
+distribution losses and auxiliary-energy emissions are explicit. The signed heating
+system carbon comparison does not modify facility emissions or rankings. This adds
+new schemas without changing previously accepted scientific table meanings.
+
+## Cleanview diagnostic revision contracts — 2026-10-03
+
+Regional `ScreeningResult` 1.2.0 changes the spatial support of the dedicated
+total-suitable-area plausibility rule. In `multi_cell_region` scope, a positive
+supported/classified proxy total below facility land demand has outcome UNKNOWN and
+`cross_cell_land_support_unverified`; its original numeric evidence remains in
+`evidence_json`. This says nothing about a contiguous or obtainable parcel.
+Zero supported area remains FAIL, and other FAIL requirements are unchanged.
+Regional `ScreeningEligibility` 1.1.0 records the resulting critical UNKNOWN;
+STRICT still excludes it. Standalone `single_cell` screening retains the prior
+1.1.0 result / 1.0.0 eligibility schemas and meaning. Old saved evidence is
+preserved; consumers must use the recorded scope rather than reinterpret it.
+
+`regional_catalog.json` 1.1.0 adds `land_search_scope`. The scope also enters the
+run binding, so prior run folders cannot be resumed under the changed meaning.
+`RegionalGridIndex` 1.1.0 retains `data_mode` and the existing exact
+`county_geoid_all` administrative support string. Historical sparse 1.0.0 indexes
+are read through checksum-verified catalog/native geography parts without
+changing their bytes. Native support must match the entire evaluated grid.
+Regional `CandidateRegion` 1.3.0 adds a semantic publication gate: the complete
+bounded region must have enough known total classified land for the facility
+minimum. A known insufficient sum rejects that region and its membership even
+when its member-cell scores are high. An incomplete sum remains critical UNKNOWN;
+adequate total area does not verify contiguity or land availability.
+`RegionLandScreening` 1.0.0 retains the PASS/FAIL/UNKNOWN audit for every initial
+component, including excluded ones. Legacy national clustering is unchanged.
+The 1 km lattice, 20 km projected-axis extent, source precision, scoring weights
+and cooling coefficients remain unchanged. Facility minimum land demand above
+the projected bounding area is rejected before calculation.
+
+`ExistingSiteCountyComparison` 1.0.0 is a separate diagnostic output. Its keys are
+reference facility, design and external scenario within one model/grid domain.
+County-geoid support includes every intersecting whole cell; min/max statistics
+are conditional model ranges, never facility point estimates. Missing fine
+coverage is `OUTSIDE_EVALUATED_DOMAIN`, and unmatched administrative labels are
+`UNMATCHED_COUNTY`. Facility score and physical error remain null with reasons.
+Real/synthetic modes, geographic identities and consumed saved-output checksums
+must agree. No reference-derived quantity changes model scoring or physics.
+
+# Phase 11 national fine surface contracts (2026-10-03)
+
+`RegionalConfig` 3.0.0 adds `selection: national_fine_surface`, which requires
+`delivery_version: phase11_national_fine_surface_v1` and vice versa. No field was added, so existing
+`representative_parent_cells` configurations serialize identically and keep their binding identities;
+their outputs and texts are unchanged.
+
+The Phase 11 stage writes `national_fine_surface/` inside the regional run:
+
+- `NationalFineSurfaceCell` 1.0.0 (`fine_surface_cells.parquet`): one row per retained 1 km cell, sorted by
+  `grid_id`, with `parent_grid_id`, `row`, `col` (int32), `study_area_intersection_km2`, `is_boundary_cell`,
+  `potentially_suitable_land_frac`, `nlcd_coverage_frac`, `transmission_distance_km`,
+  `baseline_water_stress_score`, `baseline_water_stress_score_coverage_frac`,
+  `grid_carbon_intensity_kg_per_mwh` and `egrid_coverage_frac`. Missing values are null.
+- `NationalFineSurfaceParent` 1.0.0 (`fine_surface_parents.parquet`): per `parent_grid_id`, `design_id` and
+  `scenario_id`: `cells`, `scored_cells`, `best_fine_score`, `best_grid_id` (ties: smallest ID) and
+  `p90_fine_score`; null when no cell is scored.
+- `fine_surface_manifest.json` 1.0.0: `stage_identity` (from the regional binding identity and both method
+  versions), method versions, weights, design constants, source paths and checksums, counts, runtime,
+  observed peak working set and output hashes. An identical stage is reused; another identity is refused.
+
+Only in this mode, `RegionalRefinementWindows` 1.1.0 adds `fine_selection_rank`, `best_fine_score`,
+`fine_best_grid_id`, `fine_best_design_id` and `fine_best_scenario_id`, and `regional_catalog.json` 1.2.0
+adds a `national_fine_surface` object (manifest path and checksum, stage identity, method versions, valued
+cells, scored alternatives, ranked parents, selection limit) with a mode-specific `coverage_warning`.
+Representative runs keep windows 1.0.0 and catalog 1.1.0.
+
+## National fine surface evidence revision (2026-10-03)
+
+`NationalFineSurfaceCell` **1.1.0** adds seven companions for every stored feature:
+`<metric>_status`, `_confidence`, `_missing_reason`, `_source_id`, `_source_field`, `_unit`,
+and `_data_year`. `feature_provenance.parquet` carries one `FeatureMetadata` 1.1.0 row per
+cell × each of the seven metrics, including source versions, retrieval dates, spatial resolution,
+aggregation methods, coverage and real/synthetic mode. Infrastructure inventory coverage remains
+null; it does not claim areal completeness. A measured zero coverage fraction remains a calculated
+zero; the associated unobserved source value remains null with `source_nodata`.
+
+The manifest is **1.1.0** and binds all three Parquet outputs, feature declarations and evidence-row
+count. Reuse requires the exact three-output checksum ledger and matching schemas, grid definition
+and data mode. Numeric-only 1.0.0 drafts cannot be reused by the revised stage. Both feature and
+selection method versions are `v2`; this starts a new delivery identity.
+
+Fine scoring validates source identity/field, unit, allowed status, confidence, source year and
+declared coverage, plus the native annual-physics carbon-coverage rule. Missing or incompatible
+evidence leaves the alternative unscored; it never changes weights. Energy/site-water constants
+carry their archived annual-physics metadata. Parent selection requires one external scenario;
+cooling designs remain decision alternatives. These are unscreened investigation values, separate
+from the globally ranked, screened alternatives computed after full regional refinement.
+
+GDAL cache is bounded to 64 MiB and provenance-to-Arrow conversion to 50,000 rows at a time.
+The stage refuses completion above the existing 4 GiB process-memory bound. These are resource
+settings, not geographic or engineering thresholds.
+
+## County socioeconomic context revision (2026-10-04)
+
+This additive geography/context delivery preserves existing technical tables and
+their schemas. `county_socioeconomic_geography`,
+`candidate_county_socioeconomic_crosswalk` and `candidate_county_coverage` use
+**1.0.0**. The frontend transport advances to **1.6.0**, accepting legacy
+1.4/1.5 payloads; the separate county context has **1.0.0**. See
+`frontend/API_CONTRACT.md` for endpoints and wire fields.
+
+The analytical candidate is the saved real grid cell (`grid_id`, represented as
+`candidate_id` in this crosswalk), with its complete EPSG:5070 geometry. Its
+technical alternatives remain grid × design × external scenario. The canonical
+crosswalk key is unique `(candidate_id, county_geoid)`, sorted by both fields;
+all positive-area intersections survive, including secondary jurisdictions.
+Line/point contacts are excluded. County fragments are dissolved by GEOID before
+intersection. `overlap_fraction = intersection_area_km2 / candidate_area_km2`
+uses full saved cell area; unknown/missing county coverage is not renormalized.
+The companion coverage table retains every cell, including no-overlap cells,
+and records uncovered area and an explicit diagnostic reason.
+
+The user approved mixed vintages: `socioeconomic_year=2024` with
+`boundary_year=2025` (default) or `2023`. Boundary type is
+`cartographic_500k`, never TIGER/Line. Geometry is generalized and may leave
+coastal/border gaps. GEOIDs remain five-character strings and are the only
+socioeconomic join key. Unmatched counties retain null values, unknown status,
+unknown confidence and missing reasons. Fiscal fields also remain null/unknown.
+
+Each important metric retains units, source, method, status, confidence and a
+missing reason. SAIPE point estimates have observed dataset status; this does not
+make model-based estimates direct household measurements. The official download
+provides rounded 90% confidence bounds. MOE is explicitly calculated as half the
+interval width, with original bounds retained. Percentiles are calculated across
+all CONUS SAIPE counties with valid values before geometry/grid joins: average
+ties, `100*(rank-1)/(n-1)`, singleton 50. Higher poverty and lower income indicate
+economic disadvantage; no combined economic score is constructed.
+
+Cache identities bind config, adapter code, raw URLs/checksums, chosen boundary
+year and saved-grid bytes/metadata. Cache output checksums are verified before
+reuse. The local server can build bounded context from verified local sources,
+but cannot acquire data. Oversized grids fail explicitly before loading. A
+display filter retains a region only when one positive-overlap county satisfies
+every active condition; missing active-filter values do not match. Saved
+technical scores, screening and global ranks are not recalculated.
+
+Presentation requests and in-memory context caches include run, displayed
+external scenario and boundary year. Future-scenario region IDs use that
+scenario's persisted membership rather than baseline region IDs; geography and
+2024 SAIPE source estimates remain shared. Unavailable context cannot satisfy an
+active filter, and the page always permits clearing retained county thresholds.
+
+Frontend presentation correction (2026-10-04): economic context is filter-only.
+Optional thresholds are minimum poverty rate, maximum median household income,
+minimum poverty percentile and minimum low-income percentile (percentiles 0–100).
+All active thresholds must match one same positive-overlap county. County layer
+controls, fetches and rendering are suppressed, including legacy URL selections.
+The existing context/layer transport fields remain compatible; there is no wire
+schema migration or change to source percentiles, technical outputs or ranks.
+
+## Best fine parent per national region (2026-10-04)
+
+`RegionalConfig` 3.0.0 also accepts `selection: national_fine_region_parents`, likewise bound to
+`delivery_version: phase11_national_fine_surface_v1`. No field was added, so existing configurations
+serialize identically and keep their binding identities.
+
+In this mode `RegionalRefinementWindows` is **1.2.0**. It keeps the 1.1.0 fields: `fine_selection_rank`
+(here the order of the selected parents by best fine value), and `best_fine_score` and the `fine_best_*` IDs,
+which are null for a region without a scored member. It adds `fine_region_representative` (the national
+representative parent the region would otherwise refine) and `fine_region_selection_basis`
+(`fine_surface | representative | representative_unscored`). `national_region_ids_json` lists every
+national region the parent was chosen for. The `national_fine_surface` object of `regional_catalog.json`
+1.2.0 is unchanged; its `selection_limit` is the budget-derived parent limit, which this mode checks but
+does not use to choose parents. Other modes keep windows 1.0.0 and 1.1.0.
+
+The stage manifest stays 1.1.0. It is written as indented strict JSON, with missing values as `null`.
 
 ## Additional county model (PR #1 integration, 2026-10-04)
 
@@ -422,3 +664,72 @@ evidence into optional model discriminants, retains null scalar scores/ranks, an
 coverage separately from grid cells. `POST /runs` and `GET /runs/{run_id}` remain county-service
 routes; the grid service keeps `/api/search` and its existing contracts. Model changes reset
 workspace run/scenario/layer selections so stored results cannot cross model boundaries.
+
+## Nationwide regional map choice (2026-10-04)
+
+Frontend transport **1.7.0** adds optional capability
+`nationwide_regional_run_id` (string or null). It identifies a registered completed
+real 1 km regional result with a positive extent limit no greater than 20 km,
+complete native stages, verified presentation artifacts and valid completed CONUS
+parent lineage. The choice prefers `national_fine_region_parents`, falling back
+to `representative_parent_cells`; global highest fine-score-window selection is
+excluded from this presentation choice. Unscreened national surface output cannot
+qualify. Missing fields in older 1.x responses disable the optional action.
+
+Known external deliveries are advertised only after completion checks. Repeated
+capability reads preserve the ordering of registered searches. The separate map
+choice does not change `latest_run_id`, the scientific request configuration or
+the computation baseline. Loading it reads the saved run's own facility,
+geography, ranks and provenance without creating a model execution. Counts group
+identical candidate geometry across cooling designs and reflect active display
+filters. Scientific table schemas and socioeconomic context schema 1.0.0 retain
+their existing meanings; the adapter cache revision refreshes transport only.
+
+## Cached regional Grid mode (2026-10-04)
+
+Frontend transport **1.8.0** adds optional capabilities `analysis_modes`,
+`default_analysis_mode` and `cached_regional_baseline_run_id`. Available modes
+are `cached_regional` and `full_rediscovery`; the page defaults to cached
+evaluation when its verified static input cache is ready. Search bodies may
+add a top-level `analysis_mode`. Legacy facility-only requests retain the
+existing full workflow. The evaluation mode is separate from facility fields.
+
+New fast results carry `analysis_mode: cached_regional`, regional
+`selection: fixed_cached_cohort` and `diagnostics_status: NOT_ASSESSED`.
+Their cell counts, source lineage, fixed windows, weights, scores and region
+geometries describe the submitted facility on the cached universe. They do
+not inherit a saved facility's performance or claim new nationwide discovery.
+Missing optional fields preserve older 1.x responses and the County adapter.
+
+The standalone production executor `src/dc_locator_fast.py` has its own
+content identity outside the in-flight scientific package inventory. Its
+outputs record exact existing mathematical-function, policy, environment,
+cached-input and submitted-request bindings. Static cache and new outputs
+are checksum verified; changed binding identities create new revisions.
+This addition does not alter existing scientific table meanings or accepted
+phase evidence. New compact/cache artifact contracts are explicitly named
+in their file metadata rather than mislabeled as full scientific tables.
+
+Fast execution identity uses the validated facility and active scoring profile;
+equivalent integer/decimal representations and reordered object keys share a
+calculation. The originally submitted representation remains in the immutable
+configuration snapshot. Native clustering/land checks may execute in at most
+two processes, partitioned by cooling design and external scenario only after
+unchanged global ranking. Results are restored to the native global sort order;
+each process retains the 4 GiB memory guard. This execution partition changes no
+weights, selection thresholds, grid membership, region IDs or physical values.
+
+## Rediscovery validation contracts (2026-10-04)
+
+Additive and outside the hash-bound model package. `src/dc_rediscovery` reads a completed run and writes
+`RediscoveryEvaluatedCell`, `RediscoveryCandidateBlind`, `RediscoveryCandidate`, `RediscoveryCandidateFactor`,
+`RediscoveryFacility`, `RediscoveryHub` and `RediscoveryBaselineDraw` tables (all `schema_version 1.0.0`)
+with the standard `dc_locator.*` Parquet metadata. It also writes `validation_summary.json` and
+`rediscovery_manifest.json` (`schema_version 1.0.0`, `analysis_identity` = sha256 of the configuration,
+model inputs, package code and environment). One candidate row represents one 1 km cell with its best
+cooling design. Its `grid_id` follows the grid contract, its `lat`/`lon` is the cell-square centre in
+EPSG:4326, and distances are spherical haversine kilometres (R = 6371.0088 km). Missing robustness is null
+with a reason, never 0. An output folder is reused only with an identical identity and verified hashes.
+Otherwise the run is refused. Existing-facility data never enters `src/dc_locator` or the blind table. The
+read-only API contract is documented in `frontend/API_CONTRACT.md` ("Rediscovery check").
+No existing schema changes.

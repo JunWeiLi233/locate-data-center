@@ -1,0 +1,110 @@
+# Post-hoc rediscovery check: blind national candidates vs. existing U.S. data centers.
+# Existing facilities are an external validation reference only. They never enter the model's score.
+# Every threshold below is a declared project assumption, fixed before comparison with the inventory.
+schema_version: 1.0.0
+analysis_name: rediscovery_v1
+data_mode: real
+
+candidate_generation:
+  source: national_fine_surface
+  model_run: runs/national_fine_regional_v1
+  top_n_values: [10, 50, 100, 250]
+  min_candidate_distance_km: 25
+  separation:
+    basis: project_assumption
+    rationale: >-
+      25 km keeps each candidate a distinct search neighbourhood at regional scale. The value matches the
+      validated-distance threshold, so two candidates do not double count one existing hub. It is a
+      presentation and deduplication choice, not an engineering exclusion.
+  design_selection: best_design_per_cell
+  write_evaluated_cells: true
+
+facilities:
+  source_id: im3_datacenter_atlas
+  url: https://raw.githubusercontent.com/IMMM-SFA/datacenter-atlas/74ab37d5b9d200400a01639f9ffc3c3a8b716314/data_center_database/im3_us_data_center_locations.gpkg
+  path: data/raw/im3_datacenter_atlas/im3_us_data_center_locations_v2026.02.09.gpkg
+  expected_bytes: 843776
+  expected_sha256: 1c0d8c206eb2070785e594784fda90f615e6ed7fd9646d67e1a9de237b8cc9f4
+  version: v2026.02.09 (IMMM-SFA/datacenter-atlas commit 74ab37d5b9d200400a01639f9ffc3c3a8b716314)
+  doi: 10.57931/3017294
+  license: Open Data Commons Open Database License (ODbL) 1.0; derived from OpenStreetMap; attribution required
+  layers: [point, building, campus]
+  scope: conus
+
+validation:
+  hit_radii_km: [10, 25, 50, 100]
+  classification:
+    validated_max_km: 25
+    emerging_min_km: 50
+    declared:
+      basis: project_assumption
+      rationale: >-
+        At 25 km or less a candidate shares a metro-scale market with an existing facility. Beyond 50 km
+        nothing in the inventory is nearby, even allowing for footprint size and mapping gaps. The band in
+        between is unresolved rather than forced into a class.
+  hubs:
+    linkage_km: 10
+    min_facilities: 5
+    declared:
+      basis: project_assumption
+      rationale: >-
+        A hub is five or more inventory records connected by gaps of at most 10 km. It summarizes where
+        records concentrate. It is not a market definition or a capacity measure.
+
+baselines:
+  draws: 1000
+  seed: 20261004
+  area_weighted: true
+  controls:
+    - control_id: uniform_conus
+      label: Random CONUS locations
+      declared:
+        basis: project_assumption
+        rationale: >-
+          A spatial null. Valued 1 km cells are drawn uniformly by land area and spaced like the
+          candidates.
+    - control_id: infrastructure_plausible
+      label: Random near-transmission land
+      max_transmission_distance_km: 10
+      min_suitable_land_frac: 0.5
+      declared:
+        basis: project_assumption
+        rationale: >-
+          A geographically reasonable null: random cells within 10 km of mapped transmission with at least
+          half potentially suitable land. It tests whether the ranking adds information beyond those two
+          plausibility filters. The thresholds are not siting rules.
+
+robustness:
+  providers:
+    - kind: county_monte_carlo
+      path: backend/dataclocator/outputs/run_cd852d91e1161103/results.json
+      label: County Monte Carlo (dataclocator, 5,000 draws, exploratory)
+    - kind: table
+      path: null
+      label: Grid-cell Monte Carlo (reserved; not yet supplied)
+  declared_weight_cases: from_model_run
+
+places:
+  county_boundaries: data/raw/census_frontend_boundary/areawater/cb_2025_us_county_500k.zip
+  county_boundaries_manifest: data/raw/census_frontend_boundary/areawater/download_manifest.json
+  nearest_county_max_km: 5
+
+explanation:
+  strong_normalized_min: 80
+  weak_normalized_max: 50
+  declared:
+    basis: project_assumption
+    rationale: >-
+      A presentation rule for generated explanations, on the model's fixed 0–100 criterion scale. A
+      criterion at 80 or more is called a strength and one at 50 or less a weakness. It changes no score
+      or rank.
+
+surface_image:
+  enabled: true
+  width_px: 1600
+
+# Many cells share identical scores (regional proxies). The published ranking keeps the model's grid_id
+# tie order. This check repeats selection with ties shuffled at random and reports the spread it causes.
+tie_sensitivity:
+  permutations: 200
+  seed: 20261005

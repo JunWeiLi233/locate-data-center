@@ -1,9 +1,10 @@
 import type { LayerData, MapFeatureInfo } from '../types/domain';
 
 export function IndicatorEvidence({ layers, onInspect }: { layers: LayerData[]; onInspect: (feature: MapFeatureInfo) => void }) {
+  const mapLayers = layers.filter(layer => layer.id !== 'community_economic');
   const grid = layers.find(layer => layer.id === 'grid');
   return <>
-    {layers.length > 0 && <section className="indicator-legends" aria-label="Selected indicator legends">{layers.map(layer => <details key={layer.id}><summary>{layer.label}</summary>
+    {mapLayers.length > 0 && <section className="indicator-legends" aria-label="Selected indicator legends">{mapLayers.map(layer => <details key={layer.id}><summary>{layer.label}</summary>
       <p>{layer.unit || 'Categorical screening status'} · {layer.direction === 'higher_is_worse' ? 'Higher raw values indicate greater burden / risk' : layer.direction === 'higher_is_better' ? 'Higher values are favorable' : layer.direction === 'categorical' ? 'Categories are not numeric scores' : 'Raw context; no favorable direction assigned'}</p>
       {layer.min !== null && layer.max !== null && <><div className="legend-gradient" /><div className="legend-range"><span>{layer.min} {layer.unit}</span><span>{layer.max} {layer.unit}</span></div></>}
       <p className="legend-status">{layer.direction === 'categorical' ? 'PASS · teal / CONDITIONAL · amber / FAIL · red / UNKNOWN · gray.' : 'Known raw values · blue scale / missing values · gray. Source status remains observed, calculated, proxy or scenario in the inspector.'} Unknown is not zero.</p>

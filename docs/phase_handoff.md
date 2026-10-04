@@ -859,18 +859,476 @@ Windows approval permits it. The remaining six folders and verification evidence
 An earlier persistent ACL proposal was rejected by automatic approval review. Subsequent
 temporary ACL checks restored the original settings; no permission changes remain.
 
+### Workspace cleanup — 2026-10-03
 
-## County backend integration — 2026-10-04 (local validation, pending teammate review)
+The user reported a messy file system and asked for a workspace that is clear to work with. This was
+housekeeping only. It changed no model code, configuration, source data, phase record or run evidence.
+After the cleanup the backend audit matched 59/59 executable/dependency hashes and 33/33 configuration
+hashes, and the Phase 7 record is unchanged.
 
-- Upstream discovered from GitHub fork metadata: `JunWeiLi233/locate-data-center`, default branch `main`; isolated feature branch `feat/integrate-county-monte-carlo` starts from `29ace50e831fefda52e77e2c9a0360693e64cddb`.
-- Existing `dataclocator` backend imported as a separate Python 3.13 package under `backend/dataclocator/`. Nine core accounting/data/scenario/Pareto modules are byte-identical to the original backend. Only queue file ownership is adapted for Unix/Windows portability. Original `src/dc_locator`, baseline configs, accepted phase records and historical run outputs are not rewritten.
-- The selectable county frontend adapter submits `POST /runs`, polls `GET /runs/{run_id}`, and reads frozen candidate evidence. Existing layout, styles, map/list/detail/compare components and the default grid adapter are retained. County points have no fabricated polygons, score or rank; expected/CVaR tradeoffs and source/assumption/uncertainty evidence remain explicit.
-- Local checks: imported backend **81 passed**; frontend **77 passed** with the opt-in real-data flow enabled; TypeScript/Vite production builds passed for both grid-default and county-selected modes. Fresh official-data React/adapter/ASGI flow submits a 32-draw debugging run, displays all 45 counties, restores its scenario and confirms the valid empty verified-feasibility result.
-- Commands: county venv `python -m pytest -q`; frontend `npm test`; `VITE_MODEL_BACKEND=monte-carlo npm run build`; `DATACLOCATOR_TEST_PYTHON=<county-venv-python> npm test`. The ASGI bridge uses a fresh owned test root, not a previously completed run or synthetic fallback.
-- Limitations: sandbox rejects live loopback bind/connect; live TCP/CORS/WebGL/Playwright verification and Windows runtime validation remain local-machine checks. Original grid backend suite was not run in the county package's incompatible Python 3.13 environment. Existing MapLibre build-size and Starlette test-client deprecation warnings remain visible.
-- Scientific boundaries: 45 selected counties, unconfirmed engineering/rate priors, equal modeled direct water at equal WUE, preliminary state tariff proxies, 2023 grid averages/15 ambiguous assignments, unverified local power/water/zoning/fiber. No full TCO, embodied carbon, indirect generation-water, heat-reuse or community benefits are invented.
-- Acquisition/preprocessing, separate environments, backend URL and explicit CORS origins are documented in [county-backend-integration.md](county-backend-integration.md). Datasets, outputs, arrays, virtualenvs, secrets and caches are ignored and excluded from the changes.
-- Publication is verified after the commit via GitHub branch SHA, PR head/base and available check-run/status metadata; no CI workflow was present at the upstream base. No merge, default-branch push or deployment is authorized.
+- **Removed scratch, sent to the Windows Recycle Bin so it can be restored.**
+  - 55 root `.tmp-*` items: 40 pytest temp folders from Phase 5–7 reviews and the relocation, and
+    15 Phase 5 exploration scripts and HTML/XML snapshots.
+  - 24 readable old pytest folders and two one-off audit scripts in `.pytest-work/`.
+  - 9 stale pytest folders in `runs/frontend_service/`. The documented `server_test_tmp/` was kept.
+  - The stale root `.pytest_cache/`.
+  - Phase records cite these folders only as `--basetemp` arguments of recorded commands, and
+    nothing references their contents.
+- **Moved the old wrapper.** The empty-looking `U.S. Sustainable Data Center Location Discovery Model/`
+  wrapper looked like a second project root. It was renamed as a whole to
+  `.pytest-work/old-root-wrapper-locked/`. Renaming a parent needs no access to its locked children,
+  so no administrator was needed. This completes the relocation. `frontend/scripts/complete-relocation.ps1`
+  would have moved those six folders into the root, so it was removed as obsolete. It can be recovered
+  from commit `29ace50`.
+- **Still locked.** 19 pytest folders remain: `.pytest-work/old-root-wrapper-locked/.tmp-orchestrator-*`
+  (6) and `.pytest-work/review-phase1`…`4-*` (13). The sandboxed reviewer account created them with
+  Python 3.12's private `mkdir(0o700)` ACL, which grants access only to SYSTEM, Administrators and the
+  owner. The normal user cannot open them. An elevated PowerShell can delete them with the one-line
+  command in `.pytest-work/README.md`.
+- **New conventions.** `.pytest-work/<task>/` is the only scratch location; its README is tracked so the
+  folder exists in a fresh clone. The README test command is now
+  `--basetemp=.pytest-work/tests`, replacing `.tmp-phase7-user`. `runs/README.md` indexes run folders
+  and marks accepted evidence. AGENTS.md §5 gains workspace-hygiene rules: no new top-level entries,
+  delete your own scratch, and never touch evidence or hash-bound files.
+
+### Phase 8 — national discovery scope correction — 2026-10-03
+
+The user requested investigation and repair of Texas-only results. Root accepted the additive national
+scope revision after inspecting code, real outputs, source identities, tests and the live app. The new
+record is `docs/phase_records/phase_8.json`; all prior acceptance records and accepted runs are preserved.
+The Git base is `3ddced7`, while `runs/national_audit_v1/executable_freeze.json` records 258 actual working
+source/config/test/frontend/dependency hashes. No commit was created for this request. The legacy
+Phase-7 acceptance field in run metadata remains historical; the Phase-8 record is the new acceptance.
+
+**Measured cause.** Every new frontend request copied the 42-cell `dev_tiny` grid entirely within Texas.
+The required NLCD land metric was also clipped to that development area. Two regions described separate
+cooling-design alternatives at the same geography. There was no Texas-specific scoring rule or marker
+coordinate error. Changing only map zoom or the grid filename would not provide national scored evidence.
+
+**Revision.** New model defaults and frontend requests use the national template. Its fixed-origin 50 km
+grid has 3,384 cells covering all 48 contiguous states plus DC, with a distinct grid definition. Existing
+weights, scoring references, hard requirements, facility assumptions and cooling coefficients are
+byte-unchanged. Real national preflight rejects a development grid mislabeled CONUS. Optional sources
+remain visibly uncomputed; no critical UNKNOWN becomes PASS and no missing-weight redistribution occurs.
+All candidate centroids receive badges, including representative alternatives ranked above 20. API 1.1.0
+advertises scenario availability for the actual run; national results do not borrow development futures.
+
+**Acquisition and geography.** Public official Annual NLCD 2024 CU C1V1 ZIP: 1,442,142,769 bytes,
+SHA256 `f317c2878d7a3b7bb9ec15e42d9780a9e0edd7bf6304f1c57a6a5a7c2bf14f49`. The download log records
+URL, UTC retrieval, bytes, version and terms under `data/raw/usgs_annual_nlcd/conus_mosaic_2024/`.
+Native WGS84 Albers classes were actually reprojected to EPSG:5070 by nearest neighbor at 30 m, with
+nodata 250 retained and source/output hashes in the preparation manifest. One GDAL thread and bounded
+memory were used. Geographic vector preparation is spatially tiled (at most 250 km / 625 cells);
+full nearest-infrastructure inventories and eGRID workbook attributes load once. Shared verified caches
+support national repeats and facility requests. No per-cell HTTP acquisition occurred. The completed
+baseline measured current raw-cache bytes including manifests at 5,989,963,949, below the authorized
+60 GB project limit. Native preparation and tile caches remain separate interim files.
+
+**Commands and evidence.**
+
+- `.venv/Scripts/python.exe -m dc_locator run --config configs/run_national_exploratory.yaml --output runs/national_discovery_v2`
+- `.venv/Scripts/python.exe -m dc_locator run --config configs/run_national.yaml --output runs/national_strict_v1`
+- `.venv/Scripts/python.exe -m dc_locator run --config configs/run_national_exploratory.yaml --output runs/national_repeat_v1`
+- `.venv/Scripts/python.exe tests/golden.py runs/national_discovery_v2 runs/national_repeat_v1`
+- `.venv/Scripts/python.exe -m pytest -q tests frontend/server_tests --basetemp=.pytest-work/texas-scope-root/full-suite-approved`: **544 passed**, 89.09 s. The initial sandbox-only attempt had two local-socket WinError10013 failures; approved loopback execution passed all tests.
+- Current frontend unit suite: **81 passed**; production build passed with the existing bundle-size advisory.
+
+Exploratory results retain all 6,768 alternatives: 5,514 rankable conditional alternatives; 1,242
+unranked for unavailable required metrics and 12 excluded by screening. There are 122 design regions
+at 61 distinct geometries, with centroids in 31 states and 110 centroids outside Texas. Selected cells
+intersect 45 jurisdictions. STRICT retains all critical unknowns and returns zero ranked alternatives
+and zero regions. All 38 repeat files match substantively; 37 are byte-identical, with only geographic
+processed/resumed tile counters differing. All baseline output hashes were rechecked; 59,913 unknown
+provenance rows have null values and populated reasons. Maximum measured baseline/strict/fresh-API
+process lifetime peak working set is 2,473,545,728 bytes, below the 4 GiB process budget.
+
+The verified local API was restarted with the project virtual environment. A fresh browser “Find
+locations” request completed as `frontend_8ecc0dae8b13ea6999638287__7856164db37db8d8`, analyzing all
+3,384 cells and returning 122 regions. Its facility-independent geography reuse is checksum-bound to
+the national baseline. `runs/national_audit_v1/` retains model/API/strict/request audits, test evidence,
+repeat comparison, executable/config freeze and `live-map.jpg`. Every retained run is indexed in
+`runs/README.md`. The abandoned owned v1 bootstrap and task scratch are disposable, not evidence.
+
+**Limits and next revision.** These geographic regions deserve further investigation under the stated
+facility requirements, datasets, constraints, assumptions, and decision preferences. They are not proven
+buildable parcels. Required parcel, contiguous-land, power, water and fiber evidence remains unresolved;
+optional hazard/climate/expanded/future contexts are explicitly uncomputed in this baseline. There is
+no independent facility validation, current prospective holdout or overall accuracy estimate.
+
+After this scope correction, the user requested finer regional analysis: 50 km cells and connected
+multi-state corridors are too broad. That work is a new delivery revision. Preserve Phase-8 evidence,
+introduce fixed-origin finer regional grids with explicit selection lineage, and bound search-region
+extent independently of map zoom. Finer grid spacing must not be presented as finer native source
+accuracy or parcel approval.
+
+### Phase 10 — additive mission and rubric submission alignment — 2026-10-03
+
+The user supplied the project challenge and five-category grading rubric and asked to check the current
+project and continue development where it falls short. Those attachments were treated as assessment
+evidence. Root accepted this additive software/presentation revision after independent review, full
+regression tests, saved-artifact audits and real-browser inspection. This record depends on accepted
+Phase 8 national evidence and does not accept the concurrently running finer regional revision.
+`docs/phase_records/phase_10.json` records the precise scope. No new commit was created; the Git base is
+`3ddced7fb655744bf1ecfab675aa6c120e4d4952`, with actual delivery bytes in
+`runs/submission_alignment_v2/executable_freeze.json`. Prior changes and accepted artifacts are preserved.
+
+**Implemented gaps.** The new read-only `submission` command verifies saved hashes, completed stages,
+alternative identities and table metadata before producing a deterministic six-section JSON/Markdown/
+printable HTML brief. It preserves stored ranks, exact leaf weights and contributions, paired physical
+quantities, provenance, implemented/acquired/analyzed coverage, screening risks and a proposed operating
+vision. The frontend API 1.3.0 transports this optional brief and renders it in an accessible print dialog.
+Incomplete/older contexts retain an explicit unavailable reason. Cache identity includes every consumed
+root/native representative artifact and presentation implementation. Scientific scoring is not performed
+in the browser. Regional sparse-root/native-part compatibility has regression coverage; no unfinished
+regional evidence is borrowed or accepted here.
+
+The separate supplied-input heat-reuse model requires an alternative-bound host, temperature, recovery,
+loss, demand and auxiliary-energy basis. Delivered annual heat is demand-capped; heating-system emissions
+account for auxiliary electricity, can be negative, and never offset the original MCDA/facility footprint.
+The all-null input template leaves real useful heat and avoided emissions UNKNOWN. Hand-calculated tests
+use quarantined synthetic fixtures: `1000 * 0.6 * 0.9 = 540 MWh`, capped at `400 MWh`; displaced heat
+`400 * 200` minus auxiliary `20 * 100` gives `78 tonnes`. No coefficient in that fixture is real evidence.
+DOE/FEMP 2024 section 7.1 is justified in sources as qualitative host/temperature/backup guidance.
+
+**Real submission evidence.** The final package is `runs/submission_alignment_v2/`, sourced only from
+`runs/national_discovery_v2/`. The earlier v1 package is retained as a superseded pre-review draft.
+The lead is the stored rank-one `g50000m-r0023-c0004 / air_dry_assumed / historical_static_2023`, score
+`95.86145330031282`, primary Trinity/California overlap. The actual evaluated cell center
+`40.08152917954911, -123.2880783979455` is separated from the connected region center
+`44.25127326516163, -120.05227501747034`. The latter represents 155 coarse cells / 387500 km2.
+Annual facility electricity is 840960 MWh and operating emissions 164018.3222726649 tonnes CO2e under
+declared scenarios. The same-cell tower-minus-dry direct consumption difference is 210240 m3/year;
+generation/total water remains null, and equal assumed PUEs produce zero modeled energy/carbon difference.
+The New York representative has lower annual carbon; the combined preference score explains the ranking.
+
+**Commands and verification.**
+
+- `.venv/Scripts/python.exe -m dc_locator submission --run runs/national_discovery_v2 --output runs/submission_alignment_v2 --heat-reuse-input configs/heat_reuse_input_template.json`
+- `.venv/Scripts/python.exe -m pytest -q tests frontend/server_tests --basetemp=.pytest-work/submission-alignment/full-approved --tb=short`: **633 passed**, 100.96 seconds. The initial sandbox run failed two local HTTP tests with WinError10013 and exposed an obsolete API-version assertion; the assertion was migrated to the additive 1.3 contract and approved loopback execution passed the complete suite.
+- Frontend root verification `npm.cmd test -- --run`: **98 passed**, 12.86 seconds; `npm.cmd run build`: passed with the existing bundle-size advisory.
+- Independent model reviewer: **GO**, zero remaining material findings. Review fixes include status-bearing combined water and design deltas, heat unknown reconciliation, exact selected native-part identity, and escaped report content.
+- Final audit freshly checked all **13 consumed input hashes**, **3 report output hashes**, **3 presentation-code hashes**, exact lead identity/score/centroids, empty STRICT recommendation and null unsupported quantities. All **34 recorded exploratory and 34 STRICT output hashes** remain unchanged. The 20-file implementation freeze and `verification_audit.json` retain scope and command evidence.
+- Inspected final standalone HTML and loaded the actual national saved run through isolated local API/browser ports. Opened and inspected all six frontend sections and the rendered dialog. This was display verification, not new facility or scientific validation.
+
+**Limits and next inputs.** `docs/submission_alignment.md` maps all six deliverables, mission ecosystem
+factors and five rubric categories to actual evidence, remaining gaps and a concise live-demo script.
+Software/presentation acceptance does not claim mission-wide numerical completeness or a 20/20 grade.
+Serving-utility capacity, committed water, obtainable contiguous parcel, ecology and diverse fiber remain
+critical UNKNOWNs. National optional hazards/climate remain uncomputed; finer regional acceptance belongs
+to the coordinated separate revision. Generation water, full lifecycle, useful heat, materials and
+community economic benefits need compatible real inputs. The 2030–2054 vision is a proposed plan and
+must not be presented as a forecast or commissioned result. No new source acquisition occurred here.
+
+These geographic regions deserve further investigation under the stated facility requirements, datasets,
+constraints, assumptions, and decision preferences. They are not proven buildable parcels. Backend and
+scientific-config edits were held stable for the coordinated regional run; subsequent work needs a new
+evidence package if those bytes change. Task scratch and isolated test servers are removed after review.
+
+## Frontend simplification for industrial users (2026-10-03)
+
+**Request and approach.** The user asked for a simpler frontend that does not present everything at once.
+Following the recorded preview-first preference, a layout mockup was approved before any code change,
+together with one row per place and county/state labels. The light/serif visual design is unchanged; only
+the information architecture is restructured. No model mathematics moved into the browser and no caveat
+was deleted: every Unknown, value status, source and limitation remains one click away.
+
+**Changes.**
+
+- Facility form: the four facility inputs and the cooling design; screening policy and decision preferences
+  sit under Advanced settings. Tabs read 1 · Facility and 2 · Results.
+- Results: a one-line search summary with Edit, one unresolved-data/conditional note, Run details (scope,
+  stages, weighting and the model notes formerly floating on the map) and Filter areas fold-outs, then
+  compact rows (backend rank, place, score, status, compare). Cooling alternatives with identical search
+  geometry share one row showing the best-ranked design's backend rank and score; the first 20 rows show,
+  with Show all.
+- Region panel: score, status, rank, a cooling-design switch, factor bars only for scored factors plus one
+  Unknown line, six key physical figures with value status, and a Verify before committing checklist with
+  readable requirement names. All measurements and sources, ranking stability, limitations and the model
+  record/downloads are fold-outs.
+- Map: removed the idle hero card, the floating model-notes panel and the coverage caption; the steady-state
+  status line is screen-reader only; boundary and basemap notes moved to Map layers → About the map. Below
+  zoom 5 only the ten best places carry numbered badges and the rest are dots.
+- API bridge schema 1.4.0 (adapter 1.4.0, additive): optional region fields `place_label` (representative
+  cell's primary county and state, the convention of the submission brief's `geographic_label`),
+  `region_states` (member-cell states; null rather than partial), `cell_count` and `area_km2`.
+- Minimum text sizes rose from 9–10 px to 10.5–12 px.
+
+**Verification.**
+
+- `npx tsc -b`: passed. `node scripts/test.mjs`: **110 passed** (10 files, 7 new tests). `npm run build`:
+  passed with the existing bundle-size advisory.
+- `.venv/Scripts/python -m pytest frontend/server_tests -q -p no:cacheprovider --basetemp .pytest-work/frontend-simplify/server-tests`: **60 passed**.
+- `npx playwright test --grep-invert "real facility form"`: **7 passed**, 1 skipped by design. The
+  real-submission test was not run because the live API was executing a regional refinement job.
+- `frontend/scripts/audit_backend.py`: accepted Phase 7 record unchanged. Its 11 code-hash mismatches are the
+  pre-existing uncommitted `src/dc_locator` edits; this change touched no hash-bound file.
+- Visual check of the latest saved national run rendered through the 1.4 bridge at desktop and Pixel 7
+  sizes. Default region-panel text fell from about 7,400 to about 1,000 characters, and the results list
+  from about 53,600 px to about 2,300 px of scroll.
+
+**Open items.** The API server on port 8787 serves schema 1.3.0, without place labels, until it is restarted;
+it was left running because a refinement job was in progress. Another session edited `frontend/src/map/*`
+(foreign-country context) at the same time; both changes coexist. Nothing was committed.
+
+### Regional model handover — user stopped the open-ended goal (2026-10-03)
+
+The user requested a workable model and explicitly stopped the ongoing improvement goal. Goal status is **paused**. No Phase 9 acceptance record or executable freeze has been published; do not label the new full regional delivery accepted.
+
+The runnable revision fixes the former Texas development scope by nationwide discovery and adds the approved fixed-origin 1 km regional cells, with deterministic regions bounded to 20 km per projected axis independently of map zoom. Source geography reuse is checksum verified and facility independent; screening, physics and global decisions are recomputed. Physical coefficients, thresholds and preferences are unchanged.
+
+Verification: 664 backend/API tests passed (662 in the full sandbox suite; the two blocked loopback HTTP tests subsequently passed with socket access), 110 frontend tests passed, production build passed. The complete 305,000-alternative / 61-batch / six-case validation benchmark peaked at 3,403,141,120 bytes (3.169 GiB), with all 24 persisted scientific outputs exactly matching the prior attempted calculation except explicitly documented run/validation identity fields. The earlier failed full attempts remain unaccepted evidence. See `runs/regional_audit_v1/software_verification_binding.json`, `validation_memory_benchmark.json`, `failed_attempts.json`, and `delivery_status.json`.
+
+At handover, one finite baseline (`runs/regional_refinement_v4`) and one finite strict execution (`runs/regional_strict_v2`) had already started. Their final outcomes are pending; no repeat-v2 or further full acceptance audits were started. The local app is `http://127.0.0.1:5173/`, with the tested API on port 8787. CLI: `.venv/Scripts/python.exe -m dc_locator refine-regions --config configs/run_regional_exploratory.yaml --output runs/regional_refinement_v4` (same identity safely resumes or returns the completed run). Select a new output folder after any code/config/source change. Critical parcel, utility, water and fiber evidence remains unresolved; outputs describe investigation areas, not construction approvals.
+
+### Bounded regional page delivery (2026-10-03)
+
+The user subsequently requested implementation of 1 km regional cells and 20 km region limits in the page. This bounded delivery does not resume the paused improvement goal. The already-running v4 baseline completed as `regional_refinement__22331e2d1dc5a8db`: real geography contains 152,500 fixed-origin 1 km cells in 61 full parent windows, with 2,286 region/cooling alternatives. Independent EPSG:5070 geometry checks found every cell exactly 1,000 m across and every region no wider or taller than 20,000 m. The completed process lifetime peak was 4,277,731,328 bytes, below the unchanged 4 GiB guard with little margin. `regional_strict_v2` also completed with no eligible candidates; UNKNOWN required evidence remains unresolved.
+
+The page displays metadata-derived resolution and projected-axis region limits above the collapsed run details, plus explicit partial coverage: 61 of 690 shortlisted parents and 152,500 km² evaluated. The map loads actual fine polygons for the selected parent window (2,500 cells in the verified Livingston, NY example). Map zoom does not change the analytical grid or region policy. The matching-facility duplicate page execution was superseded by the first completed baseline; its partial artifacts remain unaccepted.
+
+The selected-grid keyboard inspector had covered the zoom-in button. A single CSS position change moves it below the navigation controls; the fit/recenter effect is unchanged. Live verification changed map zoom from 9.50 to 10.50 while the selected region, actual grid and analytical resolution/limit summary stayed unchanged. The final screenshot shows the finer regional view with these controls accessible.
+
+Verification exposed a transport bottleneck: the completed response is 54,803,421 bytes, above the former 16 MiB durable-cache allowance. The allowance is now 64 MiB, with unchanged API 1.4.0 bytes, input checksum identity, scientific outputs and entry limits. A distinct reader reused the exact cached response with serialization forbidden. Only the page API on port 8787 was restarted. The page was reloaded with the completed fine run selected.
+
+Fresh focused verification: 30 UI tests passed; production build passed with the existing bundle-size advisory; 12 response-cache/bridge tests passed (41 unrelated checks deselected). Native geometry, API values, cache reuse and browser evidence are under `runs/regional_page_v1/`, including reproducible scripts, logs and `regional-map.png`. No new scientific/configuration changes were made for this bounded page task. No Phase 9 acceptance record, repeat-v2 or executable freeze is published by this delivery.
+
+These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. Partial 1 km coverage and unresolved parcel, utility, water and fiber commitments remain visible; the displayed search regions are not approved construction sites.
+
+### Bounded generation and page speed improvement (2026-10-03)
+
+The user requested faster generation as an ordinary finite task. The earlier improvement goal remains paused. The 1 km grid definition, 20 km projected-axis region policy, coefficients, thresholds, decision preferences, schemas and scientific evidence requirements are unchanged. No full new scientific execution, Phase 9 acceptance or executable freeze was started.
+
+Profiling found repeated record conversion and recursive evidence cleaning in metric assembly, plus repeated full-column scans in the regional response adapter. `src/dc_locator/model/metrics.py::assemble_metrics` now cleans/materializes provenance once, validates every row and reuses those records; declared profiles also materialize only stable alternative keys/assumptions once. Metric IDs colliding with these fields use a narrow refresh fallback to preserve previous behavior. This implementation change begins a new delivery revision. Other concurrent model-comparison edits were preserved.
+
+One real 2,500-cell / 5,000-alternative before/after check measured exploratory preparation at 3.518 → 2.465 seconds and strict preparation at 3.481 → 2.376 seconds, a combined 30.8% reduction. Assembled evidence, rankings, compact/normalized records, values, dtypes, ordering and weight/AHP payloads matched exactly. All ten diagnostic Parquet byte pairs matched. Peak bounded benchmark working set was 1,579,962,368 bytes; this is not a new full-run memory measurement. No formula or evidence gate was removed.
+
+The frontend adapter filters rank-range/sensitivity evidence to representatives and indexes screening/range/sensitivity records once. Cold response preparation fell from 82.913 to 21.870 seconds with both paths under cProfile and exact JSON equality. Warm verified canonical byte responses avoid a second decode/clean/encode; the unprofiled equivalent transport comparison fell from 1.977 to 0.855 seconds including gzip. Gzip level 1 reduces 54,803,421 bytes to 5,338,855 bytes (90.26% smaller), with unchanged schema 1.4.0 and canonical SHA-256 `e0959dd8a9a9ffd52243032a31d0fa54f9911eae5abd0eb749a4766dcbc84a0d`. Full content identity and required-artifact checks remain on every read. Binary exports and small JSON retain their prior transport.
+
+The service can reuse the registered exact default completed run before creating a duplicate configuration, but only after current complete scientific input file-set/content/environment, request, binding, output inventory/checksum and parent-lineage checks. Changed inputs fall through to a new calculation; corrupt completed evidence raises an explicit error. Canonical response bytes are verified before job completion. Actual v4 reuse correctly refused the concurrently added three scientific files (69 current versus 66 bound), and the metrics speed patch also differs from that completed binding. No stale-run shortcut, stat-only memoization or baseline metadata rewrite was introduced. Viewing saved v4 results remains supported.
+
+Verification: final API suite **98 passed** with socket access; final focused metrics/Phase 4/regional-model suite **80 passed**; scoped whitespace check passed. Failed-first regressions cover repeat materialization, byte responses, compression, representative filtering, keyed lookups, exact completed reuse and metric-ID collisions. The first lookup instrumentation also counted constant archived-brief checks and was narrowed to direct per-region comparisons without changing scientific expected values. A diagnostic benchmark writer argument was repaired before final equivalence reporting. No frontend JavaScript changed for this task.
+
+The idle API on 127.0.0.1:8787 was refreshed with the tested changes after a live job-state check found no active work. Its final compressed GET returned exact completed result bytes in 0.936 seconds. An earlier browser reload showed results in 3.962 seconds; that timing covers the summary, with selected fine-grid rendering verified separately. The live page preserves the user's Humboldt, CA view. Evidence, runnable bounded benchmarks, source/test bindings, test logs and screenshot are in `runs/regional_speed_v1/`. These component timings are not a full new-generation benchmark. Source geography was already reused in all 61 completed parent windows; facility-dependent stages still calculate for changed requests/revisions.
+
+These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. The saved result still discloses partial fine coverage and unresolved parcel, utility, water and fiber commitments. The user-stopped open-ended goal remains paused.
+
+### Further bounded speed improvement (2026-10-03)
+
+The user requested making generation even faster. This task remains finite and does not resume the paused improvement goal. The remaining metric-preparation profile identified generic scalar cleaning. `src/dc_locator/model/metrics.py::clean` now handles exact built-in None/string/bool/int/float values before pandas missing-value/item dispatch. Existing NumPy/custom-scalar/datetime behavior, schema validation, cleaned-record reuse and metric-ID collision fallback remain unchanged. No scientific configuration, formula, threshold, weight, grid size or region extent changed. The implementation starts a new delivery revision.
+
+One saved real parent (2,500 cells / 145,000 provenance rows / 5,000 alternatives) compared the captured V1 source with the new cleaner. Exploratory preparation fell from 2.4149 to 1.9769 seconds; strict from 2.3566 to 1.9414 seconds, a combined 17.9% reduction. All assembled/prepared evidence and decision tables matched exact values, dtypes and ordering, with ten byte-identical Parquet pairs, matching weight/AHP/template payloads and collision exception. Peak bounded working set was 1,461,907,456 bytes. The related 108-check model suite passed; the final 28 cleaner checks passed warning-free after specifying ns units for NaT fixtures. These overlapping counts and component timings do not establish a full generation speedup or new full-run peak.
+
+The frontend layer adapter now indexes stored alternatives/screening by grid ID once and reads only selected-metric provenance for indicators. Categorical grid status skips unrelated provenance record conversion. Cache keys distinguish metric selections and freshly hash consumed table content; required artifact presence, path/window/feature limits, geometry, status/reason ordering and unknown/unavailable behavior are preserved. The 2,500-cell grid preparation profile fell from 83.7299 to 5.8193 seconds with exact JSON bytes. Unprofiled transmission layer preparation fell from 24.4189 to 2.0372 seconds with exact JSON bytes. The initial baseline profile stopped at an entirely unknown flood layer; its successful grid measurement was retained, and a separate before/after check confirmed the same explicit 422 unavailable-layer error. Empty metric predicates and legacy empty Parquet tables are covered after correcting Arrow's empty-set type mismatch and comparing native round-trip column types.
+
+Verification: full API suite **104 passed** with socket access; focused layer/bridge/transport suite **33 passed** (overlapping); scoped whitespace check passed. Only the idle map API was refreshed after live job-state verification. Live compressed reads matched every before-response byte: completed run 0.909 seconds, 2,500-cell grid 1.808 seconds, transmission layer 1.543 seconds. The saved v4 completion metadata and canonical result SHA remained unchanged. The browser retained the user's current Owyhee, ID selection and displayed 2,500 native fine cells plus the 1 km / 20 km and partial-coverage summary. The existing fit effect centers the selected area after reload.
+
+The separately authorized comparison chat began `runs/cleanview_regional_v2` and needs stable scientific files. All model/configuration/dependency files are held steady after this task's final metrics SHA-256 `e936dca5b5e915f8c29c547721497e80cdf22fdf6dddc66606125b132ca39e2e`; its active CLI processes were preserved. This task did not start another full scientific run, download sources, rewrite accepted evidence or publish a phase acceptance/freeze. Evidence, scripts, source/test bindings, logs and screenshot are in `runs/regional_speed_v2/`; owned diagnostic scratch is removed at handover.
+
+These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. Partial coverage and unresolved parcel, utility, water and fiber evidence remain visible. The user-stopped open-ended goal remains paused.
+
+### Cleanview diagnosis and scoped model revision (2026-10-03)
+
+The user separately authorized `/goal` with autoresearch:debug and autoresearch:fix: inspect Cleanview in the browser, compare existing operating facilities with the current model, identify supported defects/strengths, and deliver a corrected model. This work accepts only that diagnostic revision; it does not resume or publish acceptance of the earlier paused Phase 9 goal. Existing dirty-tree work and accepted phase evidence were preserved without experiment commits. Actual executable/configuration snapshots bind the revision to base commit `3ddced7fb655744bf1ecfab675aa6c120e4d4952`.
+
+Browser inspection covered the public US listing, Virginia and Colossus 1 detail. Public national/state cards yielded 297 deduplicated operating samples from 49 pages (10,951,171 acquired bytes), with raw checksums/retrieval dates and offline reconstruction. This is a capacity-selected commercial reference, justified in `docs/sources.md`, not an authoritative engineering input or complete operating inventory. Exact Census matching supports 277 samples across 99 counties; 20 unmatched/ambiguous labels remain unknown. National grid county support covers 277 samples; the evaluated fine domain covers 55, with 222 outside computation and 20 unmatched. No facility is snapped to a centroid. Exact operating locations and compatible measured energy/water/carbon are absent, so physical accuracy remains null and external validation is not claimed.
+
+Ten falsifiable debug hypotheses confirmed the per-cell land-boundary defect and the need for a whole-region publication gate. Positive classified area below the assumed 100-acre total now stays critical UNKNOWN in multi-cell regional search. Zero area and other hard failures remain FAIL; standalone single-cell semantics and STRICT exclusion are preserved. Complete bounded-component land totals below the requirement reject that component; incomplete totals stay null/UNKNOWN. An adequate proxy sum establishes only plausible total search support, not contiguous/obtainable/permitted parcels. The region-extent preflight remains 20 km per projected axis. Schema migration/dictionary records cover ScreeningResult 1.2.0, ScreeningEligibility 1.1.0, CandidateRegion 1.3.0, RegionLandScreening 1.0.0 and RegionalGridIndex 1.1.0. Geography/source production remains separate from model decisions.
+
+The revised full execution `runs/cleanview_regional_v2/` completed ingest through validation over the identical 61 of 690 shortlisted parent windows, 152,500 fixed-origin 1 km cells and 305,000 design/scenario alternatives. Exactly 2,770 alternatives (1,385 cells) moved from artificial land FAIL to conditional consideration: rankable alternatives increased from 301,900 to 304,670, hard failures decreased from 3,100 to 330, and published region/design alternatives increased from 2,286 to 2,326. All 2,326 published components passed the total proxy-area gate; every alternative still retains unresolved critical evidence. All six sensitivity/runtime cases passed; STRICT ranks zero alternatives. The peak full process working set was 4,163,788,800 bytes (3.878 GiB), within the existing 4 GiB guard.
+
+The differential audit verifies all 1,248 output hashes, preserved baseline/reference input hashes, exact native geography/provenance, selected annual physical quantities, all five raw metrics and retained rankable scores. Numeric facility/cooling/scoring coefficients were unchanged. Correct energy/water units, hard-failure exclusion, fixed complete weights, deterministic ties and coupled design/scenario records remain intact. Constant PUE/WUE, historical carbon, coarse transmission intersection proximity and partial fine coverage remain explicit limitations; existing development does not establish sustainability optimality.
+
+The first incomplete run stopped safely when concurrent metric optimization changed its bound code. The user authorized messaging “Fix Texas-only model rankings” to coordinate a stable freeze; its completed primitive-scalar speed patch was independently reviewed before the fresh v2 execution. The model execution remains bound to `implementation_freeze_v2.json`. A final failed-first regression found only a comparison ledger defect: historical native-part fallback overwrote the root-grid hash variable after correct input verification. Renaming the inner variable to `part_sha` fixes that record. Delivery freeze v3 differs in exactly this comparison wrapper; scientific modules and outputs remain byte-preserved, so no scientific rerun is required. Baseline v4 replaces v3's ledger, with unchanged scientific tables/report content. Revised comparison v1 repeated with seven byte-identical substantive outputs. Independent final review verified all 111 delivery hashes, 119 baseline input hashes and 57 revised input hashes.
+
+Commands: `.venv/Scripts/python -m dc_locator refine-regions --config configs/run_regional_exploratory.yaml --output runs/cleanview_regional_v2`; `.venv/Scripts/python -m dc_locator compare-existing --reference data/raw/cleanview_reference/public_listing_v1/reference.json --national-run runs/national_discovery_v2 --regional-run runs/cleanview_regional_v2 --output runs/cleanview_revised_comparison_v1`; `.venv/Scripts/python -m pytest -q tests frontend/server_tests --basetemp=.pytest-work/cleanview-debug/final-regression-v3 --tb=short`. The final full suite passed **792 tests**, zero failures/skips; focused independent implementation review passed 111 checks. The hash regression failed once before repair (five passed), then all six passed. Local socket tests required authorized sandbox escalation. Audit-script corrections distinguished external grid inputs from frozen configs and scientific report content from the intentionally repaired checksum ledger; no expected scientific values were changed.
+
+Lead inspection accepts this scoped repair and new outputs. `runs/cleanview_revision_v1/completion_record.json` records schema/data versions, actual code/config snapshots, tests, source checksums, limitations and artifact hashes. `findings.md` gives the full comparison; debug/fix TSV and handoffs retain the iteration chain. All kept runs are indexed. Owned scratch is removed after final evidence binding. Next inputs for independent physical validation are exact site coordinates and measurements with compatible IT load, PUE/WUE, energy/water boundaries and utility/parcel commitments; no fabricated observations or fitted weights were introduced.
+
+These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. They are not proven buildable parcels or America's objectively best sites.
+
+### Corrected Cleanview model applied to the local app (2026-10-03)
+
+The user reported that the delivered correction had not appeared in the browser. The open page explicitly selected the old `regional_refinement__22331e2d1dc5a8db` run, while the service registered/defaulted to the historical regional baseline. The scientific correction was complete, but application integration was missing. This bounded task changes the presentation service and its registration tests; scientific modules, baseline configs and saved model outputs remain unchanged.
+
+`frontend/server/service.py` now registers completed `runs/cleanview_regional_v2` after historical regional baselines and selects the newest registered baseline for default configuration and completed-default reuse checks. Historical run IDs stay loadable; an incomplete corrected run cannot displace the prior baseline, and a newer completed user run remains latest. All existing content/environment/configuration/source/binding/output/lineage checks remain required for calculation reuse. Concurrent scientific work adds `fine_surface.py`, `geography/fine_features.py` and `model/fine_selection.py`, and changes `regional.py`; these are outside this application task and are preserved. Exact calculation reuse correctly refuses the changed scientific identity. Loading the saved corrected result does not require a new calculation or a metadata rebind.
+
+Failed-first registration/default/reuse regressions produced 3 failures and 30 passes before the service repair, then 33 passes. The full API suite passed **107 tests** with authorized local socket access. The idle 127.0.0.1:8787 API was refreshed only after checking that no job was QUEUED or RUNNING; the existing Vite page stayed running. The user's open Chrome tab now selects `regional_refinement__7ea7c74017e8e346`. Browser proof shows **1,163 geographic search areas**, compared with the old 1,143. Those areas contain **2,326 region/cooling alternatives**. Livingston's selected score remains 97.3 because its physical inputs and retained score are unchanged by the land-screening correction.
+
+The live verification script checks every region ID, native geometry, representative score/rank and conditional status against the saved corrected Parquet/GeoJSON outputs. All match exactly; the API retains 152,500 analyzed 1 km cells and PARTIAL state. All saved model output hashes are checked again in the application completion record. Its current scientific inventory comparison explicitly records concurrent differences from the preserved 111-file delivery freeze; it does not certify the new concurrent implementation. Evidence, runnable verification, tests, scoped review, application binding and the actual map screenshot live in `runs/cleanview_app_v1/`. Runtime server logs remain mutable and are excluded from the evidence binding. No new scientific execution or phase acceptance is published; owned scratch is removed at handover.
+
+These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. Partial coverage and unresolved parcel, utility, water and fiber evidence remain visible.
+
+### Existing-center area coverage and national fine selection revision (2026-10-04; scoped delivery accepted)
+
+The user selected success as checking that existing-center areas are evaluated and explaining their scores. The public Cleanview sample remains diagnostic only: no location, score, coefficient, threshold, weight or parent selection is fitted to it. The saved-domain audit verifies 277 samples in 99 matched counties nationally, with 263 having area score ranges and 14 UNKNOWN because required carbon coverage is incomplete; 20 public labels remain unmatched. The old regional domain supports 55 samples in 15 counties and leaves 222 outside fine computation. `runs/cleanview_coverage_audit_v1/coverage_audit.md/json` records the fixed score components and unknown reasons; exact facility locations and physical accuracy remain unavailable.
+
+The unfinished national fine-surface implementation was extended through new evidence/schema contracts and bounded resource guards, retaining geography/model separation. `national-fine-features-v2` writes seven feature values, per-feature status/confidence/source/year/unit/missing-reason companions and canonical long FeatureMetadata 1.1.0 records. NationalFineSurfaceCell and the surface manifest are 1.1.0; the parent summary stays 1.0.0. `national-fine-selection-v2` validates evidence and units, preserves required-metric UNKNOWN and the native carbon coverage gate, uses fixed complete weights, and refuses multiple external scenarios. Exact three-output checksum/schema ledgers are required for reuse. Arrow provenance writes are bounded to 50,000 rows, GDAL cache to 64 MiB and observed process peak to 4 GiB. The fixed-origin EPSG:5070 1 km grid and 20 km region limits remain unchanged.
+
+Real-source comparisons exposed and repaired conversion order, per-piece coverage arithmetic and canonical square ring ordering. The preserved final exact-parity v3 report remains FAILED for one water confidence label: source clipping/projection order yields coverage 1.0/high versus 0.9999999999999999/medium, with stress 0.0 and unchanged score/threshold/known-status results. Numerical comparisons over 5,000 cells and 10,000 alternatives pass within native tolerance, with zero known/UNKNOWN changes and maximum score difference 1.42e-14; eight clipped cells also pass. The bounded comparison took 87.470 seconds and peaked at 1,291,268,096 bytes. `preflight_review.md` accepts this documented method difference only for unscreened national valuation, without rounding coverage or promoting confidence. Failed reports remain in `runs/fine_surface_preflight_v1/`; nationwide equality and physical accuracy are not claimed.
+
+Fresh failed-first checks covered evidence/status/unit/year/coverage, corruption, memory/chunk limits, external scenario handling and geometry order. The final focused fine suite passed 26 tests in 7.26 seconds; the complete model/API regression passed 830 tests in 108.54 seconds. Actual source/configuration/dependency bytes are frozen by the 115-file `implementation_freeze_v1.json`, with source copies and base Git HEAD. Owned pytest scratch was removed after logs were retained. No accepted phase/run evidence was rewritten and no new source download was needed.
+
+`runs/national_fine_regional_v1/` completed real unscreened CONUS 1 km valuation and ordinary native regional refinement under `configs/run_regional_fine_surface.yaml`. The surface contains 7,829,373 cells, 15,658,746 alternatives and 54,805,611 provenance rows; 122,456 alternatives remain UNKNOWN. Generation took 1,590.363 seconds at 3,523,104,768 bytes peak. The independent streaming audit replayed every cell and provenance row, all parent summaries and global counts in 310.247 seconds at 615,657,472 bytes peak. All 277 matched samples across 99 counties have complete unscreened area score ranges under both designs; 20 public labels remain unmatched. Component and UNKNOWN explanations, including Loudoun, Travis and San Francisco, are in `runs/cleanview_coverage_audit_v1/findings.md` and `fine_area_audit.md/json`.
+
+The first native process completed its stages but exceeded the final 4 GiB peak-memory guard, so no completion was published. The ordinary CLI resumed unchanged inputs in a fresh process, verified and reused all 61 batch checkpoints, and completed with an observed 3,710,947,328-byte peak (3.456 GiB). Both logs are preserved. The final run has 131,945 refined cells, 263,890 alternatives, 258,328 rankable alternatives, 2,548 hard failures and 5,748 region/design alternatives (2,874 geographic areas). All regions are conditional; STRICT ranks zero alternatives. All six sensitivity cases and runtime contracts complete, hard failures are never ranked and candidate-specific weight redistribution is false. Actual regional spans are at most 20 km per EPSG:5070 axis. Source resolution and parcel, capacity, water and fiber evidence remain limited.
+
+The official command `.venv/Scripts/python -m dc_locator compare-existing --reference data/raw/cleanview_reference/public_listing_v1/reference.json --national-run runs/national_fine_regional_v1/national_discovery --regional-run runs/national_fine_regional_v1 --output runs/cleanview_fine_comparison_v1` completed. Its national coarse domain supports 277 samples; the fully checked regional domain supports 10, with 267 outside regional computation and 20 unmatched labels. This is separate from national unscreened 1 km coverage. Existing-center locations neither tune preferences nor force parent selection; 61 of 3,373 parents with scored fine alternatives receive full checks.
+
+The idle local API was refreshed to tested schema 1.5.0 and the user's page now selects `regional_refinement__b1638f307a9c7316`, retaining the submitted facility configuration. The initial live verifier used the wrong parent metadata field location; it was corrected to the recorded nested `scope` contract, with its failure log retained and no model bytes changed. The completed verifier checks every region geometry, representative score/rank/status, batch lineage, coverage count, all native cell sizes and all region extents exactly against saved evidence. Both result GETs were byte-identical; observed first/warm transfer and decompression times were 20.755/4.516 seconds (not browser or generation timings). The page shows 1 km cells, 20 km limits, nationwide UNSCREENED counts and partial native coverage separately. Screenshot, 830-test log, source/config freeze, complete output verification, comparison verification and scoped acceptance are bound in `runs/cleanview_coverage_audit_v1/completion_record.json`. Runtime API logs remain mutable and are excluded from that evidence binding. This accepts the finite existing-area diagnostic and bounded page delivery; it does not establish facility-level or industrial physical accuracy. Owned pytest scratch was removed, accepted phase evidence remains unchanged, and no further iteration is required for this goal.
+
+#### Phase 11 run completion and selection finding (2026-10-04)
+
+`runs/national_fine_regional_v1/` completed as `regional_refinement__b1638f307a9c7316` at 2026-10-04T04:21:44Z. The
+national fine surface valued 7,829,373 CONUS 1 km cells, scored 15,536,290 of 15,658,746 cell/design alternatives, wrote
+54,805,611 FeatureMetadata rows and ranked 3,373 parents in 26.5 minutes (surface-stage peak 3.281 GiB). The 61 parents
+with the highest best fine values were refined in full: 131,945 cells (20 coast/border parents) and 5,748 region/design
+alternatives. The resumed refinement process peaked at 3.456 GiB, under the 4 GiB bound. Validation published.
+
+Compared with `runs/cleanview_regional_v2` (same model semantics and 61-parent budget, representative selection), only one
+parent is shared. Both runs contain the same best alternative (97.685). The fine selection holds far more high values
+(1,000th best 97.663 versus 95.568; 922 of the combined top 1,000; best region mean 97.685 versus 96.078), but its parents
+concentrate geographically: NY 50, CA 5, VT 4, PA 1, NJ 1. The heaviest-weighted regional factor, eGRID carbon intensity,
+is uniform within a subregion, so near-identical high values cluster in one area. Choosing instead the best fine parent
+within each of the 61 national regions keeps 29 states, changes 7 parents when ties keep the representative (an earlier
+count of 28 included tied members) and raises a region's best fine value by up to 3.4 points (mean 0.1). The user chose the per-region policy (revision below). This run was later published to the app from the Codex
+session (registry entry `regional_refinement__b1638f307a9c7316`, 2026-10-04T04:30Z).
+
+In one uninterrupted process the surface-stage heap would remain resident during refinement. The run released it by
+stopping after the surface and resuming in a fresh CLI process; doing that automatically (a separate child process for the
+stage) is pending with the next revision, together with an AHP-refusal test, an empty-surface guard and a NaN-safe manifest.
+Correction to the frontend simplification entry above: the API was later restarted by another session and serves 1.4.0.
+
+## County socioeconomic map/context delivery — 2026-10-04
+
+The user requested a county economic map layer/filter, authorized the existing
+2023 and 2025 Census cartographic county archives after the requested
+`tl_2024_us_county.zip` was found absent, and explicitly retained 2024 SAIPE
+estimates. The separately labeled default is 2025 geography / 2024 estimates;
+2023 geography is selectable. Both boundary files remain in their original raw
+locations. They are generalized 1:500,000 cartographic geometry, not TIGER/Line.
+
+The scoped delivery was delegated to the existing geography, transport and UI
+owners, reviewed independently, fixed, tested and verified live. The actual
+candidate is the saved fixed-lattice `grid_id` with full EPSG:5070 geometry.
+`socioeconomic-enrich` consumes a completed real grid and writes reusable
+county/crosswalk/coverage caches under `data/processed/socioeconomic/`. It does
+not rerun technical screening, physics, MCDA, rankings or clustering. Every
+positive-area grid × county relation survives and GEOID is a five-character
+string. County source/data/code/config/grid checksums bind cache reuse.
+
+Official `est24all.txt` (846,940 bytes) and the 2024 fixed-width layout (4,350
+bytes) were acquired through the existing authorized downloader/manifests. The
+API probe required a key; no account or access workaround was used. SAIPE point
+estimates retain observed dataset status, source fields and years. Rounded 90%
+interval endpoints are retained; MOE is the explicitly calculated half-width.
+Percentiles use all 3,109 valid CONUS SAIPE counties before spatial restriction.
+Fiscal fields remain null/unknown; no economic composite, tax model or score
+weight is introduced.
+
+Both offline bounded builds passed against
+`runs/national_fine_regional_v1/us_grid_dataset.parquet`: 131,945 cells per
+vintage, 139,373 relationships in 2025 and 139,372 in 2023, spanning 85 counties
+with 100% SAIPE joins. Runtimes were 9.376 and 6.717 seconds, peak 2.532 GiB.
+130,506 cells are fully covered; 1,439 have explicitly reported cartographic
+coverage gaps. No cell has zero county overlap or excessive county coverage.
+Shares use full cell area and are not renormalized. Independent geometry checks
+passed, and all 1,192 accepted native output hashes remain unchanged.
+
+Transport is now additive 1.6.0 (legacy 1.4/1.5 parsing retained), with separate
+county context 1.0.0. Nationwide economic layers can load without a selected
+regional window. Context follows exact saved region membership for the displayed
+run/scenario/year; future IDs never use baseline relationships. Optional
+minimum-poverty and maximum-income filters match any overlapping county meeting
+all active conditions in that same county. Missing values never match. Scores
+and global ranks remain unchanged. Review fixed unavailable-context filter
+recovery with an always-usable clear control, and scenario-specific cache keys.
+
+Verification commands:
+
+```powershell
+.venv/Scripts/python -m dc_locator socioeconomic-enrich --grid runs/national_fine_regional_v1/us_grid_dataset.parquet --boundary-year 2025 --acquire
+.venv/Scripts/python -m dc_locator socioeconomic-enrich --grid runs/national_fine_regional_v1/us_grid_dataset.parquet --boundary-year 2023
+.venv/Scripts/python -m pytest -q tests frontend/server_tests --basetemp=.pytest-work/county-socioeconomic/final-pytest --tb=short
+.venv/Scripts/python -m pytest -q frontend/server_tests --basetemp=.pytest-work/county-socioeconomic/final-server --tb=short
+```
+
+The combined model/API suite passed 875 tests. After the final scenario/unit
+review fixes, the complete API suite passed 139 tests. Frontend `npm.cmd test`
+passed 141 tests; `npm.cmd run build` succeeded. Counts overlap and are not
+additive. The initial combined test collection collision is preserved in its
+failure log and fixed by naming the new test `test_socioeconomic_transport.py`.
+No scientific expected values were changed.
+
+The idle project API was refreshed after checking that no model job was active.
+Live transport verified all 5,748 native region scores/ranks/identities and
+byte-identical scientific responses before/after county requests. All regions
+have county support, 16 with partial county coverage. The accepted legacy 2030
+and 2050 contexts each return their exact two future region IDs; nine consumed
+legacy scientific hashes also remain unchanged. Browser proof shows both
+vintages, 2024 estimate/MOE labels, a secondary Franklin NY county share of 1.44%,
+and filter ≥15% poverty / ≤$80,000 income reducing the display to 967 areas
+without renumbering global ranks. Clearing restores all 2,874 areas. Delivery
+filters were cleared and the boundary selector restored to 2025.
+
+The implementation report, raw/cache/source bindings, tests, live proofs and
+new working-code freeze are in `runs/county_socioeconomic_layer_v1/` (indexed in
+`runs/README.md`). Its scoped completion record belongs to this new evidence
+folder; accepted `docs/phase_records/` and earlier phase/run records are preserved
+under the workspace-hygiene rule. This is a new additive delivery revision, not
+housekeeping or acceptance of new physical-model claims. No blocker remains for
+the county feature. Remaining limits are generalized mixed-year geometry,
+county-scale uncertain estimates, unknown fiscal inputs, the bounded 200,000-cell
+local loader, and the original conditional model requirements.
+
+## Phase 11 region-best selection revision — 2026-10-04
+
+**Completed:** `runs/national_fine_region_v2` finished at 2026-10-04T08:03Z (completion entry below); `src/` and
+`configs/` may change again.
+
+The first attempt, `runs/national_fine_region_v1` (launched 05:06:43Z), completed national discovery and the national
+fine surface, then failed on its first parent: `Declared geography cache: incomplete or unexpected geography
+code/config binding domain`. The county layer had added `geography/sources/saipe.py` at 04:50Z. The accepted
+`runs/regional_geography_v1` cache binds every `geography/sources/*.py` file, so the new module (unchanged bound
+files otherwise) turned every regional refinement into a hard failure, including new app searches. Regional feature
+code never imports `saipe.py` (only `geography/socioeconomic.py` does). `geography/cached_outputs.py` now leaves
+declared non-feature adapters (`NON_FEATURE_SOURCES = {'saipe.py'}`) outside the cache's code domain; `features.py`
+is unchanged because it is itself a bound file. Two guard tests fail if the accepted cache's recorded domain differs
+from the current one or if feature code imports an excluded adapter; the first would have caught this regression.
+The real domain matches the accepted cache again, and the failed parent reuses its cached geography (54 of the 61
+selected parents are cached). The partial v1 folder is preserved, as the binding check requires, and is not a
+result. Full model suite: 758 passed on the launched code; API suite 193 passed.
+
+The user chose to keep national discovery's regions and let the fine surface choose each region's box. The new
+selection `national_fine_region_parents` (`configs/run_regional_fine_region.yaml`, same Phase 11 delivery version)
+refines, per national region, the member parent with the highest best fine value. Ties keep the representative,
+regions without a scored member keep it, and the refined-cell budget is unchanged (61 parents, 200,000 cells).
+`model/fine_selection.py` adds `select_region_best_parents`; `regional.py` dispatches by mode and writes
+`RegionalRefinementWindows` 1.2.0 in this mode (`fine_region_representative`, `fine_region_selection_basis`).
+
+Hardening from the previous entry: `fine_surface.build_isolated` builds the stage in a spawned child process (an
+identical stage is reused in-process), so the regional process's 4 GiB lifetime peak covers refinement only;
+`FineSources` pickles without its spatial indexes; an empty surface is refused before publication; the manifest is
+indented strict JSON with missing values as `null`. Tests add region-best selection, mode dispatch, configuration
+binding, AHP refusal, isolated-build equality/reuse and the empty guard (Phase 11 files: 32 passed). The full suite
+passed 739 tests on the launched code, including the county layer. Methodology, data contracts, data dictionary and
+limitations describe the mode. This changes hash-bound `src/` and `configs/`, so it is a new delivery revision.
+
+Command:
+
+```powershell
+.venv/Scripts/python -m dc_locator refine-regions --config configs/run_regional_fine_region.yaml --output runs/national_fine_region_v2
+```
+
+Results, comparison with `runs/cleanview_regional_v2` and `runs/national_fine_regional_v1`, and app publication
+follow when the run completes.
+
+County layer final integration recheck (2026-10-04): retained the concurrent `national_fine_region_parents` transport/display extension; 147 API tests and 142 frontend tests passed, production build passed. Restarted only the idle owned API. Both 2023/2025 contexts preserve 2024 SAIPE and all 5,748 current alternatives; the 3,109-county layer loads. The technical response SHA remains `ffbe37c77de5dab8e5c1b18b17801082694f6de3e7bcfa795d733b56811279fb`. Evidence and refreshed scoped completion/code freeze are in `runs/county_socioeconomic_layer_v1/`; no model execution or accepted evidence mutation.
+
+## County economic filters correction — 2026-10-04
+
+User direction: move poverty, income and percentile views to filters instead of direct map overlays. Added optional minimum poverty percentile and minimum low-income percentile (0–100) to the existing minimum poverty / maximum income controls under Filter areas; all default empty. Same-county AND with any positive-overlap county, unknown rejection, measured zero, counts, list/map filtering and clear behavior are preserved. County map controls, legends, client requests and stale map sources are suppressed, including legacy URLs. The existing source context/API schemas and 2024 SAIPE with 2023/2025 geometry are retained. Concurrent ModelId/API injection changes were preserved.
+
+Parent code review and live UI verification passed. Final frontend: 155 passed, one optional independent County Monte Carlo real-flow integration skipped without DATACLOCATOR_TEST_PYTHON. County-context API: 23 passed. Production build passed. Live percentile thresholds >=75 poverty / >=60 low-income matched 204/5,748 alternatives (102/2,874 areas), as independently calculated from the saved source context; adding poverty >=15% and income <=80,000 retained that result. Clearing restored all alternatives and left all four thresholds empty. No scientific model execution, source download, server restart or accepted-evidence change. Commands, screenshots, audit and scoped completion/code hashes are in runs/county_socioeconomic_filters_v2/, indexed in runs/README.md. Owned scratch was removed after verification.
 
 ## County model merge acceptance — 2026-10-04
 
@@ -898,7 +1356,7 @@ retained as separate evidence. Publisher attribution notes were corrected withou
 The final manifest is 0.1.2; final preprocessing and checksum verification succeeded. The county
 environment is isolated Python 3.13; the grid continues using its own Python 3.12 environment.
 
-Acceptance checks: backend 113 passed, zero failed/skipped; current frontend 175 passed;
+Acceptance checks: backend 113 passed, zero failed/skipped; current frontend 178 passed;
 isolated PR frontend 83 passed, zero failed/skipped. Both frontend production builds passed.
 Both full frontend suites include a fresh official-data React → adapter → ASGI run for all
 45 counties, scenario restoration and a valid empty STRICT result. Existing grid API checks
@@ -913,9 +1371,366 @@ Commands used the package's isolated interpreter for `dataclocator.cli preproces
 acquisition history, logs, screenshot, Git merge identities and completion evidence are kept
 in `runs/pr1_merge_v1/`, indexed in `runs/README.md`. Earlier acquisition/cache/Windows failure
 logs are retained as superseded attempts, not represented as successful acceptance.
+GitHub confirmed PR #1 merged as `1a9cd68587ee70923ff953baf71fadc62fb3bb05`;
+the current local branch records merge `df4dc5d8882250654acd1972ea0786bae4308bf1`.
+The final post-merge frontend suite includes the three PR URL-helper checks (178 tests,
+25 files); its official-data flow and production build passed. All 119 snapshotted grid
+scientific files match their pre-integration bytes, and the merge did not stage other work.
 
 These geographic regions deserve further investigation under the stated facility requirements,
 datasets, constraints, assumptions, and decision preferences. The 45-county cohort is not
 national discovery or a parcel optimum. Local power, water, zoning and fiber remain unverified;
 PUE/WUE and future rate priors remain unconfirmed assumptions. Full TCO, indirect generation
 water, embodied carbon and unsupported community/heat-reuse benefits are not supplied.
+
+## Nationwide saved regional map correction — 2026-10-04
+
+The user clarified that the missing locations mean nationwide model search areas.
+Root-cause review found no map rank cap: the displayed `regional_refinement__b1638f307a9c7316`
+refined the 61 globally highest fine-score windows, concentrated in NY (50), CA (5), VT (4),
+PA and NJ (one each). The map received all 2,874 saved search geometries; list pagination
+and marker overlap did not remove the remaining nationwide candidates from that run.
+
+The transport now separately advertises a verified completed nationwide regional map choice,
+with API/adapter version 1.7.0. It requires real completed native stages and national-parent
+lineage, candidate hashes, native 1 km resolution, regions limited to 20 km per projected axis,
+and representative or per-national-region fine selection. Global top-window and unscreened
+surface outputs cannot become the nationwide regional choice. Pending completion refresh is
+limited to baselines absent at startup: it preserves explicitly removed completed baselines,
+latest search ordering and the scientific computation default. The first full API run exposed
+two refresh regressions; the failure log and the subsequent passing regression are retained.
+
+The page provides `Load nationwide regional areas` on a fresh idle workspace and
+`Show nationwide areas · 1 km` on another completed grid run, while preserving form edits.
+Its coverage card reports saved/filtered unique areas, actual resolution, region limits,
+selection mode and partial refinement. Loading a saved run clears the previous region and
+comparison selections and displays the saved facility. County Monte Carlo model selection
+and county economic filter-only behavior are preserved.
+
+Applied completed run: `regional_refinement__7ea7c74017e8e346` (`runs/cleanview_regional_v2`).
+It evaluates 152,500 native 1 km cells in 61 nationwide discovery windows, with 2,326 cooling
+alternatives across 1,163 distinct saved search geometries. Window primary-state labels cover
+30 states; candidate member-cell primary-state labels cover 27. Actual native region bounds
+are <=20,000 metres on each EPSG:5070 axis. The six scientific policy configurations and the
+regional scoring profile match the previously displayed run; geographic selection differs.
+Saved scores and ranks were not recalculated.
+
+Verification: full frontend 174 passed, one optional independent County Monte Carlo real-flow
+integration skipped without its isolated interpreter; production TypeScript/Vite build passed.
+Full grid API suite 162 passed. Commands included `npm test` and `npm run build` in `frontend/`,
+and `.venv/Scripts/python.exe -m pytest frontend/server_tests -q
+--basetemp=.pytest-work/nationwide-map/api-tests-final`. The read-only native/live audits
+checked every candidate ID, representative cell, rank, score, centroid, cell count and area;
+all geometries are present and both saved runs' audited native hashes remain unchanged.
+Only the verified idle owned loopback API on port 8787 was restarted, with no active API jobs.
+The live Chrome page loaded the nationwide action, showed all 1,163 areas and was reset to CONUS.
+The old saved run's cold response-cache rebuild needed one retry; both that retry and the
+nationwide load succeeded. No model search or source acquisition was submitted.
+
+Coverage remains partial: 61 of 690 shortlisted parent windows were refined. The separate
+active `runs/national_fine_region_v1` delivery remains incomplete and was preserved. No
+`src/dc_locator/**` or `configs/**` files were changed by this correction. A read-only review
+identified a potential downstream cached-geography domain mismatch (older cache 24 files,
+current binding 25 including `sources/saipe.py`); resolving it requires a separate scientific
+revision after coordinating the active delivery. It does not prevent loading the completed
+nationwide saved result.
+
+Evidence, test logs, exact native audit, browser DOM/screenshot and scoped completion/code
+hashes are in `runs/nationwide_map_coverage_v1/`, indexed in `runs/README.md`. Owned scratch
+under `.pytest-work/nationwide-map/` is removed after evidence finalization.
+
+These geographic regions deserve further investigation under the stated facility requirements,
+datasets, constraints, assumptions, and decision preferences. They are search areas with
+unresolved critical data, not verified construction parcels or an existing-facility inventory.
+
+
+## 2026-10-04 — Applied one-minute Grid default (bounded revision)
+
+User authorization: fast cached nationwide regional evaluation by default, with
+full nationwide rediscovery available separately. Delegated native executor,
+API transport and frontend ownership, reviewed the outputs, fixed failed-first
+regressions, independently tested and accepted this bounded delivery. No new full
+scientific phase acceptance is asserted.
+
+`src/dc_locator_fast.py` is production model orchestration outside the independently
+active native package file inventory. It uses existing accepted mathematics and
+records its own SHA plus native method/policy/environment/input-cache bindings.
+Every search recomputes all 152,500 cached native 1 km cells, normalization,
+preferences, global Pareto/ranks and regions bounded to 20 km per EPSG:5070 axis.
+Frozen screening dependencies are checked and native representative evidence is
+freshly recomputed and required to match exactly. The cohort is fixed to the
+61 windows in `runs/cleanview_regional_v2`; national parent selection is not
+refreshed. Optional future/sensitivity/rank stability/submission diagnostics are
+NOT_ASSESSED, with critical unknowns and conditional interpretation retained.
+
+API 1.8.0 advertises `cached_regional` / `full_rediscovery`. A separate bounded
+spawned process queue avoids waiting behind the full pipeline. Typed semantic
+identity treats integer/decimal JSON equivalents as the same calculation;
+original submitted bytes remain provenance. Verified completed outputs are
+reused, fresh artifacts/compact inputs are verified once per public read and
+compressed JSON retains exact decoded content. The page defaults to the fast
+mode when the prepared cache is ready and exposes longer full rediscovery.
+Configuration comparison now ignores object key order and still detects edits.
+
+Fresh final 134 MW / 75% / 2031 / 30-year request: **56.28 s including gzip
+result transfer**, 305,000 evaluated alternatives, 2188
+region/design alternatives, peak **3.040 GiB**. The integer page request
+shared the decimal API job. The actual page shows fresh configuration and coverage;
+its DOM/screenshot and current exact implementation/cache binding are in
+`runs/grid_one_minute_v1/`. Input preparation is separately recorded in
+`model-parallel-benchmark.json` (24.49 s). The earlier 133 MW stress request took
+66.17 s through transfer, exceeding the target; its output and original timing
+remain preserved. Partitioning native clustering/land guards by design/scenario
+into at most two spawned processes reduced that same model run from 56.82 to
+43.86 s, with **all 19 substantive artifacts byte-identical**. Final geometry,
+grid, core and per-process memory checks passed for every current output.
+An independent `national_fine_region_v2` process was active in the recorded
+machine snapshot; its exact effect on timings is not established. Native
+scientific/configuration package files were
+not edited by this task. The initial snapshot records a concurrent change to
+`geography/cached_outputs.py`, outside this task and never invoked by fast mode.
+
+Validation commands from the project root:
+
+```powershell
+.venv\Scripts\python.exe -m pytest tests/test_fast_cached_regions.py tests/test_model_physics.py tests/test_model_screening.py tests/test_regional_model.py tests/test_region_land_support.py tests/test_metrics_reuse.py tests/test_land_search_scope.py -q -p no:cacheprovider --basetemp=.pytest-work/grid-one-minute/model-delivery
+.venv\Scripts\python.exe -m pytest frontend/server_tests -q -p no:cacheprovider --basetemp=.pytest-work/grid-one-minute/api-current
+node runs/grid_one_minute_v1/run_frontend_tests.cjs
+.venv\Scripts\python.exe runs/grid_one_minute_v1/live_benchmark.py --label fresh-audit --power 135 --load 74
+```
+
+**112 model tests, 191 API tests and 194 frontend tests passed; one optional
+County real-flow integration skipped without its isolated interpreter.**
+TypeScript and Vite production build passed. Loopback tests/benchmark used scoped
+socket access after the sandbox's WinError 10013; no external network was needed.
+Only the verified owned Grid API on 127.0.0.1:8787 was restarted for the new
+revision; the separate County service/independent monitor and accepted outputs
+were preserved. The prior slow owned full job's partial outputs remain retained
+and interrupted status explicit. Owned scratch is removed after evidence finalization.
+
+Timing is measured with a prepared verified cache on this machine, and request
+contention/load can change it. Full nationwide source coverage, parcel approval,
+utility commitment, diverse fiber and fiscal outcomes are not supplied by this
+speed revision. These geographic regions deserve further investigation under
+the stated facility requirements, datasets, constraints, assumptions, and decision
+preferences.
+
+## 2026-10-04 — Single-panel workspace that opens on results (frontend only)
+
+User request: "Simplify current webdesign of model, it takes so many steps for a user to use this
+tool." An inline mockup was approved in chat with two choices: build the single-panel layout as
+shown, and open the app on the saved nationwide areas. The light/serif design is unchanged.
+
+Changes are confined to `frontend/src`, `frontend/e2e` and frontend docs. No model, API, config,
+test-suite (`tests/**`) or evidence file was edited.
+
+- **Opening.** A fresh page loads the URL run, else `nationwide_regional_run_id` (Grid), else
+  `latest_run_id`. This is read-only and queues no search. The former idle workspace and its
+  `Load nationwide regional areas` link are removed. Without an advertised run (County), the page
+  opens on the facility form.
+- **One panel.** The `1 · Facility / 2 · Results` tabs are replaced by a facility card (the
+  evaluated inputs plus `Edit`) above the results. `Edit` opens the form in place, `Cancel`
+  restores the evaluated facility and `Find locations` closes the editor. Loaded runs read
+  "Saved results for these inputs".
+- **Options.** Grid search depth (formerly "Grid evaluation mode"), screening policy and decision
+  preferences are under `More options` (formerly `Advanced settings`). Fast cached mode stays the
+  default.
+- **Disclosures kept.** Cell size, region extent, partial coverage and the conditional caveat stay
+  visible, now as compact text instead of shaded boxes. The map coverage card keeps counts,
+  resolution and coverage kind visible; refined-window counts and `Load national discovery` move
+  under `Coverage context`. No Unknown, status or source disclosure was removed.
+- **Fixes found while testing.**
+  1. The map's 15 s start-up watchdog reported "could not finish loading the map graphics" while
+     the 1,163-area saved run was still processing. It now keeps waiting, up to 60 s, while the
+     style and state context are ready.
+  2. Arriving county economic context no longer re-sends every candidate polygon to the map when
+     no county filter is active.
+  3. Loading another saved run after a search no longer shows a false "Configuration edited"
+     notice. URL facility fields apply to the first restored run only.
+- **Tests.** Tests that encoded the tabbed, idle-start flow were updated for this user-approved
+  behaviour change, keeping their protective intent: URL run precedence, preserved edits, retry of
+  the failed request and visible coverage. New tests cover opening on a saved run, Edit/Cancel,
+  searching from opened results, reconnecting with edits, cancelled URL fields and result origin.
+
+Verification (from `frontend/`):
+
+```powershell
+node scripts/test.mjs
+node node_modules/typescript/bin/tsc -b
+npx vite build --outDir ../.pytest-work/simplify-flow/dist --emptyOutDir
+npx playwright test --grep "map search|network error|tablet selection" --reporter=list --output=../.pytest-work/simplify-flow/test-results
+```
+
+**201 frontend tests passed; the optional County real-flow test was skipped (environment-gated).**
+TypeScript and the production build passed. 5 Playwright fixture tests passed on desktop, mobile
+and tablet. The real-API Playwright tests were not run, because one of them launches a full model
+job. In the browser against the live Grid API, the page opened on
+`regional_refinement__7ea7c74017e8e346` with 1,163 areas and no map error at 20–37 s; Edit and
+Cancel worked; County opened on the form. No real Grid search was run from the new panel; fixture
+tests cover that path. Duplicate place labels (several rows read "Livingston, NY") are unchanged.
+
+These geographic regions deserve further investigation under the stated facility requirements,
+datasets, constraints, assumptions, and decision preferences.
+
+### 2026-10-04 follow-up — browser Back inside the workspace
+
+The user reported "cant go back" on the single-panel page. Every URL update used
+`history.replaceState`, so the browser's Back button never stepped back inside the app. It left
+the page or reloaded an older URL, and the editor's only way back was a small `Cancel` link.
+
+- Opening the facility editor, opening an area (from no open area), loading another saved run and
+  switching model now add a history entry (`pushUrlState`). A search replaces the editor's entry.
+  Camera, scenario and switching between open areas still replace the current entry.
+- A `popstate` handler restores the stored view without a page reload. It closes or reopens the
+  editor (discarding unevaluated edits), restores the open area, reloads a different run
+  read-only, and moves the map back to the stored camera when no area is open. The outer App
+  switches the model.
+- The editor's `Cancel` is now `← Back to results`. It steps back over the entry the editor added,
+  or closes the editor in place when another run was loaded meanwhile.
+
+Verification: `node frontend/scripts/test.mjs`, **204 passed, 1 env-gated skip**. New tests cover
+Back from the editor, from new search results, from an opened area (map view restored), from a
+loaded saved run and from a model switch. 7 Playwright fixture tests passed, including a new
+real-browser Back test on desktop and mobile. In the browser against the live Grid API, Back closed
+the editor and returned from Livingston, NY (zoom 9.5) to the U.S. view (zoom 3.5) without
+reloading. `tsc -b` passed for these changes. At the end it reports two errors only in
+`frontend/src/map/overlays.ts`, a new file another running session was creating at the same time.
+
+## Phase 11 region-best run completion and effectiveness rating — 2026-10-04
+
+`runs/national_fine_region_v2` completed as `regional_refinement__0c70bb571549abe5` at 2026-10-04T08:03Z, 77 minutes after
+launch. The national fine surface valued 7,829,373 cells (15,536,290 of 15,658,746 alternatives scored) in 32.3 minutes
+in its spawned child process (peak 2.452 GiB). The best fine parent of each national region was refined in full: 61
+parents, 152,500 cells, 29 primary states, 304,590 rankable alternatives and 2,218 region/design alternatives. The
+regional process peaked at 3.699 GiB, below the 4 GiB bound (the representative run peaked at 3.878 GiB).
+
+Selection basis: 54 representatives kept (all reused from the accepted geography cache) and 7 replaced by a better member
+of the same region, 50–292 km away: Iowa twice within Iowa, Arizona within Arizona, Arizona to Nevada, Kansas to Oklahoma,
+Tennessee to Georgia and Oklahoma to Texas. Gains average +0.94 and reach +3.43 decision points. For all seven, the fine
+value equals the exact refined best to three decimals. Compared with `runs/cleanview_regional_v2`, the top 1,000
+alternatives are identical (best 97.685, 1,000th 95.568, best region mean 96.078), and the ten best region/design
+alternatives are still seven in New York, two in Maine and one in North Carolina. The per-region choice keeps the national spread and picks every box
+with exact fine values; the concentration at the top of the ranking follows from the profile weights (eGRID carbon
+intensity), which remain a user decision.
+
+Effectiveness rating (user-requested one-off assessment; read-only scorecard
+`runs/national_fine_region_evidence_v1/scorecard/scorecard.py`; five 0–100 dimensions, unweighted mean as a declared assumption):
+
+| Run | Integrity | Fidelity | Breadth | Readiness | Robustness | Score | External AUC / data-center counties refined |
+|---|---|---|---|---|---|---|---|
+| `cleanview_regional_v2` | 100 | 67.4 | 42.6 | 0 | 97.8 | 61.6 | 0.557 / 15 of 99 |
+| `national_fine_regional_v1` | 100 | 100 | 7.1 | 0 | 98.0 | 61.0 | 0.557 / 5 of 99 |
+| `national_fine_region_v2` | 100 | 100 | 41.6 | 0 | 97.8 | 67.9 | 0.557 / 16 of 99 |
+
+Integrity is the share of the run's runtime contracts that hold. Fidelity is Spearman rho, across refined parents, between
+the value used to select them and the best exact 1 km score refinement found. Breadth averages primary states among
+refined parents (of 49) and states among the 25 best distinct areas (of 25). Readiness is the share of those 25 areas
+without a critical unknown; every alternative carries one, because utility capacity, fiber and parcel feasibility are not
+in the data. Robustness averages the weight cases' rank correlation and top-10 Jaccard. The external AUC (national 50 km
+scores at counties with public large existing centers, versus other cells) is a diagnostic only, never scored or optimized:
+existing sites are not sustainability labels, and calibrating to them is prohibited.
+
+Publication: the API restarted by another session at 06:59Z already listed the v2 folder as a pending baseline, so on
+completion it registered automatically as the latest and nationwide regional run. Verified through `/api/capabilities`,
+the 53 MB `/api/runs/regional_refinement__0c70bb571549abe5` response (2,218 regions, per-region scope text) and county
+context for both vintages after prebuilding the county caches with `socioeconomic-enrich`. No restart was needed; a
+full-rediscovery job submitted at 07:07Z was running and was left alone. The map coverage card labelled this mode
+"Nationwide regional representatives"; it now reads "Nationwide regions · best fine-surface box each", while representative
+runs keep their label. The test case that expected one label for both modes was split, because 7 of 61 boxes are not
+representatives.
+
+Open items: the cached one-minute regional mode is fixed to the `cleanview_regional_v2` cohort (54 of its 61 windows are
+shared with v2); moving it to the v2 cohort is a separate change to that delivery. The scorecard and run evidence are in `runs/national_fine_region_evidence_v1/`; they are not a model
+output.
+
+## Rediscovery check against existing U.S. data centers (2026-10-04, user request)
+
+**Scope.** This is an additive post-hoc validation layer plus a frontend view. The deterministic model's
+scores, ranks, configs and accepted evidence are unchanged. The new package `src/dc_rediscovery/` sits
+outside the hash-bound `src/dc_locator/**`. When the work started, a regional pipeline was running in this
+checkout, and `Pipeline.verify_binding` would have failed it on any model-file change. No package was
+installed into `.venv`. Method, sources, results and limitations are in `docs/rediscovery_validation.md`.
+
+**Data.** IM3 Open Source Data Center Atlas v2026.02.09 (PNNL/DOE, doi:10.57931/3017294, ODbL). The pinned
+publisher-repository GeoPackage is 843,776 bytes, sha256 `1c0d8c20…cc9f4`. It was acquired once into
+`data/raw/im3_datacenter_atlas/` and has a download log. MSD-LIVE requires a login and was not used.
+
+**Commands run**
+- `.venv\Scripts\python.exe -m dc_rediscovery acquire`
+- `.venv\Scripts\python.exe -m dc_rediscovery run --output runs/rediscovery_v1` took 85 s, with peak memory of about 1 GB. Analysis identity `c890d8e7…`. Blind candidates sha256 `df90b590…`, hashed 0.45 s before the inventory was read.
+
+**Verification.** The recomposed criteria equal `score_window` exactly in all 59 row groups (maximum
+difference 0.0). The 3,373 persisted parent best scores are reproduced with maximum difference 0.0. The
+directly recomputed haversine distances match.
+
+**Results (Top 100)**
+- HitRate is 3.0%, 11.0%, 25.0% and 61.0% at 10, 25, 50 and 100 km.
+- Random CONUS draws give 1.4%, 5.8%, 16.8% and 43.7% (p 0.158, 0.021, 0.027, 0.001).
+- Random near-transmission land gives 1.9%, 7.5%, 20.8% and 50.5% (p 0.278, 0.133, 0.185, 0.025).
+- Classes: 11 validated, 14 unresolved, 75 emerging.
+- Presence–background AUC is 0.717 (774 occupied cells, median at the 72.4th percentile).
+- The first 73 candidates are tied at the maximum score in upstate New York (855 tied cells). With random tie order, Top-10 HitRate@25 km averages 22% instead of the published 0%.
+- Major hubs are not near the top tier: 1 of 50 hubs is within 50 km of the Top 100.
+- County Monte Carlo robustness covers 2 of the Top 100 (Oneida County, NY: 100). The rest are null with reasons.
+
+**Tests**
+- `tests/test_rediscovery_*.py`: 30 passed, including a synthetic end-to-end pipeline, blind-candidate invariance to the inventory, and leakage guards.
+- `frontend/server_tests/test_rediscovery_api.py`: 4 passed.
+- Frontend: 214 passed and 1 optional test skipped, across 33 files including 12 new tests. `tsc --noEmit` is clean.
+
+**Frontend.** The "Rediscovery check" header view (`?view=rediscovery`) has blue facilities, red candidates,
+purple validated 25 km disks, amber emerging 50 km rings, a score surface, a validation dashboard with a
+Top-10 table, candidate details with a generated explanation, and a 12-step guided demo. The changes to
+existing files are small. `App.tsx` gains the view switch and render branch. `CandidateMap.tsx` gains
+`overlays` and `onOverlaySelect`. `frontend/server/app.py` gains three read-only routes. Browser-verified
+on an isolated preview (bridge on 8790 serving only rediscovery routes, Vite on 5180). The shared API on
+8787 was **not restarted**, because it may hold a running job. Restart it once, while idle, to serve the
+new routes on 8787.
+
+**Next inputs.** A grid-cell Monte Carlo can supply robustness through the `table` provider contract
+(`grid_id`, `robustness_score`, `method`, `source`, `draws`). New facility releases need a new pinned
+checksum and a new `runs/rediscovery_*` folder.
+
+## Frontend start screen: facility input first — 2026-10-04
+
+User request: "you should let user input something instead of straight to the loading pre-cached data". This
+reverses the earlier same-day choice to open on the saved nationwide run. A fresh page now opens on the facility
+form with nothing loaded; the start history entry is marked as the form, and the first search from it adds its
+own entry, so browser Back returns to the form. An optional "open saved results" link under the form loads the
+saved nationwide regional run (or the latest completed run) on request. A URL that names a run (`?run=`) still
+opens it directly, so links and reloads keep working. Only `frontend/src/App.tsx` changed (startup restore,
+first-search history entry, the link); model code, the API and saved outputs are unchanged.
+
+Tests: the Workspace and NationwideWorkspace startup tests now expect the form and load saved runs through the
+link or a `?run=` URL (the behaviors after opening a run are unchanged); a new unit test and a new Playwright
+test cover Back to the start form after the first search. Frontend unit suite 216 passed, 1 optional skipped;
+mocked Playwright desktop/mobile 9 passed, 1 desktop-only skipped (the real-search e2e test was not run, to
+avoid queuing a scientific job). Live check: the bare URL shows the form, the link opens
+`regional_refinement__0c70bb571549abe5`, and Back returns to the form. `frontend/README.md` and
+`frontend/API_CONTRACT.md` describe the new start.
+
+## Frontend design pass: plain options and readable results — 2026-10-04
+
+User request: "go over all option, target the problem and fix it". A walk-through at 1440x900 and 375x812 of the
+facility form (all More options, custom weights, AHP), results list, Run details, filters, map layers, location popup,
+region panel, decision brief, County model and Rediscovery view found these problems, now fixed in `frontend/src`:
+
+- Form: plain subtitle; cooling options shortened so they fit (full service label kept as the option title); search
+  depth, screening and preference options renamed in plain words with notes; custom weights show their live share of
+  100%; AHP explains the 1-9 scale and reads each judgment back ("A counts 3x as much as B") instead of
+  "Reciprocal: unsupplied"; the More options summary fits on one line.
+- Results: coverage text uses "search windows" and "national 1 km cells pre-scored" (UNSCREENED and partial-coverage
+  disclosures kept); Run details no longer repeats the scope paragraph or the coverage warning, shows weights as
+  labeled percentages and counts with thousands separators; a place name repeated in the list gets " · area 2", ...
+  (also in the region panel); a note explains that # is the rank among all evaluated 1 km alternatives; county
+  filter counts use areas, matching the list and map card.
+- Map: the location popup shows place names and readable cooling/status instead of region IDs and design IDs; the
+  layers panel states once that a region must be selected; the coverage card label is plain.
+- Layout: the phone header no longer clips the view switch and model selector; the footer scope is one line with
+  the full text as a tooltip.
+
+Kept as is: the decision brief (formal record with IDs), scenario labels (served by the running API), and the
+Rediscovery view, which shows "Unknown API route" until the API restarts with its new endpoints (blocked while the
+full rediscovery job submitted at 07:07Z runs). Wording-dependent assertions were updated with the wording; new tests
+cover weight shares, AHP read-back, area numbering and the rank note. Frontend unit 218 passed (1 optional skipped);
+mocked Playwright 9 passed (1 desktop-only skipped); type check and production build passed. No model code changed.

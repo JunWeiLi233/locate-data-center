@@ -102,10 +102,12 @@ src/dc_locator/     __init__.py __main__.py cli.py schemas.py config.py provenan
 data/raw/<source_id>/        cached original downloads (git-ignored)
 data/interim/<source_id>/    resumable per-tile intermediate results (git-ignored)
 data/processed/              real-data geography outputs ONLY (git-ignored except small manifests)
-runs/<run_name>/             model outputs of one run + run_metadata.json (git-ignored)
+runs/<run_name>/             model outputs of one run + run_metadata.json (git-ignored; index in runs/README.md)
 tests/  tests/fixtures/      pytest suite; synthetic fixtures only here
 docs/                        methodology, data_contracts, data_dictionary, sources, limitations, phase_handoff,
-                             phase_records/, specs/
+                             environment, phase_records/, research/, specs/, superpowers/plans/
+frontend/                    separately authorized map UI + local model API (own AGENTS.md and README.md)
+.pytest-work/<task>/         the ONLY scratch location (git-ignored except its README.md)
 ```
 
 Geography outputs go to `data/processed/`. Model outputs (screening, performance, rankings, regions,
@@ -116,6 +118,24 @@ while reproducible real geographic/provenance copies and intermediate geographic
 in an owned `runs/<run_name>/` final package. Explicit synthetic geography stays in `tests/fixtures/`
 or synthetic run folders, never `data/processed/`. Workspace-local pytest temporary folders are permitted
 for verification. This additive path clarification is recorded in the handoff.
+
+### Workspace hygiene (added 2026-10-03 after the workspace cleanup; see handoff)
+
+- Create no new top-level files or folders. The layout above is the whole tree.
+- All scratch goes in `.pytest-work/<task-name>/`. That includes pytest temp folders, one-off audit
+  scripts, downloaded pages and probes. Run pytest with `--basetemp=.pytest-work/<task-name>`, never with
+  `--basetemp=.pytest-work` itself. The pipeline output policy (`run_config.preflight`) accepts only
+  `runs/<name>/` and `.pytest-work/...`. It also still accepts the retired root-level `.tmp-phase7*`
+  folders, but do not create new ones.
+- Delete your own scratch before finishing. pytest temp folders are private to the account that created
+  them (Python's `mkdir(mode=0o700)` ACL), so folders left by a sandboxed agent account need an
+  administrator to remove.
+- New model runs go in a new `runs/<name>/`. Never modify, move or delete accepted evidence:
+  `runs/phase*/`, `runs/orchestrator_*/`, `runs/example/` and `docs/phase_records/`. The frontend also reads
+  `runs/phase7/root_v2_exploratory/`. Add a row to `runs/README.md` for every run kept as evidence.
+- `src/dc_locator/**`, `configs/**`, `pyproject.toml` and `requirements.lock.txt` are hash-bound by
+  `runs/phase7/executable_freeze_v2.json`. `tests/**` hashes are recorded in `docs/phase_records/phase_7.json`.
+  Changing any of these starts a new delivery revision; it is never housekeeping.
 
 ## 6. Shared technical contracts (authoritative detail in `docs/data_contracts.md`)
 
@@ -188,3 +208,15 @@ The 45 selected counties are a bounded comparison cohort, not national discovery
 This authorized layout extension and its verification are recorded in `docs/phase_handoff.md`;
 local integration evidence lives in `runs/pr1_merge_v1/`. Keep generated county data, outputs,
 environments and secrets excluded from Git.
+
+## 13. Rediscovery validation package (user-authorized, 2026-10-04)
+
+`src/dc_rediscovery/` is an additive, read-only validation package. It lives outside the hash-bound
+`src/dc_locator/**` inventory, so running pipelines and completed-run reuse are not invalidated (precedent:
+`src/dc_locator_fast.py`). It scores a completed run's national 1 km fine surface with the model's own
+functions, hashes blind separated candidates, and only then compares them with an external
+existing-facility inventory (IM3 Open Source Data Center Atlas, ODbL). **Existing facilities are never a model
+feature:** `src/dc_locator` must not import this package or read that inventory
+(`tests/test_rediscovery_leakage.py`). No weight, threshold or coefficient may be fitted to the inventory.
+Outputs go to `runs/rediscovery_*`. Configuration is `configs/rediscovery.yaml`. Read-only API routes live in
+`frontend/server/rediscovery.py`. Details are in `docs/rediscovery_validation.md`.

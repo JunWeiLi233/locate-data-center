@@ -8,16 +8,21 @@ from typing import Literal
 
 import pyarrow.parquet as pq
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, model_serializer, model_validator
 
 from dc_locator.io import read_parquet_metadata
 from dc_locator.provenance import DataMode
 
 
+NATIONAL_SCOPES={'conus','national'}
+TEMPORAL_OUTPUT_SCOPES={'all_alternatives','candidate_region_members'}
+
+
 class DeliveryConfig(BaseModel):
+    """2.0.0 is the accepted Phase 7 development delivery; 2.1.0 adds national execution."""
     model_config = ConfigDict(extra='forbid')
-    schema_version: Literal['2.0.0']
-    delivery_version: Literal['phase7_delivery_v1']
+    schema_version: Literal['2.0.0','2.1.0','2.2.0']
+    delivery_version: Literal['phase7_delivery_v1','phase8_national_v1','phase9_regional_v1']
     run_name: str = Field(min_length=1)
     data_mode: DataMode
     grid_config: str
@@ -43,10 +48,34 @@ class DeliveryConfig(BaseModel):
     ahp_input: str | None = None
     future: dict
     validation: dict
-    maximum_model_cells: StrictInt = Field(default=1000,ge=1,le=10000)
+    maximum_model_cells: StrictInt = Field(default=1000,ge=1,le=100000)
+    geography_workers: StrictInt = Field(default=1,ge=1,le=8)
     resource_policy_basis: Literal['project_assumption']
     resource_policy_rationale: str = Field(min_length=1)
     random_seed: StrictInt | None = None
+
+    @model_serializer(mode='wrap')
+    def _serialize(self, handler):
+        # 2.0.0 dumps stay byte-identical to the accepted delivery (identity, config snapshots).
+        data=handler(self)
+        if self.schema_version=='2.0.0':data.pop('geography_workers',None)
+        return data
+
+    @model_validator(mode='after')
+    def revision(self):
+        if self.schema_version=='2.0.0':
+            if self.delivery_version!='phase7_delivery_v1' or self.maximum_model_cells>10000 or 'geography_workers' in self.model_fields_set:
+                raise ValueError('Schema 2.0.0 is the bounded Phase 7 development delivery; national settings require schema 2.1.0')
+            if 'temporal_output_scope' in self.future:
+                raise ValueError('Unknown future configuration key')
+        elif self.schema_version=='2.1.0' and self.delivery_version!='phase8_national_v1':
+            raise ValueError('Schema 2.1.0 requires the phase8_national_v1 delivery revision')
+        elif self.schema_version=='2.2.0' and (self.delivery_version!='phase9_regional_v1' or self.study_area!='regional_refinement'):
+            raise ValueError('Schema 2.2.0 requires phase9_regional_v1 and regional_refinement scope')
+        scope=self.future.get('temporal_output_scope','all_alternatives')
+        if scope not in TEMPORAL_OUTPUT_SCOPES:
+            raise ValueError('temporal_output_scope must be one of '+', '.join(sorted(TEMPORAL_OUTPUT_SCOPES)))
+        return self
 
     @model_validator(mode='after')
     def references(self):
@@ -63,7 +92,7 @@ class DeliveryConfig(BaseModel):
         for policy in (self.future,self.validation):
             if type(policy.get('enabled')) is not bool:
                 raise ValueError('enabled must be an explicit boolean')
-        if set(self.future)-{'enabled','pathways','milestone_years','profiles_directory','profile_declaration','annual_extension','lifecycle'}:
+        if set(self.future)-{'enabled','pathways','milestone_years','profiles_directory','profile_declaration','annual_extension','lifecycle','temporal_output_scope'}:
             raise ValueError('Unknown future configuration key')
         if set(self.validation)-{'enabled','validation_revision','top_k','cases','allow_synthetic','max_cases','future_contexts'}:
             raise ValueError('Unknown current validation configuration key')
@@ -128,19 +157,30 @@ def check_table_identity(path,schema,mode,definition,minimum=(1,0,0)):
 
 
 def preflight(config,root,output=None):
-    """Reject unsupported scope before allocating any feature table."""
-    if config.study_area.lower() in {'conus','national'}:
+    """Reject unsupported scope before allocating any feature table.
+
+    The 2.0.0 development delivery never runs nationally. Schema 2.1.0 runs the
+    national grid with tile-bounded geography and vectorized model stages.
+    """
+    national=config.schema_version=='2.1.0'
+    if config.study_area.lower() in NATIONAL_SCOPES and not national:
         raise ValueError('National model execution is unsupported: acquired source coverage and national vector RAM are unvalidated. build-grid supports national geometry separately.')
     grid=resolve_path(root,config.grid_path)
     check_table_identity(grid,'GridCell',config.data_mode.value,config.grid_definition_id)
     count=pq.ParquetFile(grid).metadata.num_rows
     if count<1 or count>config.maximum_model_cells:
         raise ValueError('Configured grid exceeds bounded model resource policy or is empty')
+    if national and config.study_area.lower() in NATIONAL_SCOPES and config.data_mode==DataMode.REAL:
+        from dc_locator.geography.boundary import EXCLUDED_STATE_FIPS, EXPECTED_CONUS_STATE_COUNT
+        jurisdictions=pq.read_table(grid,columns=['state_fips_all']).column('state_fips_all').to_pylist()
+        present={code for value in jurisdictions for code in value.split(';')}
+        if len(present)!=EXPECTED_CONUS_STATE_COUNT or present & EXCLUDED_STATE_FIPS:
+            raise ValueError('National real execution requires a grid covering all 49 CONUS states/DC jurisdictions; a development grid cannot be labeled conus')
     if output is not None:
         target=Path(output).resolve();root=Path(root).resolve()
         owned_run=target.is_relative_to(root/'runs') and target!=root/'runs'
         relative=target.relative_to(root) if target.is_relative_to(root) else None
         pytest_temp=relative is not None and relative.parts and (relative.parts[0].startswith('.tmp-phase7') or relative.parts[0]=='.pytest-work')
-        if not (owned_run or pytest_temp) or any(target.is_relative_to(root/'runs'/f'phase{n}') for n in range(1,7)):
+        if not (owned_run or pytest_temp) or any(target.is_relative_to(root/'runs'/f'phase{n}') for n in range(1,8)):
             raise ValueError('Delivery output must not overwrite source, production or historical accepted folders')
-    return {'geographic_cells':count,'grid_definition_id':config.grid_definition_id,'data_mode':config.data_mode.value,'scope':config.study_area,'national_model_supported':False}
+    return {'geographic_cells':count,'grid_definition_id':config.grid_definition_id,'data_mode':config.data_mode.value,'scope':config.study_area,'national_model_supported':national}

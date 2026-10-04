@@ -1,0 +1,83 @@
+schema_version: 2.1.0
+delivery_version: phase8_national_v1
+run_name: national_exploratory
+data_mode: real
+grid_config: configs/grid_national.yaml
+grid_path: runs/national_grid_v1/us_grid.parquet
+grid_definition_id: conus-epsg5070-ox-2500000-oy3400000-s50000m-v1
+study_area: conus
+source_registry: configs/sources.yaml
+local_sources: configs/local_national_sources.json
+core_source_inputs: configs/local_national_core_sources.json
+expanded_source_inputs: null
+aqueduct_source_input: null
+expanded_features: false
+facility: configs/facility.yaml
+cooling_designs: configs/cooling_designs.yaml
+physical_scenarios: configs/phase3_physical_scenarios.yaml
+constraints: configs/constraints.yaml
+scoring_profile: configs/scoring_profile.yaml
+screening_mode: EXPLORATORY
+weighting_method: equal
+user_group_weights: null
+ahp_input: null
+future:
+  enabled: false
+validation:
+  enabled: true
+  validation_revision: phase7_current_v1
+  top_k: 10
+  cases:
+  - case_id: weight_energy_focus
+    group_weights:
+      energy_carbon: 0.4
+      water_stewardship: 0.2
+      grid_infrastructure: 0.2
+      land: 0.2
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: weight_water_focus
+    group_weights:
+      energy_carbon: 0.2
+      water_stewardship: 0.4
+      grid_infrastructure: 0.2
+      land: 0.2
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: weight_infrastructure_focus
+    group_weights:
+      energy_carbon: 0.2
+      water_stewardship: 0.2
+      grid_infrastructure: 0.4
+      land: 0.2
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: weight_land_focus
+    group_weights:
+      energy_carbon: 0.2
+      water_stewardship: 0.2
+      grid_infrastructure: 0.2
+      land: 0.4
+    basis: project_assumption
+    rationale: Deterministic preference stress case; not an elicited stakeholder judgment.
+    category: weights
+  - case_id: screening_strict
+    mode: STRICT
+    basis: project_assumption
+    rationale: Apply the accepted strict treatment of critical UNKNOWN evidence; every
+      hard failure remains excluded.
+    category: screening
+  allow_synthetic: false
+  max_cases: 64
+  future_contexts: []
+maximum_model_cells: 5000
+resource_policy_basis: project_assumption
+resource_policy_rationale: Initial complete CONUS discovery at 50 km uses bounded
+  native 30 m raster windows and spatial vector tiles. 5000 cells is an execution
+  budget, not an engineering threshold. Existing decision weights/constraints are
+  unchanged; optional cached hazard/climate/expanded contexts are explicitly not computed.
+random_seed: null
+geography_workers: 1

@@ -1,27 +1,41 @@
-import { Check, Plus, ChevronRight } from 'lucide-react';
-import type { CandidateRegion } from '../types/domain';
-import { formatMetric, formatScore } from '../utils/format';
-import { FactorBars } from './FactorBars';
+import { useState, type ReactNode } from 'react';
+import { Check, Plus } from 'lucide-react';
+import type { Capabilities } from '../types/domain';
+import { formatScore } from '../utils/format';
+import { coolingName, regionName, shortCooling, statusWord, type PlaceGroup } from '../utils/regions';
 
-/** Retain the existing result cards while distinguishing physical county tradeoffs from ranks. */
-export function RegionList({ regions, selectedId, comparisonIds, onSelect, onCompare, displayCount }: {
-  regions: CandidateRegion[]; selectedId: string | null; comparisonIds: string[];
-  onSelect: (id: string) => void; onCompare: (id: string) => void; displayCount: number;
+const INITIAL_ROWS = 20;
+
+/** `children` (run coverage, display filters) sit between the heading and the rows. */
+export function RegionList({ groups, total, selectedId, comparisonIds, onSelect, onCompare, coolingOptions = [], suffixes, children }: {
+  groups: PlaceGroup[]; total: number; selectedId: string | null; comparisonIds: string[];
+  onSelect: (id: string) => void; onCompare: (id: string) => void; coolingOptions?: Capabilities['coolingOptions'];
+  /** Area numbers per place key, so repeated county names stay distinguishable. */
+  suffixes?: Map<string, string>; children?: ReactNode;
 }) {
-  return <section className="results-list" aria-label="Potential regions"><div className="section-heading"><h2>Potential regions</h2><span className="count-tag">{regions.length} / {displayCount}</span></div>
-    <p className="form-note">{regions.some(region => region.modelKind === 'monte-carlo') ? 'County tradeoffs have no scalar rank or score. Pareto membership is conditional on the selected scenario; local feasibility remains unverified.' : 'Rank and score describe the evaluated representative alternative, not an independent region ranking.'}</p>
-    {!regions.length && <div className="empty-mini">No regions match the display filters. The model results have not been changed.</div>}
-    {regions.map(region => <article className={`region-card ${selectedId === region.id ? 'selected' : ''}`} key={region.id}>
-      <button className="region-select" aria-label={`Select ${region.label}, ${region.designId}`} aria-pressed={selectedId === region.id} onClick={() => onSelect(region.id)}>
-        <span className="region-index">{region.rank ?? '—'}</span><span className="region-name"><strong>{region.label}</strong><small>{region.designId}</small></span><ChevronRight size={16} />
-      </button>
-      <div className="card-score"><strong>{region.modelKind === 'monte-carlo' ? 'Unweighted tradeoff' : <>{formatScore(region.score)}<small> / 100</small></>}</strong><span className={`status-badge ${region.screeningStatus.toLowerCase()}`}>{region.screeningStatus}</span></div>
-      {/* County cards expose backend means without converting them to favorable factor scores. */}
-      {region.modelKind === 'monte-carlo' && <p className="form-note">{region.metrics.filter(metric => metric.id === 'lifetime_electricity_cost_usd_mean' || metric.id === 'lifetime_operational_co2e_tonnes_mean').map(metric => <span key={metric.id}>{metric.label}: {formatMetric(metric)}<br /></span>)}</p>}
-      <p className="rank-basis">{region.rankBasis}</p>{region.modelKind !== 'monte-carlo' && <FactorBars factors={region.factors} compact />}
-      <div className="card-footer"><span>{region.paretoOptimal === true ? 'Pareto frontier' : region.paretoOptimal === false ? 'Pareto dominated' : 'Pareto Unknown'}</span>
-        <button className="text-button" aria-label={`${comparisonIds.includes(region.id) ? 'Remove' : 'Add'} ${region.label}, ${region.designId} ${comparisonIds.includes(region.id) ? 'from' : 'to'} comparison`} onClick={() => onCompare(region.id)} disabled={!comparisonIds.includes(region.id) && comparisonIds.length >= 3}>{comparisonIds.includes(region.id) ? <Check size={13} /> : <Plus size={13} />}{comparisonIds.includes(region.id) ? 'Added' : 'Compare'}</button>
-      </div>
-    </article>)}
+  const ranked = groups.some(group => group.primary.rank !== null);
+  const [expanded, setExpanded] = useState(false);
+  const selectedIndex = groups.findIndex(group => group.alternatives.some(region => region.id === selectedId));
+  const shown = expanded ? groups.length : Math.max(INITIAL_ROWS, selectedIndex + 1);
+  return <section className="results-list" aria-label="Potential regions">
+    <div className="section-heading"><h2>Search areas</h2><span className="count-tag">{groups.length === total ? `${total.toLocaleString('en-US')} ${total === 1 ? 'area' : 'areas'}` : `${groups.length.toLocaleString('en-US')} of ${total.toLocaleString('en-US')} areas`}</span></div>
+    {children}
+    {!groups.length && total > 0 && <div className="empty-mini">No areas match the filters. The model results have not changed.</div>}
+    {ranked && groups.length > 0 && <p className="rank-basis list-rank-basis">Areas are listed by their best alternative; # is its rank among all evaluated 1 km alternatives, so numbers can skip.</p>}
+    <ol className="place-list">{groups.slice(0, shown).map(({ key, primary: region, alternatives }) => {
+      const name = regionName(region) + (suffixes?.get(key) ?? '');
+      const cooling = coolingName(region.designId, coolingOptions);
+      const selected = alternatives.some(item => item.id === selectedId);
+      const compared = comparisonIds.includes(region.id);
+      return <li className={`place-row ${selected ? 'selected' : ''}`} key={key}>
+        <button className="region-select" aria-label={`Select ${name}, ${cooling}`} aria-pressed={selected} onClick={() => onSelect(selected && selectedId ? selectedId : region.id)}>
+          <span className="place-rank">{region.rank === null ? '—' : `#${region.rank}`}</span>
+          <span className="place-name"><strong>{name}</strong><small>{shortCooling(cooling)}</small></span>
+          <span className="place-score"><strong>{region.modelKind === 'monte-carlo' ? 'Tradeoff' : formatScore(region.score)}</strong><small className={`status-text ${region.screeningStatus.toLowerCase()}`}>{statusWord(region.screeningStatus)}</small></span>
+        </button>
+        <button className="compare-toggle" aria-label={`${compared ? 'Remove' : 'Add'} ${name}, ${cooling} ${compared ? 'from' : 'to'} comparison`} aria-pressed={compared} title={compared ? 'Remove from comparison' : 'Add to comparison'} onClick={() => onCompare(region.id)} disabled={!compared && comparisonIds.length >= 3}>{compared ? <Check size={14} /> : <Plus size={14} />}</button>
+      </li>;
+    })}</ol>
+    {shown < groups.length && <button className="text-button show-all" onClick={() => setExpanded(true)}>Show all {groups.length} areas</button>}
   </section>;
 }

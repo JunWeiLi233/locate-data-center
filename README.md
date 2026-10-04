@@ -5,17 +5,40 @@ evidence → facility screening → annual energy/CO2e/water → Pareto/preferen
 → current sensitivity and reports. Regions deserve investigation under stated assumptions. They are
 not approved parcels or a proven national optimum.
 
-All nine commands work. Real model coverage is **42 Texas development cells**, two cooling designs
-and an explicit historical-electricity scenario. The national grid has **79,888 cells**; national
-feature/model execution fails preflight because complete coverage and vector RAM are unvalidated.
-Default **STRICT** execution intentionally produces a valid empty accepted ranking. The separate
-exploratory configuration exports conditional alternatives with critical UNKNOWN requirements visible.
+The default model stage commands use **CONUS discovery**, with a separate
+50 km grid of **3,384 cells covering all 48 contiguous states and DC**. The national revision uses
+the existing scoring weights, required criteria and physical scenarios, with official nationwide
+NLCD, eGRID, Aqueduct and EIA inputs. Optional cached hazard/climate sources are explicitly not
+computed in this initial national baseline. Default **STRICT** execution keeps critical UNKNOWN
+requirements excluded; **EXPLORATORY** exports conditional investigation regions.
 
-## Optional county Monte Carlo backend
+The map's default fast Grid search re-evaluates the facility and preferences on
+**152,500 cached 1 km cells in 61 nationwide regional windows**. The separate
+**Full · nationwide rediscovery** option repeats national discovery and regional
+refinement. Final search polygons span at most **20 km per projected axis**.
+The map reports each run's fixed or newly selected partial refinement coverage;
+its zoom level never sets the analytical grid resolution.
 
-The existing 45-county `dataclocator` backend is now separately packaged under `backend/dataclocator/` and selectable in the same frontend with `VITE_MODEL_BACKEND=monte-carlo` and `VITE_MONTE_CARLO_API_URL=http://127.0.0.1:8000`. The default grid bridge remains available. See [county integration setup, validation and limitations](docs/county-backend-integration.md) for Python 3.13 installation, official data acquisition/preprocessing, explicit CORS origins and frontend startup. County results are unweighted conditional tradeoffs with unverified local feasibility, not scored or verified site recommendations.
+The accepted Phase 7 evidence remains **42 Texas development cells**, with its original configurations
+and outputs preserved. The original 10 km national grid has **79,888 cells**. A national discovery
+grid does not establish parcel feasibility, complete hazard evidence or a nationally optimal site.
+
+## Additional county Monte Carlo model
+
+PR #1 adds the independent `dataclocator` package under `backend/dataclocator/`.
+Choose **County Monte Carlo** in the map's Model selector to compare 45 explicitly selected counties;
+the deterministic grid model remains the default. County results have unweighted physical tradeoffs,
+separate structural scenarios and unverified local feasibility, with no invented MCDA score or rank.
+The county service uses its own Python 3.13 environment and port 8000. See
+[county model setup and limitations](docs/county-backend-integration.md).
 
 ## Install
+
+For the challenge description, six requested deliverables and grading rubric, see
+[submission alignment](docs/submission_alignment.md). The new `submission` command
+creates a verified JSON/Markdown/printable HTML brief from a completed saved run;
+the map UI's **Decision brief** presents the same backend evidence. Remaining heat,
+generation-water, lifecycle and community gaps are explicitly documented.
 
 The project root is **`D:\locate-data-center`**. Backend code, `configs/`, cached `data/`,
 scientific `runs/`, tests, documentation and the separate `frontend/` live directly here.
@@ -29,11 +52,31 @@ uv venv --python 3.12 .venv
 uv pip install --python .venv/Scripts/python.exe -r requirements.lock.txt
 uv pip install --python .venv/Scripts/python.exe --no-deps -e .
 .venv\Scripts\python.exe -m dc_locator --help
-.venv\Scripts\python.exe -m pytest -q --basetemp=.tmp-phase7-user -p no:cacheprovider
+.venv\Scripts\python.exe -m pytest -q -p no:cacheprovider --basetemp=.pytest-work/tests
 ```
+
+Always pass a `--basetemp` under `.pytest-work/`. The pipeline accepts outputs only inside the project,
+so with pytest's default system temp folder the pipeline tests fail.
 
 [environment.md](docs/environment.md) records package/GDAL/PROJ/GEOS versions. Raw caches and run folders
 are git-ignored, so a clean checkout requires official native files or documented manual exports.
+
+## Repository layout
+
+| Path | Contents |
+|---|---|
+| `src/dc_locator/` | Python package. `geography/` holds the grid, source adapters and features; `model/` holds screening through regions, plus `validation/`. |
+| `configs/` | Run, facility, cooling, constraint, scoring and source configurations |
+| `tests/` | pytest suite. Synthetic fixtures live only in `tests/fixtures/`. |
+| `data/` | `raw/` cached downloads, `interim/` resumable builds, `processed/` real geography outputs. Git-ignored except small JSON manifests. |
+| `runs/` | One folder per model run. [runs/README.md](runs/README.md) lists which are accepted evidence. |
+| `docs/` | Methodology, contracts, dictionary, sources, limitations and the [phase handoff](docs/phase_handoff.md). `phase_records/` holds acceptance records, which the code reads. Also `research/` (per-phase source research), `specs/` (original requirements) and `superpowers/plans/` (implementation plans). |
+| `frontend/` | Separate map interface and local model API. See [frontend/README.md](frontend/README.md). |
+| `.pytest-work/` | The only scratch location (pytest temp folders, one-off scripts). See [its README](.pytest-work/README.md). |
+
+`src/dc_locator/`, `configs/`, `pyproject.toml` and `requirements.lock.txt` are hash-bound by the accepted
+`runs/phase7/executable_freeze_v2.json`. Changing them starts a new delivery revision. Create no new
+top-level files or folders. Workspace rules for agents are in [AGENTS.md](AGENTS.md) §5.
 
 ## Data access and configuration
 
@@ -64,10 +107,21 @@ produce UNRANKED without candidate-specific reweighting. Energy+carbon and area+
 ## Execute
 
 ```powershell
-.venv\Scripts\python.exe -m dc_locator run --config configs/run.yaml --output runs/example
-.venv\Scripts\python.exe -m dc_locator run --config configs/run_exploratory.yaml --output runs/phase7_exploratory
+.venv\Scripts\python.exe -m dc_locator run --config configs/run_national.yaml --output runs/national_strict_check
+.venv\Scripts\python.exe -m dc_locator run --config configs/run_national_exploratory.yaml --output runs/national_exploratory_check
 .venv\Scripts\python.exe -m dc_locator run --config configs/run_synthetic.yaml --output runs/phase7_synthetic
 ```
+
+`run` without flags uses `configs/run_national.yaml` and `runs/national_default_v1`.
+Use a new output folder after changing model/configuration identities. Explicit
+`configs/run.yaml` and `configs/run_exploratory.yaml` retain the historical development scope.
+The frontend's saved national evidence is `runs/national_discovery_v2`.
+
+`configs/grid_national.yaml` retains the fixed national origin and ID rules at 50 km resolution,
+chosen as a processing-budget assumption. The native 2024 NLCD C1.1 CONUS mosaic uses WGS84 Albers;
+its derived 30 m EPSG:5070 raster uses bounded nearest-neighbor reprojection with source/output
+checksums and CRS in `preparation_manifest.json`. Land-class aggregation remains area weighted,
+and classified land remains a geographic proxy. No missing value is extrapolated or reweighted.
 
 Synthetic mode explicitly loads the quarantined three-cell fixture in `tests/fixtures/phase7`. Its
 invented metric values test formulas, missing-water exclusion and hard land failure; they are not
@@ -89,13 +143,13 @@ grid files. `--national-only` skips development subsets. National geometry is di
 All other stages share `--config` and `--output`. Run them in dependency order:
 
 ```powershell
-.venv\Scripts\python.exe -m dc_locator ingest --config configs/run.yaml --output runs/example
-.venv\Scripts\python.exe -m dc_locator build-features --config configs/run.yaml --output runs/example
-.venv\Scripts\python.exe -m dc_locator screen --config configs/run.yaml --output runs/example
-.venv\Scripts\python.exe -m dc_locator simulate --config configs/run.yaml --output runs/example
-.venv\Scripts\python.exe -m dc_locator rank --config configs/run.yaml --output runs/example
-.venv\Scripts\python.exe -m dc_locator cluster --config configs/run.yaml --output runs/example
-.venv\Scripts\python.exe -m dc_locator validate --config configs/run.yaml --output runs/example
+.venv\Scripts\python.exe -m dc_locator ingest --config configs/run_national.yaml --output runs/national_stages_check
+.venv\Scripts\python.exe -m dc_locator build-features --config configs/run_national.yaml --output runs/national_stages_check
+.venv\Scripts\python.exe -m dc_locator screen --config configs/run_national.yaml --output runs/national_stages_check
+.venv\Scripts\python.exe -m dc_locator simulate --config configs/run_national.yaml --output runs/national_stages_check
+.venv\Scripts\python.exe -m dc_locator rank --config configs/run_national.yaml --output runs/national_stages_check
+.venv\Scripts\python.exe -m dc_locator cluster --config configs/run_national.yaml --output runs/national_stages_check
+.venv\Scripts\python.exe -m dc_locator validate --config configs/run_national.yaml --output runs/national_stages_check
 ```
 
 `screen`/`simulate` both require features; `rank` requires both; `cluster` actually clusters persisted
@@ -138,12 +192,98 @@ and the accepted [Phase 7 completion record](docs/phase_records/phase_7.json). P
 this new `phase7_delivery_v1` code is not the unchanged prospective-holdout revision. Scientific detail:
 [methodology](docs/methodology.md), [contracts](docs/data_contracts.md), [dictionary](docs/data_dictionary.md),
 [sources](docs/sources.md), [limitations](docs/limitations.md).
+# Regional refinement
 
-## Additional county Monte Carlo model
+Run `.venv/Scripts/python -m dc_locator refine-regions --output runs/<new-name>`
+to perform national discovery and then recompute selected full parent areas on
+the user-approved 1 km grid. Search polygons have a declared maximum projected
+span of 20 km per axis, independent of map zoom. The frontend uses this workflow
+for new searches and shows the actual bounded refinement coverage.
 
-PR #1 adds the independent `dataclocator` package under `backend/dataclocator/`.
-Choose **County Monte Carlo** in the map's Model selector to compare 45 explicitly selected counties;
-the deterministic grid model remains the default. County results have unweighted physical tradeoffs,
-separate structural scenarios and unverified local feasibility, with no invented MCDA score or rank.
-The county service uses its own Python 3.13 environment and port 8000. See
-[county model setup and limitations](docs/county-backend-integration.md).
+These geographic regions deserve further investigation under the stated
+facility requirements, datasets, constraints, assumptions, and decision
+preferences. They remain search areas requiring parcel, utility, water and
+fiber verification.
+
+## Existing-facility comparison and land-support revision
+
+The Cleanview diagnosis uses public operating listings as a separate county-level
+reference. It preserves capacity selection, unmatched labels, missing exact site
+locations and uncomputed fine coverage. Existing development never sets model
+weights or engineering coefficients. See
+[the diagnosis](docs/research/cleanview_revision_2026-10-03.md) and
+`runs/cleanview_revision_v1/` for findings, review, tests and the executable freeze.
+
+New regional runs distinguish single-cell land insufficiency from multi-cell
+search support, then screen complete bounded regions for total classified land.
+Adequate total area remains conditional; parcel contiguity and availability
+require verification. Zero area and other hard failures remain exclusions.
+
+```powershell
+.venv/Scripts/python -m dc_locator refine-regions --config configs/run_regional_exploratory.yaml --output runs/<new-name>
+.venv/Scripts/python -m dc_locator compare-existing --reference data/raw/cleanview_reference/public_listing_v1/reference.json --national-run runs/national_discovery_v2 --regional-run runs/<completed-regional-run> --output runs/<new-comparison-name>
+```
+
+`compare-existing` verifies saved model hashes and reconstructs the reference
+from its cached raw-page manifests before writing Parquet/CSV comparisons and
+reports. It performs no download or calibration. A facility point score and
+physical prediction error stay UNKNOWN without compatible independent evidence.
+
+## County economic area filters
+
+The page uses **2024 Census SAIPE county poverty and median household income**
+in **Filter areas**, with optional minimum poverty rate, maximum income,
+minimum poverty percentile and minimum low-income percentile thresholds.
+County economic indicators do not paint a map overlay. The user authorized the
+cached **2025** county geometry (default) and
+**2023** geometry (selectable). Both are generalized Census cartographic
+boundaries at 1:500,000; the requested 2024 TIGER/Line archive was not present.
+Boundary and estimate years are labeled independently. These values do not
+change technical screening, scores, weights or global ranks.
+
+Build reusable context from a completed real grid without rerunning the model:
+
+```powershell
+.venv/Scripts/python -m dc_locator socioeconomic-enrich --grid runs/national_fine_regional_v1/us_grid_dataset.parquet --boundary-year 2025 --acquire
+.venv/Scripts/python -m dc_locator socioeconomic-enrich --grid runs/national_fine_regional_v1/us_grid_dataset.parquet --boundary-year 2023
+```
+
+Only explicit `--acquire` permits official source acquisition; verified raw
+files are reused. Configuration is `configs/socioeconomic.yaml`. Outputs under
+`data/processed/socioeconomic/` retain every positive-area grid-cell × county
+relationship, five-character GEOIDs, full-cell overlap fractions, missing-value
+evidence and source checksums. The page joins these relationships to saved region
+membership. A region matches an active economic filter when at least one
+overlapping county meets all its conditions. Fiscal revenues, incentives and
+costs remain unknown pending separate evidence.
+
+## Nationwide regional map coverage
+
+The Grid model page can load a completed nationwide regional result directly,
+without another calculation. The available representative refinement has 1,163
+saved search geometries from 152,500 native 1 km cells in 61 nationwide discovery
+windows; primary-window labels cover 30 states. All regions retain the 20 km
+projected-axis limit. The map shows saved/filtered area counts and partial
+refinement coverage. The global highest-score-window run remains accessible by
+ID, with its concentrated geographic coverage labeled. A newer per-national-region
+fine-selector delivery becomes available only after completing native validation.
+See `runs/nationwide_map_coverage_v1/` for the correction and evidence.
+
+## Rediscovery check against existing data centers
+
+`python -m dc_rediscovery run` scores every national 1 km cell of `runs/national_fine_regional_v1` with the
+model's own function. It keeps separated Top-N candidates (at least 25 km apart) and hashes them. Only then
+does it reveal 1,472 existing CONUS facilities from the IM3 Open Source Data Center Atlas (PNNL, ODbL) and
+measure:
+
+- hit rates within 10, 25, 50 and 100 km, against seeded random controls;
+- presence–background AUC;
+- validated, emerging and unresolved classes;
+- Monte Carlo robustness where the county model applies.
+
+Existing facilities never enter the score. The map's **Rediscovery check** view presents the results with a
+guided demo. See [docs/rediscovery_validation.md](docs/rediscovery_validation.md).
+
+```powershell
+.venv\Scripts\python.exe -m dc_rediscovery run --acquire --output runs/rediscovery_v1
+```

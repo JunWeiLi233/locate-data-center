@@ -18,12 +18,13 @@ string-formatting passes building `grid_id`/`tile_id` (AGENTS.md section 7).
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Iterable, Optional
 
 import geopandas as gpd
 import numpy as np
 import pandas as pd
 import shapely
+from shapely.geometry.base import BaseGeometry
 
 from dc_locator.config import GridConfig, StudyAreaBBox, grid_number_token
 from dc_locator.geography.boundary import TARGET_CRS, CONUSBoundary
@@ -195,13 +196,38 @@ def generate_national_grid(grid_config: GridConfig, boundary: CONUSBoundary) -> 
     squares = shapely.box(cminx, cminy, cmaxx, cmaxy)
     candidates = gpd.GeoDataFrame({"row": row_flat, "col": col_flat}, geometry=squares, crs=TARGET_CRS)
 
+    return _attribute_candidates(grid_config, boundary, candidates,
+                                 row_range=(row_min, row_max), col_range=(col_min, col_max))
+
+
+def _attribute_candidates(grid_config: GridConfig, boundary: CONUSBoundary,
+                          candidates: gpd.GeoDataFrame, *, row_range: tuple[int, int],
+                          col_range: tuple[int, int], interior_fast_path: bool = False):
+    """Shared CONUS retention and full-square administrative attribution."""
+    origin_x_m, origin_y_m = grid_config.origin_x_m, grid_config.origin_y_m
+    cell_size_m = grid_config.cell_size_m
+    digits, tile_size_cells = grid_config.id_row_col_digits, grid_config.tile_size_cells
+    min_intersection_m2 = grid_config.min_intersection_km2 * 1e6
+    grid_definition_id = grid_config.grid_definition_id()
+    row_min, row_max = row_range
+    col_min, col_max = col_range
+    n_candidates = len(candidates)
+
     # Spatial-index prefilter (exact "intersects" predicate via the STRtree,
     # not just a bbox test) before computing exact intersection geometry/area
     # only for cells that actually touch the boundary.
     boundary_geom = boundary.boundary
     touch_idx = candidates.sindex.query(boundary_geom, predicate="intersects")
     hits = candidates.iloc[np.sort(touch_idx)].copy()
-    hits["intersection_geom"] = hits.geometry.intersection(boundary_geom)
+    if interior_fast_path:
+        shapely.prepare(boundary_geom)
+        squares = hits.geometry.to_numpy()
+        interior = shapely.covers(boundary_geom, squares)
+        intersections = squares.copy()
+        intersections[~interior] = shapely.intersection(squares[~interior], boundary_geom)
+        hits["intersection_geom"] = gpd.GeoSeries(intersections, index=hits.index, crs=TARGET_CRS)
+    else:
+        hits["intersection_geom"] = hits.geometry.intersection(boundary_geom)
     hits["intersection_area_m2"] = hits["intersection_geom"].area
 
     positive = hits[hits["intersection_area_m2"] > 0.0].copy()
@@ -334,6 +360,84 @@ def generate_national_grid(grid_config: GridConfig, boundary: CONUSBoundary) -> 
     return result, stats
 
 
+def generate_bounded_grid(grid_config: GridConfig, boundary: CONUSBoundary,
+                          windows_5070: Iterable[BaseGeometry] | gpd.GeoSeries | gpd.GeoDataFrame
+                          ) -> tuple[gpd.GeoDataFrame, dict]:
+    """Construct only global-lattice cells overlapping declared projected windows.
+
+    Windows select full squares by positive intersection area; edge-only touches
+    are excluded. They never clip output squares, CONUS areas or attribution.
+    The same cell is identical across window selections and national generation.
+    GeoSeries/DataFrame windows must declare EPSG:5070; raw Shapely polygons are
+    explicitly in EPSG:5070. Window order and overlap cannot change cell IDs.
+    """
+    if isinstance(windows_5070, (gpd.GeoSeries, gpd.GeoDataFrame)):
+        if windows_5070.crs is None or windows_5070.crs.to_epsg() != 5070:
+            raise ValueError('Bounded grid windows require EPSG:5070')
+        windows = list(windows_5070.geometry)
+    else:
+        windows = list(windows_5070)
+    if not windows:
+        raise ValueError('At least one bounded grid window is required')
+    for window in windows:
+        if (not isinstance(window, BaseGeometry) or window.geom_type not in {'Polygon', 'MultiPolygon'}
+                or window.is_empty or not window.is_valid or not np.isfinite(window.area)
+                or window.area <= 0 or not np.isfinite(window.bounds).all()):
+            raise ValueError('Every bounded grid window must be a valid positive-area projected polygon')
+
+    origin_x_m, origin_y_m = grid_config.origin_x_m, grid_config.origin_y_m
+    size = grid_config.cell_size_m
+    bounds = boundary.boundary.bounds
+    validate_boundary_within_origin(bounds, origin_x_m, origin_y_m)
+    minx, miny, maxx, maxy = bounds
+    row_min = int(np.floor((origin_y_m-maxy)/size))
+    row_max = int(np.floor((origin_y_m-miny)/size))
+    col_min = int(np.floor((minx-origin_x_m)/size))
+    col_max = int(np.floor((maxx-origin_x_m)/size))
+    if max(row_max, col_max) >= 10**grid_config.id_row_col_digits:
+        raise GridIdOverflowError('CONUS extent exceeds bounded grid row/col ID width')
+
+    indices = []
+    enumerated = 0
+    # Identical windows need only one enumeration. Canonical WKB ordering makes
+    # construction independent of the input order before row/col deduplication.
+    unique_windows = {shapely.to_wkb(shapely.normalize(window)):window for window in windows}
+    parts = [part for window in unique_windows.values()
+             for part in (window.geoms if window.geom_type == 'MultiPolygon' else [window])]
+    unique_parts = {shapely.to_wkb(shapely.normalize(part)):part for part in parts}
+    for key in sorted(unique_parts):
+        window = unique_parts[key]
+        wx0, wy0, wx1, wy1 = window.bounds
+        r0 = max(row_min, int(np.floor((origin_y_m-wy1)/size)))
+        r1 = min(row_max+1, int(np.ceil((origin_y_m-wy0)/size)))
+        c0 = max(col_min, int(np.floor((wx0-origin_x_m)/size)))
+        c1 = min(col_max+1, int(np.ceil((wx1-origin_x_m)/size)))
+        if r1 <= r0 or c1 <= c0:
+            continue
+        count = (r1-r0)*(c1-c0)
+        enumerated += count
+        if enumerated > _MAX_CANDIDATE_CELLS:
+            raise RuntimeError(f'Bounded candidate grid would enumerate {enumerated:,} cells '
+                               f'(limit {_MAX_CANDIDATE_CELLS:,}); refusing to continue')
+        rows, cols = np.meshgrid(np.arange(r0,r1,dtype=np.int64), np.arange(c0,c1,dtype=np.int64), indexing='ij')
+        row_flat, col_flat = rows.ravel(), cols.ravel()
+        squares = shapely.box(*cell_square_bounds(row_flat,col_flat,origin_x_m,origin_y_m,size))
+        selected = shapely.area(shapely.intersection(squares,window)) > 0
+        indices.append(np.column_stack((row_flat[selected],col_flat[selected])))
+    if not indices or not any(len(part) for part in indices):
+        raise GridIntegrityError('Bounded grid windows select no national lattice cells')
+    locations = np.unique(np.concatenate(indices),axis=0)
+    squares = shapely.box(*cell_square_bounds(locations[:,0],locations[:,1],origin_x_m,origin_y_m,size))
+    candidates = gpd.GeoDataFrame({'row':locations[:,0], 'col':locations[:,1]},geometry=squares,crs=TARGET_CRS)
+    result, stats = _attribute_candidates(grid_config,boundary,candidates,
+        row_range=(int(locations[:,0].min()),int(locations[:,0].max())),
+        col_range=(int(locations[:,1].min()),int(locations[:,1].max())), interior_fast_path=True)
+    stats.update(scope='bounded_windows', n_windows=len(unique_windows),
+                 window_selection='positive square/window intersection area; full CONUS attributes retained',
+                 n_enumerated_window_bbox_cells=enumerated)
+    return result, stats
+
+
 def select_study_area(national_grid: gpd.GeoDataFrame, bbox: StudyAreaBBox, *, segment_length_deg: float = _DEFAULT_BBOX_SEGMENTIZE_DEG) -> gpd.GeoDataFrame:
     """Select the national-grid cells whose full square intersects both CONUS
     (guaranteed already, since `national_grid` only contains such cells) and
@@ -361,5 +465,6 @@ __all__ = [
     "make_grid_id",
     "make_tile_id",
     "generate_national_grid",
+    "generate_bounded_grid",
     "select_study_area",
 ]

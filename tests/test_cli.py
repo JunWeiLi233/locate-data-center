@@ -48,6 +48,15 @@ def test_build_grid_subcommand_registered() -> None:
     assert args.func.__name__ == "_cmd_build_grid"
 
 
+def test_model_command_defaults_to_national_search_and_keeps_explicit_development():
+    from inspect import signature
+    from dc_locator.pipeline import execute_stage
+    assert build_parser().parse_args(['run']).config == 'configs/run_national.yaml'
+    assert build_parser().parse_args(['run']).output == 'runs/national_default_v1'
+    assert signature(execute_stage).parameters['output'].default == 'runs/national_default_v1'
+    assert build_parser().parse_args(['run','--config','configs/run.yaml']).config == 'configs/run.yaml'
+
+
 def test_module_entrypoint_shows_help_without_crashing() -> None:
     # python -m dc_locator --help must not raise ModuleNotFoundError (the
     # exact failure mode the original broken `dc-locator` console script had).

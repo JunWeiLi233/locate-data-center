@@ -1,0 +1,15 @@
+schema_version: 3.0.0
+delivery_version: phase9_regional_v1
+parent_config: configs/run_national_exploratory.yaml
+grid_config: configs/grid_regional.yaml
+scoring_profile: configs/scoring_profile_regional.yaml
+selection: representative_parent_cells
+maximum_region_extent_km: 20
+maximum_refined_cells: 200000
+maximum_batch_cells: 2500
+basis: project_assumption
+rationale: >-
+  Refine each full evaluated representative national parent on the user-approved
+  1 km lattice. The 20 km extent bounds regional investigation areas independently
+  of map zoom. Cell budgets bound execution resources and are not engineering
+  thresholds. Refined coverage is partial and every child is recalculated.

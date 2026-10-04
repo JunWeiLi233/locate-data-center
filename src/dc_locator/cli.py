@@ -123,10 +123,71 @@ def _cmd_delivery(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_regional(args: argparse.Namespace) -> int:
+    from dc_locator.regional import run_regional
+    output=run_regional(args.config,args.output,progress=lambda stage:print(stage,file=sys.stderr))
+    print(json.dumps({'output':str(output),'analysis_level':'regional'},sort_keys=True))
+    return 0
+
+
+def _cmd_submission(args: argparse.Namespace) -> int:
+    from dc_locator.submission import write_submission
+    output=write_submission(args.run,args.output,args.scenario_id,args.heat_reuse_input)
+    print(json.dumps({'output':str(output),'artifact':'submission_brief.html'},sort_keys=True))
+    return 0
+
+
+def _cmd_compare_existing(args: argparse.Namespace) -> int:
+    from dc_locator.reference_comparison import write_reference_comparison
+    output = write_reference_comparison(args.reference, args.national_run, args.output,
+                                        regional_run=args.regional_run)
+    print(json.dumps({'output': str(output), 'artifact': 'comparison_report.md'}, sort_keys=True))
+    return 0
+
+
+def _cmd_socioeconomic(args: argparse.Namespace) -> int:
+    from dc_locator.geography.socioeconomic import load_config, ensure_socioeconomic_geography
+
+    root = project_root()
+    config = load_config(root, args.config)
+    artifacts = ensure_socioeconomic_geography(
+        root, args.grid, config=config, boundary_year=args.boundary_year,
+        cached_only=False, acquire=args.acquire,
+    )
+    print(json.dumps({
+        "artifact": "candidate_county_socioeconomic",
+        "boundary_year": artifacts.metadata["boundary_year"],
+        "socioeconomic_year": artifacts.metadata["socioeconomic_year"],
+        "county_path": str(artifacts.county_path),
+        "canonical_output": str(artifacts.crosswalk_path),
+        "coverage_path": str(artifacts.coverage_path),
+        "metadata_path": str(artifacts.metadata_path),
+        "metadata": artifacts.metadata,
+    }, sort_keys=True, allow_nan=False))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="dc-locator", description="U.S. Sustainable Data Center Location Discovery Model.")
     parser.add_argument("--version", action="version", version=f"dc_locator {__version__}")
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    comparison = subparsers.add_parser('compare-existing', help='Compare county-supported operating samples with verified saved runs; no optimality labels.')
+    comparison.add_argument('--reference', required=True, help='Acquired public-reference JSON; downloads are separate from model comparison.')
+    comparison.add_argument('--national-run', required=True)
+    comparison.add_argument('--regional-run', default=None)
+    comparison.add_argument('--output', required=True, help='New owned runs/ output folder.')
+    comparison.set_defaults(func=_cmd_compare_existing)
+
+    socioeconomic = subparsers.add_parser(
+        "socioeconomic-enrich", help="Attach 2024 Census SAIPE economic context to saved grid cells; technical ranks stay unchanged."
+    )
+    socioeconomic.add_argument("--grid", required=True, help="Saved real grid GeoParquet; every county intersection is retained.")
+    socioeconomic.add_argument("--config", default="configs/socioeconomic.yaml")
+    socioeconomic.add_argument("--boundary-year", type=int, choices=(2023, 2025), default=None,
+                               help="Authorized Census cartographic boundary year (default from config: 2025).")
+    socioeconomic.add_argument("--acquire", action="store_true", help="Acquire the official 2024 SAIPE source when no verified local cache exists.")
+    socioeconomic.set_defaults(func=_cmd_socioeconomic)
 
     build_grid = subparsers.add_parser("build-grid", help="Generate the national grid and configured development-area subsets (Phase 1).")
     build_grid.add_argument("--grid-config", default=None, help="Path to grid.yaml (default: configs/grid.yaml).")
@@ -135,10 +196,22 @@ def build_parser() -> argparse.ArgumentParser:
     build_grid.add_argument("--skip-download", action="store_true", help="Skip the boundary-source download step (use the existing data/raw/ cache as-is).")
     build_grid.set_defaults(func=_cmd_build_grid)
 
+    regional=subparsers.add_parser('refine-regions',help='Discover nationally, then recompute bounded 1 km regional evidence.')
+    regional.add_argument('--config',default='configs/run_regional_exploratory.yaml')
+    regional.add_argument('--output',default='runs/regional_refinement_v1')
+    regional.set_defaults(func=_cmd_regional)
+
+    submission=subparsers.add_parser('submission',help='Present verified saved decisions as six submission deliverables.')
+    submission.add_argument('--run',required=True,help='Completed saved model run; scientific inputs remain read-only.')
+    submission.add_argument('--output',required=True,help='New owned runs/ output folder.')
+    submission.add_argument('--scenario-id',default=None,help='Required when a saved run contains multiple external scenarios.')
+    submission.add_argument('--heat-reuse-input',default=None,help='Optional JSON of supplied, alternative-bound heat-host assumptions.')
+    submission.set_defaults(func=_cmd_submission)
+
     for name in _DELIVERY_COMMANDS:
         sub = subparsers.add_parser(name, help=f"Execute configured {name} with verified current inputs.")
-        sub.add_argument('--config',default='configs/run.yaml',help='Delivery run YAML; paths resolve from the project root.')
-        sub.add_argument('--output',default='runs/example',help='Owned run folder; use a new folder after model/config/source changes.')
+        sub.add_argument('--config',default='configs/run_national.yaml',help='Delivery run YAML; defaults to CONUS discovery. Paths resolve from the project root.')
+        sub.add_argument('--output',default='runs/national_default_v1',help='Owned run folder; use a new folder after model/config/source changes.')
         sub.set_defaults(func=_cmd_delivery)
 
     return parser

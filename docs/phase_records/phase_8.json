@@ -1,0 +1,339 @@
+{
+  "accepted_at_utc": "2026-10-03T18:09:41.289567+00:00",
+  "accepted_by": "main_orchestrator_root",
+  "blockers": [
+    "Parcel-specific and utility/supply evidence requires further acquisition and investigation."
+  ],
+  "code_revision": "3ddced7fb655744bf1ecfab675aa6c120e4d4952",
+  "code_revision_scope": "Git base only; no commit created for this request. Actual working source/config/test/frontend hashes are authoritative in executable_freeze.json.",
+  "data_checksums": {
+    "D:\\locate-data-center\\data\\interim\\usgs_annual_nlcd\\conus_2024\\4ebeb32ca7da666e728a\\land_cover_5070.tif": "599c0a645ff534645aa37da5055dc6704cf209ac23117e2f15fdf2cbbcbd03f6",
+    "D:\\locate-data-center\\data\\interim\\usgs_annual_nlcd\\conus_2024\\4ebeb32ca7da666e728a\\preparation_manifest.json": "842c2916a959815a149c7a58c58d7ea8e42d05b82c50065ccfeb10bf80a2d923",
+    "D:\\locate-data-center\\data\\interim\\usgs_annual_nlcd\\conus_2024\\abaa7ccb627b9ec5adbb\\Annual_NLCD_LndCov_2024_CU_C1V1.tif": "e93c848b114e48eb30d90bebf21ca03f31e7948f8552738862e1e2cd242d333e",
+    "D:\\locate-data-center\\data\\interim\\usgs_annual_nlcd\\conus_2024\\abaa7ccb627b9ec5adbb\\member_manifest.json": "3a3c0e5e9b007a70b85d5afac8c8ecc568575f53d9ae16fa9d30e91342cdf9ad",
+    "D:\\locate-data-center\\data\\raw\\_literature\\download_log.json": "52b16806500e71a9b1424c44ffe1b99f8700908261d8fba51ffc8d471d252704",
+    "D:\\locate-data-center\\data\\raw\\_literature\\download_log_cooling_designs_pue_wue.json": "52b16806500e71a9b1424c44ffe1b99f8700908261d8fba51ffc8d471d252704",
+    "D:\\locate-data-center\\data\\raw\\_literature\\download_log_electricity_water.json": "4fdc1d61f286d3bfd8b0559e7a2cc99de2691b82ac3359140fffa9f44f5c408a",
+    "D:\\locate-data-center\\data\\raw\\_literature\\download_log_screening_threshold_basis.json": "002a507004e561c1bfe9f6fc372caac969ed6d3b45a25546cef38fb44bd25138",
+    "D:\\locate-data-center\\data\\raw\\berkeley_queued_up\\phase5\\01c41c5ee800be873bd2\\download_log.json": "421091f27974fa29477554c7249fadc235e27a182b5eba435194f0058b365689",
+    "D:\\locate-data-center\\data\\raw\\berkeley_queued_up\\phase5\\01c41c5ee800be873bd2\\lbnl_ix_queue_data_file_thru2025.xlsx": "794582d3281c6a305e9615fcfec3fae9dc85be2165216d33760b677e976a08b6",
+    "D:\\locate-data-center\\data\\raw\\census_cartographic_boundary\\cb_2023_us_county_500k.zip": "99d6597b1fc7767deef62e01d28d8b5dcbd578e151855f7dc0d173cbf5bf0868",
+    "D:\\locate-data-center\\data\\raw\\census_cartographic_boundary\\cb_2023_us_state_500k.zip": "4a9b4f5cf993cd23738ac49b58fbb556f1f097fcf5e404a9dc10348dd41f7432",
+    "D:\\locate-data-center\\data\\raw\\census_cartographic_boundary\\download_log.json": "d586195e2316c3542babc41351934f9665454d33719a158a49b228b9aace8bbf",
+    "D:\\locate-data-center\\data\\raw\\eia861\\phase5\\a8e2f2dbe78584cd90ee\\download_log.json": "ece9875430f294779f688153567429dbc5b0bcbd32a3978db9e7cdc89b57fb4c",
+    "D:\\locate-data-center\\data\\raw\\eia861\\phase5\\a8e2f2dbe78584cd90ee\\f8612024.zip": "77ce49c60ac5a6bad50c442fc401aad5404a21da875dc5cbaba353af5ede54de",
+    "D:\\locate-data-center\\data\\raw\\eia_energy_atlas\\download_log.json": "465f89929fd78c99c60c34e8c066fac7c639e1f5c48bbd9ad08f46251b085b3f",
+    "D:\\locate-data-center\\data\\raw\\eia_energy_atlas\\eia_electric_power_transmission_lines_archive_national.geojson": "da9350f2e2f9017a2b7170bbe37266115279e1f7991fd2afe184f3371936a919",
+    "D:\\locate-data-center\\data\\raw\\eia_energy_atlas\\eia_natural_gas_interstate_intrastate_pipelines_national.geojson": "75cb0c7eb24e86c9195d27a9194b355f302d3705ff03fd61f7125e936ee5168f",
+    "D:\\locate-data-center\\data\\raw\\eia_energy_atlas\\eia_power_plants_national.geojson": "ab32783165132dc63c0ede53116bf8d349f96dfd5923fa6978a79f5b05971050",
+    "D:\\locate-data-center\\data\\raw\\epa_egrid\\official_2023\\download_log.json": "0aa2c8367f75fbfe85dc80a166401c4d09b160a8a38c1dbbefdba6fc97081f4c",
+    "D:\\locate-data-center\\data\\raw\\epa_egrid\\official_2023\\egrid2023_data_rev2.xlsx": "895cd81dd8662406189ad8adf5a2578dcb362cdb5cff7cca81b10ee6bd2447c6",
+    "D:\\locate-data-center\\data\\raw\\epa_egrid\\official_2023\\egrid2023_multiple_subregions.zip": "9c7398f84af782c1c1f51d0eed73a1bbe6b4ee8745b96247706f5eecce090168",
+    "D:\\locate-data-center\\data\\raw\\epa_egrid\\official_2023\\egrid2023_subregions.zip": "0e8529937b6c849e490d93f1fb38b465e3ea902ff86d06bfbafe1b7fd67035ba",
+    "D:\\locate-data-center\\data\\raw\\fema_nfhl\\bounded\\download_log.json": "0c237f63d6ca904446c1de552a802c3025c198a257e736279c6844d99e1be40b",
+    "D:\\locate-data-center\\data\\raw\\fema_nfhl\\bounded\\nfhl_layer0_46da3d71b6e206c8f673.geojson": "6fee3ea859f71feae7bb860361e5b4523dfbfbf3511636e86e00ffc83c7ef99a",
+    "D:\\locate-data-center\\data\\raw\\fema_nfhl\\bounded\\nfhl_layer28_d61f6f5f26ac79081446.geojson": "1237484e593dafeedfad172345602204fe73c61c2ba85f3ade8f67d37bf4da16",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\20d67841bc794501af22\\download_log.json": "5dd240973d38d6ce058ec26ca3c35a5ae1f79ada51d9281311b359ede75f4b71",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\20d67841bc794501af22\\tasmax_2030.nc": "8d55b052f7a2a3f5929a467558b566f7b4fa3e992b5acd3510ddaf3f47d9a966",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\2d34533e539368792500\\download_log.json": "5b6d632805598d69606fdc3c2631a2fe60e068564e487be74ab38f643a50e035",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\2d34533e539368792500\\tasmin_2030.nc": "44e648adb62aa7727258bc228f8f7b38e3078f8caab8b1723442a403cb45f865",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\4b1fec7b44a805b54eb3\\download_log.json": "b44e853fe3b6cab86def6971e6e95c3edfaeb707cc8271244efb04edd2ef5c29",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\4b1fec7b44a805b54eb3\\tas_2030.nc": "7aa087083f747009de718a210625dffc074d5b04a7b24434d5996c89417e97a1",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\e5a39194b7941795091d\\download_log.json": "58d888f0c9c7825b6e3a874607502303e07c2e59e173a920acc5f014c8e9f47f",
+    "D:\\locate-data-center\\data\\raw\\nasa_nex_gddp_cmip6\\phase5\\e5a39194b7941795091d\\pr_2030.nc": "d56baca4a7a7746d2bec2e7fba6773d8a1511db205eacf3a2ef9d67a48907bbd",
+    "D:\\locate-data-center\\data\\raw\\nlr_wind_toolkit\\phase5\\5e80ed87cfe12788d7b1\\download_log.json": "413241e984461be820fedba897289396eed905ede21e79b3347fe8bb1832e5f4",
+    "D:\\locate-data-center\\data\\raw\\nlr_wind_toolkit\\phase5\\5e80ed87cfe12788d7b1\\wtk_site_metadata.csv": "285b46161371974dc88b1f389ec623a5796f1075eb5576336fd951fd7aa82475",
+    "D:\\locate-data-center\\data\\raw\\noaa_ibtracs\\phase5\\4e74f25b18aba9d567e2\\download_log.json": "61187629ef8e7ab4a7506c8b6458cb3c7d160c11d84775ce781f430c72a522ac",
+    "D:\\locate-data-center\\data\\raw\\noaa_ibtracs\\phase5\\4e74f25b18aba9d567e2\\ibtracs.NA.list.v04r01.csv": "9e41cf9d3c4e6ae82fe35f218a3f1baea3e44b9e768857d62149ed9e73348e7b",
+    "D:\\locate-data-center\\data\\raw\\noaa_ncei_climate\\download_log.json": "24fe6e5706438faaf34e211f4f6e7823799b1598ef60885b1609ba9b60f1c4c7",
+    "D:\\locate-data-center\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tavg_norm.tif": "221db3be503a50c5c1d2796f4e489f1a46d1eabf78023bad4ca5a8a77d15acbd",
+    "D:\\locate-data-center\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tmax_max.tif": "4b00d1c63b839f86eb605434dfd31ddd449dcfa3b74e5c9b5077b77a28d66f0e",
+    "D:\\locate-data-center\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tmax_norm.tif": "865fd37d6946c26fbda1461cb0746b459c603b0e572131834fa140dfff5317b5",
+    "D:\\locate-data-center\\data\\raw\\noaa_ncei_climate\\gridded-normals-cogs\\normals-annual\\1991-2020\\1991_2020-annual-tmin_norm.tif": "5b193a4126a33cd87df2dcace3722c06ed8980f42a19225720c121fbe6d402a7",
+    "D:\\locate-data-center\\data\\raw\\ntad\\phase5\\80d519ee16bed31da370\\download_log.json": "dbf135b6520ca3b9cf1ad0a65c4f15ca5e02f24706f2c67109eed4a469bced15",
+    "D:\\locate-data-center\\data\\raw\\ntad\\phase5\\80d519ee16bed31da370\\features.esri.json": "8c71910a6b8c54fe9028420bb22e112a82fe5e06f925ea2bd13203cd1f84fe33",
+    "D:\\locate-data-center\\data\\raw\\usdm\\phase5\\364e8d37b621912e0c1e\\county_drought.csv": "8d062b6f61c41ca7d11c86cff5a459cdd7aa800a639428febc0d27fbec3dc19a",
+    "D:\\locate-data-center\\data\\raw\\usdm\\phase5\\364e8d37b621912e0c1e\\download_log.json": "aa3ef41d618dc46c11d917f13eeff293d03d0892662768a26b4d6337a6e5cccb",
+    "D:\\locate-data-center\\data\\raw\\usfs_wildfire_risk\\download_log.json": "4294d5bbffb19209c7c99a7e7f98dcf45b3ad8411b023e3a4df5127a16680e30",
+    "D:\\locate-data-center\\data\\raw\\usfs_wildfire_risk\\whp\\RDS-2015-0047-4_Data.zip": "7f10f1f8dd97551b8be1458fe0ec924df60b2cea7ece2d1af4c3c1166d1895ab",
+    "D:\\locate-data-center\\data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\BurnProbability_2a6aa73069a81e8a3250_5070.tif": "21325e2c39bf0d7ff27c84723f431610b503411ee61df6c9002712d0bc3b4d85",
+    "D:\\locate-data-center\\data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\ConditionalFlameLength_60e2e205bbd7899b0d02_5070.tif": "29908918949af117189093ddffe9c9e852ebf9a19cfdb0bed066180859241cdf",
+    "D:\\locate-data-center\\data\\raw\\usfs_wildfire_risk\\wrc\\bounded\\download_log.json": "413dfc278f13212967a907c29fc6ae0871c01e3e7debf347dd12d5a372b4c10f",
+    "D:\\locate-data-center\\data\\raw\\usgs_annual_nlcd\\Annual_NLCD_LndCov_2024_devbbox_5070.tif": "d60479c1d5ee951d8caa2fb211ad2f87da1a1a41aa178ac25ed98d94a93c83ba",
+    "D:\\locate-data-center\\data\\raw\\usgs_annual_nlcd\\conus_mosaic_2024\\Annual_NLCD_LndCov_2024_CU_C1V1.zip": "f317c2878d7a3b7bb9ec15e42d9780a9e0edd7bf6304f1c57a6a5a7c2bf14f49",
+    "D:\\locate-data-center\\data\\raw\\usgs_annual_nlcd\\conus_mosaic_2024\\download_log.json": "9a201ece6bfed7211eef8245e8ec5751ffa77e232b33ba30d9ff0e5f86a787a7",
+    "D:\\locate-data-center\\data\\raw\\usgs_annual_nlcd\\download_log.json": "e2f2eb73007faef240142fae8d44e93d79772f8646771cc13951fe7fe0385eaa",
+    "D:\\locate-data-center\\data\\raw\\usgs_padus\\PADUS4_1VectorAnalysis_CONUS.gdb": "a5435b6cfdc3ea74c1231bc6d470416845d436bb842c630ee5c26f4182fee9f2",
+    "D:\\locate-data-center\\data\\raw\\usgs_padus\\download_log.json": "0b1bfd8a689725d624a2ca4b5940bcb8b2e67c58509453fc2ff2c9468ef42cc7",
+    "D:\\locate-data-center\\data\\raw\\wri_aqueduct40\\aqueduct-4-0-water-risk-data.zip": "bd3ed2bce88d6ff1b89191632ad134a2436e1e1d49599382f23a04d513624fc3",
+    "D:\\locate-data-center\\data\\raw\\wri_aqueduct40\\download_log.json": "ffc4e5eb9de136e2bbd5f9a475ef9d4e365eb8e68587bf144d2eca305b576ef4"
+  },
+  "data_versions": {
+    "berkeley_queued_up": {
+      "data_year": "through 2025",
+      "limitation": "Not a comprehensive county inventory; absence is UNKNOWN. Reported MW is neither guaranteed supply nor a future emissions factor.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T06:09:04.519874+00:00",
+      "source_url": "https://emp.lbl.gov/queues",
+      "source_version": "2026 edition; May2026 workbook"
+    },
+    "building_transparency_ec3": {
+      "data_year": null,
+      "limitation": "Verified organization/account required; API access terms restrict caching/redistribution. No account/API data acquired or native integration claimed.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://www.buildingtransparency.org/api-access-pricing/",
+      "source_version": "July2026 access terms"
+    },
+    "eia_861": {
+      "data_year": "2024",
+      "limitation": "State context cannot establish the serving utility or facility outage performance; IEEE and Any Standard remain separate.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T06:05:24.789080+00:00",
+      "source_url": "https://www.eia.gov/electricity/data/eia861/",
+      "source_version": "2024 final; updated 2025-12-03"
+    },
+    "eia_energy_atlas": {
+      "data_year": "transmission archive 2024-09-30; plants 202502; pipeline vintage unverified",
+      "limitation": null,
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T02:01:00Z",
+      "source_url": "https://atlas.eia.gov/",
+      "source_version": "EIA national vector exports"
+    },
+    "epa_cwns": {
+      "data_year": null,
+      "limitation": "Native downloads currently open personal-data popup; no submission/bypass. Public scope/manual verified, exact native export headers unverified pending authorized local files. No fabricated normalized CSV adapter.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://sdwis.epa.gov/ords/sfdw_pub/r/sfdw/cwns_pub/about",
+      "source_version": "2022 survey; snapshot 2022-01-01"
+    },
+    "epa_egrid": {
+      "data_year": "2023",
+      "limitation": null,
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T04:07:57.246534+00:00",
+      "source_url": "https://www.epa.gov/egrid/detailed-data",
+      "source_version": "eGRID2023 rev2"
+    },
+    "fcc_broadband": {
+      "data_year": null,
+      "limitation": "Native availability/location export not acquired or verified; licensed location linkage needed. Availability would not prove diverse data-center fiber.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://www.fcc.gov/BroadbandData",
+      "source_version": "latest applicable filing/export must be selected"
+    },
+    "fema_nfhl": {
+      "data_year": "effective snapshot 2026-10-03",
+      "limitation": null,
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T04:11:03.563391+00:00",
+      "source_url": "https://www.fema.gov/flood-maps/national-flood-hazard-layer",
+      "source_version": "effective NFHL"
+    },
+    "fema_rapt": {
+      "data_year": null,
+      "limitation": "RAPT is available; no user agreement accepted. Appropriate underlying native source/export has not been verified or acquired.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://content.govdelivery.com/accounts/USDHSFEMA/bulletins/426af63",
+      "source_version": "updated 2026 tool"
+    },
+    "freight_analysis_framework": {
+      "data_year": null,
+      "limitation": "Official native CSV ZIP link verified; server connection reset during acquisition. Exact local CSV headers remain unverified; no native integration claimed. Regional flows are not a delivery route.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://www.bts.gov/faf/faf5",
+      "source_version": "5.7.1; 2024 preliminary annual estimate"
+    },
+    "global_cement_concrete_tracker": {
+      "data_year": null,
+      "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://globalenergymonitor.org/projects/global-cement-and-concrete-tracker/",
+      "source_version": "July2026"
+    },
+    "global_iron_steel_tracker": {
+      "data_year": null,
+      "limitation": "Download form not submitted; exact native workbook headers unverified. Plant technology/proximity would not be a product-specific EPD.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://globalenergymonitor.org/projects/global-iron-steel-tracker/",
+      "source_version": "September2026"
+    },
+    "nasa_nex_gddp_cmip6": {
+      "data_year": "2030",
+      "limitation": "One model/member/SSP and one future year only; 2031-2054 remain unacquired. Native tas CF time-maximum tag conflicts with daily-mean definition; matching native tasmax/tasmin numerical identity is required and recorded. Components are verification dependencies only. No climate-PUE function or parcel engineering claim.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T06:14:21.409830+00:00",
+      "source_url": "https://nccs.smce.nasa.gov/data-collections/nex-gddp-cmip6/",
+      "source_version": "2.0; ACCESS-CM2; r1i1p1f1; ssp245"
+    },
+    "noaa_ibtracs": {
+      "data_year": "1980-2024",
+      "limitation": "Historical segment proximity and storm counts, not future landfall or damage probability. 100km is a descriptive project reporting radius.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T06:05:47.248800+00:00",
+      "source_url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
+      "source_version": "v04r01 retrieved snapshot"
+    },
+    "noaa_ncei_climate": {
+      "data_year": "1991-2020",
+      "limitation": null,
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T02:13:11Z",
+      "source_url": "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals",
+      "source_version": "Gridded normals v1.0"
+    },
+    "nrel_nsrdb": {
+      "data_year": "local native observation period",
+      "limitation": "Native two-metadata-row CSV parser implemented; no data acquired. Public no-sign S3 exists; API requires key and personal fields, which were not submitted. Solar resource is not purchased power.",
+      "quality_blocker": null,
+      "retrieved_at": null,
+      "source_url": "https://developer.nlr.gov/docs/solar/nsrdb/python-examples/",
+      "source_version": "local native CSV version must be supplied"
+    },
+    "nrel_wind_toolkit": {
+      "data_year": "2007-2013 modeled power dataset; index native summary",
+      "limitation": "WRDB is https://wrdb.nlr.gov/; this older selected-site index is a declared WIND Toolkit subset. Samples do not represent all land or contracted power; SRW hourly local parser is implemented but unacquired.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T06:06:00.703949+00:00",
+      "source_url": "https://data.nlr.gov/submissions/54",
+      "source_version": "native site index v1; 2016-10-17; DOI10.7799/1329290"
+    },
+    "ntad": {
+      "data_year": "2026",
+      "limitation": "Minimum mapped rail distance is not a delivery route, usable siding, rail service agreement, or capacity.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T06:08:55.826801+00:00",
+      "source_url": "https://www.bts.gov/ntad/continuousupdates",
+      "source_version": "rail network 2026-07-21"
+    },
+    "us_drought_monitor": {
+      "data_year": "2000-01-01/2024-12-31",
+      "limitation": "County historical area context, not committed water or future drought probability.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T06:05:32.382820+00:00",
+      "source_url": "https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx",
+      "source_version": "weekly county cumulative snapshot; statisticsType=1"
+    },
+    "usfs_whp": {
+      "data_year": "2023",
+      "limitation": null,
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T02:06:00Z",
+      "source_url": "https://www.fs.usda.gov/rds/archive/catalog/RDS-2015-0047-4",
+      "source_version": "WHP 4th edition"
+    },
+    "usfs_wildfire_risk": {
+      "data_year": "unverified service packing",
+      "limitation": null,
+      "quality_blocker": "invalid_source_value",
+      "retrieved_at": "2026-10-03T04:07:50.142286+00:00",
+      "source_url": "https://www.fs.usda.gov/rds/archive/catalog/RDS-2020-0016-2",
+      "source_version": "WRC public ImageServer export (unverified scale/mask)"
+    },
+    "usgs_annual_nlcd": {
+      "data_year": "2024",
+      "limitation": "Native 2024 national land-cover classification; 50 km aggregate is not contiguous land or an approved parcel. Documented nearest-neighbor CRS conversion may affect boundary pixels.",
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T17:18:31.682592+00:00",
+      "source_url": "https://www.mrlc.gov/downloads/sciweb1/shared/mrlc/data-bundles/Annual_NLCD_LndCov_2024_CU_C1V1.zip",
+      "source_version": "Annual NLCD 2024 CU C1V1 native CONUS mosaic; nearest-neighbor 30 m EPSG:5070 derived raster"
+    },
+    "usgs_padus": {
+      "data_year": "2024",
+      "limitation": null,
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-02T22:00:00Z",
+      "source_url": "https://doi.org/10.5066/P96WBCHS",
+      "source_version": "PAD-US 4.1 flattened vector analysis"
+    },
+    "wri_aqueduct40": {
+      "data_year": "1979-2019 baseline",
+      "limitation": null,
+      "quality_blocker": null,
+      "retrieved_at": "2026-10-03T01:39:00Z",
+      "source_url": "https://www.wri.org/data/aqueduct-water-risk-atlas",
+      "source_version": "4.0 Y2023M07D05"
+    },
+    "wri_aqueduct40_future": {
+      "source_url": "https://www.wri.org/aqueduct/help-center/understanding-future-projections",
+      "source_version": "Aqueduct4.0 Y2023M07D05"
+    }
+  },
+  "decision_inputs_changed": false,
+  "delivery_version": "phase8_national_v1",
+  "evidence_paths": [
+    "runs/national_grid_v1",
+    "runs/national_discovery_v2",
+    "runs/national_strict_v1",
+    "runs/national_repeat_v1",
+    "runs/national_audit_v1",
+    "runs\\frontend_service\\model_runs\\7856164db37db8d838955a1cf2d92be04dd9dcf2a0c3391e70c33ce1a077402a"
+  ],
+  "grid": {
+    "cells": 3384,
+    "grid_definition_id": "conus-epsg5070-ox-2500000-oy3400000-s50000m-v1",
+    "grid_sha256": "10a63db974c6523b1e1278ac323560ff51c962e41fd7fc8e408a96265ee8ecb9",
+    "jurisdictions": 49,
+    "resolution_m": 50000
+  },
+  "interpretation": "These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences.",
+  "known_limitations": [
+    "50 km cells identify broad search areas, not parcels.",
+    "Critical parcel, contiguous-land, power, water and fiber evidence remain UNKNOWN; exploratory results are conditional.",
+    "Optional hazard/climate/expanded/future contexts are explicitly not computed in this initial national baseline.",
+    "No independent facility validation, current prospective holdout or overall accuracy estimate exists.",
+    "Legacy run_metadata phase-7 acceptance binding remains historical; this additive phase-8 record is the current root acceptance evidence."
+  ],
+  "outcomes": {
+    "all_38_compared_outputs_substantively_identical": true,
+    "centroid_states": 31,
+    "centroids_outside_texas": 110,
+    "design_regions": 122,
+    "maximum_observed_peak_working_set_bytes": 2473545728,
+    "rankable_conditional_alternatives": 5514,
+    "strict_rankable_alternatives": 0,
+    "strict_regions": 0,
+    "unique_region_geometries": 61
+  },
+  "phase": 8,
+  "root_cause": "New frontend requests and model defaults used a 42-cell Texas development grid; required NLCD coverage was restricted to that clip. The two regions were distinct cooling-design alternatives at the same geography.",
+  "schema_versions": {
+    "api": "1.1.0",
+    "run_configuration": "2.1.0",
+    "tables": "Existing table versions retained; see run-package Parquet metadata and docs/data_contracts.md."
+  },
+  "status": "accepted",
+  "tests": {
+    "backend_and_api": {
+      "command": ".venv/Scripts/python.exe -m pytest -q tests frontend/server_tests --basetemp=.pytest-work/texas-scope-root/full-suite-approved",
+      "duration_seconds": 89.09,
+      "failed": 0,
+      "loopback_permission": "Approved local socket execution; initial sandbox-only attempt had two WinError10013 bind failures.",
+      "passed": 544,
+      "skipped": 0
+    },
+    "comparison_command": ".venv/Scripts/python.exe tests/golden.py runs/national_discovery_v2 runs/national_repeat_v1",
+    "fresh_ui_geographic_cells": 3384,
+    "fresh_ui_request": "frontend_8ecc0dae8b13ea6999638287__7856164db37db8d8",
+    "frontend": {
+      "build_advisory": "Existing application bundle exceeds 500 kB; MapLibre worker emitted",
+      "production_build": "PASSED",
+      "unit_test_files": 8,
+      "unit_tests_passed": 81
+    },
+    "model_runs": {
+      "exact_repeat": "runs/national_repeat_v1",
+      "national_exploratory": "runs/national_discovery_v2",
+      "national_strict": "runs/national_strict_v1"
+    }
+  },
+  "working_revision_evidence": "runs/national_audit_v1/executable_freeze.json",
+  "working_revision_evidence_sha256": "30b67ab97176c415a7b351ea9f647eadbc76fc5705ce1310e89fd66d22a48000"
+}

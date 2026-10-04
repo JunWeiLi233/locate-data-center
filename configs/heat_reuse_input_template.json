@@ -1,0 +1,17 @@
+{
+  "grid_id": "g50000m-r0023-c0004",
+  "design_id": "air_dry_assumed",
+  "scenario_id": "historical_static_2023",
+  "basis": "project_assumption",
+  "rationale": "Unfilled investigation input for the saved national rank-one alternative. No heat host, recovery efficiency, temperature match, delivered heat or carbon credit is asserted. Supply explicit documented or project-assumed inputs before evaluating a useful-heat scenario.",
+  "reference": null,
+  "reference_section": null,
+  "consumer_name": null,
+  "temperature_compatible": null,
+  "recoverable_fraction": null,
+  "distribution_loss_fraction": null,
+  "annual_heat_demand_mwh": null,
+  "annual_auxiliary_electricity_mwh": null,
+  "displaced_heating_kg_co2e_per_mwh": null,
+  "auxiliary_electricity_kg_co2e_per_mwh": null
+}

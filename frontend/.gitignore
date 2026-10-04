@@ -11,3 +11,5 @@ __pycache__/
 .pytest-work/
 .npm-cache/
 .tmp/
+# Generated detailed land tiles (frontend/scripts/build_land_detail.py); ~1.1 GB of cached Census inputs
+public/map/land/

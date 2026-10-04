@@ -6,6 +6,27 @@ remaining access/coverage blockers (`configs/sources.yaml`).
 
 ## Used in Phase 1
 
+### Frontend boundary upgrade (separate from frozen analysis inputs)
+
+For geographic context, the frontend uses the Census 2025 TIGER/Line state file
+(`https://www2.census.gov/geo/tiger/TIGER2025/STATE/tl_2025_us_state.zip`) for full-detail
+administrative borders, and the 2025 shoreline-clipped 1:500,000 cartographic state file
+(`https://www2.census.gov/geo/tiger/GENZ2025/shp/cb_2025_us_state_500k.zip`) for the land backdrop.
+These are authoritative public-domain U.S. Government sources, acquired without login,
+forms or terms acceptance. Combined advertised download size is 13,201,445 bytes;
+the current raw cache is 3,665,484,056 bytes, within the existing 60 GB authorization.
+Downloads and checksums live in `data/raw/census_frontend_boundary/download_manifest.json`.
+Derived browser geometry and QA live in `frontend/public/map/`. The existing 2023
+model boundary, grids and scientific source configurations remain unchanged.
+
+Census identifies TIGER/Line as full-detail GIS data and cartographic boundaries as
+shoreline-clipped, generalized small-scale mapping data:
+https://www.census.gov/programs-surveys/geography/guidance/tiger-data-products-guide.html.
+The administrative file is vintage January 1, 2025:
+https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html.
+Neither a coordinate precision nor simplification tolerance certifies ground positional
+accuracy. The frontend must identify these layers as context, with their distinct meanings.
+
 ### U.S. Census Bureau cartographic boundary files (GENZ2023)
 
 - **What**: `cb_2023_us_state_500k.zip` (states/equivalents) and `cb_2023_us_county_500k.zip`
@@ -172,6 +193,120 @@ Solar/wind context is not purchased power. CWNS proximity is not a reuse commitm
 is not diverse data-center fiber, FAF regional flow is not a delivery route, and plant process is not
 product EPD. Unacquired/blocked/stub states documented in Phase5 are retained honestly.
 
+## National discovery source extension — 2026-10-03
+
+The initial national baseline reuses eGRID, Aqueduct 4.0 and the EIA Energy Atlas inventory and adds
+the official [Annual NLCD 2024 CONUS Collection 1.1 mosaic](https://www.mrlc.gov/downloads/sciweb1/shared/mrlc/data-bundles/Annual_NLCD_LndCov_2024_CU_C1V1.zip).
+This is an explicitly pinned 2024 product, not a claim to use the latest collection. The public download
+required no account, form, license acceptance or access-control workaround. Its raw archive is
+1,442,142,769 bytes, SHA256 `f317c2878d7a3b7bb9ec15e42d9780a9e0edd7bf6304f1c57a6a5a7c2bf14f49`,
+retrieved at `2026-10-03T17:18:31.682592+00:00`. The acquisition record is
+`data/raw/usgs_annual_nlcd/conus_mosaic_2024/download_log.json`. Pre-download cache accounting estimated
+5.18 GB after this acquisition; the completed national run measures the current raw cache, including
+manifests and concurrent acquisitions, at 5,989,963,949 bytes. Both are below the authorized 60 GB project
+limit. Extraction and reprojection are separately counted as interim files.
+
+The native TIFF uses WGS84 Albers, so it is actually reprojected to EPSG:5070 using categorical
+nearest-neighbor resampling at 30 m. The cache records original/derived checksums, both CRS definitions,
+resampling and nodata (250) in `preparation_manifest.json`. Raster nodata and invalid classes remain
+UNKNOWN. Aggregation uses bounded raster windows and spatial vector tiles; no per-cell HTTP requests
+occur. The national 50 km discovery grid changes the search resolution, not the native raster resolution.
+
+`configs/local_national_core_sources.json` selects the four scored source families explicitly. Optional
+hazard, climate and expanded contexts are not computed for this initial baseline and remain UNKNOWN
+with `not_computed` reasons. Inventory/coverage reports retain the distinction between implemented,
+acquired and analyzed. Previously acquired development-area data is preserved and is never substituted
+as national evidence. The original constraints, coefficients and scoring preferences are unchanged.
+# Regional refinement source precision
+
+The 1 km revision reuses checksum-verified official national NLCD, eGRID,
+Aqueduct and EIA inputs, with fresh child-cell spatial aggregation. No new
+coefficient, city list or geographic value is invented. The analytical lattice
+is finer than the discovery grid; source-native detail remains unchanged.
+NLCD retains its 30 m pixel source; eGRID and Aqueduct retain regional/basin
+support and EIA transmission distances remain infrastructure proxies.
+
+The initial representative parent windows are inland. Census 2023 generalized
+cartographic boundaries remain the administrative attribution source, with
+exact projected intersection and area-consistency checks. Regional outputs do
+not claim parcel or industrial zoning precision; expanded coastal/parcel use
+requires compatible authoritative finer boundary evidence.
+# Submission design-guidance source — additive 2026-10-03
+
+DOE/FEMP, *Best Practices Guide for Energy-Efficient Data Center Design* (July 2024):
+https://www.energy.gov/sites/default/files/2024-07/best-practice-guide-data-center-design.pdf
+Section 7.1, printed page 28 (PDF page 37), supports proposed heat-host proximity,
+temperature matching and backup heat rejection requirements. Read on 2026-10-03.
+Justification for this additional authoritative source: the hackathon explicitly
+asks for heat recovery/reuse and a sustainable operating vision. It is design
+guidance only, not a downloaded geographic dataset, heat-partner confirmation or
+numerical recovery/carbon coefficient. No model factor is inferred from it.
+
+## Cleanview operating-location comparison reference — 2026-10-03
+
+The user explicitly requested comparison with https://cleanview.co/data-centers/us,
+inspected in the Codex browser. This additional commercial source is justified
+only as an external diagnostic reference for current operating-location patterns;
+it is not an authoritative input to geographic features, physical coefficients,
+hard constraints or decision weights. The official model input sources remain
+unchanged. Source status is PARTIAL: public largest-operating cards are a
+capacity-selected sample, while summary cards count a wider inventory. Planned
+projects are excluded from the operating comparison; crypto/mining names are
+preserved, and AI workload remains unknown.
+
+Acquisition reads only rendered public summary/listing sections on the national
+page and its visible CONUS state links. Raw public HTML and URL, UTC retrieval,
+bytes, SHA-256, visible version and terms notes are cached under
+`data/raw/cleanview_reference/public_listing_v1/`; verified files are reused.
+No login, paid detail fields, hidden script payloads, map APIs or access-control
+workaround is used. Public visibility does not establish an open-data reuse
+license. No facility coordinates, engineering capacity boundary, measured PUE,
+WUE or energy/water/carbon observation is inferred from these cards.
+
+Exact normalized county/state labels are matched to the cached Census boundary
+IDs without fuzzy correction. The comparison reports ranges over all
+county-intersecting whole cells, not a facility point score. Unmatched labels and
+uncomputed fine-grid areas remain explicit unknowns. Site presence is neither an
+optimality label nor a reason to tune weights to reproduce existing locations.
+
+## County economic context — 2024 SAIPE with authorized 2023/2025 boundaries
+
+The user requested county poverty and household-income context on 2026-10-04,
+then explicitly authorized the existing 2023 and 2025 county boundary archives
+and confirmed that socioeconomic estimates remain 2024 SAIPE. This justifies
+adding the official U.S. Census Bureau SAIPE source. It is independent context
+and does not change technical feasibility, MCDA weights, scores or ranks.
+
+Official release: https://www.census.gov/data/datasets/2024/demo/saipe/2024-state-and-county.html.
+Official variable definitions: https://api.census.gov/data/timeseries/poverty/saipe/variables.html.
+Official national download directory:
+https://www2.census.gov/programs-surveys/saipe/datasets/2024/2024-state-and-county/.
+These sources were verified on 2026-10-04. The required concepts are all-age
+poverty rate/count, median household income and their margins of error;
+API variable names include `SAEPOVRTALL_PT`, `SAEPOVALL_PT`, `SAEMHI_PT`,
+`SAEPOVRTALL_MOE` and `SAEMHI_MOE`. SAIPE provides model-based single-year
+estimates and uncertainty, not exact household measurements. Any margin derived
+from downloadable confidence bounds must be labeled calculated with its method.
+
+Reuse `data/raw/census_cartographic_boundary/cb_2023_us_county_500k.zip` and
+`data/raw/census_frontend_boundary/areawater/cb_2025_us_county_500k.zip` in place.
+These are generalized Census cartographic boundaries at 1:500,000. They are not
+the missing `tl_2024_us_county.zip` TIGER/Line source. Boundary and estimate years
+are recorded independently; the default is 2025 geography with 2024 estimates,
+and 2023 geography is selectable. The mixed-vintage/generalization caveat follows
+the layer and canonical crosswalk. Counties outside CONUS are excluded from
+spatial context and the stated percentile universe. Join by five-character
+GEOID; preserve every positive-area overlap and report missing values/coverage.
+Fiscal revenues, incentives and costs are not acquired or estimated in this task.
+
+The official unauthenticated API probe redirected to `missing_key.html`; no key,
+account or workaround was used. The implementation uses the public official
+`est24all.txt` national fixed-width file (846,940 bytes) and its official
+`2024-estimate-layout.txt` definition (4,350 bytes), cached together under
+`data/raw/census_saipe/2024/` through `download_public` and the raw download
+manifest. Original 90% confidence endpoints are retained. Their half-width is
+marked calculated; it is not represented as a directly acquired API MOE.
+
 ## Isolated county Monte Carlo inputs (2026-10-04)
 
 The additional model imported from PR #1 keeps its own 19-file checksum-pinned manifest at
@@ -190,3 +325,27 @@ A changed checksum or blocked publisher remains explicit and prevents real runs;
 substitution or access-control workaround is permitted. The unused FEMA item metadata has live
 usage counters and is retained as release/terms documentation outside the required input identity;
 all 19 required scientific/definition files retain their original PR checksums.
+
+## Existing U.S. data centers — external validation only (2026-10-04)
+
+The rediscovery check (`docs/rediscovery_validation.md`) compares blind model candidates with the
+**IM3 Open Source Data Center Atlas** (Pacific Northwest National Laboratory, DOE IM3 project),
+version **v2026.02.09**, doi:[10.57931/3017294](https://doi.org/10.57931/3017294), licensed
+**ODbL 1.0** and derived from OpenStreetMap (attribution: © OpenStreetMap contributors; IM3/PNNL).
+The user's 2026-10-04 request asked for a credible public inventory of existing facilities. No
+master-prompt source provides facility coordinates. This DOE national-laboratory dataset is the most
+authoritative open alternative found. It is documented, versioned and has a DOI. Commercial listings
+(for example the county-level Cleanview samples used elsewhere) do not license coordinates for reuse.
+
+MSD-LIVE serves the files only after a login, so that route was not used. The identical release is
+published in the publisher's own repository: `IMMM-SFA/datacenter-atlas` commit
+`74ab37d5b9d200400a01639f9ffc3c3a8b716314`, "Updated existing dc db, citation, doi link", whose About
+page cites this DOI. File `data_center_database/im3_us_data_center_locations.gpkg` is 843,776 bytes,
+sha256 `1c0d8c206eb2070785e594784fda90f615e6ed7fd9646d67e1a9de237b8cc9f4`. It was downloaded once through
+`download_public` into `data/raw/im3_datacenter_atlas/`, and its manifest records the URL, retrieval time,
+checksum, version and licence. It has three layers (point 105, building 1,239, campus 135) holding
+1,474 OSM ids, 1,472 of them in CONUS. Fields: id, state, county, operator, name, footprint sqft,
+centroid lat/lon and footprint type. There is no city, capacity, status or date, so those stay null.
+
+This inventory is never a model feature. `src/dc_locator` does not import or read it, and a leakage test
+enforces this. It is read only after `candidates_blind.parquet` has been hashed.

@@ -1,0 +1,17 @@
+schema_version: 3.0.0
+delivery_version: phase11_national_fine_surface_v1
+parent_config: configs/run_national_exploratory.yaml
+grid_config: configs/grid_regional.yaml
+scoring_profile: configs/scoring_profile_regional.yaml
+selection: national_fine_region_parents
+maximum_region_extent_km: 20
+maximum_refined_cells: 200000
+maximum_batch_cells: 2500
+basis: project_assumption
+rationale: >-
+  Value every national 1 km cell on the national fine surface with the declared profile, then refine in
+  full one parent per national discovery region: the member parent with the highest fine value, keeping the
+  representative on ties or when no member is scored. Regions keep the national geographic spread while the
+  fine surface replaces each 50 km representative choice. Budgets bound execution resources and are not
+  engineering thresholds. The surface applies no screening and never replaces refined evidence; refined
+  coverage remains partial.

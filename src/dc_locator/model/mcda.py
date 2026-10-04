@@ -45,6 +45,7 @@ def score_alternatives(frame, metric_ids, weights, *, weights_usable=True):
     frame['contribution_by_metric_json'] = [json_text(dict(zip(metric_ids,row.tolist()))) if valid else '{}' for row,valid in zip(contributions,frame.rankable)]
     for j,metric in enumerate(metric_ids): frame['contribution_'+metric] = np.where(frame.rankable,contributions[:,j],np.nan)
     frame['mcda_rank'] = pd.Series(pd.NA,index=frame.index,dtype='Int64')
-    ranked = frame.loc[frame.rankable].sort_values(['scenario_id','mcda_score','grid_id','design_id'],ascending=[True,False,True,True],kind='stable')
+    order_columns = ['scenario_id','mcda_score','grid_id','design_id']
+    ranked = frame.loc[frame.rankable,order_columns].sort_values(order_columns,ascending=[True,False,True,True],kind='stable')
     for _, group in ranked.groupby('scenario_id',sort=True): frame.loc[group.index,'mcda_rank'] = np.arange(1,len(group)+1)
     return frame.sort_values(KEYS).reset_index(drop=True)

@@ -92,9 +92,8 @@ def _weights(profile,frame):
     return weights,method,ahp_result,template
 
 
-def decide(geography,provenance,performance,eligibility,profile,*,profile_hash,provenance_grid_definition_id=None):
-    """Pure table API with strict row schemas and provenance evidence checks."""
-    frame,normalized = assemble_metrics(geography,provenance,performance,eligibility,profile,provenance_grid_definition_id=provenance_grid_definition_id)
+def _normalize_metrics(frame,normalized,profile):
+    """Shared fixed-reference normalization for whole-universe and bounded APIs."""
     for metric in profile.metrics:
         values,flags = normalize_values(frame[metric.metric_id],metric.reference_low,metric.reference_high,metric.direction)
         frame[metric.metric_id] = values
@@ -106,6 +105,22 @@ def decide(geography,provenance,performance,eligibility,profile,*,profile_hash,p
         normalized.loc[selected,'direction'] = metric.direction
         normalized.loc[selected,'normalization_method'] = 'fixed_linear_clipped_0_100'
         normalized.loc[selected,'constant_observed_column'] = frame.loc[frame[metric.metric_id].notna(),metric.metric_id].nunique() <= 1
+    return frame,normalized
+
+
+def _normalized_identity(normalized,geography,profile,profile_hash):
+    normalized['schema_version'] = '1.0.0'
+    normalized['profile_id'] = profile.profile_id
+    normalized['profile_fingerprint'] = profile_hash
+    normalized['grid_definition_id'] = str(geography.grid_definition_id.iloc[0])
+    normalized['data_mode'] = str(geography.data_mode.iloc[0])
+    return normalized.sort_values(KEYS+['metric_id']).reset_index(drop=True)
+
+
+def decide(geography,provenance,performance,eligibility,profile,*,profile_hash,provenance_grid_definition_id=None):
+    """Pure table API with strict row schemas and provenance evidence checks."""
+    frame,normalized = assemble_metrics(geography,provenance,performance,eligibility,profile,provenance_grid_definition_id=provenance_grid_definition_id)
+    frame,normalized=_normalize_metrics(frame,normalized,profile)
     weights,method,ahp_result,template = _weights(profile,frame)
     usable = ahp_result is None or ahp_result['status'] != 'REVIEW_REQUIRED'
     ranked = score_alternatives(frame,profile.metric_ids,weights,weights_usable=usable)
@@ -127,12 +142,7 @@ def decide(geography,provenance,performance,eligibility,profile,*,profile_hash,p
         canonical['weights_used'] = weights
         canonical['contribution_by_metric'] = json.loads(row['contribution_by_metric_json'])
         DecisionResult.model_validate(canonical)
-    normalized['schema_version'] = '1.0.0'
-    normalized['profile_id'] = profile.profile_id
-    normalized['profile_fingerprint'] = profile_hash
-    normalized['grid_definition_id'] = str(geography.grid_definition_id.iloc[0])
-    normalized['data_mode'] = str(geography.data_mode.iloc[0])
-    normalized = normalized.sort_values(KEYS+['metric_id']).reset_index(drop=True)
+    normalized=_normalized_identity(normalized,geography,profile,profile_hash)
     physical = [m.column for m in profile.metrics]
     for metric in profile.metrics:
         if metric.table == 'geography': ranked[metric.column] = ranked.grid_id.map(geography.set_index('grid_id')[metric.column])
@@ -159,7 +169,8 @@ def run_phase4(geography_path,provenance_path,performance_path,eligibility_path,
         write_parquet(result[key],output_dir/(key+'.parquet'),schema_name=schema,schema_version=version,data_mode=mode,grid_definition_id=metadata['grid_definition_id'])
     regions = result['candidate_regions'].to_crs(4326)
     features = json.loads(regions.to_json(drop_id=True))['features'] if len(regions) else []
-    geojson = dict(type='FeatureCollection',features=features,dc_locator=dict(schema='CandidateRegion',schema_version='1.1.0',data_mode=mode.value,grid_definition_id=metadata['grid_definition_id'],profile_id=profile.profile_id,profile_fingerprint=fingerprint,created_by='dc_locator.model.decision'))
+    region_version='1.2.0' if 'maximum_extent_km' in profile.region_selection else '1.1.0'
+    geojson = dict(type='FeatureCollection',features=features,dc_locator=dict(schema='CandidateRegion',schema_version=region_version,data_mode=mode.value,grid_definition_id=metadata['grid_definition_id'],profile_id=profile.profile_id,profile_fingerprint=fingerprint,created_by='dc_locator.model.decision'))
     (output_dir/'candidate_regions.geojson').write_text(json_text(geojson)+'\n',encoding='utf-8')
     result['ranked_cells'].sort_values(['scenario_id','mcda_rank',*KEYS],na_position='last').to_csv(output_dir/'ranking.csv',index=False,lineterminator='\n')
     filename = 'ahp_result.json' if result['ahp_result'] else 'ahp_template.json'
