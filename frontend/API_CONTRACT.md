@@ -1,5 +1,11 @@
 # Locator visualization API 1.0
 
+## Optional county adapter
+
+`VITE_MODEL_BACKEND=monte-carlo` selects the separate `backend/dataclocator` API at `VITE_MONTE_CARLO_API_URL`. Its wire contract is JSON `api_version: "1.0"`, `POST /runs` with `{config, options}`, and `GET /runs/{run_id}` with queued/running/completed/failed envelopes. Frozen candidate evidence comes from `/runs/{run_id}/candidates/{fips}`. This adapter does not use `/api/search` or rewrite the grid API below. See [complete setup and scientific boundaries](../docs/county-backend-integration.md).
+
+The internal frontend view adds optional `modelKind: "monte-carlo"`, `coverageUnit: "counties"`, `modelEvidence` (verbatim completed model JSON) and `structuralScenarios` (the actual evaluated IDs). Facility configuration carries optional `monteCarlo: {settingsJson, sensitivity, convergence}`. County candidate score/rank/region mean/polygon remain null; centroids are actual frozen representative points. The backend owns expected/robust frontiers, distributions and all engineering/scenario mathematics. The UI reads and labels physical values rather than synthesizing normalized favorable factors or AHP weights. No scientific grid schema or original HTTP transport below changes.
+
 This transport adapter reads the accepted deterministic model. It does not replace scientific schemas or recompute rankings. JSON uses snake_case; browser types use camelCase through `src/api/regions.ts`. All responses include `schema_version: "1.0.0"`. Unknown numbers are null, never zero. Metric sources carry name, url, dataset_year, geography, resolution, method and scenario. All geometry is EPSG:4326 valid GeoJSON; one malformed region is retained with a geometry warning rather than breaking a run.
 
 ## Endpoints

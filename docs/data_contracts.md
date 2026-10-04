@@ -10,6 +10,8 @@ as a changelog entry (AGENTS.md section 9) before any later phase relies on the 
 
 ## Changelog
 
+- **County backend integration, 2026-10-04** — adds a separately packaged `dataclocator` HTTP API **1.0** and an optional frontend presentation adapter. Its model schema **0.2.0** and model version **0.2.1** are retained from the existing backend. Optional frontend fields identify county scope and carry verbatim model evidence/actual scenario IDs; county score/rank/polygon remain null. None of the accepted `dc_locator` scientific tables/config schemas below are changed. See [integration setup and mapping](county-backend-integration.md).
+
 - **Phase7 delivery, 2026-10-03** — active `RunConfig` **2.0.0** is a reference-based
   `DeliveryConfig` rather than the legacy embedded Phase1 run shape. The legacy loader still reads1.0.0;
   `load_run_config` dispatches explicit `delivery_version` documents to the new contract. Native geographic,
@@ -410,3 +412,13 @@ measured `run_metadata.resource_diagnostics`, including cached executions. Nativ
 hashes remain authoritative substantive evidence; the native adapters themselves were not changed.
 Only intermediate `geography_core/coverage_report.json` processed/resumed counters and execution metadata
 are intentionally varying. Final source manifest and all substantive stage hashes repeat exactly.
+
+## Additional county model (PR #1 integration, 2026-10-04)
+
+The separately packaged `backend/dataclocator/` model uses its versioned HTTP contract
+at `backend/dataclocator/docs/api.md` and `docs/openapi.json`; it does not change any grid
+schema or scientific coefficient. Its frontend adapter maps physical distributions and frozen
+evidence into optional model discriminants, retains null scalar scores/ranks, and labels county
+coverage separately from grid cells. `POST /runs` and `GET /runs/{run_id}` remain county-service
+routes; the grid service keeps `/api/search` and its existing contracts. Model changes reset
+workspace run/scenario/layer selections so stored results cannot cross model boundaries.

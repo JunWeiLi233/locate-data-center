@@ -2,6 +2,10 @@
 
 A map-first React/TypeScript application for the existing deterministic U.S. location-discovery model. MapLibre draws returned region geometry and actual representative centroids; it does not choose locations or calculate MCDA scores. Initial view opens directly on the United States. Globe is an optional presentation view.
 
+## County Monte Carlo backend
+
+Use [the isolated county backend setup](../docs/county-backend-integration.md) to select `VITE_MODEL_BACKEND=monte-carlo` and configure `VITE_MONTE_CARLO_API_URL`. It submits direct `POST /runs` requests and polls `GET /runs/{run_id}`. Physical distributions, actual separate scenarios, source provenance and unverified feasibility replace the grid model's score/rank presentation; the visual design is preserved. The original grid bridge remains the default.
+
 ## Run locally
 
 Node 22.12+ (this workspace used Node 24.14.1) and the existing project Python virtual environment are required. Open two terminals in the project root:

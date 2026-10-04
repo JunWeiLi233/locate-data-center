@@ -11,6 +11,10 @@ feature/model execution fails preflight because complete coverage and vector RAM
 Default **STRICT** execution intentionally produces a valid empty accepted ranking. The separate
 exploratory configuration exports conditional alternatives with critical UNKNOWN requirements visible.
 
+## Optional county Monte Carlo backend
+
+The existing 45-county `dataclocator` backend is now separately packaged under `backend/dataclocator/` and selectable in the same frontend with `VITE_MODEL_BACKEND=monte-carlo` and `VITE_MONTE_CARLO_API_URL=http://127.0.0.1:8000`. The default grid bridge remains available. See [county integration setup, validation and limitations](docs/county-backend-integration.md) for Python 3.13 installation, official data acquisition/preprocessing, explicit CORS origins and frontend startup. County results are unweighted conditional tradeoffs with unverified local feasibility, not scored or verified site recommendations.
+
 ## Install
 
 The project root is **`D:\locate-data-center`**. Backend code, `configs/`, cached `data/`,
@@ -134,3 +138,12 @@ and the accepted [Phase 7 completion record](docs/phase_records/phase_7.json). P
 this new `phase7_delivery_v1` code is not the unchanged prospective-holdout revision. Scientific detail:
 [methodology](docs/methodology.md), [contracts](docs/data_contracts.md), [dictionary](docs/data_dictionary.md),
 [sources](docs/sources.md), [limitations](docs/limitations.md).
+
+## Additional county Monte Carlo model
+
+PR #1 adds the independent `dataclocator` package under `backend/dataclocator/`.
+Choose **County Monte Carlo** in the map's Model selector to compare 45 explicitly selected counties;
+the deterministic grid model remains the default. County results have unweighted physical tradeoffs,
+separate structural scenarios and unverified local feasibility, with no invented MCDA score or rank.
+The county service uses its own Python 3.13 environment and port 8000. See
+[county model setup and limitations](docs/county-backend-integration.md).

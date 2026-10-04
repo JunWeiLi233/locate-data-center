@@ -1,0 +1,21 @@
+{
+  "purpose": "User-input template. Null engineering values deliberately require evidence or explicit user assumptions before real runs.",
+  "it_nameplate_mw": 100,
+  "utilization": 0.85,
+  "annual_hours": 8760,
+  "opening_year": 2027,
+  "analysis_horizon_years": 25,
+  "base_currency": "USD",
+  "base_year": 2025,
+  "currency_convention": "real",
+  "discount_rate": null,
+  "pue": {"value": null, "bounds": null, "source_or_user_assumption": null},
+  "wue": {"value_l_per_kwh": null, "basis": "it", "consumption_or_withdrawal": "consumption", "bounds": null, "source_or_user_assumption": null},
+  "annual_price_trajectories": null,
+  "annual_carbon_trajectories": null,
+  "scenario_set": null,
+  "seed": 42,
+  "simulation_count": 5000,
+  "hard_constraints": [],
+  "note": "Workload, horizon, opening year, seed and draw count are illustrative brief assumptions. Monte Carlo/API are later work. Historical prices must be converted into the specified real/nominal basis for future accounting. No escalation or decarbonization prior has been chosen."
+}

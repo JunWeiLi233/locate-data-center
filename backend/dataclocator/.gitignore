@@ -1,0 +1,12 @@
+# Keep downloaded archives and generated caches out of version control.
+.venv/
+__pycache__/
+.pytest_cache/
+data/raw/
+data/processed/
+*.egg-info/
+# Persist compact results/configs/reports, but omit large draws and plotting caches.
+outputs/**/*.npz
+outputs/**/matplotlib-cache/
+# Process ownership is transient; durable job JSON metadata remains reviewable.
+outputs/api-jobs/.owner.lock

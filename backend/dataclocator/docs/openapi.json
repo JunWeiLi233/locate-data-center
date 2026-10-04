@@ -1,0 +1,1432 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DataCLocator screening API",
+    "description": "Conditional county tradeoffs, with provenance and unverified feasibility exposed.",
+    "version": "1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "description": "Report readiness independently of model feasibility or missing optional data.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Content Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets": {
+      "get": {
+        "summary": "Datasets",
+        "description": "Expose pinned releases, coverage and gaps even when acquisition is incomplete.",
+        "operationId": "datasets_datasets_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Datasets"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Content Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/candidates": {
+      "get": {
+        "summary": "Candidates",
+        "description": "Return actual county evidence and provenance; never substitute fixtures.",
+        "operationId": "candidates_candidates_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Candidates"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Content Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs": {
+      "post": {
+        "summary": "Submit",
+        "description": "Validate/freeze settings and return immediately after bounded enqueueing.",
+        "operationId": "submit_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Content Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}": {
+      "get": {
+        "summary": "Poll",
+        "description": "Return persisted status, full results or a sanitized failure explanation.",
+        "operationId": "poll_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/candidates/{candidate_id}": {
+      "get": {
+        "summary": "Candidate Result",
+        "description": "Join frozen per-run evidence with scenario outcomes or exclusion reasons.",
+        "operationId": "candidate_result_runs__run_id__candidates__candidate_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "candidate_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CandidateResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CandidateResult": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Api Version"
+          },
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evidence"
+          },
+          "objective_units": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Objective Units"
+          },
+          "scenarios": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Scenarios"
+          },
+          "exclusion_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Exclusion Reasons"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "boundary_exclusions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Boundary Exclusions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "run_id",
+          "candidate_id",
+          "evidence",
+          "objective_units",
+          "scenarios",
+          "exclusion_reasons",
+          "warnings",
+          "boundary_exclusions"
+        ],
+        "title": "CandidateResult",
+        "description": "Publish per-run candidate evidence, outcomes and explicit exclusion reasons."
+      },
+      "Candidates": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Api Version"
+          },
+          "evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evidence"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "evidence",
+          "warnings"
+        ],
+        "title": "Candidates",
+        "description": "Wrap the documented frozen evidence export with API version and warnings."
+      },
+      "Constraint": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "water_stress_score",
+              "grid_co2e_kg_per_mwh",
+              "electricity_price_usd_per_mwh"
+            ],
+            "title": "Field"
+          },
+          "maximum": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Maximum"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field",
+          "maximum",
+          "label"
+        ],
+        "title": "Constraint",
+        "description": "Support documented screening thresholds, not inferred chance constraints."
+      },
+      "ConvergenceTolerances": {
+        "properties": {
+          "relative_objective_mean": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Relative Objective Mean"
+          },
+          "absolute_pareto_frequency": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Absolute Pareto Frequency"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "relative_objective_mean",
+          "absolute_pareto_frequency"
+        ],
+        "title": "ConvergenceTolerances",
+        "description": "Expose the predeclared convergence acceptance thresholds."
+      },
+      "Cooling": {
+        "properties": {
+          "pue": {
+            "$ref": "#/components/schemas/Prior"
+          },
+          "wue": {
+            "$ref": "#/components/schemas/Prior"
+          },
+          "wue_basis": {
+            "type": "string",
+            "enum": [
+              "it",
+              "facility"
+            ],
+            "title": "Wue Basis"
+          },
+          "water_definition": {
+            "type": "string",
+            "const": "consumption",
+            "title": "Water Definition"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "pue",
+          "wue",
+          "wue_basis",
+          "water_definition"
+        ],
+        "title": "Cooling",
+        "description": "Keep water boundaries explicit instead of inferring them from a value."
+      },
+      "Datasets": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Api Version"
+          },
+          "ready": {
+            "type": "boolean",
+            "title": "Ready"
+          },
+          "manifest": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manifest"
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "ready",
+          "manifest",
+          "coverage",
+          "warnings"
+        ],
+        "title": "Datasets",
+        "description": "Retain source-manifest and coverage schemas without fabricating missing data."
+      },
+      "Error": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetail"
+            },
+            "type": "array",
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "Error",
+        "description": "Use the same safe error structure for HTTP failures and failed jobs."
+      },
+      "ErrorDetail": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field",
+          "message"
+        ],
+        "title": "ErrorDetail",
+        "description": "Locate a validation error without exposing raw input or internal paths."
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Api Version",
+            "default": "1.0"
+          },
+          "error": {
+            "$ref": "#/components/schemas/Error"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorEnvelope",
+        "description": "Describe the shared HTTP error envelope in the generated OpenAPI contract."
+      },
+      "Health": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Api Version"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "ready": {
+            "type": "boolean",
+            "title": "Ready"
+          },
+          "queue": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "propertyNames": {
+              "enum": [
+                "running",
+                "queued"
+              ]
+            },
+            "type": "object",
+            "title": "Queue"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "model_version",
+          "ready",
+          "queue",
+          "warnings"
+        ],
+        "title": "Health",
+        "description": "Describe readiness responses, including the HTTP 503 health response."
+      },
+      "Job": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Api Version",
+            "default": "1.0"
+          },
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "cached": {
+            "type": "boolean",
+            "title": "Cached",
+            "default": false
+          },
+          "submitted_at": {
+            "type": "string",
+            "title": "Submitted At"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "links": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Links"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Error"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "status",
+          "submitted_at",
+          "links",
+          "warnings"
+        ],
+        "title": "Job",
+        "description": "Keep submission and polling envelopes consistent across job states."
+      },
+      "NumericalTolerances": {
+        "properties": {
+          "absolute": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 3,
+            "title": "Absolute"
+          },
+          "relative": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Relative"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "absolute",
+          "relative"
+        ],
+        "title": "NumericalTolerances",
+        "description": "Record objective-order physical tolerances for Pareto comparisons."
+      },
+      "Prior": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "triangular"
+            ],
+            "title": "Kind"
+          },
+          "lower": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Lower"
+          },
+          "mode": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Mode"
+          },
+          "upper": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Upper"
+          },
+          "units": {
+            "type": "string",
+            "enum": [
+              "dimensionless",
+              "L/kWh",
+              "fraction/year"
+            ],
+            "title": "Units"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "lower",
+          "mode",
+          "upper",
+          "units",
+          "source"
+        ],
+        "title": "Prior",
+        "description": "Document bounded engineering or trajectory assumptions and their source."
+      },
+      "RunConfig": {
+        "properties": {
+          "it_nameplate_mw": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "It Nameplate Mw"
+          },
+          "utilization": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Utilization"
+          },
+          "annual_hours": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Annual Hours"
+          },
+          "opening_year": {
+            "type": "integer",
+            "title": "Opening Year"
+          },
+          "analysis_horizon_years": {
+            "type": "integer",
+            "title": "Analysis Horizon Years"
+          },
+          "base_currency": {
+            "type": "string",
+            "const": "USD",
+            "title": "Base Currency"
+          },
+          "base_year": {
+            "type": "integer",
+            "const": 2025,
+            "title": "Base Year"
+          },
+          "currency_convention": {
+            "type": "string",
+            "enum": [
+              "real",
+              "nominal"
+            ],
+            "title": "Currency Convention"
+          },
+          "discount_rate": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Discount Rate"
+          },
+          "cooling": {
+            "$ref": "#/components/schemas/Cooling"
+          },
+          "dependence": {
+            "type": "string",
+            "enum": [
+              "shared_independent_engineering",
+              "shared_comonotonic_engineering"
+            ],
+            "title": "Dependence"
+          },
+          "scenario_set": {
+            "items": {
+              "$ref": "#/components/schemas/Scenario"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Scenario Set"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed"
+          },
+          "simulation_count": {
+            "type": "integer",
+            "title": "Simulation Count"
+          },
+          "feasibility_mode": {
+            "type": "string",
+            "enum": [
+              "exploratory",
+              "verified"
+            ],
+            "title": "Feasibility Mode"
+          },
+          "hard_constraints": {
+            "items": {
+              "$ref": "#/components/schemas/Constraint"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Hard Constraints"
+          },
+          "numerical_tolerances": {
+            "$ref": "#/components/schemas/NumericalTolerances"
+          },
+          "cvar_alpha": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Cvar Alpha"
+          },
+          "bootstrap_resamples": {
+            "type": "integer",
+            "title": "Bootstrap Resamples"
+          },
+          "convergence_tolerances": {
+            "$ref": "#/components/schemas/ConvergenceTolerances"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "it_nameplate_mw",
+          "utilization",
+          "annual_hours",
+          "opening_year",
+          "analysis_horizon_years",
+          "base_currency",
+          "base_year",
+          "currency_convention",
+          "discount_rate",
+          "cooling",
+          "dependence",
+          "scenario_set",
+          "seed",
+          "simulation_count",
+          "feasibility_mode",
+          "hard_constraints",
+          "numerical_tolerances",
+          "cvar_alpha",
+          "bootstrap_resamples",
+          "convergence_tolerances"
+        ],
+        "title": "RunConfig",
+        "description": "Publish the complete existing configuration through generated OpenAPI."
+      },
+      "RunOptions": {
+        "properties": {
+          "sensitivity": {
+            "type": "boolean",
+            "title": "Sensitivity",
+            "default": true
+          },
+          "convergence": {
+            "type": "boolean",
+            "title": "Convergence",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RunOptions",
+        "description": "Enable both audits by default; clients may explicitly skip either."
+      },
+      "RunRequest": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/RunConfig"
+          },
+          "options": {
+            "$ref": "#/components/schemas/RunOptions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "config"
+        ],
+        "title": "RunRequest",
+        "description": "Accept only model settings and bounded audit controls."
+      },
+      "Scenario": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "price_growth": {
+            "$ref": "#/components/schemas/Prior"
+          },
+          "carbon_decline": {
+            "$ref": "#/components/schemas/Prior"
+          },
+          "regional_overrides": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "$ref": "#/components/schemas/Prior"
+              },
+              "propertyNames": {
+                "enum": [
+                  "price_growth",
+                  "carbon_decline"
+                ]
+              },
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Regional Overrides"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "description",
+          "price_growth",
+          "carbon_decline",
+          "regional_overrides"
+        ],
+        "title": "Scenario",
+        "description": "Represent a separate structural future with optional regional rate priors."
+      }
+    }
+  }
+}
