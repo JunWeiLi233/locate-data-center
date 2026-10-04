@@ -11,6 +11,10 @@ feature/model execution fails preflight because complete coverage and vector RAM
 Default **STRICT** execution intentionally produces a valid empty accepted ranking. The separate
 exploratory configuration exports conditional alternatives with critical UNKNOWN requirements visible.
 
+## Optional county Monte Carlo backend
+
+The existing 45-county `dataclocator` backend is now separately packaged under `backend/dataclocator/` and selectable in the same frontend with `VITE_MODEL_BACKEND=monte-carlo` and `VITE_MONTE_CARLO_API_URL=http://127.0.0.1:8000`. The default grid bridge remains available. See [county integration setup, validation and limitations](docs/county-backend-integration.md) for Python 3.13 installation, official data acquisition/preprocessing, explicit CORS origins and frontend startup. County results are unweighted conditional tradeoffs with unverified local feasibility, not scored or verified site recommendations.
+
 ## Install
 
 The project root is **`D:\locate-data-center`**. Backend code, `configs/`, cached `data/`,

@@ -858,3 +858,16 @@ Windows approval permits it. The remaining six folders and verification evidence
 `frontend/output/relocation-report.json`.
 An earlier persistent ACL proposal was rejected by automatic approval review. Subsequent
 temporary ACL checks restored the original settings; no permission changes remain.
+
+
+## County backend integration — 2026-10-04 (local validation, pending teammate review)
+
+- Upstream discovered from GitHub fork metadata: `JunWeiLi233/locate-data-center`, default branch `main`; isolated feature branch `feat/integrate-county-monte-carlo` starts from `29ace50e831fefda52e77e2c9a0360693e64cddb`.
+- Existing `dataclocator` backend imported as a separate Python 3.13 package under `backend/dataclocator/`. Nine core accounting/data/scenario/Pareto modules are byte-identical to the original backend. Only queue file ownership is adapted for Unix/Windows portability. Original `src/dc_locator`, baseline configs, accepted phase records and historical run outputs are not rewritten.
+- The selectable county frontend adapter submits `POST /runs`, polls `GET /runs/{run_id}`, and reads frozen candidate evidence. Existing layout, styles, map/list/detail/compare components and the default grid adapter are retained. County points have no fabricated polygons, score or rank; expected/CVaR tradeoffs and source/assumption/uncertainty evidence remain explicit.
+- Local checks: imported backend **81 passed**; frontend **77 passed** with the opt-in real-data flow enabled; TypeScript/Vite production builds passed for both grid-default and county-selected modes. Fresh official-data React/adapter/ASGI flow submits a 32-draw debugging run, displays all 45 counties, restores its scenario and confirms the valid empty verified-feasibility result.
+- Commands: county venv `python -m pytest -q`; frontend `npm test`; `VITE_MODEL_BACKEND=monte-carlo npm run build`; `DATACLOCATOR_TEST_PYTHON=<county-venv-python> npm test`. The ASGI bridge uses a fresh owned test root, not a previously completed run or synthetic fallback.
+- Limitations: sandbox rejects live loopback bind/connect; live TCP/CORS/WebGL/Playwright verification and Windows runtime validation remain local-machine checks. Original grid backend suite was not run in the county package's incompatible Python 3.13 environment. Existing MapLibre build-size and Starlette test-client deprecation warnings remain visible.
+- Scientific boundaries: 45 selected counties, unconfirmed engineering/rate priors, equal modeled direct water at equal WUE, preliminary state tariff proxies, 2023 grid averages/15 ambiguous assignments, unverified local power/water/zoning/fiber. No full TCO, embodied carbon, indirect generation-water, heat-reuse or community benefits are invented.
+- Acquisition/preprocessing, separate environments, backend URL and explicit CORS origins are documented in [county-backend-integration.md](county-backend-integration.md). Datasets, outputs, arrays, virtualenvs, secrets and caches are ignored and excluded from the changes.
+- Publication is verified after the commit via GitHub branch SHA, PR head/base and available check-run/status metadata; no CI workflow was present at the upstream base. No merge, default-branch push or deployment is authorized.

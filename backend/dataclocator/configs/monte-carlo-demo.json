@@ -1,0 +1,241 @@
+{
+  "it_nameplate_mw": 100,
+  "utilization": 0.85,
+  "annual_hours": 8760,
+  "opening_year": 2027,
+  "analysis_horizon_years": 25,
+  "base_currency": "USD",
+  "base_year": 2025,
+  "currency_convention": "real",
+  "discount_rate": 0.05,
+  "cooling": {
+    "pue": {
+      "kind": "triangular",
+      "lower": 1.1,
+      "mode": 1.2,
+      "upper": 1.3,
+      "units": "dimensionless",
+      "source": "Agent-proposed demonstration assumption, not user-confirmed or engineering-calibrated"
+    },
+    "wue": {
+      "kind": "triangular",
+      "lower": 0.1,
+      "mode": 0.2,
+      "upper": 0.3,
+      "units": "L/kWh",
+      "source": "Agent-proposed demonstration assumption, not user-confirmed or engineering-calibrated"
+    },
+    "wue_basis": "it",
+    "water_definition": "consumption"
+  },
+  "dependence": "shared_independent_engineering",
+  "scenario_set": [
+    {
+      "id": "price00_carbon00",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0,
+        "mode": 0,
+        "upper": 0,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0,
+        "mode": 0,
+        "upper": 0,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price00_carbon02",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0,
+        "mode": 0,
+        "upper": 0,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0.02,
+        "mode": 0.02,
+        "upper": 0.02,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price00_carbon05",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0,
+        "mode": 0,
+        "upper": 0,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0.05,
+        "mode": 0.05,
+        "upper": 0.05,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price01_carbon00",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0.01,
+        "mode": 0.01,
+        "upper": 0.01,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0,
+        "mode": 0,
+        "upper": 0,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price01_carbon02",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0.01,
+        "mode": 0.01,
+        "upper": 0.01,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0.02,
+        "mode": 0.02,
+        "upper": 0.02,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price01_carbon05",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0.01,
+        "mode": 0.01,
+        "upper": 0.01,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0.05,
+        "mode": 0.05,
+        "upper": 0.05,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price02_carbon00",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0.02,
+        "mode": 0.02,
+        "upper": 0.02,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0,
+        "mode": 0,
+        "upper": 0,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price02_carbon02",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0.02,
+        "mode": 0.02,
+        "upper": 0.02,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0.02,
+        "mode": 0.02,
+        "upper": 0.02,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    },
+    {
+      "id": "price02_carbon05",
+      "description": "Factorial sensitivity assumption: uniform annual grid decline and electricity growth; zero-rate combinations are explicit no-change controls, not forecasts.",
+      "price_growth": {
+        "kind": "fixed",
+        "lower": 0.02,
+        "mode": 0.02,
+        "upper": 0.02,
+        "units": "fraction/year",
+        "source": "Agent-proposed real annual price-growth sensitivity; unconfirmed, not a forecast"
+      },
+      "carbon_decline": {
+        "kind": "fixed",
+        "lower": 0.05,
+        "mode": 0.05,
+        "upper": 0.05,
+        "units": "fraction/year",
+        "source": "Agent-proposed annual grid-carbon decline sensitivity; unconfirmed, not a forecast"
+      },
+      "regional_overrides": {}
+    }
+  ],
+  "seed": 42,
+  "simulation_count": 5000,
+  "feasibility_mode": "exploratory",
+  "hard_constraints": [],
+  "numerical_tolerances": {
+    "absolute": [
+      1,
+      0.001,
+      0.001
+    ],
+    "relative": 1e-10
+  },
+  "cvar_alpha": 0.95,
+  "bootstrap_resamples": 100,
+  "convergence_tolerances": {
+    "relative_objective_mean": 0.02,
+    "absolute_pareto_frequency": 0.03
+  }
+}

@@ -10,6 +10,8 @@ as a changelog entry (AGENTS.md section 9) before any later phase relies on the 
 
 ## Changelog
 
+- **County backend integration, 2026-10-04** — adds a separately packaged `dataclocator` HTTP API **1.0** and an optional frontend presentation adapter. Its model schema **0.2.0** and model version **0.2.1** are retained from the existing backend. Optional frontend fields identify county scope and carry verbatim model evidence/actual scenario IDs; county score/rank/polygon remain null. None of the accepted `dc_locator` scientific tables/config schemas below are changed. See [integration setup and mapping](county-backend-integration.md).
+
 - **Phase7 delivery, 2026-10-03** — active `RunConfig` **2.0.0** is a reference-based
   `DeliveryConfig` rather than the legacy embedded Phase1 run shape. The legacy loader still reads1.0.0;
   `load_run_config` dispatches explicit `delivery_version` documents to the new contract. Native geographic,

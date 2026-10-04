@@ -1,0 +1,44 @@
+{
+  "scope": "optional county backend/frontend integration",
+  "status": "local_validation_passed_pending_teammate_review",
+  "recorded_at_utc": "2026-10-04T04:40:59.037697+00:00",
+  "upstream": "JunWeiLi233/locate-data-center",
+  "base_branch": "main",
+  "base_commit": "29ace50e831fefda52e77e2c9a0360693e64cddb",
+  "feature_branch": "feat/integrate-county-monte-carlo",
+  "api_version": "1.0",
+  "model_version": "0.2.1",
+  "model_schema": "0.2.0",
+  "tests": {
+    "county_backend_passed": 81,
+    "frontend_with_real_flow_passed": 77
+  },
+  "builds": [
+    "grid-default TypeScript/Vite",
+    "county-selected TypeScript/Vite"
+  ],
+  "core_model_bytes_unchanged_sha256": {
+    "accounting.py": "d249b8b1d06e23e3a713921f20b330e6da586efb31278974b1df7f4f20f53bb9",
+    "scenarios.py": "92dfdb9e6a407c821d7d7aea0eafd8fec2798371aa8ded6328aab018591b6eca",
+    "simulation.py": "35572809302bf42bcbcc9f8fda45a75d49ffb1c1eb973aa17d81fe072d81b2ef",
+    "pareto.py": "e56fbf31d2accbd58aa6e2e9463782ca9b139aa3ae49d9d5d8bc7bc2dd4fb04c",
+    "geography.py": "31c0aa0db5f15fa8412dbd7f9a4f7163495bed4e9a5ccf49b083c5981c6ed958",
+    "ingest.py": "1fe312e193f948a50a334dba03a3dcadc79d6e193bfe68950d80ca2d7b8380d0",
+    "pipeline.py": "b6c4643a7f96929e039d7d9fe0398feeff9e60a0dc5b3f06522089023a8a6a21",
+    "experiments.py": "29bf2eae49ac4b311fa58c55b44d5d2839e90eba989d36c4c67cc8633c1265da",
+    "schemas.py": "3e2873396c5c0b44368506d48aa5732f08840239a54ac5a5bc87a270681243d0"
+  },
+  "data_source_manifest": "backend/dataclocator/data/source_manifest.json",
+  "analyzed_counties": 45,
+  "published_runtime_data": false,
+  "earlier_grid_phases_rewritten": false,
+  "model_math_rebuilt": false,
+  "verification_limitations": [
+    "sandbox blocks live TCP bind/connect",
+    "WebGL/Playwright browser flow not run",
+    "Windows runtime not available",
+    "original grid backend suite not run in the separate county environment"
+  ],
+  "setup_document": "docs/county-backend-integration.md",
+  "publication_verification_required": true
+}

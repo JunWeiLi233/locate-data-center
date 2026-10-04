@@ -1,0 +1,22 @@
+# Packaging makes the offline preprocessing and accounting commands reproducible.
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataclocator"
+version = "0.2.1"
+description = "County screening data and transparent data-center physical accounting"
+requires-python = ">=3.13,<3.14"
+# HTTP dependencies are pinned separately from model semantics/cache versioning.
+dependencies = ["pandas==3.0.6", "numpy==2.5.3", "pyarrow==25.0.1", "openpyxl==3.1.5", "geopandas==1.2.0", "matplotlib==3.11.2", "fastapi==0.142.2", "pydantic==2.13.5", "uvicorn==0.54.0"]
+
+[project.scripts]
+dataclocator = "dataclocator.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
