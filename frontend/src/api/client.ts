@@ -1,5 +1,7 @@
 import type { Capabilities, FacilityConfiguration, Job, LayerData, LayerId, RunResult } from '../types/domain';
 import { parseCapabilities, parseJob, parseLayer, parseRunResult, serializeConfiguration } from './regions';
+import { createMonteCarloApi } from './monteCarlo';
+import { modelFromUrl } from '../utils/modelChoice';
 
 export interface LocatorApi {
   capabilities(signal?:AbortSignal):Promise<Capabilities>;
@@ -42,4 +44,6 @@ const demoApi:LocatorApi={
   run:async(id,scenario,signal)=>(await import('../mocks/api')).mockApi.run(id,scenario,signal),
   layer:async(id,run,scenario,sublayer,signal)=>(await import('../mocks/api')).mockApi.layer(id,run,scenario,sublayer,signal),
 };
-export const locatorApi=isDemoMode?demoApi:realApi;
+// Selection is explicit; unavailable services never trigger a switch of scientific models.
+export const isCountyModel=modelFromUrl()==='county';
+export const locatorApi=isCountyModel?createMonteCarloApi(import.meta.env.VITE_MONTE_CARLO_API_URL??'http://127.0.0.1:8000'):isDemoMode?demoApi:realApi;

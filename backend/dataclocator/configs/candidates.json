@@ -1,0 +1,5 @@
+{
+  "selection_method": "45 counties, one per selected contiguous state; chosen for geographic breadth before reading energy, price, carbon or water outcomes. No optimization or data-center-market filter. CT, NJ and RI omitted from this initial sample. Not a statistically representative national sample.",
+  "geography_vintage": "2025",
+  "county_fips": ["01089", "04005", "05031", "06019", "08069", "10001", "12001", "13059", "16001", "17019", "18067", "19103", "20045", "21113", "22073", "23019", "24001", "25015", "26055", "27137", "28075", "29019", "30031", "31079", "32023", "33009", "35045", "36065", "37063", "38017", "39049", "40031", "41059", "42027", "45079", "46099", "47065", "48041", "49021", "50017", "51015", "53077", "54061", "55035", "56001"]
+}

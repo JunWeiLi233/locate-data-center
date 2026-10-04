@@ -197,3 +197,14 @@ known limitations, blockers.
 
 `AGENTS.md`, `README.md`, `docs/methodology.md`, `docs/data_contracts.md`, `docs/data_dictionary.md`,
 `docs/sources.md`, `docs/limitations.md`, `docs/phase_handoff.md`.
+
+## 12. Additional county model (user-authorized PR #1, 2026-10-04)
+
+`backend/dataclocator/` is an additive, separately packaged Python 3.13 county Monte Carlo model.
+Its source instructions and dependency lock apply within that package. Its data and output roots
+remain isolated; it does not replace the geography/model separation or accepted evidence of
+`src/dc_locator`. The frontend offers an explicit Model choice, with the grid model as default.
+The 45 selected counties are a bounded comparison cohort, not national discovery or approved sites.
+This authorized layout extension and its verification are recorded in `docs/phase_handoff.md`;
+local integration evidence lives in `runs/pr1_merge_v1/`. Keep generated county data, outputs,
+environments and secrets excluded from Git.

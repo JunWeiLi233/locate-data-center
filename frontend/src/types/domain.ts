@@ -15,6 +15,8 @@ export interface Metric {
 }
 export interface Factor { id: FactorId; label: string; score: number | null; direction: 'higher_is_better'; basis: string; sources: Source[] }
 export interface CandidateRegion {
+  // County objectives are unweighted physical tradeoffs rather than MCDA scores.
+  modelKind?: 'monte-carlo';
   id: string; label: string; rank: number | null; rankBasis: string;
   score: number | null; regionMeanScore: number | null; paretoOptimal: boolean | null;
   centroid: { lat: number; lon: number } | null; geometry: Geometry | null; geometryWarning: string | null;
@@ -27,6 +29,8 @@ export interface FacilityConfiguration {
   peakItPowerMw: number; averageLoadPercent: number; targetOpeningYear: number; lifetimeYears: number;
   cooling: string; weighting: 'equal' | 'user' | 'ahp'; screeningMode: 'STRICT' | 'EXPLORATORY';
   groupWeights: Record<string, number>; ahpMatrix: number[][] | null;
+  // County-model assumptions stay explicit JSON; the backend owns validation/math.
+  monteCarlo?: { settingsJson: string; sensitivity: boolean; convergence: boolean };
 }
 export interface LayerCapability {
   id: LayerId; label: string; available: boolean; reason: string | null;
@@ -34,12 +38,21 @@ export interface LayerCapability {
 }
 export interface Scenario { id: string; label: string; year: number | null; pathway: string | null; available: boolean; reason: string | null }
 export interface Capabilities {
+  // Optional discriminants retain compatibility with the original grid adapter.
+  modelKind?: 'monte-carlo';
+  coverageUnit?: 'counties';
   schemaVersion: string; scope: string; defaultConfiguration: FacilityConfiguration;
   coolingOptions: { id: string; label: string }[];
   weightingGroups: { id: string; label: string }[];
   layers: LayerCapability[]; scenarios: Scenario[]; latestRunId: string | null; demo: boolean;
 }
 export interface RunResult {
+  // County results have no MCDA score or rank; their conditional frontiers stay separate.
+  modelKind?: 'monte-carlo';
+  coverageUnit?: 'counties';
+  // Verbatim scientific JSON and actual scenario IDs remain inspectable and downloadable.
+  modelEvidence?: Record<string, unknown>;
+  structuralScenarios?: Scenario[];
   schemaVersion: string; runId: string; timestamp: string | null; modelVersion: string; demo: boolean;
   state: 'SUCCESS' | 'PARTIAL' | 'EMPTY'; scope: string; analyzedCellCount: number;
   configuration: FacilityConfiguration; scenarioId: string; regions: CandidateRegion[];

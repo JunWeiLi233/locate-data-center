@@ -171,3 +171,22 @@ CF metadata conflict. Queue negative native capacity outliers remain UNKNOWN whi
 Solar/wind context is not purchased power. CWNS proximity is not a reuse commitment, FCC availability
 is not diverse data-center fiber, FAF regional flow is not a delivery route, and plant process is not
 product EPD. Unacquired/blocked/stub states documented in Phase5 are retained honestly.
+
+## Isolated county Monte Carlo inputs (2026-10-04)
+
+The additional model imported from PR #1 keeps its own 19-file checksum-pinned manifest at
+`backend/dataclocator/data/source_manifest.json`. Census 2025 gazetteer/TIGER, EPA eGRID 2023
+revision 2 and supplier maps, EIA September 2026 monthly prices, WRI Aqueduct 4.0, NOAA normals
+and FEMA NRI are official/public inputs used for an explicit 45-county cohort. These inputs
+belong only to the county model; they do not silently replace the grid model's geography.
+The cohort is not a representative national sample, and county/state averages remain proxies
+for site engineering commitments. WRI attribution and each manifest terms note are retained.
+
+Five archived inputs match existing project cache checksums exactly. New downloads are cached
+under `data/raw/county_monte_carlo/pr1_frozen_v1/` with a local download manifest, then copied
+to the isolated runtime's declared paths. The PR's original retrieval metadata stays intact;
+current acquisition/reuse times and outcomes are recorded in `runs/pr1_merge_v1/acquisition.json`.
+A changed checksum or blocked publisher remains explicit and prevents real runs; no synthetic
+substitution or access-control workaround is permitted. The unused FEMA item metadata has live
+usage counters and is retained as release/terms documentation outside the required input identity;
+all 19 required scientific/definition files retain their original PR checksums.

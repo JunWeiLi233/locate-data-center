@@ -890,3 +890,63 @@ hashes, and the Phase 7 record is unchanged.
   `--basetemp=.pytest-work/tests`, replacing `.tmp-phase7-user`. `runs/README.md` indexes run folders
   and marks accepted evidence. AGENTS.md §5 gains workspace-hygiene rules: no new top-level entries,
   delete your own scratch, and never touch evidence or hash-bound files.
+
+## County backend integration — 2026-10-04 (local validation, pending teammate review)
+
+- Upstream discovered from GitHub fork metadata: `JunWeiLi233/locate-data-center`, default branch `main`; isolated feature branch `feat/integrate-county-monte-carlo` starts from `29ace50e831fefda52e77e2c9a0360693e64cddb`.
+- Existing `dataclocator` backend imported as a separate Python 3.13 package under `backend/dataclocator/`. Nine core accounting/data/scenario/Pareto modules are byte-identical to the original backend. Only queue file ownership is adapted for Unix/Windows portability. Original `src/dc_locator`, baseline configs, accepted phase records and historical run outputs are not rewritten.
+- The selectable county frontend adapter submits `POST /runs`, polls `GET /runs/{run_id}`, and reads frozen candidate evidence. Existing layout, styles, map/list/detail/compare components and the default grid adapter are retained. County points have no fabricated polygons, score or rank; expected/CVaR tradeoffs and source/assumption/uncertainty evidence remain explicit.
+- Local checks: imported backend **81 passed**; frontend **77 passed** with the opt-in real-data flow enabled; TypeScript/Vite production builds passed for both grid-default and county-selected modes. Fresh official-data React/adapter/ASGI flow submits a 32-draw debugging run, displays all 45 counties, restores its scenario and confirms the valid empty verified-feasibility result.
+- Commands: county venv `python -m pytest -q`; frontend `npm test`; `VITE_MODEL_BACKEND=monte-carlo npm run build`; `DATACLOCATOR_TEST_PYTHON=<county-venv-python> npm test`. The ASGI bridge uses a fresh owned test root, not a previously completed run or synthetic fallback.
+- Limitations: sandbox rejects live loopback bind/connect; live TCP/CORS/WebGL/Playwright verification and Windows runtime validation remain local-machine checks. Original grid backend suite was not run in the county package's incompatible Python 3.13 environment. Existing MapLibre build-size and Starlette test-client deprecation warnings remain visible.
+- Scientific boundaries: 45 selected counties, unconfirmed engineering/rate priors, equal modeled direct water at equal WUE, preliminary state tariff proxies, 2023 grid averages/15 ambiguous assignments, unverified local power/water/zoning/fiber. No full TCO, embodied carbon, indirect generation-water, heat-reuse or community benefits are invented.
+- Acquisition/preprocessing, separate environments, backend URL and explicit CORS origins are documented in [county-backend-integration.md](county-backend-integration.md). Datasets, outputs, arrays, virtualenvs, secrets and caches are ignored and excluded from the changes.
+- Publication is verified after the commit via GitHub branch SHA, PR head/base and available check-run/status metadata; no CI workflow was present at the upstream base. No merge, default-branch push or deployment is authorized.
+
+## County model merge acceptance — 2026-10-04
+
+The user explicitly authorized merging GitHub PR #1 as an additional model. Its separate
+`backend/dataclocator/` package is an authorized layout extension; the existing grid model,
+accepted evidence and shared unpublished work are preserved. The imported contributor's
+earlier pending-review/publication record remains historical and is superseded by this review.
+
+The visible Model control defaults to Grid and also offers County Monte Carlo (`/?model=county`).
+Switching models resets run, scenario, selection and layer state. The current workspace retains
+its national/refinement and county-economic filter changes; the remote merge contains the
+reviewed PR variant without publishing those other unfinished changes. County points have
+null scores/ranks, explicit proxy evidence, separate scenarios and conditional feasibility.
+
+Independent review found and repaired stale/cross-run cache adoption, incomplete processed-input
+lineage, and Windows implicit-GBK report exports. Completion now validates exact frozen identity,
+candidate/source evidence and artifact hashes; shared input faults return 503 and isolated cache
+faults 409. Preprocessing commits its lineage manifest last. Markdown/JSON report writes use UTF-8.
+Accounting, simulation, Pareto/CVaR and geographic join arithmetic remain unchanged.
+
+Nineteen required official/public files retain their original PR checksums (494,520,511 bytes).
+Five byte-identical existing cached inputs were reused. The unused FEMA item response has changing
+public usage counters and is excluded from required identity, with its release/terms metadata
+retained as separate evidence. Publisher attribution notes were corrected without altering data.
+The final manifest is 0.1.2; final preprocessing and checksum verification succeeded. The county
+environment is isolated Python 3.13; the grid continues using its own Python 3.12 environment.
+
+Acceptance checks: backend 113 passed, zero failed/skipped; current frontend 175 passed;
+isolated PR frontend 83 passed, zero failed/skipped. Both frontend production builds passed.
+Both full frontend suites include a fresh official-data React → adapter → ASGI run for all
+45 counties, scenario restoration and a valid empty STRICT result. Existing grid API checks
+passed 147 tests. Live TCP/CORS/WebGL verification also passed in Chrome: a bounded 500-draw,
+seed-42 exploratory run displayed 45 conditional counties and Madison's scenario-specific
+physical objectives without a scalar score; sensitivity/convergence audits were explicitly off.
+This bounded run verifies integration, not convergence or forecast accuracy.
+
+Commands used the package's isolated interpreter for `dataclocator.cli preprocess`,
+`check-inputs`, `serve` and full pytest, and `npm test`/`npm run build` with the opt-in
+`DATACLOCATOR_TEST_PYTHON` set only for verification processes. Review, source hashes,
+acquisition history, logs, screenshot, Git merge identities and completion evidence are kept
+in `runs/pr1_merge_v1/`, indexed in `runs/README.md`. Earlier acquisition/cache/Windows failure
+logs are retained as superseded attempts, not represented as successful acceptance.
+
+These geographic regions deserve further investigation under the stated facility requirements,
+datasets, constraints, assumptions, and decision preferences. The 45-county cohort is not
+national discovery or a parcel optimum. Local power, water, zoning and fiber remain unverified;
+PUE/WUE and future rate priors remain unconfirmed assumptions. Full TCO, indirect generation
+water, embodied carbon and unsupported community/heat-reuse benefits are not supplied.

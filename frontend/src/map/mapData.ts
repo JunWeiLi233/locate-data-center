@@ -34,7 +34,8 @@ export function candidatePayloads(regions: CandidateRegion[], selectedId: string
     const geometry = polygonGeometry(region.geometry);
     if (geometry) areas.push({ type: 'Feature', id: region.id, geometry, properties });
     const coordinate = regionCoordinate(region);
-    if (coordinate && (selected || (region.rank !== null && region.rank >= 1 && region.rank <= 20))) {
+    // Unranked county points are real locations, not invisible candidates or invented polygons.
+    if (coordinate && (selected || (!geometry && region.rank === null) || (region.rank !== null && region.rank >= 1 && region.rank <= 20))) {
       badges.push({ type: 'Feature', id: region.id, geometry: { type: 'Point', coordinates: coordinate }, properties });
     }
   }
