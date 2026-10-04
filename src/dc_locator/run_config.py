@@ -21,8 +21,8 @@ TEMPORAL_OUTPUT_SCOPES={'all_alternatives','candidate_region_members'}
 class DeliveryConfig(BaseModel):
     """2.0.0 is the accepted Phase 7 development delivery; 2.1.0 adds national execution."""
     model_config = ConfigDict(extra='forbid')
-    schema_version: Literal['2.0.0','2.1.0']
-    delivery_version: Literal['phase7_delivery_v1','phase8_national_v1']
+    schema_version: Literal['2.0.0','2.1.0','2.2.0']
+    delivery_version: Literal['phase7_delivery_v1','phase8_national_v1','phase9_regional_v1']
     run_name: str = Field(min_length=1)
     data_mode: DataMode
     grid_config: str
@@ -68,8 +68,10 @@ class DeliveryConfig(BaseModel):
                 raise ValueError('Schema 2.0.0 is the bounded Phase 7 development delivery; national settings require schema 2.1.0')
             if 'temporal_output_scope' in self.future:
                 raise ValueError('Unknown future configuration key')
-        elif self.delivery_version!='phase8_national_v1':
+        elif self.schema_version=='2.1.0' and self.delivery_version!='phase8_national_v1':
             raise ValueError('Schema 2.1.0 requires the phase8_national_v1 delivery revision')
+        elif self.schema_version=='2.2.0' and (self.delivery_version!='phase9_regional_v1' or self.study_area!='regional_refinement'):
+            raise ValueError('Schema 2.2.0 requires phase9_regional_v1 and regional_refinement scope')
         scope=self.future.get('temporal_output_scope','all_alternatives')
         if scope not in TEMPORAL_OUTPUT_SCOPES:
             raise ValueError('temporal_output_scope must be one of '+', '.join(sorted(TEMPORAL_OUTPUT_SCOPES)))
@@ -168,6 +170,12 @@ def preflight(config,root,output=None):
     count=pq.ParquetFile(grid).metadata.num_rows
     if count<1 or count>config.maximum_model_cells:
         raise ValueError('Configured grid exceeds bounded model resource policy or is empty')
+    if national and config.study_area.lower() in NATIONAL_SCOPES and config.data_mode==DataMode.REAL:
+        from dc_locator.geography.boundary import EXCLUDED_STATE_FIPS, EXPECTED_CONUS_STATE_COUNT
+        jurisdictions=pq.read_table(grid,columns=['state_fips_all']).column('state_fips_all').to_pylist()
+        present={code for value in jurisdictions for code in value.split(';')}
+        if len(present)!=EXPECTED_CONUS_STATE_COUNT or present & EXCLUDED_STATE_FIPS:
+            raise ValueError('National real execution requires a grid covering all 49 CONUS states/DC jurisdictions; a development grid cannot be labeled conus')
     if output is not None:
         target=Path(output).resolve();root=Path(root).resolve()
         owned_run=target.is_relative_to(root/'runs') and target!=root/'runs'

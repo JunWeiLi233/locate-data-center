@@ -34,6 +34,8 @@ from .sources.wildfire import summarize_wildfire
 
 SCHEMA_VERSION='1.1.0'
 AGGREGATION_VERSION='phase2-area-weights-v1'
+BOUNDED_VECTOR_SOURCES={'epa_egrid','wri_aqueduct40','fema_nfhl','usgs_padus'}
+MAX_PREPARATION_SPAN_M=250_000
 
 SOURCE_INFO={
  'usgs_annual_nlcd':('USGS Annual NLCD','https://www.usgs.gov/centers/eros/science/annual-national-land-cover-database','2024','Collection 1.1 public ImageServer export','30 m categorical; EPSG:5070 export'),
@@ -160,15 +162,18 @@ def _source_fingerprint(cfg):
     return {'config':config,'inputs':inputs}
 
 
-def _prepare(cells,source_inputs,progress=None):
+def _prepare(cells,source_inputs,progress=None,*,egrid_attributes=None):
     prepared={}
     for source,cfg in source_inputs.items():
+        if cfg.get('quality_blocker'):
+            prepared[source]={}
+            continue
         if progress: progress('Preparing '+source)
         paths=cfg.get('paths',{}); obj={}
         if source=='epa_egrid' and 'regions' in paths:
             r=read_vector(_vsi(paths['regions']),cells).rename(columns={cfg.get('region_field','Subregion'):'subregion'})
             if 'workbook' in paths:
-                attributes=read_subregion_workbook(paths['workbook'],sheet=cfg.get('sheet','SRL23'),unit=cfg.get('unit','lb_per_mwh'))
+                attributes=egrid_attributes if egrid_attributes is not None else read_subregion_workbook(paths['workbook'],sheet=cfg.get('sheet','SRL23'),unit=cfg.get('unit','lb_per_mwh'))
                 r=r.merge(attributes,on='subregion',how='left',validate='many_to_one')
             else: r['SRCO2RTA']=np.nan; r['SRC2ERTA']=np.nan
             obj['regions']=r
@@ -194,6 +199,25 @@ def _prepare(cells,source_inputs,progress=None):
         else: obj=paths
         prepared[source]=obj
     return prepared
+
+
+def _feature_tiles(analysis,tile_size_cells,*,spatial,cell_side_m):
+    """Yield deterministic local source envelopes without changing grid identity."""
+    if spatial:
+        required={'tile_id','row','col'}
+        if not required.issubset(analysis.columns):
+            raise ValueError('Spatial source preparation requires tile_id, row, col')
+        if cell_side_m>MAX_PREPARATION_SPAN_M:
+            raise ValueError('Grid cell side exceeds spatial source preparation bound')
+        edge=max(1,int(MAX_PREPARATION_SPAN_M/cell_side_m))
+        groups=analysis.groupby([analysis.tile_id,analysis.row//edge,analysis.col//edge],sort=True)
+        tile_size_cells=min(tile_size_cells,625)
+        frames=(frame for _,frame in groups)
+    else:
+        frames=[analysis]
+    for frame in frames:
+        for start in range(0,len(frame),tile_size_cells):
+            yield frame.iloc[start:start+tile_size_cells].reset_index(drop=True)
 
 
 def _summaries(cells,source,cfg,obj):
@@ -261,9 +285,9 @@ def _tile(cells,source_inputs,prepared,data_mode,progress=None):
                    source_url=cfg.get('source_url',SOURCE_INFO[source][1]),source_field=field,
                    source_version=cfg.get('source_version',SOURCE_INFO[source][3]),data_year=cfg.get('data_year',SOURCE_INFO[source][2]),
                    retrieved_at=cfg.get('retrieved_at'),spatial_resolution=cfg.get('spatial_resolution',SOURCE_INFO[source][4]),
-                   aggregation_method='minimum study-intersection-polygon distance in EPSG:5070' if source=='eia_energy_atlas' else ('plurality category; lowest code tie' if metric.endswith('_category') else 'study-intersection area-weighted zonal/overlay'),
+                   aggregation_method=cfg.get('aggregation_method','minimum study-intersection-polygon distance in EPSG:5070' if source=='eia_energy_atlas' else ('plurality category; lowest code tie' if metric.endswith('_category') else 'study-intersection area-weighted zonal/overlay')),
                    coverage_frac=coverage,status=status,confidence=confidence,missing_reason=reason,data_mode=data_mode,
-                   method='See docs/data_dictionary.md; raw units retained; partial coverage is not extrapolated')
+                   method=cfg.get('method','See docs/data_dictionary.md; raw units retained; partial coverage is not extrapolated'))
                 provenance.append(record.model_dump(mode='json'))
                 vals.append(text if text is not None else numeric); statuses.append(status); confidences.append(confidence); coverages.append(coverage)
             values[metric]=vals
@@ -274,13 +298,16 @@ def _tile(cells,source_inputs,prepared,data_mode,progress=None):
 
 
 def build_features(grid,source_inputs=None,output_dir=None,*,study_geometry=None,cache_dir=None,
-                   tile_size_cells=625,resume=True,progress=None):
+                   tile_size_cells=625,resume=True,progress=None,prepare_per_tile=False):
     """Return/write a wide feature GeoDataFrame plus long provenance and JSON reports.
 
     ``grid`` is a path or Phase1 GeoDataFrame. ``source_inputs`` maps source IDs to
     metadata + explicit local ``paths`` (see default_source_inputs). Synthetic
     fixtures require source ``data_mode=synthetic`` and grid synthetic labels.
-    Bounded tiles support the full national grid without loading national rasters.
+    Raster reads remain bounded by each cell. ``prepare_per_tile`` additionally
+    prepares vector overlays in spatial tiles with at most 625 cells and 250 km
+    per side. Nearest-distance inventories are loaded once in full; eGRID
+    workbook attributes are read once. The default retains the legacy grouping.
     """
     grid=gpd.read_parquet(grid) if isinstance(grid,(str,Path)) else grid.copy()
     if grid.empty or grid.grid_id.duplicated().any(): raise ValueError('Grid must be nonempty with unique grid IDs')
@@ -307,10 +334,14 @@ def build_features(grid,source_inputs=None,output_dir=None,*,study_geometry=None
     revision=hashlib.sha256(''.join(file_digest(p) for p in sorted(code_files)).encode()).hexdigest()
     base={'aggregation_version':AGGREGATION_VERSION,'code_sha256':revision,'sources':fingerprints,
           'grid_definition_id':grid.grid_definition_id.iloc[0],'data_mode':mode.value}
+    if prepare_per_tile:
+        base['source_preparation']={'mode':'spatial_tiles','maximum_span_m':MAX_PREPARATION_SPAN_M,
+                                    'maximum_cells':min(tile_size_cells,625)}
     base_key=hashlib.sha256(json.dumps(base,sort_keys=True,default=str).encode()).hexdigest()
-    all_values=[]; all_provenance=[]; resumed=0; prepared=None; keys=[]
-    for start in range(0,len(analysis),tile_size_cells):
-        cells=analysis.iloc[start:start+tile_size_cells].reset_index(drop=True)
+    all_values=[]; all_provenance=[]; resumed=0; prepared=None; shared=None; egrid_attributes=None; keys=[]
+    bounds=grid.bounds
+    cell_side_m=float(max((bounds.maxx-bounds.minx).max(),(bounds.maxy-bounds.miny).max()))
+    for cells in _feature_tiles(analysis,tile_size_cells,spatial=prepare_per_tile,cell_side_m=cell_side_m):
         subset=hashlib.sha256(pd.util.hash_pandas_object(cells.drop(columns='geometry'),index=False).values.tobytes()+b''.join(cells.geometry.to_wkb().values)).hexdigest()
         key=hashlib.sha256((base_key+subset).encode()).hexdigest(); keys.append(key)
         folder=cache/key; vp=folder/'features.parquet'; pp=folder/'provenance.parquet'; checkpoint=folder/'checkpoint.json'
@@ -318,7 +349,16 @@ def build_features(grid,source_inputs=None,output_dir=None,*,study_geometry=None
         if cached and vp.exists() and pp.exists() and cached.get('files')=={'features':file_digest(vp),'provenance':file_digest(pp)}:
             vals=pd.read_parquet(vp); prov=pd.read_parquet(pp); resumed+=1
         else:
-            if prepared is None: prepared=_prepare(analysis,source_inputs,progress)
+            if prepare_per_tile:
+                if shared is None:
+                    shared=_prepare(analysis,{s:c for s,c in source_inputs.items() if s not in BOUNDED_VECTOR_SOURCES},progress)
+                    egrid=source_inputs.get('epa_egrid',{})
+                    if not egrid.get('quality_blocker') and 'workbook' in egrid.get('paths',{}):
+                        egrid_attributes=read_subregion_workbook(egrid['paths']['workbook'],sheet=egrid.get('sheet','SRL23'),unit=egrid.get('unit','lb_per_mwh'))
+                prepared=dict(shared)
+                prepared.update(_prepare(cells,{s:c for s,c in source_inputs.items() if s in BOUNDED_VECTOR_SOURCES},progress,
+                                         egrid_attributes=egrid_attributes))
+            elif prepared is None: prepared=_prepare(analysis,source_inputs,progress)
             vals,prov=_tile(cells,source_inputs,prepared,mode,progress)
             write_parquet(vals,vp,schema_name='GeographicFeatureTile',schema_version=SCHEMA_VERSION,data_mode=mode,grid_definition_id=base['grid_definition_id'])
             write_parquet(prov,pp,schema_name='FeatureMetadata',schema_version=SCHEMA_VERSION,data_mode=mode,grid_definition_id=base['grid_definition_id'])
@@ -331,7 +371,9 @@ def build_features(grid,source_inputs=None,output_dir=None,*,study_geometry=None
     write_geoparquet(result,output/'us_grid_dataset.parquet',schema_name='GeographicFeatureDataset',schema_version=SCHEMA_VERSION,data_mode=mode,grid_definition_id=base['grid_definition_id'])
     write_parquet(prov,output/'feature_provenance.parquet',schema_name='FeatureMetadata',schema_version=SCHEMA_VERSION,data_mode=mode,grid_definition_id=base['grid_definition_id'])
     report={'schema_version':SCHEMA_VERSION,'data_mode':mode.value,'input_cells':len(grid),'output_cells':len(result),
-            'analysis_extent':'provided grid subset; source coverage reported separately; current published run is dev_tiny only, national analysis not completed',
+            'analysis_extent':f'provided grid of {len(grid)} cells; source coverage reported separately',
+            'analysis_bounds_5070_m':[float(value) for value in analysis.total_bounds],
+            'analysis_study_area_km2':float(expected.sum()/1e6),
             'resumed_tiles':resumed,'processed_tiles':len(keys)-resumed,'sources':{}}
     for source,definitions in METRICS.items():
         source_prov=prov.loc[prov.source_id==source]; known=source_prov.loc[source_prov.status!='unknown']

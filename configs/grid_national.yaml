@@ -1,0 +1,10 @@
+# National discovery resolution: basis=project_assumption. 50 km bounds processing cost and 30 m raster windows; it is not a parcel resolution or scientific threshold. Fixed origin/CRS/ID rules inherit configs/grid.yaml.
+crs: EPSG:5070
+origin_x_m: -2500000.0
+origin_y_m: 3400000.0
+cell_size_m: 50000.0
+grid_scheme_version: 1
+id_row_col_digits: 4
+tile_size_cells: 5
+min_intersection_km2: 0.0
+study_areas: {}

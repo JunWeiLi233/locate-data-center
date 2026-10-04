@@ -6,10 +6,59 @@ import numpy as np
 import geopandas as gpd
 import pandas as pd
 from shapely import union_all,box,equals
-from dc_locator.model.metrics import KEYS,clean,json_text
+from dc_locator.model.metrics import KEYS,clean,json_text,region_extent_m
 
 REGION_COLUMNS = ['schema_version','region_id','grid_definition_id','profile_id','profile_fingerprint','design_id','scenario_id','member_grid_ids','n_cells','total_area_km2','suitable_land_area_km2','centroid_lat','centroid_lon','mean_mcda_score','representative_grid_id','representative_json','metric_distributions_json','conditional','critical_unknown','interpretation','geometry']
 MEMBER_COLUMNS = ['region_id',*KEYS,'mcda_score','is_pareto_optimal','conditional','critical_unknown','suitable_land_area_km2']
+
+
+def screen_region_land_support(regions, membership, minimum_land_area_km2):
+    """Reject inadequate total land within the actual published search geometry.
+
+    Positive single-cell insufficiency can remain unresolved while components
+    form, but the entire bounded component's known total cannot be compensated
+    by its score. A sufficient sum is only plausibility, never parcel contiguity.
+    Missing member support must remain null rather than a partial sum.
+    """
+    if (isinstance(minimum_land_area_km2, (bool, np.bool_))
+            or not isinstance(minimum_land_area_km2, numbers.Real)
+            or not math.isfinite(minimum_land_area_km2) or minimum_land_area_km2 <= 0):
+        raise ValueError('Minimum regional land area must be positive and finite')
+    if regions.region_id.duplicated().any() or not set(membership.region_id) <= set(regions.region_id):
+        raise ValueError('Invalid region land-screening membership')
+    rows, rejected, unknown = [], set(), set()
+    for region in regions.sort_values('region_id').itertuples():
+        members = membership.loc[membership.region_id.eq(region.region_id)]
+        if (len(members) != region.n_cells or set(members.grid_id) != set(region.member_grid_ids)
+                or not members.design_id.eq(region.design_id).all()
+                or not members.scenario_id.eq(region.scenario_id).all()):
+            raise ValueError('Region land screening needs exact design/scenario membership')
+        values = pd.to_numeric(members.suitable_land_area_km2, errors='raise')
+        if (values.dropna() < 0).any() or not np.isfinite(values.dropna()).all():
+            raise ValueError('Invalid member suitable-land area')
+        value = clean(values.sum(min_count=len(members)))
+        if (value is None) != pd.isna(region.suitable_land_area_km2):
+            raise ValueError('Region land area nullability contradicts complete member support')
+        if value is not None and not math.isclose(value, region.suitable_land_area_km2, rel_tol=1e-10, abs_tol=1e-10):
+            raise ValueError('Region land area disagrees with member sum')
+        outcome = 'UNKNOWN' if value is None else 'PASS' if value >= minimum_land_area_km2 else 'FAIL'
+        if outcome == 'FAIL': rejected.add(region.region_id)
+        if outcome == 'UNKNOWN': unknown.add(region.region_id)
+        rows.append(dict(schema_version='1.0.0', region_id=region.region_id,
+            design_id=region.design_id, scenario_id=region.scenario_id,
+            member_grid_ids=list(region.member_grid_ids), value_km2=value,
+            threshold_km2=float(minimum_land_area_km2), outcome=outcome,
+            status='unknown' if value is None else 'calculated', confidence='unknown' if value is None else 'low',
+            missing_reason='incomplete_member_land_support' if value is None else None,
+            interpretation='Total classified area within this search geometry only; no contiguous or obtainable parcel is inferred.'))
+    accepted = regions.loc[~regions.region_id.isin(rejected)].copy().reset_index(drop=True)
+    accepted['schema_version'] = '1.3.0'
+    for flag in ('conditional', 'critical_unknown'):
+        accepted.loc[accepted.region_id.isin(unknown), flag] = True
+    members = membership.loc[membership.region_id.isin(accepted.region_id)].copy().reset_index(drop=True)
+    audit = pd.DataFrame(rows, columns=['schema_version', 'region_id', 'design_id', 'scenario_id',
+        'member_grid_ids', 'value_km2', 'threshold_km2', 'outcome', 'status', 'confidence', 'missing_reason', 'interpretation'])
+    return accepted, members, audit
 
 
 def cluster_regions(geography, ranked, policy, physical_columns, profile_id, profile_hash):
@@ -38,6 +87,11 @@ def cluster_regions(geography, ranked, policy, physical_columns, profile_id, pro
         if not np.isfinite(study_area).all() or (study_area <= 0).any() or (study_area > area.to_numpy()+1e-8).any(): raise ValueError('Invalid study-intersection area')
     if ranked.duplicated(KEYS).any() or not set(ranked.grid_id) <= set(geography.grid_id): raise ValueError('Invalid evaluated alternative membership')
     if policy.get('adjacency') not in {'rook','queen'} or isinstance(policy['top_fraction'],(bool,np.bool_)) or not isinstance(policy['top_fraction'],numbers.Real) or not math.isfinite(policy['top_fraction']) or not 0 < policy['top_fraction'] <= 1 or type(policy['minimum_cells']) is not int or policy['minimum_cells'] < 1 or type(policy.get('require_pareto')) is not bool: raise ValueError('Invalid region policy types/values')
+    maximum_extent=region_extent_m(policy)
+    partition_edge=None
+    if maximum_extent is not None and len(geography):
+        partition_edge=math.floor(maximum_extent/size)
+        if partition_edge<1:raise ValueError('Maximum region extent cannot be smaller than a grid cell')
     geo = geography.set_index('grid_id')
     offsets = [(0,1),(0,-1),(1,0),(-1,0)]
     if policy['adjacency'] == 'queen': offsets += [(1,1),(1,-1),(-1,1),(-1,-1)]
@@ -50,6 +104,7 @@ def cluster_regions(geography, ranked, policy, physical_columns, profile_id, pro
         unseen = set(locations)
         while unseen:
             start = min(unseen)
+            partition=(start[0]//partition_edge,start[1]//partition_edge) if partition_edge else None
             unseen.remove(start)
             stack,ids = [start],[]
             while stack:
@@ -57,7 +112,8 @@ def cluster_regions(geography, ranked, policy, physical_columns, profile_id, pro
                 ids.append(locations[location])
                 for dr,dc in offsets:
                     neighbor = (location[0]+dr,location[1]+dc)
-                    if neighbor in unseen: unseen.remove(neighbor); stack.append(neighbor)
+                    same_partition=partition is None or (neighbor[0]//partition_edge,neighbor[1]//partition_edge)==partition
+                    if neighbor in unseen and same_partition: unseen.remove(neighbor); stack.append(neighbor)
             ids.sort()
             if len(ids) < policy['minimum_cells']: continue
             rows = selected.loc[ids].reset_index(drop=True).sort_values(['mcda_score',*KEYS],ascending=[False,True,True,True],kind='stable')
@@ -71,7 +127,7 @@ def cluster_regions(geography, ranked, policy, physical_columns, profile_id, pro
                 if column not in rows: continue
                 values = pd.to_numeric(rows[column],errors='coerce').dropna()
                 distributions[column] = dict(n_known=len(values),minimum=clean(values.min()),p25=clean(values.quantile(.25)),median=clean(values.median()),p75=clean(values.quantile(.75)),maximum=clean(values.max()))
-            record = dict(schema_version='1.1.0',region_id=region_id,grid_definition_id=str(geography.grid_definition_id.iloc[0]),profile_id=profile_id,profile_fingerprint=profile_hash,design_id=design,scenario_id=scenario,member_grid_ids=ids,n_cells=len(ids),total_area_km2=float(geo.loc[ids,'study_area_intersection_km2'].sum()),suitable_land_area_km2=clean(geo.loc[ids,'suitable_land_area_km2'].sum(min_count=len(ids))),centroid_lat=centroid.y,centroid_lon=centroid.x,mean_mcda_score=float(rows.mcda_score.mean()),representative_grid_id=representative['grid_id'],representative_json=json_text(representative),metric_distributions_json=json_text(distributions),conditional=bool(rows.conditional.any()),critical_unknown=bool(rows.critical_unknown.any()),interpretation='These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. Geometry is a search zone; suitable area is a noncontiguous geographic proxy, not a confirmed parcel.',geometry=geometry)
+            record = dict(schema_version='1.2.0' if maximum_extent is not None else '1.1.0',region_id=region_id,grid_definition_id=str(geography.grid_definition_id.iloc[0]),profile_id=profile_id,profile_fingerprint=profile_hash,design_id=design,scenario_id=scenario,member_grid_ids=ids,n_cells=len(ids),total_area_km2=float(geo.loc[ids,'study_area_intersection_km2'].sum()),suitable_land_area_km2=clean(geo.loc[ids,'suitable_land_area_km2'].sum(min_count=len(ids))),centroid_lat=centroid.y,centroid_lon=centroid.x,mean_mcda_score=float(rows.mcda_score.mean()),representative_grid_id=representative['grid_id'],representative_json=json_text(representative),metric_distributions_json=json_text(distributions),conditional=bool(rows.conditional.any()),critical_unknown=bool(rows.critical_unknown.any()),interpretation='These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. Geometry is a search zone; suitable area is a noncontiguous geographic proxy, not a confirmed parcel.',geometry=geometry)
             records.append(record)
             for row in rows.to_dict('records'):
                 members.append(dict(region_id=region_id,**{k:row[k] for k in KEYS},mcda_score=row['mcda_score'],is_pareto_optimal=clean(row.get('is_pareto_optimal')),conditional=row['conditional'],critical_unknown=row['critical_unknown'],suitable_land_area_km2=clean(geo.loc[row['grid_id'],'suitable_land_area_km2'])))

@@ -241,3 +241,184 @@ Resource accounting revision: cumulative project raw/interim byte totals are rec
 `run_metadata.resource_diagnostics`, freshly measured on fresh and cached executions. They do not alter
 source evidence, physical outputs, cache identity or substantive source-manifest checksums. The initial
 V1 counter drift and narrowly corrected V2 executable evidence are preserved in `runs/phase7`.
+
+## National discovery scope fields
+
+The national delivery configuration is version 2.1.0; existing table metric columns and units retain
+their contracts. `grid_definition_id=conus-epsg5070-ox-2500000-oy3400000-s50000m-v1` identifies the
+new 50 km regular grid. `state_fips_all` is a semicolon-delimited list of intersecting jurisdiction FIPS,
+including cells crossing
+state boundaries. `study_area=conus` requires all 48 contiguous states plus DC at preflight.
+
+NLCD provenance `aggregation_method` identifies native WGS84 Albers reprojection by nearest-neighbor
+resampling to a 30 m EPSG:5070 raster, followed by categorical pixel fractions in each cell. Values remain
+observed aggregates; neither a regional fraction nor a 50 km cell establishes parcel availability.
+Coverage reports describe the actual grid extent, cell count and source nonmissing counts. API version
+1.1.0 adds per-run scenario availability and presents this actual scope; optional uncomputed metrics
+retain null values and their missing reasons.
+# Regional revision additions
+
+| Field | Meaning |
+|---|---|
+| `cell_size_m` | Fixed analytical lattice spacing;1000m in the approved regional revision. |
+| `maximum_region_extent_km` | Project-assumed maximum bounding-box span per EPSG5070 axis; not diameter or parcel size. |
+| `parent_grid_id` | Actual evaluated national representative parent selected for full refinement. |
+| `prepared_metric_policy_sha256` | Binding to metric definitions and fixed references used to validate batch evidence. |
+| `refined_area_km2` | Sum of actual CONUS child intersections evaluated at 1 km. |
+| `shortlisted_parent_area_km2` | National selected-parent area before representative refinement; omitted coverage is explicit. |
+| `ranking_universe` | All evaluated refined alternatives, with external scenarios assessed separately. |
+| `representative_parts` | Catalog lookup from evaluated representative grid ID to checksum-bound native evidence batch. |
+# Submission and optional heat quantities — additive 2026-10-03
+
+| Field | Unit / interpretation |
+|---|---|
+| `recommendation.centroid` | EPSG:4326 lat/lon of the actual evaluated representative cell |
+| `recommendation.region_centroid` | EPSG:4326 lat/lon of its separate connected search region |
+| `framework.criteria[].weight` / `contribution` | Actual archived leaf weight / copied weighted contribution; no browser calculation |
+| `impact.total_water_consumption` | m³ consumed/year, direct plus generation consumption only when both boundaries are supported; otherwise UNKNOWN |
+| `impact.cooling_comparisons[].metric_results` | Per-quantity signed reference-minus-proposed annual difference with unit/status/confidence/missing reason |
+| `available_heat_after_losses_mwh` | MWh thermal/year; IT-electricity-equivalent energy times supplied recoverability and one minus supplied distribution losses |
+| `delivered_heat_mwh` | MWh thermal/year; compatible supplied heat demand caps the available heat; absent host/temperature/demand/factors remains UNKNOWN |
+| `net_heating_system_avoided_co2e_tonnes` | Signed tonnes CO2e/year of displaced heating minus incremental auxiliary electricity; a supplied separate system scenario, no facility-footprint credit |
+
+## Cleanview diagnostic revision fields — 2026-10-03
+
+`CandidateRegion` 1.3.0 retains the prior fields and units, with an additional
+publication gate on complete member suitable-land support. A sufficient sum is
+only classified geographic plausibility; parcel contiguity and availability
+remain unverified. Insufficient components are absent from published regions
+and membership, and remain recorded in `region_land_screening.parquet`.
+
+| `RegionLandScreening` 1.0.0 field | Unit / interpretation |
+|---|---|
+| `region_id`, `design_id`, `scenario_id` | Identity of the initial bounded component and its single decision/external context |
+| `member_grid_ids` | Complete deterministic list of evaluated grid members; no cross-design or cross-scenario mixing |
+| `value_km2` | km²; complete sum of classified suitable-land proxy area; null if any member support is missing |
+| `threshold_km2` | km²; supplied facility minimum land demand, retaining its project-assumption basis |
+| `outcome` | PASS / FAIL / UNKNOWN for total-area plausibility only |
+| `status` | calculated for a complete sum, unknown for a missing sum |
+| `confidence` | low for classified proxy support, unknown when missing |
+| `missing_reason` | `incomplete_member_land_support` for an unknown sum; otherwise null |
+| `interpretation` | Explicit limitation: no contiguous or obtainable parcel is inferred |
+
+`ExistingSiteCountyComparison` 1.0.0 records one reference facility × design ×
+external scenario in a saved model domain. `county_geoid` is an exact matched
+Census identifier; every intersecting whole grid cell contributes to county
+support. `comparison_status` distinguishes COUNTY_SUPPORTED,
+OUTSIDE_EVALUATED_DOMAIN and UNMATCHED_COUNTY. Count fields are counts of cells
+or alternatives, never accuracy or facility suitability. Metric min/max fields
+retain the underlying model units listed below.
+Range status is calculated or unknown with a missing reason. `facility_score`
+is null/unknown because exact point locations are unavailable;
+`physical_validation_status` remains EXTERNALLY_UNVALIDATED.
+
+| Comparison min/max fields | Unit / interpretation |
+|---|---|
+| `mcda_score_min`, `mcda_score_max` | Weighted score 0–100 among rankable supported cells |
+| `mcda_rank_min`, `mcda_rank_max` | Ordinal rank within the complete evaluated external-scenario universe |
+| `raw_annual_electricity_co2e_min`, `raw_annual_electricity_co2e_max` | tonnes CO2e/year under the saved illustrative facility/scenario |
+| `raw_annual_site_water_consumption_min`, `raw_annual_site_water_consumption_max` | m³ consumed/year within the modeled site-cooling boundary |
+| `raw_local_baseline_water_stress_min`, `raw_local_baseline_water_stress_max` | Dimensionless Aqueduct 0–5 baseline scale |
+| `raw_transmission_proximity_min`, `raw_transmission_proximity_max` | km; minimum cell-polygon distance to mapped transmission geometry |
+| `raw_suitable_land_fraction_min`, `raw_suitable_land_fraction_max` | Fraction 0–1 of classified potentially suitable land, not contiguous parcels |
+
+# Phase 11 national fine surface fields (2026-10-03)
+
+| Field | Unit | Meaning |
+|---|---|---|
+| `fine_surface_cells.potentially_suitable_land_frac` | fraction 0–1 | Valid Annual NLCD area outside classes 11, 12, 90 and 95 over valid area of the cell's study polygon (proxy, not buildability) |
+| `fine_surface_cells.nlcd_coverage_frac` | fraction 0–1 | Valid land-cover area over study-polygon area |
+| `fine_surface_cells.transmission_distance_km` | km | Distance from the study polygon to the nearest mapped transmission line (proxy, not capacity) |
+| `fine_surface_cells.baseline_water_stress_score` | index 0–5 | Area-weighted Aqueduct 4.0 baseline `bws_score` |
+| `fine_surface_cells.baseline_water_stress_score_coverage_frac` | fraction 0–1 | Share of the study polygon covered by valid basins (capped at 1) |
+| `fine_surface_cells.grid_carbon_intensity_kg_per_mwh` | kg CO2e/MWh | Area-weighted eGRID2023 `SRC2ERTA`, converted from lb/MWh |
+| `fine_surface_cells.egrid_coverage_frac` | fraction 0–1 | Share of the study polygon covered by valid eGRID subregions (capped at 1) |
+| `fine_surface_cells.is_boundary_cell` | boolean | Study polygon is clipped by the CONUS boundary |
+| `fine_surface_parents.best_fine_score` | score 0–100 | Highest fine decision value among the parent's scored cells for one design/scenario |
+| `fine_surface_parents.p90_fine_score` | score 0–100 | 90th percentile of those values |
+| `fine_surface_parents.scored_cells` | count | Cells with every profile metric known and above minimum coverage |
+| `refinement_windows.fine_selection_rank` | rank | Order of the parent by best fine value: among all parents (`national_fine_surface`) or among the selected parents (`national_fine_region_parents`) |
+| `refinement_windows.fine_region_representative` | grid ID | National representative parent of the region(s) the parent was chosen for (`national_fine_region_parents` only) |
+| `refinement_windows.fine_region_selection_basis` | category | `fine_surface`: a member parent scored above the representative; `representative`: the representative scored best or tied; `representative_unscored`: no member was scored |
+
+The revised cell table is `NationalFineSurfaceCell` 1.1.0. Each of the seven feature columns
+has explicit status, confidence, missing reason, source ID/field, unit and source-year companions.
+The long-form `feature_provenance.parquet` uses `FeatureMetadata` 1.1.0, with exactly seven rows
+per retained cell. Coverage fractions are calculated diagnostics; an underlying unknown source
+value is null even when the calculated coverage is zero. `unscored_reason` in replayed fine scoring
+lists unavailable metric IDs and is diagnostic, not a screening outcome.
+
+## County socioeconomic geography and crosswalk (1.0.0)
+
+| Field | Unit / meaning |
+|---|---|
+| `candidate_id` | Existing fixed-lattice `grid_id`; complete saved real candidate cell |
+| `county_geoid`, `state_fips`, `county_fips` | Five-, two- and three-character strings; leading zeros retained |
+| `county_name`, `saipe_county_name` | Source labels for display; never join keys |
+| `candidate_area_km2`, `intersection_area_km2` | Full candidate and candidate∩county areas calculated in EPSG:5070 |
+| `overlap_fraction` | Positive intersection share of full candidate area; no renormalization |
+| `poverty_rate` | 2024 SAIPE all-age poverty estimate, percent 0–100 |
+| `poverty_count` | 2024 SAIPE all-age number of people in poverty |
+| `median_household_income` | 2024 SAIPE median household income, USD/year |
+| `<metric>_lower_90`, `<metric>_upper_90` | Original rounded 90% confidence interval endpoints in the metric's units |
+| `<metric>_moe` | Calculated half-width of the source 90% interval; not an independently downloaded API MOE |
+| `poverty_percentile`, `income_percentile` | Calculated 0–100 valid-CONUS-county percentiles, average ties |
+| `low_income_percentile` | `100-income_percentile`; higher means greater income disadvantage |
+| `<metric>_status`, `_confidence`, `_missing_reason` | Dataset evidence classification, qualitative confidence and explicit null reason |
+| `<metric>_unit`, `_source_id`, `_source_url`, `_method` | Units and traceable source/calculation evidence |
+| `socioeconomic_year`, `boundary_year`, `boundary_type` | 2024 estimates; authorized 2023/2025 cartographic geography; `cartographic_500k` |
+| `geometry_vintage_mismatch`, `economic_observation_type` | Visible mixed-year notice; SAIPE model-based estimate interpretation |
+| `county_coverage_fraction`, `uncovered_fraction`, `county_count`, `coverage_reason` | Companion per-cell area-coverage diagnostics, including no-overlap cells |
+| `county_own_source_revenue`, `county_property_tax_revenue`, `county_population` | Future inputs, null/unknown with reason `future_fiscal_inputs_not_acquired` |
+| `estimated_dc_tax_revenue`, `tax_incentives`, `public_cost`, `net_local_fiscal_revenue`, `fiscal_significance` | Future fiscal inputs/results, null/unknown; no tax assumptions in this delivery |
+
+The frontend uses explicitly unit-bearing aliases such as `poverty_rate_pct`
+and `income_usd`; these represent the same county estimates. Region county shares
+use the sum of member-cell intersection areas over the full member-cell area.
+They are geographic context, not the share of residents, taxes or project impact.
+
+
+## Fixed cached regional evaluation artifacts (2026-10-04)
+
+The separate `src/dc_locator_fast.py` executor writes fresh model outputs under
+`runs/frontend_service/cached_regional_runs/<request identity>/`. Cached input
+geography and native feature/screening evidence remain under
+`data/interim/fast_cached_regions/<cache identity>/` and retain their source
+lineage. This domain consists of 152,500 existing 1 km cells in 61 nationwide
+regional windows; its parent selection is fixed.
+
+| Artifact/field | Meaning |
+|---|---|
+| `ranked_cells.parquet` | Fresh full-cohort cell/design rankings, normalized leaves, eligibility flags and calculated annual physical columns; schema `CachedRegionalRankedDataset` |
+| `physical_schema.json` | Shared units, calculation methods, status/confidence and null reasons for calculated annual physical fields; native carbon input retains observed evidence |
+| `representative_evidence.parquet` | Fresh accepted native physical evidence for every returned representative grid/design/scenario, checked against the compact global calculation |
+| `representative_screening.parquet`, `screening_checks.parquet` | Native representative checks and explicit frozen-dependency full-cohort screening evidence; critical UNKNOWN never becomes PASS |
+| `candidate_regions.parquet`, `candidate_regions.geojson` | Fresh bounded search regions in EPSG:5070 and 4326 respectively; width and height each at most 20,000 m in EPSG:5070 |
+| `region_membership.parquet`, `region_land_screening.parquet` | Fresh membership and the accepted native multi-cell land-support checks |
+| `scope.kind`, `regional_catalog.selection` | `fixed_cached_national_regional_cohort` / `fixed_cached_cohort`; no new national parent selection |
+| `run_metadata.input_cache`, `actual_working_code_sha256`, `guard_hashes` | SHA-bound immutable cache, mathematical dependencies including AHP, and separately bound runtime memory guard |
+| `validation_report.status`, `sensitivity_status`, `rank_ranges_status` | `NOT_ASSESSED`; optional diagnostics were not repeated and cannot inherit baseline claims |
+
+No annual physical column silently supplies missing source values. Missing carbon
+or other evidence stays null with its stated status/reason. Historical static
+carbon and constant design assumptions are not future or marginal forecasts.
+
+## Rediscovery check artifacts (`runs/rediscovery_v1/`, 2026-10-04)
+
+Written by `python -m dc_rediscovery run`; see `docs/rediscovery_validation.md`. Every table carries the
+`dc_locator.*` Parquet metadata. `rediscovery_manifest.json` binds the configuration, inputs, code,
+environment, timeline and output hashes.
+
+| Artifact/field | Meaning |
+|---|---|
+| `evaluated_cells.parquet` | All 7,829,373 national 1 km cells: `grid_id`, `row`, `col`, cell-centre `lat`/`lon` (EPSG:4326), best `design_id`, `suitability_score` (model decision value 0–100; null when unscored), `factor_<metric_id>` (normalized criterion 0–100, float32), raw carbon/water-stress/transmission/land values and `unscored_reason` |
+| `candidates_blind.parquet` | Separated Top-250 candidates written before any facility data was read. Its sha256 is in the manifest and summary |
+| `candidates.parquet` / `.csv` | Blind fields, then `distance_to_nearest_existing_dc_km` (haversine), `nearest_existing_dc_*`, `existing_dc_within_<r>km`, `classification` (`validated` ≤ 25 km, `emerging` > 50 km, otherwise `unresolved`), `top_n_bucket`, `weight_cases_retained/total/ids`, `robustness_*` (score 0–100 or null with `robustness_missing_reason`; `robustness_spatial_support`), `explanation`, `strengths`, `weaknesses` |
+| `rank`, `score_rank_min`, `score_rank_max`, `tied_cells_at_score`, `cells_with_higher_score` | Published rank (ties by grid_id) and the candidate's exact tie block on the national score distribution |
+| `score_percentile`, `national_percentile` | Mid-rank percentiles (ties count ½) among valued cells; presentation context only |
+| `candidate_factors.parquet` | One row per candidate × criterion: `weight`, `normalized_score`, `contribution` (= weight × normalized; the row sum equals `suitability_score`), raw value/unit/status/confidence/source/data year, `location_dependent` (false for the cooling-design water term) |
+| `existing_facilities.parquet` | 1,472 CONUS IM3 records: `facility_id` (`im3:<osm id>`), name, operator, county/GEOID, state, `lat`/`lon` (IM3 footprint centroid), `footprint_type`, `footprint_sqft`, `hub_id`, the 1 km cell row/col/score, source/licence/DOI/sha256, `role=external_validation_only`. `city` is null (not provided) |
+| `facility_hubs.parquet` | Single-linkage hubs (≥ 5 records, gaps ≤ 10 km): size, centroid, label, states, top operators, `nearest_top<N>_candidate_km` |
+| `baseline_draws.parquet` | Per control × draw × N × radius random hit rate (1,000 seeded draws per control) |
+| `validation_summary.json` | Hit rates, tie sensitivity, baseline comparison (mean, 95% range, lift, one-sided p), presence–background statistics, recall, classification counts, providers, factor map, limitations |
+| `suitability_surface.png` / `.json` | Web-Mercator-aligned presentation image of the national score (ink from the national median up to the maximum; unvalued cells are transparent) and its legend and corner coordinates |

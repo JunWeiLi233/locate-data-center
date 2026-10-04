@@ -23,12 +23,30 @@ def json_text(value):
 
 def clean(value):
     """Convert pandas missing/scalar objects before JSON/schema validation."""
+    if value is None: return None
+    kind = type(value)
+    if kind is str or kind is int or kind is bool: return value
+    if kind is float: return None if math.isnan(value) else value
     if isinstance(value, dict): return {k: clean(v) for k,v in value.items()}
     if isinstance(value, (list, tuple,np.ndarray)): return [clean(v) for v in value]
     if isinstance(value,datetime): return value.astimezone(timezone.utc).isoformat() if value.tzinfo is not None else value.isoformat()
-    if value is None or (not isinstance(value, str) and pd.isna(value)): return None
+    if not isinstance(value, str) and pd.isna(value): return None
     if hasattr(value, 'item'): return value.item()
     return value
+
+
+def region_extent_m(policy):
+    """Optional projected bounding-box span, declared as a search-area assumption."""
+    if 'maximum_extent_km' not in policy:
+        if {'extent_basis','extent_rationale'} & set(policy):
+            raise ValueError('Region extent assumption requires maximum_extent_km')
+        return None
+    value=policy['maximum_extent_km']
+    if isinstance(value,(bool,np.bool_)) or not isinstance(value,numbers.Real) or not math.isfinite(value) or value<=0 or not math.isfinite(value*1000):
+        raise ValueError('maximum_extent_km must be finite positive numeric input')
+    if policy.get('extent_basis')!='project_assumption' or not isinstance(policy.get('extent_rationale'),str) or not policy['extent_rationale'].strip():
+        raise ValueError('Region extent requires project_assumption basis and a rationale')
+    return float(value*1000)
 
 
 class MetricDefinition(BaseModel):
@@ -127,6 +145,7 @@ class ScoringProfile(BaseModel):
         if any(not math.isfinite(t) or t < 0 for t in tolerances): raise ValueError('Invalid Pareto tolerance')
         policy = self.region_selection
         if policy.get('rule') != 'top_fraction_per_design_scenario' or policy.get('adjacency') not in {'rook','queen'} or not math.isfinite(policy['top_fraction']) or not 0 < policy['top_fraction'] <= 1 or not isinstance(policy['minimum_cells'],int) or policy['minimum_cells'] < 1: raise ValueError('Invalid region selection policy')
+        region_extent_m(policy)
         return self
 
 
@@ -146,7 +165,11 @@ def assemble_metrics(geography, provenance, performance, eligibility, profile, *
     Invalid/missing evidence removes rankability, never an individual weight.
     """
     from dc_locator.schemas import FeatureMetadata,ScreeningEligibility, SitePerformance
-    for row in provenance.to_dict('records'): FeatureMetadata.model_validate(clean(row))
+    cleaned_provenance = []
+    for row in provenance.to_dict('records'):
+        record = clean(row)
+        FeatureMetadata.model_validate(record)
+        cleaned_provenance.append(record)
     for table,schema in ((performance,SitePerformance),(eligibility,ScreeningEligibility)):
         if table.duplicated(KEYS).any(): raise ValueError('Duplicate alternative IDs')
         for row in table.to_dict('records'): schema.model_validate(clean(row))
@@ -168,13 +191,18 @@ def assemble_metrics(geography, provenance, performance, eligibility, profile, *
     if (matched.facility_id_x != matched.facility_id_y).any(): raise ValueError('Incompatible facility identity')
     frame = performance.merge(eligibility.drop(columns=['schema_version','grid_definition_id','data_mode','facility_id'],errors='ignore'),on=KEYS,validate='one_to_one')
     geo = geography.set_index('grid_id')
-    evidence = {(r['grid_id'],r['metric']):clean(r) for r in provenance.to_dict('records')}
+    evidence = {(r['grid_id'],r['metric']):r for r in cleaned_provenance}
     metadata = [json.loads(s) for s in frame.metric_metadata_json]
+    row_fields = [*KEYS]
+    if 'assumptions_json' in frame: row_fields.append('assumptions_json')
+    refresh_rows = bool(set(profile.metric_ids).intersection(row_fields))
+    alternative_rows = None if refresh_rows else frame[row_fields].to_dict('records')
     long = []
     for metric in profile.metrics:
         raw = pd.to_numeric(frame[metric.column] if metric.table == 'performance' else frame.grid_id.map(geo[metric.column]),errors='coerce').to_numpy(dtype=float)
         accepted = []
-        for i,row in enumerate(frame.to_dict('records')):
+        if refresh_rows: alternative_rows = frame[row_fields].to_dict('records')
+        for i,row in enumerate(alternative_rows):
             record = clean(metadata[i].get(metric.column,{})) if metric.table == 'performance' else evidence.get((row['grid_id'],metric.column),{})
             source = record.get('source_evidence') or record
             reasons = []

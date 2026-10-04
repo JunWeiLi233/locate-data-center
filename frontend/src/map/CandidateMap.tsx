@@ -4,10 +4,13 @@ import type { Map as LibreMap, MapMouseEvent } from 'maplibre-gl';
 import type { FeatureCollection } from 'geojson';
 import type { CandidateRegion, LayerData, LayerSelection, MapCamera, MapFeatureInfo } from '../types/domain';
 import { overlapRegions, selectedLayerIds } from './mapData';
+import { coolingName, regionName, shortCooling, statusWord } from '../utils/regions';
 import { initialMapView, selectionViewport, US_BOUNDS, viewportPadding } from './geometry';
-import { CANDIDATE_LAYERS, CANDIDATE_SOURCE, neutralStyle, syncCandidates, syncContext, syncIndicators } from './mapStyle';
+import { CANDIDATE_LAYERS, CANDIDATE_SOURCE, DEFAULT_BASEMAP, isContextSourceError, neutralStyle, setBasemapVisibility, syncCandidates, syncContext, syncIndicators, type BasemapVisibility, type ContextBackdrop } from './mapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
+import { BoundaryDetails } from './boundaryContext';
+import { clickableOverlayLayers, syncOverlays, type MapOverlays } from './overlays';
 
 export interface CandidateMapProps {
   regions: CandidateRegion[];
@@ -19,6 +22,14 @@ export interface CandidateMapProps {
   camera?: MapCamera;
   onCameraChange?: (camera: MapCamera) => void;
   projection?: 'mercator' | 'globe';
+  /** Visibility of the bundled basemap's terrain relief and forest canopy context. */
+  basemap?: BasemapVisibility;
+  /** Moves the map to a stored view, e.g. when the browser's Back button returns to it; `id` changes per request. */
+  viewRequest?: { camera: MapCamera; id: number };
+  /** Optional presentation overlays (points, rings, images) drawn above model results. */
+  overlays?: MapOverlays;
+  /** Receives `properties.overlayId` of a clicked clickable overlay feature. */
+  onOverlaySelect?: (id: string) => void;
   className?: string;
 }
 
@@ -35,12 +46,15 @@ export function CandidateMap(props: CandidateMapProps) {
   const current = useRef(props);
   current.current = props;
   const contextRef = useRef<FeatureCollection | null>(null);
+  const boundaryDetailsRef = useRef<BoundaryDetails | null>(null);
+  const backdropRef = useRef<ContextBackdrop>({ land: null, national: null, borders: null, shoreline: null, foreign: null });
   const localStyleRef = useRef(!import.meta.env.VITE_MAP_STYLE_URL);
   const fittedSelection = useRef<string | null>(null);
   const [revision, setRevision] = useState(0);
   const [retry, setRetry] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [mapNote, setMapNote] = useState<string | null>(null);
+  const [boundaryStatus, setBoundaryStatus] = useState<string | null>(null);
   const [choices, setChoices] = useState<CandidateRegion[]>([]);
   const visiblePadding = useCallback(() => containerRef.current && viewportRef.current
     ? viewportPadding(containerRef.current.getBoundingClientRect(), viewportRef.current.getBoundingClientRect()) : 65, []);
@@ -53,12 +67,14 @@ export function CandidateMap(props: CandidateMapProps) {
     let fallbackUsed = false;
     let styleTimeout: number | undefined;
     let renderTimeout: number | undefined;
+    let boundaryDetails: BoundaryDetails | undefined;
     const customStyle = import.meta.env.VITE_MAP_STYLE_URL as string | undefined;
     localStyleRef.current = !customStyle;
     styleReadyRef.current = false;
     fittedSelection.current = null;
     setError(null);
     setMapNote(null);
+    setBoundaryStatus(null);
     // Snapshot intent before projection/resize events report the map's initial camera.
     const initialView = initialMapView(current.current.camera, current.current.selectedId);
     let map: LibreMap;
@@ -85,10 +101,12 @@ export function CandidateMap(props: CandidateMapProps) {
       if (disposed || !styleReadyRef.current) return;
       try {
         const value = current.current;
-        syncContext(map, contextRef.current, localStyleRef.current);
+        syncContext(map, contextRef.current, localStyleRef.current, value.basemap ?? DEFAULT_BASEMAP, backdropRef.current);
+        boundaryDetails?.refresh();
         const enabled = selectedLayerIds(value.layerSelections);
         syncCandidates(map, value.regions, value.selectedId, enabled.has('candidates'));
         syncIndicators(map, value.layers, enabled);
+        syncOverlays(map, value.overlays);
         map.setProjection({ type: value.projection ?? 'mercator' });
         setRevision((number) => number + 1);
       } catch {
@@ -104,8 +122,10 @@ export function CandidateMap(props: CandidateMapProps) {
       map.setStyle(neutralStyle());
     };
     map.on('style.load', () => { styleReadyRef.current = true; synchronize(); });
-    map.on('error', () => {
+    map.on('error', (event) => {
       if (disposed) return;
+      // Terrain/forest tiles are optional context; results and state geometry never depend on them.
+      if (isContextSourceError(event as { sourceId?: unknown })) return;
       if (customStyle && !fallbackUsed) fallback();
       else setError('A map source could not load or render. Results and region details remain available. Retry to restore the map.');
     });
@@ -118,20 +138,34 @@ export function CandidateMap(props: CandidateMapProps) {
     map.on('idle', () => {
       if (map.getSource('context-states') && sourcesReady() && renderTimeout) window.clearTimeout(renderTimeout);
     });
-    renderTimeout = window.setTimeout(() => {
-      if (!disposed && !sourcesReady()) setError('The browser could not finish loading the map graphics or geographic sources. Results and region details remain available. Retry to restore the map.');
+    // A large candidate payload can still be in the worker when the page opens on saved results;
+    // keep waiting while the style and state context are ready, then report a real stall.
+    const contextReady = () => styleReadyRef.current && (!map.getSource('context-states') || map.isSourceLoaded('context-states'));
+    const watchdog = (attempt: number): number => window.setTimeout(() => {
+      if (disposed || sourcesReady()) return;
+      if (attempt < 3 && contextReady()) { renderTimeout = watchdog(attempt + 1); return; }
+      setError('The browser could not finish loading the map graphics or geographic sources. Results and region details remain available. Retry to restore the map.');
     }, 15000);
+    renderTimeout = watchdog(0);
     map.on('moveend', () => {
       if (disposed) return;
       const center = map.getCenter();
       current.current.onCameraChange?.({ longitude: center.lng, latitude: center.lat, zoom: map.getZoom() });
+      boundaryDetails?.refresh();
     });
     const candidateAt = (event: MapMouseEvent) => map.queryRenderedFeatures(
       [[event.point.x - 4, event.point.y - 4], [event.point.x + 4, event.point.y + 4]],
       { layers: CANDIDATE_LAYERS.filter((id) => map.getLayer(id)) },
     );
+    const overlayAt = (event: MapMouseEvent) => {
+      const layers = clickableOverlayLayers(map, current.current.overlays);
+      return layers.length ? map.queryRenderedFeatures([[event.point.x - 5, event.point.y - 5], [event.point.x + 5, event.point.y + 5]], { layers })
+        .map((feature) => feature.properties?.overlayId).find((id): id is string => typeof id === 'string') : undefined;
+    };
     map.on('click', (event) => {
       if (!styleReadyRef.current) return;
+      const overlayId = current.current.onOverlaySelect ? overlayAt(event) : undefined;
+      if (overlayId) { current.current.onOverlaySelect!(overlayId); return; }
       const features = candidateAt(event);
       const ids = features.map((feature) => feature.properties?.regionId).filter((id): id is string => typeof id === 'string');
       const regions = overlapRegions(current.current.regions, ids);
@@ -162,7 +196,7 @@ export function CandidateMap(props: CandidateMapProps) {
       if (hoverId && map.getSource(CANDIDATE_SOURCE)) map.setFeatureState({ source: CANDIDATE_SOURCE, id: hoverId }, { hover: false });
       hoverId = nextId ?? null;
       if (hoverId && map.getSource(CANDIDATE_SOURCE)) map.setFeatureState({ source: CANDIDATE_SOURCE, id: hoverId }, { hover: true });
-      map.getCanvas().style.cursor = nextId ? 'pointer' : '';
+      map.getCanvas().style.cursor = nextId || (current.current.onOverlaySelect && overlayAt(event)) ? 'pointer' : '';
     });
     const lostContext = (event: Event) => {
       event.preventDefault();
@@ -179,11 +213,21 @@ export function CandidateMap(props: CandidateMapProps) {
       .then((states) => {
         if (disposed) return;
         contextRef.current = states;
+        boundaryDetails = new BoundaryDetails(map, states, import.meta.env.BASE_URL, setBoundaryStatus);
+        boundaryDetailsRef.current = boundaryDetails;
         synchronize();
       }).catch(() => { if (!disposed && !abort.signal.aborted) setMapNote('State context could not load. Candidate data remains tied to its reported coordinates.'); });
+    for (const kind of ['land', 'national', 'borders', 'shoreline', 'foreign'] as const) {
+      void fetch(`${import.meta.env.BASE_URL}map/${kind}.geojson`, { signal: abort.signal })
+        .then(response => { if (!response.ok) throw new Error('Boundary backdrop unavailable'); return response.json() as Promise<FeatureCollection>; })
+        .then(data => { if (!disposed) { backdropRef.current[kind] = data; synchronize(); } })
+        .catch(() => { if (!disposed && !abort.signal.aborted) setMapNote('Part of the Census boundary context is unavailable. Candidate coordinates remain unchanged.'); });
+    }
     return () => {
       disposed = true;
       abort.abort();
+      boundaryDetails?.dispose();
+      if (boundaryDetailsRef.current === boundaryDetails) boundaryDetailsRef.current = null;
       resize.disconnect();
       if (styleTimeout) window.clearTimeout(styleTimeout);
       if (renderTimeout) window.clearTimeout(renderTimeout);
@@ -211,6 +255,12 @@ export function CandidateMap(props: CandidateMapProps) {
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !styleReadyRef.current) return;
+    setBasemapVisibility(map, props.basemap ?? DEFAULT_BASEMAP);
+  }, [props.basemap, revision]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !styleReadyRef.current) return;
     const region = props.regions.find((item) => item.id === props.selectedId);
     if (!region) { fittedSelection.current = null; return; }
     const viewport = selectionViewport(region);
@@ -221,6 +271,19 @@ export function CandidateMap(props: CandidateMapProps) {
     if (viewport.bounds) map.fitBounds(viewport.bounds, { padding, maxZoom: 9.5, duration: motionDuration() });
     else map.easeTo({ center: viewport.center, padding, zoom: Math.max(map.getZoom(), 7), duration: motionDuration() });
   }, [props.selectedId, props.regions, revision, visiblePadding]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !styleReadyRef.current || !props.viewRequest) return;
+    const { camera } = props.viewRequest;
+    map.easeTo({ center: [camera.longitude, camera.latitude], zoom: camera.zoom, duration: motionDuration() });
+  }, [props.viewRequest?.id]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !styleReadyRef.current) return;
+    syncOverlays(map, props.overlays);
+  }, [props.overlays, revision]);
 
   useEffect(() => { if (choices.length) choiceRef.current?.querySelector<HTMLButtonElement>('button')?.focus(); }, [choices]);
 
@@ -241,7 +304,10 @@ export function CandidateMap(props: CandidateMapProps) {
         <button type="button" onClick={() => mapRef.current?.zoomIn({ duration: motionDuration() })} aria-label="Zoom in" title="Zoom in">+</button>
         <button type="button" onClick={() => mapRef.current?.zoomOut({ duration: motionDuration() })} aria-label="Zoom out" title="Zoom out">−</button>
       </div>}
-      <p id="candidate-map-context" className="candidate-map__context">CONUS map context · result coverage follows the selected run</p>
+      <div className="candidate-map__context">
+        <p id="candidate-map-context" className="sr-only">Census 2025 U.S. state and international borders; other countries are plain generalized context. Map context is not analyzed coverage; evaluated coverage follows the selected run.</p>
+        {boundaryStatus && <p role="status">{boundaryStatus}{boundaryStatus.includes('unavailable') && <button type="button" onClick={() => boundaryDetailsRef.current?.retry()}>Retry boundary detail</button>}</p>}
+      </div>
       {(mapNote || unmappable) && !error && <div className="candidate-map__note" role="status"><p>{unmappable
         ? 'This region has no valid polygon or reported centroid. It remains available in the results list.' : mapNote}</p>
         {mapNote && !unmappable && <button type="button" onClick={() => setRetry((number) => number + 1)}>Retry map</button>}</div>}
@@ -251,7 +317,7 @@ export function CandidateMap(props: CandidateMapProps) {
         <p>Choose a region or cooling alternative under this tap.</p>
         <ul>{choices.map((region) => <li key={region.id}><button type="button" aria-pressed={region.id === props.selectedId}
           onClick={() => props.onSelect(region.id)}>
-          <span>{region.rank === null ? '—' : `#${region.rank}`}</span><span>{region.label}<small>{region.designId} · {region.screeningStatus}</small></span>
+          <span>{region.rank === null ? '—' : `#${region.rank}`}</span><span>{regionName(region)}<small>{shortCooling(coolingName(region.designId))} · {statusWord(region.screeningStatus)}</small></span>
         </button></li>)}</ul>
       </div>}
       {error && <div className="candidate-map__error" role="status"><strong>Map unavailable</strong><p>{error}</p>

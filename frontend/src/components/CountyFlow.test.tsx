@@ -1,6 +1,6 @@
 /** Opt-in real frozen-data flow through React, direct /runs transport and the actual ASGI API. */
 import { spawn } from 'node:child_process';
-import { cpSync, mkdtempSync, rmSync, symlinkSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 import { resolve } from 'node:path';
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
@@ -30,7 +30,9 @@ it.skipIf(!process.env.DATACLOCATOR_TEST_PYTHON)('submits a real county run, ren
   // Vitest rewrites import.meta.url to HTTP; the npm test command owns this frontend cwd.
   const script = resolve(process.cwd(), 'scripts/asgi_test_bridge.py');
   const backend = resolve(process.cwd(), '../backend/dataclocator');
-  const temporary = mkdtempSync(resolve(process.cwd(), '.tmp/county-flow-'));
+  const scratch = resolve(process.cwd(), '../.pytest-work/pr1-frontend');
+  mkdirSync(scratch, { recursive: true });
+  const temporary = mkdtempSync(resolve(scratch, 'county-flow-'));
   // Freeze real official inputs into a fresh test root; no synthetic or precompleted runs are used.
   symlinkSync(resolve(backend, 'data'), resolve(temporary, 'data'), process.platform === 'win32' ? 'junction' : 'dir');
   // Preserve every derived artifact named by the checksum-bound preprocessing manifest.
@@ -72,6 +74,7 @@ it.skipIf(!process.env.DATACLOCATOR_TEST_PYTHON)('submits a real county run, ren
     window.matchMedia = vi.fn().mockImplementation(query => ({ matches: false, media: query, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
     render(<App />);
     await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled(), { timeout: 30000 });
+    await userEvent.click(screen.getByText('More options'));
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Screening policy' }), 'EXPLORATORY');
     // Use a 32-draw debugging workload on all official counties, with explicit audit skips.
     await userEvent.click(screen.getByText('Review / edit complete model JSON'));
@@ -91,17 +94,18 @@ it.skipIf(!process.env.DATACLOCATOR_TEST_PYTHON)('submits a real county run, ren
     expect(screen.getByRole('status', { name: 'Evaluation status' })).not.toHaveTextContent('Configuration edited');
     await userEvent.click(point);
     const drawer = screen.getByRole('complementary', { name: /Details for Madison.*AL/ });
-    expect(within(drawer).getByText('No scalar rank or score')).toBeInTheDocument();
+    expect(within(drawer).getByText(/^No scalar rank or score/)).toBeInTheDocument();
     expect(within(drawer).getAllByText('CONDITIONAL').length).toBeGreaterThan(0);
-    expect(within(drawer).getByText('power_capacity: unverified; no local evidence')).toBeInTheDocument();
-    expect(within(drawer).getByText(/Lifetime electricity cost.*Mean/)).toBeInTheDocument();
-    expect(within(drawer).getAllByText(/Upper-tail CVaR α=/).length).toBe(3);
-    expect(within(drawer).getAllByRole('link').some(link => link.getAttribute('href')?.includes('eia.gov'))).toBe(true);
+    expect(within(drawer).getByText('Power capacity:')).toBeInTheDocument();
+    expect(within(drawer).getAllByText(/Lifetime electricity cost.*Mean/).length).toBeGreaterThan(0);
+    expect(within(drawer.querySelector('.raw-metrics') as HTMLElement).getAllByText(/Upper-tail CVaR α=/).length).toBe(3);
+    expect([...drawer.querySelectorAll('a')].some(link => link.getAttribute('href')?.includes('eia.gov'))).toBe(true);
     const runId = new URLSearchParams(window.location.search).get('run')!;
     await act(async () => { const restored = await selected.api!.run(runId, config.scenario_set[0].id); expect(restored.regions).toHaveLength(45); });
     // Verified mode returns actual exclusions, not an invented winner or an API error.
     await userEvent.click(screen.getByRole('button', { name: 'Close region details' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Configure' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Edit facility' }));
+    await userEvent.click(screen.getByText('More options'));
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Screening policy' }), 'STRICT');
     await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
     await screen.findByRole('heading', { name: 'No regions satisfied the current hard constraints.' }, { timeout: 30000 });

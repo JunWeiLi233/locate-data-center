@@ -72,3 +72,22 @@ def test_national_scope_passes_preflight_only_under_national_schema(tmp_path):
 def test_accepted_phase7_runs_are_protected():
     with pytest.raises(ValueError, match='must not overwrite'):
         preflight(load_delivery_config(ROOT / 'configs/run_synthetic.yaml'), ROOT, ROOT / 'runs/phase7/overwrite')
+
+
+@pytest.mark.parametrize('filename,mode', [('run_national.yaml','STRICT'), ('run_national_exploratory.yaml','EXPLORATORY')])
+def test_national_search_templates_use_full_conus_and_original_decision_criteria(filename,mode):
+    config = load_delivery_config(ROOT / 'configs' / filename)
+    assert config.schema_version == '2.1.0'
+    assert config.study_area == 'conus'
+    assert config.screening_mode == mode
+    assert '__dev_' not in config.grid_path
+    assert config.scoring_profile == 'configs/scoring_profile.yaml'
+    assert config.constraints == 'configs/constraints.yaml'
+    assert config.data_mode.value == 'real'
+
+
+def test_national_real_scope_rejects_a_development_grid():
+    document = yaml.safe_load((ROOT / 'configs/run_exploratory.yaml').read_text(encoding='utf-8'))
+    document.update(schema_version='2.1.0',delivery_version='phase8_national_v1',study_area='conus')
+    with pytest.raises(ValueError, match='49 CONUS'):
+        preflight(DeliveryConfig.model_validate(document),ROOT)

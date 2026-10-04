@@ -300,3 +300,235 @@ reuse and constant PUE/WUE are explicit project assumptions. Lifecycle inventory
 module absence propagates UNKNOWN. Current sensitivity does not manufacture expert judgments, engineering
 thresholds, climate-cooling response or external accuracy. Fixed baseline members remain fixed; newly
 selected future regions have no matched fixed-region stability claim.
+# National discovery extension — 2026-10-03
+
+The new national delivery applies the existing deterministic decision model to a complete CONUS
+grid at 50 km resolution. It changes the geographic comparison domain, not the numeric scoring
+weights, required metrics, normalization references or hard requirements. This resolution bounds
+processing cost and native 30 m raster windows; it is an explicit project resource assumption.
+National real preflight requires all 48 contiguous states and DC in the grid's jurisdiction union.
+
+Official Annual NLCD 2024 C1.1 national classes are reprojected from WGS84 Albers to EPSG:5070 at
+30 m with nearest-neighbor resampling, then summarized by the existing exact projected pixel-area
+intersections. Source/output checksums, CRS, nodata, method and memory limits accompany the derived
+cache. Vector overlays are prepared in envelopes no wider than 250 km, with at most 625 cells.
+The full national nearest-infrastructure inventory and eGRID workbook are reused across those
+tiles. Geography caches retain source/code/grid identity and exclude facility preferences.
+
+The initial national baseline computes the original required ranking evidence and leaves optional
+cached sources explicitly uncomputed. EXPLORATORY may retain critical UNKNOWN screening evidence
+conditionally; incomplete required ranking metrics remain UNRANKED and hard failures are excluded.
+STRICT remains the default command mode. It cannot turn missing parcel, utility, water or fiber
+evidence into PASS. No rule forces state quotas or geographically dispersed winners.
+# Regional refinement revision (2026-10-03)
+
+The initial national discovery uses50km cells. Its unrestricted connected
+components can span several states, so their geometries are insufficiently
+local for regional investigation. The approved refinement evaluates the full
+representative parent cell of every discovered region on a fixed 1 km lattice.
+Cooling alternatives sharing a parent are deduplicated; no city/state quota
+or centroid-centered assumption chooses the fine geography.
+
+Each child receives fresh native source aggregation, eligibility and physics.
+Fixed normalization references and complete preference weights remain the same.
+All evaluated children are ranked together within their external scenario;
+batch ranks and batch frontiers are never promoted to global results. An exact
+bounding tree accelerates Pareto comparison using conservative pruning and the
+existing pairwise tolerance rule; every comparable row can be a dominator.
+
+Final regional polygons join selected adjacent cells within deterministic 20 km
+global lattice partitions. The projected span bound is a documented project
+assumption and is independent of map zoom. Investigated coverage is partial:
+selected full representative parents are refined, while remaining shortlisted
+parents await expansion. The catalog reports both areas and lineage explicitly.
+# Submission presentation and heat-host scenarios — additive 2026-10-03
+
+`submission` verifies saved output identities and presents stored decisions; it
+does not rerank, choose an external scenario, infer missing weights, or revalidate
+archived science against changed working code. It selects the lowest persisted
+rank among exported region representatives in one explicit scenario and displays
+two other distinct representative cells. Paired annual cooling differences use
+the same cell and scenario. All important missing quantities remain null, and
+source acquisition is reported separately from actual feature computation.
+
+Optional supplied heat-host inputs calculate available thermal energy as
+`e_it_mwh * recoverable_fraction * (1 - distribution_loss_fraction)`, cap delivery
+by compatible annual heat demand, then subtract complete incremental auxiliary
+electricity emissions from displaced heating. This is a separate signed scenario
+comparison with explicit input basis, not a change to the facility carbon footprint
+or scored profile. Missing input is never zero. The proposed operating roadmap
+covers diligence, commissioning, adaptation, replacement inventories and retirement,
+and does not multiply a historical annual carbon result into a future forecast.
+
+## Existing-facility diagnosis and regional land support — 2026-10-03
+
+The Cleanview public operating listings are an external diagnostic reference,
+not labels for an optimum sustainability score. Public capacity-selected cards
+are cached with raw-page checksums; exact county/state text is matched to Census
+administrative identifiers. The comparison uses every intersecting whole cell
+and reports conditional ranges separately by cooling design and scenario.
+Absent fine-grid coverage is outside the evaluated domain. Exact site location,
+measured operating energy/water/carbon and matching facility specifications are
+unavailable, so facility scores, physical error and classifier accuracy remain
+unknown. Existing development reflects other objectives and cannot determine
+the model's weights or engineering coefficients.
+
+Regional searches use `multi_cell_region` land support. A positive classified
+area below facility demand in one cell becomes critical UNKNOWN, since adjacent
+cells may jointly contain enough potential land. Zero area and other genuine
+failures still exclude alternatives; STRICT excludes the unresolved case.
+After bounded components form, the complete member-area sum is screened against
+facility demand. A known insufficient component is excluded; an incomplete sum
+stays UNKNOWN. A sufficient sum verifies only total-area plausibility and never
+parcel contiguity, availability or permission. Every initial component retains
+an audit row, including excluded regions. No Cleanview-derived value alters
+scoring, normalization, source features or physical calculations.
+
+# National 1 km fine surface for refinement selection — Phase 11 (2026-10-03)
+
+Representative selection refines one 50 km parent per national region (61 of 3,384 parents, about 2% of
+CONUS), chosen from 50 km box values. Measured on the 61 fully refined parents of the accepted
+`runs/regional_refinement_v4`, a 1 km cell's exact decision value ranks against the value it inherits from
+its 50 km box with Spearman rho 0.256. National transmission distance is measured from the nearest edge of
+each 50 km polygon, so 94% of national cells read 0 km, and 1 km values inside one box spread a median 9.7
+decision points between its 10th and 90th percentiles.
+
+The optional Phase 11 mode (`selection: national_fine_surface`) values every retained CONUS 1 km cell
+(about 8.46 million) before choosing parents. It computes only the five profile inputs, from the same
+source files and formulas as regional refinement, vectorized per 50 km window:
+
+- suitable-land share and NLCD coverage with exact pixel-area weights on the prepared EPSG:5070 30 m
+  raster: separable x/y pixel overlaps for whole cells, the land-cover adapter itself for coast and border
+  cells clipped to the CONUS study polygon;
+- transmission distance from each cell's study polygon to the nearest mapped line;
+- basin water stress and eGRID CO2e intensity as area-weighted means, with coverage, over key-dissolved
+  polygons clipped to the window first; overlaps between keys are preserved as in the adapters.
+
+Annual facility energy and direct site water are design/scenario constants of the national physics (annual
+PUE and WUE are scenario values), so carbon scales with grid intensity; the stage refuses to run if either
+varies by location. Fixed-reference normalization and the profile's resolved weights then give each
+cell/design/scenario a decision value. Any metric that is missing or below its declared minimum coverage
+leaves the alternative unscored, never zero. The surface applies no screening.
+
+Parents are ranked by their best fine value over designs and scenarios (ties by `grid_id`). The
+`floor(maximum_refined_cells / cells per parent)` best parents are refined exactly as before: fresh native
+evidence, screening, physics, global ranking, Pareto comparison and bounded clustering. The surface only
+chooses where to look; every published regional value comes from that refinement.
+
+Against `runs/regional_refinement_v4` the surface reproduces the refinement's 152,500 cells and study areas
+exactly; land share and transmission distance match to floating precision; eGRID intensity to 1.6e-5
+kg/MWh. Basin stress differs by at most 0.0011 (0–5 scale) in 146 cells, because the adapter clips
+basins per tile in native longitude/latitude before projecting, which densifies long straight basin edges
+differently; the surface projects whole basins. All 301,900 rankable alternatives are scored, with Spearman
+rho 0.999999999998 and a maximum difference of 0.0026 decision points.
+
+The numeric-only draft has been superseded by evidence-bearing feature/selection methods v2.
+The revised stage checks source/physical metadata as well as numeric coverage. It weights eGRID
+native pound rates before the exact lb-to-kg conversion and sums individual polygon shares before
+capping coverage, matching the native formulas. Aqueduct loading uses a densified transformed
+CONUS envelope so curved projected edges are bounded. Native tile clipping and full-source
+projection can still produce small geometric/floating differences; full published regional
+results are independently recomputed with the native adapters. The current bounded source
+comparison and its failed/revised evidence are in `runs/fine_surface_preflight_v1/`;
+the earlier draft comparison above is not acceptance of this revised nationwide stage.
+
+Cleanview is used to diagnose coverage of reported existing-center counties and explain area
+scores. A county intersection is not an exact facility match. Reference records do not enter grid
+generation, parent selection, physics, screening, weights or coefficients. National fine-surface
+valuation and fully screened regional refinement have separate coverage counts.
+
+## Separate county economic context
+
+County economics attaches after geography/model execution to the actual saved
+grid cells. Reproject the authorized Census county geometry to EPSG:5070,
+dissolve fragments by five-character GEOID and use a spatial index plus bounded
+vectorized intersections to retain every positive-area cell/county pair. Areas
+use full saved cell geometry, even where generalized coastlines leave uncovered
+area. Coverage diagnostics expose these gaps without rescaling known shares.
+Saved region membership supplies the presentation grouping; centroids never
+assign a region to a county.
+
+Join official 2024 SAIPE poverty and income estimates by GEOID. The default 2025
+and selectable 2023 county boundaries are generalized 1:500,000 cartographic
+files, explicitly authorized by the user after the requested 2024 TIGER/Line
+archive was found absent. The estimate year remains 2024. Retain point estimates,
+rounded 90% bounds and calculated interval half-widths. Qualitative medium
+confidence is a documented project assessment separate from the statistical
+90% interval. Percentiles use the full valid CONUS SAIPE county universe before
+spatial restriction, with average ties and endpoint scaling to 0–100.
+
+Optional poverty rate, income, poverty percentile and low-income percentile
+thresholds under Filter areas describe economic need; county map overlays are
+not offered. Percentile thresholds compare supplied national county values,
+and all four filters use the same county-overlap matching rule.
+They do not enter screening, technical metrics, MCDA, AHP, clustering or
+rank calculation. A display filter matches any overlapping county that meets
+all active conditions in that same county; missing values cannot satisfy an
+active condition. Raw global ranks remain visible after filtering. Fiscal
+fields prepare a later GEOID join but contain no estimated tax revenue, public
+cost or incentive values in this delivery.
+
+## Best fine parent per national region — Phase 11 (2026-10-04)
+
+Ranking parents by their best fine value concentrated the completed `runs/national_fine_regional_v1`: 50 of
+its 61 parents are in New York. eGRID carbon intensity, the heaviest-weighted regional factor, is uniform
+within a subregion, so near-identical high values cluster in one place.
+
+The second Phase 11 mode, `selection: national_fine_region_parents` (`configs/run_regional_fine_region.yaml`),
+keeps national discovery's regions as the unit of choice and uses the fine surface only inside each region.
+Regions that share a representative parent (the cooling-design variants of one national region) count as one.
+In each region the member parent with the highest best fine value replaces the 50 km representative. If the
+representative ties for the best value it is kept; if several other members tie, the smallest `grid_id` wins.
+A region with no scored member keeps its representative (`representative_unscored`). A parent chosen by more
+than one region is refined once and lists every region. The refined-cell budget is checked as in the other
+modes, with no silent truncation. Refinement, screening, ranking and clustering are unchanged.
+
+In both fine modes the national surface is built in a spawned child process. Its national source heap is
+released when the child exits, so the regional process's lifetime peak working set covers refinement alone;
+the child enforces the same 4 GiB bound. An identical completed stage is reused in-process.
+
+## Fast fixed regional cohort evaluation (2026-10-04)
+
+The user authorized a fast default that re-evaluates the facility and preferences
+within the already evaluated nationwide representative windows. Its cohort is
+the complete 152,500-cell native domain of `runs/cleanview_regional_v2`, not a
+list of hand-picked cities or representative cells alone. Its 61 windows are
+fixed across facility requests. A separately selectable full rediscovery repeats
+national selection and may identify different windows.
+
+The separately content-bound production runner `src/dc_locator_fast.py` verifies
+the frozen native evidence, current mathematical functions, policies and
+environment. An immutable consolidated cache retains stable grid IDs,
+geometry, source-carbon evidence, prepared static metrics and native screening
+outcomes for both modes. Every use verifies its content checksums. Cache
+preparation is timed separately from a changed facility evaluation.
+
+Facility-dependent outputs are recomputed from native inputs using
+`calculate_annual`; they are never obtained by scaling an old result. Fixed
+reference normalization, complete preference weights, exact global MCDA/Pareto,
+region clustering and region land support use existing mathematical functions.
+Screening reuse requires the unchanged minimum-land policy and frozen cooling
+designs with unverified peak demand; unsupported dependencies fail explicitly.
+UNKNOWN remains unknown, hard failures remain excluded, and strict screening
+can produce an empty result.
+
+The new ranking universe is the fixed cached regional cohort. Published
+regions retain 1 km cells and at most 20 km spans along each EPSG:5070 axis.
+Historical-static carbon reuse remains an explicit scenario rather than a
+forecast. Broad sensitivity and diagnostic case reruns are not assessed by
+this faster mode. Its completion metadata does not claim nationwide
+rediscovery or acceptance of a new scientific phase.
+
+## Post-hoc rediscovery validation (2026-10-04)
+
+The separate package `src/dc_rediscovery` (see `docs/rediscovery_validation.md`) evaluates every national
+1 km cell of a completed run with the model's own `score_window`. Per-criterion values must recompose the
+model score exactly in every row group. The package then ranks cells (ties by grid_id) and keeps the
+strongest cell of each neighbourhood with greedy non-maximum suppression: candidates are at least 25 km
+apart, measured as haversine distance on R = 6371.0088 km. The blind candidate table is hashed before an
+external facility inventory is opened. The package then measures nearest-facility distances,
+HitRate(r, N), facility and hub recall, and presence–background AUC, and compares them with 1,000 seeded,
+equally spaced random controls (area-uniform, and near-transmission land). A candidate is validated at
+25 km or less, emerging beyond 50 km and otherwise unresolved. Monte Carlo robustness attaches through a
+provider interface, or stays null. No threshold or weight is fitted to the facility inventory, and the
+deterministic model's scores, ranks and outputs are unchanged.

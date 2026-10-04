@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "source_vintage": 2025,
+  "states_and_dc": 51,
+  "overview_shared_edge_coverage_valid": true,
+  "serialized_overview_displacement_upper_bound_projected_m": 363.8686437686479,
+  "serialized_land_displacement_upper_bound_projected_m": 67.82570243980663,
+  "detail_border_lines_on_tiger_state_boundaries": true,
+  "detail_line_length_degrees": {
+    "state": 858.1272792075663,
+    "national": 130.8757095886385
+  },
+  "national_line": "International borders only; seaward limits removed (published length below the full outline)",
+  "overview_geometry_error_upper_bound_screen_pixels_at_zoom_6": 0.29752321284252364,
+  "land_tiles": 975,
+  "land_tile_bytes": 121361475,
+  "land_tiles_within_tiger_states_degrees": 6e-05,
+  "blocked_areawater_county_files": {
+    "tl_2025_24009_areawater.zip": "Census web firewall returned an HTML 'Request Rejected' page on repeated polite requests; not circumvented"
+  },
+  "block_water_substitutes": {
+    "24009": {
+      "source": "https://www2.census.gov/geo/tiger/TGRGDB25/tlgdb_2025_a_24_md.gdb.zip",
+      "sha256": "8f3cad82730d7433117b374fddc77956719940f8192a0ce8c164cb63584a9696",
+      "method": "2020 tabulation blocks with zero land area (ALAND = 0) in the county, from the TIGER/Line 2025 state geodatabase",
+      "water_blocks": 129,
+      "water_block_area_km2": 339.0,
+      "county_recorded_water_area_km2": 341.6
+    }
+  },
+  "foreign_context_us_overlap_square_degrees": 0.0,
+  "source_ground_positional_accuracy": "Not certified; coordinate and display precision do not establish ground accuracy",
+  "artifact_hashes": {
+    "states.geojson": "341e569ebaa690fe1169d5afaf63098eb69151a94bd639783b08505428bfb0fa",
+    "national.geojson": "54a05d91135e8d81b35b97b0c0ab15426b3e2e6fc0e6ffbe2885443fd2e716ed",
+    "borders.geojson": "18acdbcd3c291970edf7a901c0de5aa7ed6b8baefc5154612dac6582db26efef",
+    "land.geojson": "97c385bb84e98ca66bc59a28f7d8a4dfbf2f7f7bcf31f7781f7804bbb160dd9b",
+    "shoreline.geojson": "041d028a327ec71375bf05099c5c2dc58fa9e789f410ad36913acb1a17d1727d",
+    "foreign.geojson": "ef894f728b30d949f4792be71e6b293429d380e2343701b24e99008f683f5325"
+  }
+}

@@ -15,7 +15,7 @@ export function MonteCarloEvidence({ result }: { result: RunResult }) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
   return <details><summary>Full assumptions, provenance and uncertainty</summary>
-    <p className="form-note">45 selected counties; representative points are screening context. Unconfirmed priors, unverified feasibility, all separate scenario results and requested audits remain in this backend record.</p>
+    <p className="form-note">{result.analyzedCellCount} evaluated counties; representative points are screening context. Unconfirmed priors, unverified feasibility, all separate scenario results and requested audits remain in this backend record.</p>
     <button type="button" className="text-button" onClick={download}>Download full model JSON</button>
     <pre style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', maxHeight: 360, overflow: 'auto' }}>{JSON.stringify(result.modelEvidence, null, 2)}</pre>
   </details>;

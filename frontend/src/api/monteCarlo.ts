@@ -145,7 +145,7 @@ function candidate(row: Row, evidence: Row, result: Row, scenarioId: string): Ca
     ['water_stress_score', 'Basin stress screening score (not a consumption volume)', 'index (0–5)', 'water_stress'],
   ]) metrics.push({ id, label, unit, value: optionalNumber(evidence[id]), group: 'Regional context',
     status: optionalNumber(evidence[id]) === null ? 'unknown' : 'proxy', confidence: 'unknown',
-    missingReason: optionalNumber(evidence[id]) === null ? 'Regional input unavailable or nonnumeric' : null, sources: sourceRecords(result, evidence, feature, scenarioId) });
+      missingReason: optionalNumber(evidence[id]) === null ? 'Regional input unavailable or nonnumeric' : null, sources: sourceRecords(result, evidence, feature, scenarioId) });
   // Hazards and station assignment remain source context, never sampled downtime or PUE curves.
   for (const [id, label, unit, feature] of [
     ['climate_station_distance_km', 'Assigned climate-normal station distance; elevation unverified', 'km', 'climate'],
@@ -216,6 +216,8 @@ export function presentMonteCarloRun(job: Envelope, details: Map<string, Row>, s
   facility.monteCarlo!.convergence = result.convergence !== null;
   return { schemaVersion: '1.0.0', modelKind: 'monte-carlo', coverageUnit: 'counties', runId: job.run_id,
     modelEvidence: result, structuralScenarios: config.scenario_set.map(scenario => ({ id: scenario.id, label: scenario.id, year: null, pathway: null, available: true, reason: null })),
+    scenarios: config.scenario_set.map(scenario => ({ id: scenario.id, label: scenario.id, year: null, pathway: null, available: true, reason: null })),
+    decisionBriefUnavailableReason: 'The county model supplies unweighted physical tradeoffs and full model evidence; a grid decision brief is unavailable.',
     timestamp: job.finished_at ?? job.submitted_at, modelVersion: String(result.model_version), demo: false,
     state: regions.length ? 'PARTIAL' : 'EMPTY', scope: String(result.scope),
     analyzedCellCount: regions.length + result.excluded_candidates.length, configuration: facility, scenarioId,
@@ -349,6 +351,8 @@ export function createMonteCarloApi(baseUrl: string, pollInterval = 1000): Locat
     },
     /** Reject unavailable mapped layers explicitly; do not draw fabricated polygons or utilities. */
     layer: async () => { throw new MonteCarloError('This county API supplies representative points and raw evidence, not mapped indicator layers.', 422); },
+    /** This model has no county economic transport; never substitute grid evidence. */
+    socioeconomic: async () => { throw new MonteCarloError('County economic context is unavailable from the county Monte Carlo API.', 422); },
   };
   return api;
 }

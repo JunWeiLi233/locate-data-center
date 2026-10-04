@@ -18,7 +18,8 @@ import pytest
 import yaml
 
 from frontend.server.app import make_handler
-from frontend.server.serialization import ApiError, ArtifactReader, clean, json_bytes, metric, screening_status, snapshot_configuration, valid_geometry
+from frontend.server.serialization import (ApiError, ArtifactReader, clean, json_bytes, member_grid_ids, metric, place_label,
+                                            region_states, screening_status, snapshot_configuration, valid_geometry)
 from frontend.server.service import GROUPS, LocatorService, validate_facility
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -64,6 +65,40 @@ def test_derived_metric_retains_formula_and_native_spatial_method():
     assert "Source method: raw source units retained" in method
 
 
+def test_place_label_formats_county_state_and_requires_both_present():
+    assert place_label({"county_name_primary": "Trinity", "state_abbr_primary": "CA"}) == "Trinity, CA"
+    assert place_label({"county_name_primary": "Trinity", "state_abbr_primary": None}) is None
+    assert place_label({"county_name_primary": "", "state_abbr_primary": "CA"}) is None
+    assert place_label({"county_name_primary": "Trinity", "state_abbr_primary": "   "}) is None
+    assert place_label({}) is None
+    assert place_label(None) is None
+    # TIGER NAME has no "County" suffix and the adapter must not invent one, but must not strip a real one either.
+    assert place_label({"county_name_primary": "Trinity County", "state_abbr_primary": "CA"}) == "Trinity County, CA"
+
+
+def test_member_grid_ids_normalizes_json_string_list_and_array():
+    assert member_grid_ids(np.array(["x", "y"])) == ["x", "y"]
+    assert member_grid_ids(["x", "y"]) == ["x", "y"]
+    assert member_grid_ids(json.dumps(["x", "y"])) == ["x", "y"]
+    assert member_grid_ids(None) == []
+    assert member_grid_ids("not json") == []
+    assert member_grid_ids(42) == []
+
+
+def test_region_states_orders_by_count_then_alphabetically_and_never_returns_partial():
+    geo_rows = {"a": {"state_abbr_primary": "TX"}, "b": {"state_abbr_primary": "TX"},
+                "c": {"state_abbr_primary": "CA"}, "d": {"state_abbr_primary": "NY"},
+                "e": {"state_abbr_primary": "NY"}, "f": {"state_abbr_primary": None},
+                "g": {"state_abbr_primary": "  "}}
+    assert region_states(["a", "b", "c"], geo_rows) == ["TX", "CA"]
+    # NY and TX tie at two members each; alphabetical order breaks the tie deterministically.
+    assert region_states(["a", "b", "d", "e"], geo_rows) == ["NY", "TX"]
+    assert region_states([], geo_rows) is None
+    assert region_states(["a", "not_in_geography"], geo_rows) is None
+    assert region_states(["a", "f"], geo_rows) is None
+    assert region_states(["a", "g"], geo_rows) is None
+
+
 @pytest.mark.parametrize("field,value", [("peak_it_power_mw", True), ("peak_it_power_mw", "100"), ("peak_it_power_mw", 0), ("peak_it_power_mw", 1001),
     ("average_load_percent", 101), ("average_load_percent", np.nan), ("target_opening_year", 2030.0), ("target_opening_year", 2025),
     ("lifetime_years", False), ("lifetime_years", 0), ("cooling", "invented"), ("weighting", "browser_scores"), ("screening_mode", "PASS")])
@@ -105,6 +140,7 @@ def test_existing_run_presentation_matches_authoritative_artifacts(service):
     result = service.run_result(run_id)
     authoritative = pd.read_parquet(EXPLORATORY / "candidate_regions.parquet")
     assert result["state"] == "PARTIAL" and result["analyzed_cell_count"] == 42 and result["demo"] is False
+    assert "dev_tiny" in result["scope"]
     assert len(result["regions"]) == len(authoritative) == 2
     by_id = {row.region_id: row for row in authoritative.itertuples()}
     for region in result["regions"]:
@@ -131,6 +167,54 @@ def test_existing_run_presentation_matches_authoritative_artifacts(service):
         assert all(factors[f]["score"] is None for f in ("climate", "heat_reuse", "community_economic"))
         assert region["sensitivity"]["base_rank"] == region["rank"]
     json_bytes(result)  # strict NaN-free JSON throughout all nested source/geometry data
+
+
+def test_region_place_and_membership_fields_match_authoritative_geography(service):
+    result = service.reader._serialize_run(EXPLORATORY, EXPLORATORY, "current")
+    geography = pd.read_parquet(EXPLORATORY / "us_grid_dataset.parquet").set_index("grid_id")
+    authoritative = pd.read_parquet(EXPLORATORY / "candidate_regions.parquet").set_index("region_id")
+    assert result["regions"]
+    for region in result["regions"]:
+        for field in ("place_label", "region_states", "cell_count", "area_km2"):
+            assert field in region
+        native = authoritative.loc[region["region_id"]]
+        assert region["cell_count"] == native.n_cells and isinstance(region["cell_count"], int)
+        assert region["area_km2"] == native.total_area_km2 and isinstance(region["area_km2"], float)
+        row = geography.loc[region["representative_grid_id"]]
+        assert region["place_label"] == f"{row.county_name_primary}, {row.state_abbr_primary}"
+        assert not region["place_label"].endswith("County, TX")  # TIGER NAME has no "County" suffix to invent
+        # Every member cell of this accepted Texas development fixture resolves to the same state.
+        assert region["region_states"] == ["TX"]
+    json_bytes(result)  # new optional fields stay strict-JSON-safe alongside the rest of the payload
+
+
+def test_decision_brief_preserves_backend_choice_and_legacy_unavailability(service, monkeypatch):
+    import frontend.server.serialization as module
+    calls = []
+    payload = {"run_id": "verified", "scenario_id": "historical_static_2023", "recommendation": {"region_id": "stored_region"}}
+    def brief(folder, scenario_id=None):
+        calls.append((folder, scenario_id))
+        return payload
+    monkeypatch.setattr(module, "build_submission_brief", brief, raising=False)
+    result = service.reader._serialize_run(EXPLORATORY, EXPLORATORY, "current")
+    assert result["decision_brief"] == payload
+    assert calls == [(EXPLORATORY, None)]
+    assert result["decision_brief_unavailable_reason"] is None
+    def missing(folder, scenario_id=None):
+        raise ValueError("Legacy run lacks verified archived output hashes")
+    monkeypatch.setattr(module, "build_submission_brief", missing)
+    result = service.reader._serialize_run(EXPLORATORY, EXPLORATORY, "current")
+    assert result["decision_brief"] is None
+    assert result["decision_brief_unavailable_reason"] == "Legacy run lacks verified archived output hashes"
+    assert result["regions"]
+
+
+def test_region_strengths_expose_stored_contributions_with_proxy_boundaries(service):
+    result = service.reader._serialize_run(EXPLORATORY, EXPLORATORY, "current")
+    for region in result["regions"]:
+        assert region["strengths"]
+        assert any("stored contribution" in statement for statement in region["strengths"])
+        assert any("capacity" in statement for statement in region["strengths"] if "transmission" in statement.lower())
 
 
 def test_old_strict_snapshot_is_not_replaced_by_current_ui(service):
@@ -172,6 +256,65 @@ def test_capabilities_defaults_stay_baseline_when_latest_run_changes(service):
     assert capabilities["default_configuration"]["screening_mode"] == "EXPLORATORY"
     assert capabilities["default_configuration"]["peak_it_power_mw"] == 100
     assert capabilities["default_configuration"]["average_load_percent"] == 80
+
+
+def test_scope_reads_actual_cell_table_and_archived_study_area(service, monkeypatch):
+    import frontend.server.serialization as module
+    original = module.read_json
+    def altered(path, fallback=None):
+        result = original(path, fallback)
+        if path.name == "run_metadata.json":
+            result = copy.deepcopy(result)
+            # Deliberately inconsistent unit-test metadata must not replace actual row counts.
+            result["scope"].update(geographic_cells=9999, scope="conus", national_model_supported=True)
+            result["configuration"]["study_area"] = "conus"
+        return result
+    monkeypatch.setattr(module, "read_json", altered)
+    result = service.reader._serialize_run(EXPLORATORY, EXPLORATORY, "current")
+    assert result["analyzed_cell_count"] == 42
+    assert "42 analyzed cells" in result["scope"] and "CONUS" in result["scope"]
+    assert "dev_tiny" not in result["scope"] and "unsupported" not in result["scope"]
+    assert result["search_stages"][0] == {"label": "Analyzed geographic cells", "count": 42}
+
+
+def test_initial_registry_includes_completed_national_evidence(monkeypatch, tmp_path):
+    seen = []
+    monkeypatch.setattr(LocatorService, "register_run", lambda self, folder, **kwargs: seen.append(folder))
+    LocatorService(tmp_path, start_worker=False)
+    assert tmp_path / "runs/national_discovery_v2" in seen
+
+
+def test_restored_development_run_cannot_hide_completed_national_baseline(tmp_path):
+    # Metadata-only registration fixture; no geographic values or result tables are invented.
+    accepted = json.loads((EXPLORATORY / "run_metadata.json").read_text(encoding="utf-8"))
+    owned = tmp_path / "runs/frontend_service"
+    previous = owned / "model_runs/development"
+    national = tmp_path / "runs/national_discovery_v2"
+    previous.mkdir(parents=True)
+    national.mkdir(parents=True)
+    (previous / "run_metadata.json").write_text(json.dumps(accepted), encoding="utf-8")
+    nationwide = copy.deepcopy(accepted)
+    nationwide["run_id"] = "national_registration_unit_fixture"
+    nationwide["scope"].update(scope="conus", national_model_supported=True)
+    nationwide["configuration"]["study_area"] = "conus"
+    (national / "run_metadata.json").write_text(json.dumps(nationwide), encoding="utf-8")
+    registry = {"runs": {accepted["run_id"]: str(previous.relative_to(tmp_path))}, "jobs": {}}
+    (owned / "registry.json").write_text(json.dumps(registry), encoding="utf-8")
+    service = LocatorService(tmp_path, start_worker=False)
+    assert service.latest_run_id() == nationwide["run_id"]
+    assert service.resolve_run(accepted["run_id"]) == previous
+
+
+def test_capabilities_and_each_run_describe_only_present_supported_scenarios(service, tmp_path):
+    result = service.run_result(service.latest_run_id())
+    assert {s["id"] for s in result["scenarios"] if s["available"]} >= {"current", "bau_2030"}
+    folder = tmp_path / "incomplete_context"
+    context = folder / "future_contexts/bau_2030"
+    context.mkdir(parents=True)
+    (context / "external_scenario.json").write_text('{"supported":true}', encoding="utf-8")
+    service.runs = {"incomplete": folder}
+    caps = service.capabilities()
+    assert not next(s for s in caps["scenarios"] if s["id"] == "bau_2030")["available"]
 
 
 def test_successful_cached_run_becomes_latest_again(service):
@@ -308,17 +451,54 @@ def test_cache_key_uses_content_checksums_even_when_size_and_timestamp_match(tmp
     assert before != after
 
 
+@pytest.mark.parametrize("filename", ["source_coverage.json", "site_performance.parquet", "validation_report.json", "lifecycle_results.parquet"])
+def test_submission_evidence_changes_invalidate_response_cache(tmp_path, filename):
+    root = tmp_path / "hash_only_fixture"
+    root.mkdir()
+    (root / "run_metadata.json").write_text("{}", encoding="utf-8")
+    path = root / filename
+    path.write_bytes(b"hash-fixture-a")
+    reader = ArtifactReader(tmp_path / "responses")
+    _, before = reader.identity(root, root)
+    stat = path.stat()
+    path.write_bytes(b"hash-fixture-b")
+    os.utime(path, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+    _, after = reader.identity(root, root)
+    assert before != after
+
+
+def test_regional_submission_part_rank_changes_invalidate_response_cache(tmp_path):
+    root = tmp_path / "hash_only_regional_fixture"
+    part = root / "parts" / "selected"
+    part.mkdir(parents=True)
+    (root / "run_metadata.json").write_text("{}", encoding="utf-8")
+    (root / "regional_catalog.json").write_text(json.dumps({"analysis_level": "regional", "parts": [{"path": "parts/selected"}]}), encoding="utf-8")
+    path = part / "ranked_cells.parquet"
+    path.write_bytes(b"hash-fixture-a")
+    reader = ArtifactReader(tmp_path / "responses")
+    _, before = reader.identity(root, root)
+    path.write_bytes(b"hash-fixture-b")
+    _, after = reader.identity(root, root)
+    assert before != after
+
+
 def test_configuration_files_are_scoped_and_preserve_backend_contract(facility, tmp_path):
     configs = tmp_path / "configs"
     configs.mkdir()
     for name in ("run_exploratory.yaml", "facility.yaml", "cooling_designs.yaml"):
         (configs / name).write_bytes((ROOT / "configs" / name).read_bytes())
+    national = yaml.safe_load((configs / "run_exploratory.yaml").read_text(encoding="utf-8"))
+    national.update(study_area="conus", grid_config="configs/grid_national_50km.yaml", grid_path="data/processed/us_grid__conus_50km.parquet",
+                    expanded_features=False, future={"enabled": False}, maximum_model_cells=10000)
+    (configs / "run_national_exploratory.yaml").write_text(yaml.safe_dump(national), encoding="utf-8")
     service = LocatorService(tmp_path, start_worker=False)
     facility.update(peak_it_power_mw=130, average_load_percent=70, cooling="air_dry_assumed", weighting="ahp", ahp_matrix=[[1.0]*4 for _ in range(4)])
     before = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in configs.iterdir()}
     path = service._write_configuration(validate_facility({"facility": facility}))
     assert path.is_relative_to(tmp_path / "runs/frontend_service")
     run = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert run["study_area"] == "conus" and run["grid_path"] == national["grid_path"]
+    assert run["grid_config"] == national["grid_config"] and run["future"] == {"enabled": False}
     actual_facility = yaml.safe_load((tmp_path / run["facility"]).read_text(encoding="utf-8"))["facilities"][0]
     assert actual_facility["peak_it_power_mw"] == 130 and actual_facility["average_it_load_factor"] == 0.7
     assert actual_facility["cooling_designs"] == ["air_dry_assumed"]

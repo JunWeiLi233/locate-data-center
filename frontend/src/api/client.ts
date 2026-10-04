@@ -1,17 +1,18 @@
-import type { Capabilities, FacilityConfiguration, Job, LayerData, LayerId, RunResult } from '../types/domain';
-import { parseCapabilities, parseJob, parseLayer, parseRunResult, serializeConfiguration } from './regions';
-import { createMonteCarloApi } from './monteCarlo';
-import { modelFromUrl } from '../utils/modelChoice';
+import type { Capabilities, CountyBoundaryYear, FacilityConfiguration, GridAnalysisMode, Job, LayerData, LayerId, RunResult, SocioeconomicContext } from '../types/domain';
+import { parseCapabilities, parseJob, parseLayer, parseRunResult, parseSocioeconomic, serializeConfiguration } from './regions';
 
 export interface LocatorApi {
   capabilities(signal?:AbortSignal):Promise<Capabilities>;
-  search(configuration:FacilityConfiguration,onProgress?:(job:Job)=>void,signal?:AbortSignal):Promise<RunResult>;
+  search(configuration:FacilityConfiguration,onProgress?:(job:Job)=>void,signal?:AbortSignal,analysisMode?:GridAnalysisMode):Promise<RunResult>;
   run(runId:string,scenarioId?:string,signal?:AbortSignal):Promise<RunResult>;
   layer(id:LayerId,runId:string,scenarioId:string,sublayer?:string,signal?:AbortSignal):Promise<LayerData>;
+  socioeconomic(runId:string,boundaryYear:CountyBoundaryYear,scenarioId?:string,signal?:AbortSignal):Promise<SocioeconomicContext>;
 }
 export class ServiceError extends Error {constructor(message:string,public status:number){super(message);this.name='ServiceError';}}
 const base=(import.meta.env.VITE_API_BASE_URL??'').replace(/\/$/,'');
 export const isDemoMode=import.meta.env.VITE_USE_MOCK_DATA==='true';
+// Operational browser allowance for bounded regional jobs; scientific limits remain in the model.
+const searchPollingAllowanceMs=2*60*60*1000;
 async function request(path:string,options:RequestInit={},signal?:AbortSignal):Promise<unknown> {
   const controller=new AbortController();const abort=()=>controller.abort(signal?.reason);if(signal?.aborted)abort();else signal?.addEventListener('abort',abort,{once:true});
   const timeout=setTimeout(()=>controller.abort(new DOMException('Model service request timed out.','TimeoutError')),30000);
@@ -28,14 +29,15 @@ const layerCache=new Map<string,LayerData>();
 export const realApi:LocatorApi={
   capabilities:async signal=>parseCapabilities(await request('/capabilities',{},signal)),
   run:async(runId,scenarioId='current',signal)=>parseRunResult(await request(`/runs/${encodeURIComponent(runId)}?scenario=${encodeURIComponent(scenarioId)}`,{},signal)),
-  search:async(configuration,onProgress,signal)=>{
-    const created=await request('/search',{method:'POST',body:JSON.stringify({facility:serializeConfiguration(configuration)})},signal) as {job_id?:unknown};
+  socioeconomic:async(runId,boundaryYear,scenarioId='current',signal)=>parseSocioeconomic(await request(`/socioeconomic?${new URLSearchParams({run_id:runId,boundary_year:String(boundaryYear),scenario:scenarioId})}`,{},signal)),
+  search:async(configuration,onProgress,signal,analysisMode)=>{
+    const created=await request('/search',{method:'POST',body:JSON.stringify({facility:serializeConfiguration(configuration),...(analysisMode?{analysis_mode:analysisMode}:{})})},signal) as {job_id?:unknown};
     if(typeof created.job_id!=='string')throw new ServiceError('Model service did not return a job identifier.',502);
-    const deadline=Date.now()+45*60*1000;
+    const deadline=Date.now()+searchPollingAllowanceMs;
     while(Date.now()<deadline){const job=parseJob(await request(`/jobs/${encodeURIComponent(created.job_id)}`,{},signal));onProgress?.(job);if(job.state==='ERROR')throw new ServiceError(job.error??'The model run failed.',422);if(job.state==='COMPLETE'){if(!job.runId)throw new ServiceError('Completed model job is missing its run ID.',502);return realApi.run(job.runId,'current',signal);}await pause(1000,signal);}
-    throw new ServiceError('Model search is still running. Load its completed run later or retry.',408);
+    throw new ServiceError(`Model job ${created.job_id} has not completed within the two-hour browser polling allowance. Check /api/jobs/${encodeURIComponent(created.job_id)} and load its completed run using the returned run ID.`,408);
   },
-  layer:async(id,runId,scenarioId,sublayer,signal)=>{const key=JSON.stringify([id,runId,scenarioId,sublayer??'']);if(signal?.aborted)throw new DOMException('Request canceled.','AbortError');const existing=layerCache.get(key);if(existing)return existing;const q=new URLSearchParams({run_id:runId,scenario:scenarioId});if(sublayer)q.set('sublayer',sublayer);const layer=parseLayer(await request(`/layers/${encodeURIComponent(id)}?${q}`,{},signal));layerCache.set(key,layer);if(layerCache.size>48)layerCache.delete(layerCache.keys().next().value!);return layer;},
+  layer:async(id,runId,scenarioId,sublayer,signal)=>{const key=JSON.stringify([id,runId,scenarioId,sublayer??'']);if(signal?.aborted)throw new DOMException('Request canceled.','AbortError');if(id==='community_economic')throw new ServiceError('County economic views are filters and region details; a map overlay is unavailable.',422);const existing=layerCache.get(key);if(existing)return existing;const q=new URLSearchParams({run_id:runId,scenario:scenarioId});if(sublayer)q.set('sublayer',sublayer);const layer=parseLayer(await request(`/layers/${encodeURIComponent(id)}?${q}`,{},signal));layerCache.set(key,layer);if(layerCache.size>48)layerCache.delete(layerCache.keys().next().value!);return layer;},
 };
 // Demo is explicit. A service error must never select this adapter automatically.
 const demoApi:LocatorApi={
@@ -43,7 +45,6 @@ const demoApi:LocatorApi={
   search:async(config,onProgress,signal)=>(await import('../mocks/api')).mockApi.search(config,onProgress,signal),
   run:async(id,scenario,signal)=>(await import('../mocks/api')).mockApi.run(id,scenario,signal),
   layer:async(id,run,scenario,sublayer,signal)=>(await import('../mocks/api')).mockApi.layer(id,run,scenario,sublayer,signal),
+  socioeconomic:async(run,year,scenario,signal)=>(await import('../mocks/api')).mockApi.socioeconomic(run,year,scenario,signal),
 };
-// Selection is explicit; unavailable services never trigger a switch of scientific models.
-export const isCountyModel=modelFromUrl()==='county';
-export const locatorApi=isCountyModel?createMonteCarloApi(import.meta.env.VITE_MONTE_CARLO_API_URL??'http://127.0.0.1:8000'):isDemoMode?demoApi:realApi;
+export const locatorApi=isDemoMode?demoApi:realApi;

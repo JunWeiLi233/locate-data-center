@@ -44,7 +44,12 @@ function json(value: unknown, status = 200) {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('county Monte Carlo adapter', () => {
-  it('keeps county-applied regional price/carbon proxies and invalid context Unknown', () => {
+  it('reports unsupported economic context explicitly without making a network request', async () => {
+    const fetchMock = vi.fn(); vi.stubGlobal('fetch', fetchMock);
+    await expect(createMonteCarloApi('').socioeconomic(runId, 2025)).rejects.toThrow('economic context is unavailable');
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+  it('keeps county-applied regional price and carbon as proxies with unknown invalid inputs', () => {
     const evidence = { ...detail().evidence, electricity_price_usd_per_mwh: 100, grid_co2e_kg_per_mwh: 300, water_stress_score: 'unsupported' };
     const view = presentMonteCarloRun(parseMonteCarloJob(completed()), new Map([['01089', { ...detail(), evidence }]]));
     expect(view.regions[0].metrics.find(metric => metric.id === 'electricity_price_usd_per_mwh')).toMatchObject({ value: 100, status: 'proxy' });

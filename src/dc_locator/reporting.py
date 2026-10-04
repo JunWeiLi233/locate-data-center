@@ -16,6 +16,17 @@ from dc_locator.model.metrics import clean
 INTERPRETATION='These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences.'
 
 
+def scope_warning(pipeline):
+    """Keep legacy bytes while describing the additive national revision honestly."""
+    if pipeline.config.schema_version=='2.0.0':
+        return 'Development subset only; national feature/model execution is unsupported'
+    if pipeline.config.data_mode.value=='synthetic':
+        return 'Explicit synthetic software fixture; no geographic discovery evidence'
+    if pipeline.config.study_area.lower() in {'conus','national'}:
+        return 'CONUS discovery on the declared grid resolution; inspect per-metric source coverage and UNKNOWN evidence before local investigation'
+    return f'Declared analysis scope: {pipeline.config.study_area}; inspect per-metric source coverage'
+
+
 def resource_diagnostics(root):
     """Observe current project cache totals; these never enter model/cache identity."""
     return {'scope':'current project cache, measured for this execution including cached-stage runs',
@@ -61,7 +72,7 @@ def run_metadata(pipeline,stage):
         'resource_diagnostics':resource_diagnostics(pipeline.root),
         'determinism':{'substantive_outputs':'Identical current model/config/source/grid/environment inputs produce identical bytes',
             'intentional_execution_metadata':['run_metadata.json','stage_manifests/* execution diagnostics','geography_core/coverage_report.json and data_manifest.json diagnostics']},
-        'warnings':['Development subset only; national feature/model execution is unsupported',
+        'warnings':[scope_warning(pipeline),
             'STRICT critical UNKNOWN produces no accepted ranking; exploratory rankings remain conditional',
             'Constant annual PUE/WUE and historical-static electricity factor are declared scenarios, not forecasts',
             'Native future water contexts are separate; unsupported2040 is UNKNOWN, NASA context is independent',
@@ -140,5 +151,5 @@ def recommendation_report(pipeline,baseline,validation,contexts,*,profile_overri
     lines+=['','NASA model/member/SSP/year context is independent; it does not modify PUE/WUE or attach to every water pathway. Annual historical electricity reuse is an explicit constant scenario, not a future-grid forecast. Unknown construction/equipment/replacement/end-of-life components keep total lifecycle emissions UNKNOWN.',
         '', '## Current-run validation and limits','',
         'validation_report.json and validation_report.md bind this facility, profile, source/config hashes and working model revision. Phase 6 freeze/results are preserved historical evidence and do not prove the current delivery code is an untouched holdout model.',
-        '', 'Sensitivity results show responses to stated assumptions and preferences. No independent compatible facility measurements are available, so no overall physical accuracy or nationally optimal site is claimed. National model coverage/runtime remains unsupported.','']
+        '', 'Sensitivity results show responses to stated assumptions and preferences. No independent compatible facility measurements are available, so no overall physical accuracy or nationally optimal site is claimed. '+('National model coverage/runtime remains unsupported.' if pipeline.config.schema_version=='2.0.0' else scope_warning(pipeline)+'.'),'']
     return '\n'.join(lines)

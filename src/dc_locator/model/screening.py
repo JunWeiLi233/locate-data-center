@@ -116,12 +116,17 @@ def load_requirements(path: str | Path):
     return requirements, ScreeningMode(values["screening_mode"])
 
 
-def screen(geography, provenance, facility: FacilityConfig, designs: list[CoolingDesign], scenarios: list[PhysicalScenario], requirements: list[Requirement], *, mode=None):
+def screen(geography, provenance, facility: FacilityConfig, designs: list[CoolingDesign], scenarios: list[PhysicalScenario], requirements: list[Requirement], *, mode=None, land_search_scope: Literal["single_cell", "multi_cell_region"] = "single_cell"):
     """Return (requirement results, eligibility table, summary).
 
     Informational records preserve observed regional evidence in evidence_json,
     while their UNKNOWN outcome explicitly makes no parcel-clearance decision.
+    In a multi-cell search, positive but insufficient classified area in one
+    cell cannot disprove a parcel that crosses its boundary. Such total-area
+    support remains UNKNOWN; no contiguous or obtainable parcel is inferred.
     """
+    if not isinstance(land_search_scope, str) or land_search_scope not in {"single_cell", "multi_cell_region"}:
+        raise ValueError("land_search_scope must be single_cell or multi_cell_region")
     mode_override = mode is not None
     mode = ScreeningMode(facility.screening_mode if mode is None else mode)
     validate_alternative_ids(designs, scenarios)
@@ -161,11 +166,19 @@ def screen(geography, provenance, facility: FacilityConfig, designs: list[Coolin
                         missing, reason = "partial_coverage", "Source coverage is insufficient for this configured constraint; no extrapolation"
                     elif item.get("unit") != req.unit:
                         raise ValueError(f"Unit mismatch for {req.metric}: {item.get('unit')} != {req.unit}")
+                    elif (land_search_scope == "multi_cell_region"
+                          and req.requirement_id == "total_suitable_area_plausibility"
+                          and req.metric == "suitable_land_area_km2"
+                          and req.operator == "ge" and req.is_critical
+                          and req.threshold_from == "minimum_land_area_km2"
+                          and req.unit == "km2" and 0 < value < threshold):
+                        missing, reason = "cross_cell_land_support_unverified", "Positive classified land in this cell is below the facility requirement; land spanning adjacent cells is unverified, not disproven. Contiguity and parcel availability remain separate requirements"
                     else:
                         reason = "Evidence compared with disclosed project requirement; this is regional screening, not parcel approval"
                     outcome = "UNKNOWN" if missing else ("PASS" if (value >= threshold if req.operator == "ge" else value <= threshold) else "FAIL")
                     outcomes.append((outcome, req.is_critical))
                     record = ScreeningResult(
+                        schema_version="1.2.0" if land_search_scope == "multi_cell_region" else "1.1.0",
                         grid_id=row["grid_id"], design_id=design.design_id, scenario_id=scenario.scenario_id,
                         requirement=req.requirement_id, outcome=outcome, mode=mode,
                         value=None if missing else value, unit=req.unit, threshold=threshold,
@@ -179,11 +192,13 @@ def screen(geography, provenance, facility: FacilityConfig, designs: list[Coolin
                     results.append(record)
                 hard_fail = any(outcome == "FAIL" and critical for outcome, critical in outcomes)
                 unknown = any(outcome == "UNKNOWN" and critical for outcome, critical in outcomes)
-                alternatives.append(ScreeningEligibility(grid_id=row["grid_id"], grid_definition_id=row["grid_definition_id"], facility_id=facility.facility_id, design_id=design.design_id, scenario_id=scenario.scenario_id, mode=mode.value, hard_fail=hard_fail, critical_unknown=unknown, eligible=not hard_fail and (mode == ScreeningMode.EXPLORATORY or not unknown), conditional=not hard_fail and unknown and mode == ScreeningMode.EXPLORATORY, data_mode=row["data_mode"]).model_dump(mode="json"))
+                alternatives.append(ScreeningEligibility(schema_version="1.1.0" if land_search_scope == "multi_cell_region" else "1.0.0", grid_id=row["grid_id"], grid_definition_id=row["grid_definition_id"], facility_id=facility.facility_id, design_id=design.design_id, scenario_id=scenario.scenario_id, mode=mode.value, hard_fail=hard_fail, critical_unknown=unknown, eligible=not hard_fail and (mode == ScreeningMode.EXPLORATORY or not unknown), conditional=not hard_fail and unknown and mode == ScreeningMode.EXPLORATORY, data_mode=row["data_mode"]).model_dump(mode="json"))
     result = pd.DataFrame(results).sort_values(["grid_id", "design_id", "scenario_id", "requirement"]).reset_index(drop=True)
     eligible = pd.DataFrame(alternatives).sort_values(["grid_id", "design_id", "scenario_id"]).reset_index(drop=True)
     summary = dict(mode=mode.value, n_alternatives=len(eligible), n_eligible=int(eligible.eligible.sum()), n_conditional=int(eligible.conditional.sum()), n_hard_fail=int(eligible.hard_fail.sum()), n_critical_unknown=int(eligible.critical_unknown.sum()), outcomes=result.outcome.value_counts().sort_index().to_dict(), coverage_policy="Full constraint coverage within 1e-6 numerical tolerance; geographic proximity can be explicitly not_applicable", interpretation="These geographic regions deserve further investigation under the stated facility requirements, datasets, constraints, assumptions, and decision preferences. They are not proven buildable parcels.")
     summary["critical_outcomes"] = result.loc[result.is_critical, "outcome"].value_counts().sort_index().to_dict()
     summary["informational_outcomes"] = result.loc[~result.is_critical, "outcome"].value_counts().sort_index().to_dict()
     summary["mode_override_requested"] = mode_override
+    if land_search_scope != "single_cell":
+        summary["land_search_scope"] = land_search_scope
     return result, eligible, summary

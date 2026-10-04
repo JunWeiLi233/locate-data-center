@@ -212,3 +212,116 @@ def test_source_content_and_grid_subset_invalidate_builder_cache(cells,tmp_path)
     assert json.loads((tmp_path/'two'/'coverage_report.json').read_text())['resumed_tiles']==0
     build_features(cells.iloc[:1],source,tmp_path/'three',study_geometry=box(0,0,4,2),cache_dir=tmp_path/'cache')
     assert json.loads((tmp_path/'three'/'coverage_report.json').read_text())['resumed_tiles']==0
+
+
+def test_spatial_preparation_matches_full_prepare_and_reads_inventory_once(tmp_path,monkeypatch):
+    from dc_locator.geography import features
+    # Grid IDs interleave distant cells so ordinary row chunks span both areas.
+    grid=gpd.GeoDataFrame({'grid_id':['a','b','c','d'],
+        'grid_definition_id':['fixture']*4,'tile_id':['west','east','west','east'],
+        'row':[0]*4,'col':[0,500000,1,500001],'data_mode':['synthetic']*4,
+        'cell_area_km2':[.000004]*4,'study_area_intersection_km2':[.000004]*4},
+        geometry=[box(0,0,2,2),box(1000000,0,1000002,2),
+                  box(2,0,4,2),box(1000002,0,1000004,2)],crs=5070)
+    water=gpd.GeoDataFrame({'pfaf_id':[1,2],'bws_raw':[.25,.75],
+        'bws_score':[1.,3.],'bws_cat':[0,2]},
+        geometry=[box(-1,-1,5,3),box(999999,-1,1000005,3)],crs=5070)
+    water_path=tmp_path/'water.gpkg';water.to_file(water_path,layer='water',driver='GPKG')
+    regions=gpd.GeoDataFrame({'Subregion':['west','east']},geometry=water.geometry,crs=5070)
+    regions_path=tmp_path/'regions.gpkg';regions.to_file(regions_path,driver='GPKG')
+    workbook_path=tmp_path/'egrid.xlsx'
+    pd.DataFrame({'SUBRGN':['west','east'],'SRCO2RTA':[100.,500.],
+        'SRC2ERTA':[110.,510.]}).to_excel(workbook_path,sheet_name='SRL23',index=False)
+    # This mapped line lies outside every preparation bbox; nearest distance
+    # requires the full inventory even for a tile with no intersecting feature.
+    line=gpd.GeoDataFrame(geometry=[LineString([(500000,0),(500000,2)])],crs=5070)
+    line_path=tmp_path/'line.gpkg';line.to_file(line_path,driver='GPKG')
+    source={'wri_aqueduct40':{'paths':{'baseline':water_path},'layer':'water','data_mode':'synthetic'},
+        'epa_egrid':{'paths':{'regions':regions_path,'workbook':workbook_path},'data_mode':'synthetic'},
+        'eia_energy_atlas':{'paths':{'transmission':line_path},'data_mode':'synthetic'}}
+    study=box(0,0,1000004,2)
+    baseline=build_features(grid,source,tmp_path/'baseline',study_geometry=study,cache_dir=tmp_path/'baseline_cache')
+    calls=[];original=features.read_vector
+    def record(path,selected,**kwargs):
+        calls.append((str(path),len(selected),selected.total_bounds,kwargs.get('bounded',True)))
+        return original(path,selected,**kwargs)
+    monkeypatch.setattr(features,'read_vector',record)
+    workbook_calls=[];original_workbook=features.read_subregion_workbook
+    def record_workbook(path,**kwargs):
+        workbook_calls.append(str(path))
+        return original_workbook(path,**kwargs)
+    monkeypatch.setattr(features,'read_subregion_workbook',record_workbook)
+    bounded=build_features(grid,source,tmp_path/'bounded',study_geometry=study,
+        cache_dir=tmp_path/'bounded_cache',prepare_per_tile=True)
+    pd.testing.assert_frame_equal(baseline,bounded)
+    pd.testing.assert_frame_equal(pd.read_parquet(tmp_path/'baseline/feature_provenance.parquet'),
+        pd.read_parquet(tmp_path/'bounded/feature_provenance.parquet'))
+    water_calls=[c for c in calls if c[0]==str(water_path)]
+    assert len(water_calls)==2
+    assert all(c[1]==2 and c[2][2]-c[2][0]==4 for c in water_calls)
+    line_calls=[c for c in calls if c[0]==str(line_path)]
+    assert len(line_calls)==1 and line_calls[0][3] is False
+    assert len([c for c in calls if c[0]==str(regions_path)])==2
+    assert workbook_calls==[str(workbook_path)]
+    assert bounded.transmission_distance_km.tolist()==pytest.approx([499.998,500.,499.996,500.002])
+    calls.clear()
+    workbook_calls.clear()
+    repeat=build_features(grid,source,tmp_path/'repeat',study_geometry=study,
+        cache_dir=tmp_path/'bounded_cache',prepare_per_tile=True)
+    pd.testing.assert_frame_equal(bounded,repeat)
+    assert not calls and not workbook_calls
+    assert json.loads((tmp_path/'repeat/coverage_report.json').read_text())['resumed_tiles']==2
+
+
+def test_spatial_preparation_subdivides_large_grid_tiles(tmp_path,monkeypatch):
+    from dc_locator.geography import features
+    geometries=[box(c*50000,0,(c+1)*50000,50000) for c in range(7)]
+    grid=gpd.GeoDataFrame({'grid_id':[str(c) for c in range(7)],
+        'grid_definition_id':['fixture']*7,'tile_id':['one']*7,'row':[0]*7,
+        'col':list(range(7)),'data_mode':['synthetic']*7,'cell_area_km2':[2500.]*7,
+        'study_area_intersection_km2':[2500.]*7},geometry=geometries,crs=5070)
+    calls=[];original=features._prepare
+    def record(selected,source_inputs,*args,**kwargs):
+        if 'wri_aqueduct40' in source_inputs:calls.append(selected.total_bounds)
+        return original(selected,source_inputs,*args,**kwargs)
+    monkeypatch.setattr(features,'_prepare',record)
+    build_features(grid,{'wri_aqueduct40':{'paths':{}}},tmp_path/'output',
+        study_geometry=box(0,0,350000,50000),cache_dir=tmp_path/'cache',
+        prepare_per_tile=True,tile_size_cells=3)
+    assert len(calls)==3
+    assert all(bounds[2]-bounds[0]<=250000 and bounds[3]-bounds[1]<=250000 for bounds in calls)
+
+
+def test_blocked_analysis_sources_remain_acquired_but_are_not_prepared(cells,tmp_path,monkeypatch):
+    from dc_locator.geography import features
+    line=gpd.GeoDataFrame({'inventory_id':['mapped']},geometry=[LineString([(5,0),(5,2)])],crs=5070)
+    source={'eia_energy_atlas':{'paths':{'transmission':line},'data_mode':'synthetic',
+        'quality_blocker':'not_computed','blocker_detail':'Excluded from the declared national baseline'}}
+    def unexpected_read(*args,**kwargs):
+        pytest.fail('A source intentionally excluded from analysis must not be loaded')
+    monkeypatch.setattr(features,'read_vector',unexpected_read)
+    result=build_features(cells,source,tmp_path/'output',study_geometry=box(0,0,4,2),cache_dir=tmp_path/'cache')
+    assert result.transmission_distance_km.isna().all()
+    provenance=pd.read_parquet(tmp_path/'output/feature_provenance.parquet')
+    assert provenance.loc[provenance.source_id=='eia_energy_atlas','missing_reason'].eq('not_computed').all()
+    report=json.loads((tmp_path/'output/coverage_report.json').read_text())
+    assert report['sources']['eia_energy_atlas']['acquired'] is True
+    assert report['sources']['eia_energy_atlas']['analyzed'] is False
+
+
+def test_coverage_extent_describes_supplied_grid(cells,tmp_path):
+    build_features(cells,{},tmp_path/'output',study_geometry=box(0,0,4,2),cache_dir=tmp_path/'cache')
+    report=json.loads((tmp_path/'output/coverage_report.json').read_text())
+    assert 'dev_tiny' not in report['analysis_extent']
+    assert report['analysis_bounds_5070_m']==[0.,0.,4.,2.]
+    assert report['analysis_study_area_km2']==pytest.approx(.000008)
+
+
+def test_explicit_source_calculation_method_is_recorded(cells,tmp_path):
+    source={'usgs_annual_nlcd':{'paths':{},'method':'Native categorical raster projected with nearest-neighbor sampling',
+        'aggregation_method':'area-weighted classes after declared raster reprojection'}}
+    build_features(cells,source,tmp_path/'output',study_geometry=box(0,0,4,2),cache_dir=tmp_path/'cache')
+    provenance=pd.read_parquet(tmp_path/'output/feature_provenance.parquet')
+    nlcd=provenance.loc[provenance.source_id=='usgs_annual_nlcd']
+    assert nlcd.method.eq(source['usgs_annual_nlcd']['method']).all()
+    assert nlcd.aggregation_method.eq(source['usgs_annual_nlcd']['aggregation_method']).all()

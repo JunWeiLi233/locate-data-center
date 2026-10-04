@@ -198,3 +198,139 @@ Same-folder current identity changes fail and require a new output folder. Cache
 source/config/code/grid mutation during execution and incompatible file/row identities fail explicitly.
 The legacy build-grid default writes to production; delivery examples use a fresh owned output folder
 so accepted source/grid bytes remain preserved. No national model execution is advertised.
+# Current national discovery revision — 2026-10-03
+
+The added schema 2.1.0 configuration extends search coverage to 3,384 fixed-origin 50 km cells across
+CONUS. Statements below describing national execution as unsupported refer to the historical
+Phase 7 development delivery. The national baseline retains original decision weights and required
+metrics, using nationwide NLCD, eGRID, Aqueduct and EIA evidence. It does not imply that every cell
+has complete coverage or can be ranked. Required incomplete metrics remain unranked.
+
+Optional cached climate/hazard sources and expanded future/LCA contexts are explicitly not computed
+in this initial national baseline. Their values remain UNKNOWN with `missing_reason=not_computed`;
+source acquisition is reported separately. Older development future contexts remain readable only
+for their own runs. Native NLCD undergoes documented nearest-neighbor 30 m CRS conversion, which
+can affect class boundaries. A 50 km cell and adjacent search region are broad investigation areas,
+not a parcel, contiguous land commitment or local engineering determination.
+# Regional 1 km precision and industrial evidence limits
+
+The user-approved 1 km lattice improves regional land aggregation and distance
+proxies. It does not create parcel boundaries, industrial zoning, obtainable
+contiguous acreage, verified electrical connection/capacity, committed water
+supply or diverse fiber routes. These retain their existing UNKNOWN treatment.
+STRICT screening does not accept unknown critical evidence.
+
+Refining representative parent areas is a bounded investigation strategy; it
+does not exhaust all shortlisted land or perform exhaustive national 1 km analysis.
+Aqueduct basin values and eGRID subregion averages retain native spatial meaning.
+The Census2023 cartographic1:500000 boundary remains generalized; initial refined
+parents are inland, and future coastal expansion must audit this limitation or
+upgrade to compatible official higher-resolution boundaries. No fractional
+overflow or incomplete attribution is silently clamped.
+# Submission alignment limits — additive 2026-10-03
+
+Cleanview inspection and reference comparison are limited to the public largest
+operating listings. The sample is capacity-selected, incomplete, may include
+cryptocurrency mining, and contains county labels without exact site coordinates
+or measured PUE/WUE/annual performance. Repeated facilities in one county share
+model support and are not independent geographic validations. Unmatched labels
+remain unresolved without fuzzy correction. A whole-cell county intersection
+does not locate or validate a facility. The comparison cannot establish predictive
+accuracy, causality, optimal weights or engineering coefficients.
+
+The regional land repair removes an artificial single-cell area rejection but
+does not prove connected suitable land across cells. Region total-area screening
+rejects known undersized components; even a PASS remains a classified proxy.
+The fixed 20 km partition can split potential land, and only the selected 61
+representative parent windows are refined. Expansion beyond those windows needs
+a separate bounded source computation. Minimum polygon distance to transmission
+is particularly optimistic on the 50 km grid; zero means intersection somewhere
+in the cell, never utility connection or available power. Cooling comparisons
+remain scenario-dependent and externally unvalidated.
+
+The six-deliverable submission package and frontend brief improve explanation;
+they do not fill missing scientific evidence or establish a grade. National hazard,
+climate and future contexts remain uncomputed where the archived run says so.
+Generation-water consumption, full lifecycle, confirmed useful heat, construction
+resource benefits, and community economic benefits remain UNKNOWN without compatible
+inputs. The optional heat module calculates a supplied annual host scenario with no
+default recovery or avoided-carbon factors and no automatic facility/MCDA offset.
+Its annual-demand input must match usable temperatures and timing; this is not an
+hourly thermal dispatch simulation. Operating actions through 2054 are a proposed
+project plan. The coarse national representative and large connected-region center
+are separate; neither certifies a parcel. Supporting the regional output layout is
+not acceptance of the independently ongoing regional delivery revision.
+
+# National fine surface limits — Phase 11 (2026-10-03)
+
+The fine surface decides only which parents receive full refinement. It applies no screening, so a high
+fine value can belong to a cell that refinement later marks ineligible (3,100 of 305,000 alternatives in the
+`regional_refinement_v4` comparison). Its inputs carry the same proxy limits as the regional features:
+mapped transmission distance is not utility capacity, the land share is not a parcel or zoning test, basin
+stress is not a water-supply commitment and historical eGRID intensity is not a forecast.
+
+Selection takes the parents with the highest best fine values. It adds no regional diversity rule, so
+selected parents can concentrate where many high-value cells cluster. Unselected parents are unrefined, and
+coverage of exact 1 km evidence stays partial. Basin stress can differ from the adapter by up to about 0.001
+on its 0–5 scale where long straight basin edges cross tile boundaries.
+
+## Region mode limits (2026-10-04)
+
+The region mode (`national_fine_region_parents`) refines one parent per national discovery region, so its
+spread follows the 50 km national regions. Their number, shape and membership still come from 50 km box
+values. A region's best fine parent is sought only among its members, never in a neighbouring region, and
+parents outside every national region are not considered. Regions remain search areas, not sites.
+
+## County economic context limits (2026-10-04)
+
+The user authorized 2023 and 2025 Census cartographic counties at 1:500,000,
+with 2024 SAIPE estimates retained. These are mixed-year generalized geometries,
+not the unavailable 2024 TIGER/Line file or parcel boundaries. Matching GEOID
+does not prove unchanged jurisdiction geometry. Coastline and border differences
+can leave full-grid area uncovered; reported county shares are not renormalized.
+
+SAIPE poverty and household income are county-scale model estimates with
+uncertainty, not household/site observations. The download's rounded 90% bounds
+give a calculated interval half-width; it may differ from a separately published
+API MOE. Percentiles describe the valid CONUS county universe, not people or
+project impact. An overlapping county's poverty rate does not estimate poverty
+inside the particular search area. All county intersections remain visible.
+
+Economic display filters cannot establish community support, equitable benefits,
+buildability or fiscal returns. Technical model values and global ranks remain
+unchanged. Fiscal revenues, costs, incentives and significance remain unknown.
+Local enrichment is bounded to at most 200,000 saved real grid cells, with
+10,000-cell chunks; oversized domains fail explicitly rather than loading the
+national 7.8-million-cell surface. Cached national county display can remain
+available independently of bounded regional enrichment.
+
+## Fast Grid evaluation scope (2026-10-04)
+
+The default cached regional mode recalculates a submitted facility across all
+152,500 already evaluated 1 km cells in 61 fixed nationwide representative
+windows. It does not discover new windows for that facility or evaluate every
+CONUS 1 km cell. Its global ranks compare the cached regional universe only.
+Changing requirements or preferences may therefore make other, unevaluated
+windows worth investigating. Full nationwide rediscovery remains a separate
+longer option. Existing UNKNOWN critical requirements, proxy boundaries and
+the 20 km per-axis region limit remain in force.
+
+The one-minute generation target applies after preparation of the validated
+static input cache. Actual runtime depends on machine load and configuration;
+the evidence records preparation and changed-request timing separately. Broad
+sensitivity and diagnostic cases are not assessed by this mode, and historical
+carbon is not a future grid forecast. Cached inputs fail explicitly when their
+contents, calculation methods, policies or environment do not match.
+
+## Rediscovery check against existing data centers (2026-10-04)
+
+`docs/rediscovery_validation.md` compares unscreened national 1 km candidates with an OpenStreetMap-derived
+facility inventory. Hit rates, recall and presence–background AUC measure geographic agreement, not
+accuracy. Existing facilities are not ground truth. Their siting reflects latency, markets, fiber, tax policy,
+history and company strategy, which the model does not score. The inventory is also incomplete and mixes
+facility sizes. An "emerging" candidate (no facility within 50 km) is not shown to be suitable, and a
+"validated" one is not shown to be correct. The score's regional proxies produce large tie blocks: 855 cells
+share the maximum. Their published order follows grid_id, and a tie-sensitivity table reports the resulting
+spread. Random controls account for spatial chance and for transmission/land plausibility only. Monte Carlo
+robustness covers only the county model's 45-county cohort, at county support. Every other value is null,
+never invented.

@@ -1,6 +1,12 @@
 import { describe,it,expect } from 'vitest';
 import { readUrlState,writeUrlState } from './url';
 describe('shareable state',()=>{
+  it('defaults to grid and restores the explicit county model parameter',()=>{expect(readUrlState('').model).toBe('grid');expect(readUrlState('?model=county').model).toBe('county');expect(readUrlState('?model=unsupported').model).toBe('grid');});
+  it('discards legacy county map selections while retaining technical layers and run identity',()=>{
+    expect(readUrlState('?run=R1&layers=candidates,community_economic:poverty@2023,water').layers.map(layer=>layer.id)).toEqual(['candidates','water']);
+    writeUrlState({layers:[{id:'community_economic',enabled:true,sublayer:'low_income_percentile@2025'},{id:'grid',enabled:true}]});
+    expect(new URLSearchParams(window.location.search).get('layers')).toBe('grid');
+  });
   it('reads identifiers, available layer syntax and bounded map camera',()=>{const state=readUrlState('?run=R1&region=G1&scenario=bau_2050&layers=candidates,climate:flood&lon=-96&lat=30&zoom=8&mw=150');expect(state).toMatchObject({runId:'R1',regionId:'G1',scenarioId:'bau_2050',camera:{longitude:-96,latitude:30,zoom:8},configuration:{peakItPowerMw:150}});expect(state.layers[1]).toEqual({id:'climate',enabled:true,sublayer:'flood'});});
   it('does not accept invalid map coordinates or unknown layers',()=>{const state=readUrlState('?lon=999&lat=99&zoom=99&layers=fake,water');expect(state.camera).toBeUndefined();expect(state.layers.map(l=>l.id)).toEqual(['water']);});
   it('writes small state without geometry or secrets',()=>{writeUrlState({runId:'R2',regionId:'G2',scenarioId:'current',layers:[{id:'water',enabled:true}],camera:{longitude:-96,latitude:30,zoom:6}});expect(window.location.search).toContain('run=R2');expect(window.location.search).toContain('region=G2');expect(window.location.search).not.toContain('geometry');});

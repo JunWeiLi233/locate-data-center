@@ -238,7 +238,8 @@ class Pipeline:
             boundary=load_conus_boundary()
             core_inputs=load_source_document(self.path(self.config.core_source_inputs),self.root)
             geo=build_features(grid_path,core_inputs,self.output/'geography_core',study_geometry=boundary.boundary,
-                cache_dir=self.root/'data/interim'/self.config.delivery_version/self.identity,resume=True,progress=print)
+                cache_dir=self.root/'data/interim'/self.config.delivery_version/('national_geography' if self.config.schema_version=='2.1.0' else self.identity),resume=True,progress=print,
+                prepare_per_tile=self.config.schema_version=='2.1.0')
             prov=pd.read_parquet(self.output/'geography_core/feature_provenance.parquet')
             prov.attrs.update(grid_definition_id=self.config.grid_definition_id,data_mode='real')
             coverage={'core':json.loads((self.output/'geography_core/coverage_report.json').read_text(encoding='utf-8'))}
@@ -295,12 +296,13 @@ class Pipeline:
 
     def write_regions(self,regions,members,profile,folder):
         for row in regions.drop(columns='geometry').to_dict('records'):CandidateRegion.model_validate(clean(row))
-        write_geoparquet(regions,folder/'candidate_regions.parquet',schema_name='CandidateRegion',schema_version='1.1.0',data_mode=self.config.data_mode,grid_definition_id=self.config.grid_definition_id)
+        version='1.2.0' if 'maximum_extent_km' in profile.region_selection else '1.1.0'
+        write_geoparquet(regions,folder/'candidate_regions.parquet',schema_name='CandidateRegion',schema_version=version,data_mode=self.config.data_mode,grid_definition_id=self.config.grid_definition_id)
         members=members.copy();members['profile_id']=profile.profile_id;members['profile_fingerprint']=profile_fingerprint(profile)
         members['grid_definition_id']=self.config.grid_definition_id;members['data_mode']=self.config.data_mode.value
         self.table(members,'region_membership',*TABLES['region_membership'],folder=folder)
         features=json.loads(regions.to_crs(4326).to_json(drop_id=True))['features'] if len(regions) else []
-        emit(folder/'candidate_regions.geojson',{'type':'FeatureCollection','features':features,'dc_locator':{'schema':'CandidateRegion','schema_version':'1.1.0',
+        emit(folder/'candidate_regions.geojson',{'type':'FeatureCollection','features':features,'dc_locator':{'schema':'CandidateRegion','schema_version':version,
             'grid_definition_id':self.config.grid_definition_id,'data_mode':self.config.data_mode.value,'profile_id':profile.profile_id,
             'profile_fingerprint':profile_fingerprint(profile),'interpretation':'Search areas for investigation; no approved parcel'}})
 
@@ -429,5 +431,5 @@ class Pipeline:
             'stage_identity':self.identity,'cache_hits':sorted(set(self.cache_hits))}
 
 
-def execute_stage(stage,config_path='configs/run.yaml',output='runs/example'):
+def execute_stage(stage,config_path='configs/run_national.yaml',output='runs/national_default_v1'):
     return Pipeline(config_path,output).execute(stage)

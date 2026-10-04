@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
+import math
 import mimetypes
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -15,11 +17,31 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from frontend.server.serialization import ApiError, SCHEMA_VERSION, SCOPE, json_bytes
 from frontend.server.service import LocatorService
+from frontend.server.rediscovery import RediscoveryReader
 
 MAX_BODY_BYTES = 64 * 1024
 
 
+def accepts_gzip(value: str) -> bool:
+    qualities = {}
+    for entry in value.lower().split(","):
+        encoding, *parameters = [part.strip() for part in entry.split(";")]
+        quality = 1.0
+        for parameter in parameters:
+            if parameter.startswith("q="):
+                try:
+                    quality = float(parameter[2:])
+                except ValueError:
+                    quality = 0.0
+                if not math.isfinite(quality) or not 0 <= quality <= 1:
+                    quality = 0.0
+        qualities[encoding] = quality
+    return qualities.get("gzip", qualities.get("*", 0)) > 0
+
+
 def make_handler(service):
+    rediscovery = RediscoveryReader(getattr(service, "root", PROJECT_ROOT))
+
     class Handler(BaseHTTPRequestHandler):
         server_version = "LocatorLocalBridge/1.0"
         protocol_version = "HTTP/1.1"
@@ -47,15 +69,24 @@ def make_handler(service):
 
         def _send(self, value, status=200, content_type="application/json; charset=utf-8", filename=None):
             body = value if isinstance(value, bytes) else json_bytes(value)
+            compressible = content_type.startswith("application/json") and len(body) >= 1024
+            compressed = compressible and accepts_gzip(self.headers.get("Accept-Encoding", ""))
+            if compressed:
+                body = gzip.compress(body, compresslevel=1, mtime=0)
             self.send_response(status)
             self.send_header("Content-Type", content_type)
+            if compressed:
+                self.send_header("Content-Encoding", "gzip")
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
             origin = self.headers.get("Origin")
+            vary = ["Accept-Encoding"] if compressible else []
             if origin and urlsplit(origin).hostname in {"localhost", "127.0.0.1", "::1"}:
                 self.send_header("Access-Control-Allow-Origin", origin)
-                self.send_header("Vary", "Origin")
+                vary.append("Origin")
+            if vary:
+                self.send_header("Vary", ", ".join(vary))
             if filename:
                 self.send_header("Content-Disposition", f'attachment; filename="{filename}"')
             self.end_headers()
@@ -73,7 +104,8 @@ def make_handler(service):
                     raise ApiError("Request URL exceeds the local API bound", 414, "url_size")
                 path = [unquote(p) for p in parts.path.split("/") if p]
                 query = parse_qs(parts.query, keep_blank_values=True)
-                if any(len(v) != 1 for v in query.values()) or set(query) - {"scenario", "run_id", "sublayer"}:
+                allowed_query = {"run_id", "boundary_year", "scenario"} if path == ["api", "socioeconomic"] else {"scenario", "run_id", "sublayer"}
+                if any(len(v) != 1 for v in query.values()) or set(query) - allowed_query:
                     raise ApiError("Unknown or repeated query parameter")
                 scenario = query.get("scenario", ["current"])[0]
                 if method == "GET" and path == ["api", "capabilities"]:
@@ -106,16 +138,29 @@ def make_handler(service):
                 if method == "GET" and len(path) == 3 and path[:2] == ["api", "jobs"]:
                     return self._send(service.job(path[2]))
                 if method == "GET" and len(path) == 3 and path[:2] == ["api", "runs"]:
-                    return self._send(service.run_result(path[2], scenario))
+                    return self._send(service.run_response(path[2], scenario))
                 if method == "GET" and len(path) == 3 and path[:2] == ["api", "layers"]:
                     run_id = query.get("run_id", [None])[0]
                     if not run_id:
                         raise ApiError("run_id is required for layers")
                     return self._send(service.layer_result(path[2], run_id, scenario, query.get("sublayer", [None])[0]))
+                if method == "GET" and path == ["api", "socioeconomic"]:
+                    run_id = query.get("run_id", [None])[0]
+                    if not run_id:
+                        raise ApiError("run_id is required for county economic context")
+                    return self._send(service.socioeconomic_result(run_id, query.get("boundary_year", ["2025"])[0], scenario))
                 if method == "GET" and len(path) == 4 and path[:2] == ["api", "exports"]:
                     target = service.export(path[2], path[3], scenario)
                     media_type = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
                     return self._send(target.read_bytes(), content_type=media_type, filename=target.name)
+                if method == "GET" and path[:2] == ["api", "rediscovery"] and not query:
+                    # Read-only post-hoc comparison with existing facilities; never a model input.
+                    if len(path) == 2:
+                        return self._send(rediscovery.index())
+                    if len(path) == 3:
+                        return self._send(rediscovery.payload_bytes(path[2]))
+                    if len(path) == 4 and path[3] == "surface.png":
+                        return self._send(rediscovery.surface(path[2]), content_type="image/png")
                 if method == "GET" and path == ["api", "health"]:
                     return self._send({"schema_version": SCHEMA_VERSION, "status": "ready"})
                 raise ApiError("Unknown API route", 404, "route_not_found")

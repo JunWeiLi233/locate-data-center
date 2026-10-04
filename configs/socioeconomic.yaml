@@ -1,0 +1,19 @@
+# Economic context is separate geography; it never changes technical decisions.
+schema_version: 1.0.0
+socioeconomic_enabled: true
+saipe_year: 2024
+boundary_year: 2025
+boundary_type: cartographic_500k
+county_boundaries:
+  2023: data/raw/census_cartographic_boundary/cb_2023_us_county_500k.zip
+  2025: data/raw/census_frontend_boundary/areawater/cb_2025_us_county_500k.zip
+chunk_size: 10000
+max_grid_cells: 200000
+confidence:
+  basis: project_assumption
+  value: medium
+  rationale: County-scale SAIPE model estimates have reported uncertainty; qualitative confidence is not the statistical 90% confidence level.
+percentiles:
+  universe: all_CONUS_SAIPE_counties_with_valid_metric
+  method: average_rank_endpoints_0_100_singleton_50
+geometry_warning: Authorized 2023/2025 generalized 1:500,000 Census CARTOGRAPHIC counties, not 2024 TIGER/Line or parcel boundaries. Matching GEOID does not establish unchanged jurisdiction geometry across years.

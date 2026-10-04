@@ -208,3 +208,15 @@ The 45 selected counties are a bounded comparison cohort, not national discovery
 This authorized layout extension and its verification are recorded in `docs/phase_handoff.md`;
 local integration evidence lives in `runs/pr1_merge_v1/`. Keep generated county data, outputs,
 environments and secrets excluded from Git.
+
+## 13. Rediscovery validation package (user-authorized, 2026-10-04)
+
+`src/dc_rediscovery/` is an additive, read-only validation package. It lives outside the hash-bound
+`src/dc_locator/**` inventory, so running pipelines and completed-run reuse are not invalidated (precedent:
+`src/dc_locator_fast.py`). It scores a completed run's national 1 km fine surface with the model's own
+functions, hashes blind separated candidates, and only then compares them with an external
+existing-facility inventory (IM3 Open Source Data Center Atlas, ODbL). **Existing facilities are never a model
+feature:** `src/dc_locator` must not import this package or read that inventory
+(`tests/test_rediscovery_leakage.py`). No weight, threshold or coefficient may be fitted to the inventory.
+Outputs go to `runs/rediscovery_*`. Configuration is `configs/rediscovery.yaml`. Read-only API routes live in
+`frontend/server/rediscovery.py`. Details are in `docs/rediscovery_validation.md`.

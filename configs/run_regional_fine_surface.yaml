@@ -1,0 +1,16 @@
+schema_version: 3.0.0
+delivery_version: phase11_national_fine_surface_v1
+parent_config: configs/run_national_exploratory.yaml
+grid_config: configs/grid_regional.yaml
+scoring_profile: configs/scoring_profile_regional.yaml
+selection: national_fine_surface
+maximum_region_extent_km: 20
+maximum_refined_cells: 152500
+maximum_batch_cells: 2500
+basis: project_assumption
+rationale: >-
+  Value every national 1 km cell on the national fine surface with the declared profile, then refine in
+  full the parents with the highest fine values. 152,500 cells admit 61 full parents, the same compute as
+  the representative-parent baseline, so the two selections are comparable. Budgets bound execution
+  resources and are not engineering thresholds. The surface applies no screening and never replaces
+  refined evidence; refined coverage remains partial.

@@ -1,0 +1,11 @@
+# User-approved 1 km regional analysis, basis: project_assumption.
+# Fixed origin and nesting preserve national identity; zoom is presentation only.
+crs: EPSG:5070
+origin_x_m: -2500000.0
+origin_y_m: 3400000.0
+cell_size_m: 1000.0
+grid_scheme_version: 1
+id_row_col_digits: 4
+tile_size_cells: 25
+min_intersection_km2: 0.0
+study_areas: {}

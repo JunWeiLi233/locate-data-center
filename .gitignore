@@ -40,7 +40,7 @@ Thumbs.db
 !.pytest-work/README.md
 .tmp-*
 
-# Isolated county-backend runtime artifacts and local frontend settings.
+# Isolated county-model runtime and public frontend configuration.
 backend/**/data/raw
 backend/**/data/processed
 backend/**/outputs/
@@ -51,5 +51,4 @@ backend/**/outputs/
 **/*.tsbuildinfo
 **/test-results/
 **/playwright-report/
-# Ignore reused runtime roots even if they are symlinks rather than directories.
 **/.venv
