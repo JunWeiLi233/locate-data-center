@@ -115,8 +115,8 @@ describe('candidate payloads', () => {
     expect(payload.badges.features.length).toBe(2);
   });
   it('preserves screening statuses and unknown gray', () => {
-    expect(statusColor('PASS')).toBe('#167d84'); expect(statusColor('CONDITIONAL')).toBe('#b88932');
-    expect(statusColor('FAIL')).toBe('#b35c58'); expect(statusColor('UNKNOWN')).toBe('#818b94');
+    expect(statusColor('PASS')).toBe('#127a3e'); expect(statusColor('CONDITIONAL')).toBe('#b86e00');
+    expect(statusColor('FAIL')).toBe('#c4363b'); expect(statusColor('UNKNOWN')).toBe('#8a93a0');
     expect(statusColor('unrecognized')).toBe(statusColor('UNKNOWN'));
   });
   it('changes selection without resending candidate polygon or base badge data', () => {

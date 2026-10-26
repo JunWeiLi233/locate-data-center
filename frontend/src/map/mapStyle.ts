@@ -18,7 +18,8 @@ export const EMPTY_COLLECTION: FeatureCollection = { type: 'FeatureCollection', 
  * analyzed model coverage, and a failed context tile must not take the results map down.
  */
 export interface BasemapVisibility { relief: boolean; forest: boolean }
-export const DEFAULT_BASEMAP: BasemapVisibility = { relief: true, forest: true };
+/** Canopy starts off: its green reads like results. Both stay one click away in Map layers. */
+export const DEFAULT_BASEMAP: BasemapVisibility = { relief: true, forest: false };
 export const TERRAIN_SOURCE = 'context-terrain';
 export const FOREST_SOURCE = 'context-forest';
 export const CONTEXT_LAYERS: Record<keyof BasemapVisibility, string> = { relief: 'context-relief', forest: 'context-forest-canopy' };
@@ -40,7 +41,7 @@ const indicatorCache = new WeakMap<LibreMap, Map<string, LayerData>>();
 const contextCache = new WeakMap<LibreMap, Map<string, FeatureCollection>>();
 
 export function neutralStyle(): StyleSpecification {
-  return { version: 8, sources: {}, layers: [{ id: 'neutral-background', type: 'background', paint: { 'background-color': '#eaf0f2' } }] };
+  return { version: 8, sources: {}, layers: [{ id: 'neutral-background', type: 'background', paint: { 'background-color': '#d6e4ee' } }] };
 }
 
 function sourceData(map: LibreMap, id: string, data: FeatureCollection, attribution?: string): void {
@@ -49,7 +50,7 @@ function sourceData(map: LibreMap, id: string, data: FeatureCollection, attribut
   else map.addSource(id, { type: 'geojson', data, attribution });
 }
 
-function textImage(text: string, kind: 'state' | 'badge', color = '#167d84', selected = false): ImageData | null {
+function textImage(text: string, kind: 'state' | 'badge', color = '#2457d6', selected = false): ImageData | null {
   const canvas = document.createElement('canvas');
   const ratio = 2;
   canvas.width = (kind === 'state' ? 160 : 38) * ratio;
@@ -59,12 +60,12 @@ function textImage(text: string, kind: 'state' | 'badge', color = '#167d84', sel
   context.scale(ratio, ratio);
   if (kind === 'badge') {
     context.beginPath(); context.arc(19, 19, selected ? 17 : 15, 0, Math.PI * 2);
-    context.fillStyle = selected ? '#167d84' : '#ffffff'; context.fill();
+    context.fillStyle = selected ? '#2457d6' : '#ffffff'; context.fill();
     context.lineWidth = selected ? 3 : 2; context.strokeStyle = selected ? '#ffffff' : color; context.stroke();
-    context.fillStyle = selected ? '#ffffff' : '#22343c';
+    context.fillStyle = selected ? '#ffffff' : '#12161c';
     context.font = '600 13px Arial, sans-serif';
   } else {
-    context.fillStyle = '#74808a'; context.font = '11px Arial, sans-serif';
+    context.fillStyle = '#5b6472'; context.font = '11px Arial, sans-serif';
   }
   context.textAlign = 'center'; context.textBaseline = 'middle';
   context.fillText(text, canvas.width / ratio / 2, canvas.height / ratio / 2, canvas.width / ratio - 8);
@@ -91,8 +92,8 @@ function addPhysicalContext(map: LibreMap, before: string | undefined, basemap: 
     paint: { 'raster-opacity': ['interpolate', ['linear'], ['zoom'], 3, 0.36, 9, 0.42], 'raster-saturation': -0.35, 'raster-resampling': 'linear' } }, before);
   if (!map.getLayer(CONTEXT_LAYERS.relief)) map.addLayer({ id: CONTEXT_LAYERS.relief, type: 'hillshade', source: TERRAIN_SOURCE,
     layout: { visibility: basemap.relief ? 'visible' : 'none' },
-    paint: { 'hillshade-exaggeration': ['interpolate', ['linear'], ['zoom'], 3, 0.62, 7, 0.5, 10, 0.4, 11.5, 0.25, 13, 0], 'hillshade-illumination-direction': 315, 'hillshade-shadow-color': '#4e5c56',
-      'hillshade-highlight-color': '#fffef6', 'hillshade-accent-color': '#5f6d66' } }, before);
+    paint: { 'hillshade-exaggeration': ['interpolate', ['linear'], ['zoom'], 3, 0.62, 7, 0.5, 10, 0.4, 11.5, 0.25, 13, 0], 'hillshade-illumination-direction': 315, 'hillshade-shadow-color': '#5b6472',
+      'hillshade-highlight-color': '#ffffff', 'hillshade-accent-color': '#6b7480' } }, before);
 }
 
 export function setBasemapVisibility(map: LibreMap, basemap: BasemapVisibility): void {
@@ -145,10 +146,10 @@ export function syncContext(map: LibreMap, states: FeatureCollection | null, use
     update('context-land', backdrop.land);
     const landBefore = map.getLayer(CONTEXT_LAYERS.forest) ? CONTEXT_LAYERS.forest : map.getLayer('context-state-lines') ? 'context-state-lines' : before;
     if (!map.getLayer('context-state-fill')) map.addLayer({ id: 'context-state-fill', type: 'fill', source: 'context-land',
-      paint: { 'fill-color': '#f5f5ef', 'fill-opacity': 1 } }, landBefore);
+      paint: { 'fill-color': '#f7f8fa', 'fill-opacity': 1 } }, landBefore);
     if (backdrop.shoreline) update('context-shore-overview', backdrop.shoreline);
     lineLayer(map, 'context-shoreline', backdrop.shoreline ? 'context-shore-overview' : 'context-land',
-      { 'line-color': '#a9c3cc', 'line-width': 0.7 }, landBefore);
+      { 'line-color': '#a7bccb', 'line-width': 0.7 }, landBefore);
   }
   // Land fill, then forest and relief, then other countries, state lines and labels; results stay above all of it.
   if (useLocalFill) addPhysicalContext(map, before, basemap);
@@ -157,17 +158,17 @@ export function syncContext(map: LibreMap, states: FeatureCollection | null, use
     // Opaque and above relief: other countries show their outline and borders, not their terrain.
     const foreignBefore = map.getLayer('context-state-lines') ? 'context-state-lines' : before;
     if (!map.getLayer('context-foreign-fill')) map.addLayer({ id: 'context-foreign-fill', type: 'fill', source: 'context-foreign',
-      filter: ['==', ['get', 'kind'], 'land'], paint: { 'fill-color': '#e9e7de', 'fill-opacity': 1 } }, foreignBefore);
+      filter: ['==', ['get', 'kind'], 'land'], paint: { 'fill-color': '#eceff3', 'fill-opacity': 1 } }, foreignBefore);
     if (!map.getLayer('context-foreign-borders')) map.addLayer({ id: 'context-foreign-borders', type: 'line', source: 'context-foreign',
-      filter: ['==', ['get', 'kind'], 'border'], paint: { 'line-color': '#8c9ca2', 'line-width': 0.8, 'line-dasharray': [3, 2] } }, foreignBefore);
+      filter: ['==', ['get', 'kind'], 'border'], paint: { 'line-color': '#a3acb8', 'line-width': 0.8, 'line-dasharray': [3, 2] } }, foreignBefore);
   }
   if (backdrop?.borders) update('context-borders', backdrop.borders);
   lineLayer(map, 'context-state-lines', backdrop?.borders ? 'context-borders' : 'context-states',
-    { 'line-color': '#8c9ca2', 'line-width': 0.85 }, map.getLayer('context-national-lines') ? 'context-national-lines' : before);
+    { 'line-color': '#a3acb8', 'line-width': 0.85 }, map.getLayer('context-national-lines') ? 'context-national-lines' : before);
   if (backdrop?.national) {
     update('context-national', backdrop.national);
     if (!map.getLayer('context-national-lines')) map.addLayer({ id: 'context-national-lines', type: 'line', source: 'context-national',
-      paint: { 'line-color': '#4c737f', 'line-width': 1.4 } }, before);
+      paint: { 'line-color': '#5b6472', 'line-width': 1.4 } }, before);
   }
   if (!useLocalFill || map.getLayer('context-state-labels')) return;
   const features: FeatureCollection<Point>['features'] = [];
@@ -183,6 +184,56 @@ export function syncContext(map: LibreMap, states: FeatureCollection | null, use
   sourceData(map, 'context-state-labels', { type: 'FeatureCollection', features });
   map.addLayer({ id: 'context-state-labels', type: 'symbol', source: 'context-state-labels', minzoom: 2.8,
     layout: { 'icon-image': ['get', 'image'], 'icon-allow-overlap': false, 'icon-padding': 1 } }, before);
+}
+
+export const SCOPE_SOURCE = 'search-scope';
+export const SCOPE_LAYERS = ['scope-unassessed', 'scope-window-fill', 'scope-window-line'];
+const SCOPE_HATCH = 'scope-hatch';
+const scopeCache = new WeakMap<LibreMap, FeatureCollection | null>();
+
+/** Diagonal hatch for land outside the search scope: not assessed at 1 km, which is never zero or a pass. */
+function hatchImage(): ImageData | null {
+  const size = 8, ratio = 2;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size * ratio;
+  const context = canvas.getContext('2d');
+  if (!context) return null;
+  context.scale(ratio, ratio);
+  context.strokeStyle = 'rgba(91, 100, 114, 0.30)';
+  context.lineWidth = 1;
+  context.beginPath();
+  for (const offset of [-size, 0, size]) { context.moveTo(offset, size); context.lineTo(offset + size, 0); }
+  context.stroke();
+  return context.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+/**
+ * Start-screen search scope: refined windows over land hatched as not assessed at 1 km.
+ * `null` hides it; it sits beneath state lines and every result layer.
+ */
+export function syncScope(map: LibreMap, windows: FeatureCollection | null): void {
+  const visible = !!windows && windows.features.length > 0;
+  if (scopeCache.get(map) !== windows || !map.getSource(SCOPE_SOURCE)) {
+    sourceData(map, SCOPE_SOURCE, windows ?? EMPTY_COLLECTION);
+    scopeCache.set(map, windows);
+  }
+  if (!map.getLayer('scope-window-fill')) map.addLayer({ id: 'scope-window-fill', type: 'fill', source: SCOPE_SOURCE,
+    paint: { 'fill-color': '#e8effd', 'fill-opacity': 0.92 } });
+  if (!map.getLayer('scope-window-line')) map.addLayer({ id: 'scope-window-line', type: 'line', source: SCOPE_SOURCE,
+    paint: { 'line-color': '#2457d6', 'line-width': 1.2 } });
+  if (map.getSource('context-land') && !map.getLayer('scope-unassessed')) {
+    if (!map.hasImage(SCOPE_HATCH)) { const image = hatchImage(); if (image) map.addImage(SCOPE_HATCH, image, { pixelRatio: 2 }); }
+    if (map.hasImage(SCOPE_HATCH)) map.addLayer({ id: 'scope-unassessed', type: 'fill', source: 'context-land',
+      paint: { 'fill-pattern': SCOPE_HATCH } });
+  }
+  // Context layers keep arriving after the first paint, so re-seat the scope on every sync:
+  // above land fill, relief and canopy, beneath other countries, state lines, labels and every result.
+  const before = map.getLayer('context-foreign-fill') ? 'context-foreign-fill' : map.getLayer('context-state-lines') ? 'context-state-lines' : firstResultLayer(map);
+  for (const id of SCOPE_LAYERS) {
+    if (!map.getLayer(id)) continue;
+    if (before !== id) map.moveLayer(id, before);
+    map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+  }
 }
 
 const badgeLayout: SymbolLayerSpecification['layout'] = { 'icon-image': ['get', 'badge'], 'icon-allow-overlap': true, 'icon-ignore-placement': true,
@@ -224,9 +275,9 @@ export function syncCandidates(map: LibreMap, regions: CandidateRegion[], select
     { id: 'candidate-outline', type: 'line', source: CANDIDATE_SOURCE,
       paint: { 'line-color': ['get', 'color'], 'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 2.5, 1.4] } },
     { id: 'candidate-selected-fill', type: 'fill', source: CANDIDATE_SOURCE, filter: ['==', ['get', 'regionId'], selectedId ?? ''],
-      paint: { 'fill-color': '#08747d', 'fill-opacity': 0.14 } },
+      paint: { 'fill-color': '#2457d6', 'fill-opacity': 0.14 } },
     { id: 'candidate-selected', type: 'line', source: CANDIDATE_SOURCE, filter: ['==', ['get', 'regionId'], selectedId ?? ''],
-      paint: { 'line-color': '#08747d', 'line-width': 4, 'line-opacity': 1 } },
+      paint: { 'line-color': '#2457d6', 'line-width': 4, 'line-opacity': 1 } },
     { id: 'candidate-dot', type: 'circle', source: BADGE_SOURCE, maxzoom: BADGE_DETAIL_ZOOM, filter: dotFilter(selectedId),
       paint: { 'circle-radius': 4.5, 'circle-color': '#ffffff', 'circle-stroke-color': ['get', 'color'], 'circle-stroke-width': 2 } },
     { id: 'candidate-badge-top', type: 'symbol', source: BADGE_SOURCE, maxzoom: BADGE_DETAIL_ZOOM, filter: topBadgeFilter(selectedId),
@@ -248,12 +299,12 @@ export function syncCandidates(map: LibreMap, regions: CandidateRegion[], select
 }
 
 export function indicatorColor(layer: LayerData): ExpressionSpecification | string {
-  if (layer.id === 'grid') return ['match', ['get', '_status'], 'PASS', '#167d84', 'CONDITIONAL', '#b88932', 'FAIL', '#b35c58', '#818b94'];
+  if (layer.id === 'grid') return ['match', ['get', '_status'], 'PASS', '#127a3e', 'CONDITIONAL', '#b86e00', 'FAIL', '#c4363b', '#8a93a0'];
   if (layer.min === null || layer.max === null || layer.min >= layer.max || layer.direction === 'categorical') {
-    return ['case', ['any', ['==', ['get', '_status'], 'unknown'], ['==', ['get', '_value'], null]], '#969fa6', '#667f91'];
+    return ['case', ['any', ['==', ['get', '_status'], 'unknown'], ['==', ['get', '_value'], null]], '#9aa3af', '#5b6472'];
   }
-  return ['case', ['any', ['==', ['get', '_status'], 'unknown'], ['==', ['get', '_value'], null]], '#969fa6',
-    ['interpolate', ['linear'], ['get', '_value'], layer.min, '#d6e3e8', layer.max, '#52678d']];
+  return ['case', ['any', ['==', ['get', '_status'], 'unknown'], ['==', ['get', '_value'], null]], '#9aa3af',
+    ['interpolate', ['linear'], ['get', '_value'], layer.min, '#dbe5fb', layer.max, '#2457d6']];
 }
 
 export function syncIndicators(map: LibreMap, layers: LayerData[], enabled: Set<string>): void {

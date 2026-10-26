@@ -20,7 +20,7 @@ beforeEach(() => {
 describe('completed nationwide saved-run navigation', () => {
   it('opens a fresh page on the facility form and loads the nationwide saved run, not the latest run, only on request', async () => {
     render(<App />);
-    const start = await screen.findByRole('button', { name: 'open saved results' });
+    const start = await screen.findByRole('button', { name: /open saved results/i });
     expect(api.run).not.toHaveBeenCalled(); expect(screen.getByRole('spinbutton', { name: 'Peak IT power MW' })).toBeInTheDocument();
     await userEvent.click(start);
     const facility = await screen.findByRole('region', { name: 'Evaluated configuration' });
@@ -70,7 +70,7 @@ describe('completed nationwide saved-run navigation', () => {
   });
   it('offers the latest completed run when no broad completed capability is available', async () => {
     api.capabilities.mockResolvedValue({ ...parseCapabilities(demoCapabilities), latestRunId: 'CONCENTRATED', nationwideRegionalRunId: null });
-    render(<App />); await userEvent.click(await screen.findByRole('button', { name: 'open saved results' }));
+    render(<App />); await userEvent.click(await screen.findByRole('button', { name: /open saved results/i }));
     await screen.findByRole('region', { name: 'Evaluated configuration' });
     expect(api.run).toHaveBeenCalledWith('CONCENTRATED', 'current', expect.any(AbortSignal)); expect(api.run).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole('button', { name: 'Show nationwide areas · 1 km' })).not.toBeInTheDocument();

@@ -112,8 +112,8 @@ export function RediscoveryWorkspace({ viewSwitch, api = rediscoveryApi, demo = 
   ] : [];
 
   return <div className="locator-app rd-app">
-    <header className="app-header"><a className="brand" href={window.location.pathname} aria-label="Sustainable Data Center Locator home"><span className="brand-mark"><Compass size={23} /></span><span><strong>Sustainable Data Center Locator</strong><small>Geographic decision support</small></span></a>
-      <div className="header-context">{viewSwitch}<span className="model-control">Model <strong>Grid model · national 1 km surface</strong></span></div></header>
+    <header className="app-header"><div className="brand-group"><a className="brand" href={window.location.pathname} aria-label="Sustainable Data Center Locator home"><span className="brand-mark"><Compass size={22} /></span><strong>Sustainable Data Center Locator</strong></a><span className="header-badge" title="A post-hoc comparison with existing data centers; never a model input">Post-hoc check</span></div>
+      {viewSwitch}<div className="header-context"><span className="model-control">Model <strong>Grid model · national 1 km surface</strong></span></div></header>
     <main className={`workspace ${railOpen ? '' : 'rail-collapsed'} ${details ? 'has-detail' : ''}`} style={{ '--mobile-map-bottom': `${sheetHeight}dvh` } as CSSProperties}>
       {!mobile && <aside className="desktop-rail" aria-label="Validation results"><div className="rail-inner"><div className="rail-scroll">{dashboard}</div></div></aside>}
       <section className="map-workspace" aria-label="Rediscovery map">

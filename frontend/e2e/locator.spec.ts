@@ -21,8 +21,8 @@ async function fixtureService(page:Page,state:'normal'|'error'|'empty'='normal',
 }
 const placeCount=(regions:{geometry:unknown}[])=>new Set(regions.map(region=>JSON.stringify(region.geometry))).size;
 async function expandSheet(page:Page){const button=page.getByRole('button',{name:'Expand bottom sheet'});if(await button.isVisible())await button.click();}
-async function openEditor(page:Page){await expandSheet(page);const edit=page.getByRole('button',{name:'Edit facility'});const find=page.getByRole('button',{name:'Find locations',exact:true});await expect(edit.or(find)).toBeVisible();if(await edit.isVisible())await edit.click();await expect(find).toBeEnabled();}
-async function configureAndSearch(page:Page){await openEditor(page);await page.getByLabel('Peak IT power MW').fill('100');await page.getByLabel('Average load percent').fill('80');await page.getByRole('button',{name:'Find locations',exact:true}).click();}
+async function openEditor(page:Page){await expandSheet(page);const edit=page.getByRole('button',{name:'Edit facility'});const find=page.getByRole('button',{name:'Find search areas',exact:true});await expect(edit.or(find)).toBeVisible();if(await edit.isVisible())await edit.click();await expect(find).toBeEnabled();}
+async function configureAndSearch(page:Page){await openEditor(page);await page.getByLabel('Peak IT power MW').fill('100');await page.getByLabel('Average load percent').fill('80');await page.getByRole('button',{name:'Find search areas',exact:true}).click();}
 
 test('map search → polygons/overlap → physical evidence → comparison → supported scenario',async({page},testInfo)=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -79,7 +79,7 @@ test('a fresh page waits for facility input and Back returns to it after the fir
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   let runs=0;page.on('request',request=>{if(new URL(request.url()).pathname.startsWith('/api/runs/'))runs++;});
   await fixtureService(page);await page.goto('/');await expandSheet(page);
-  await expect(page.getByRole('button',{name:'Find locations',exact:true})).toBeEnabled();
+  await expect(page.getByRole('button',{name:'Find search areas',exact:true})).toBeEnabled();
   await expect(page.getByLabel('Peak IT power MW')).toBeVisible();await expect(page.locator('.region-select')).toHaveCount(0);expect(runs).toBe(0);
   await configureAndSearch(page);await expect(page.locator('.region-select')).toHaveCount(2);
   await page.goBack();await expandSheet(page);

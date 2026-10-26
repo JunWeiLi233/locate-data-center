@@ -166,16 +166,16 @@ export class BoundaryDetails {
     for (const kind of ['state', 'national']) {
       const id = `context-${kind}-detail-lines`;
       if (!this.map.getLayer(id)) this.map.addLayer({ id, type: 'line', source: 'context-boundary-detail',
-        filter: ['==', ['get', 'kind'], kind], paint: { 'line-color': kind === 'national' ? '#4c737f' : '#8c9ca2',
+        filter: ['==', ['get', 'kind'], kind], paint: { 'line-color': kind === 'national' ? '#5b6472' : '#a3acb8',
           'line-width': kind === 'national' ? 1.4 : 0.85 } }, before);
     }
     if (!this.map.getSource('context-land-detail')) this.map.addSource('context-land-detail', { type: 'geojson', data: EMPTY, tolerance: 0, maxzoom: 18 });
     // Detailed land sits exactly where the generalized backdrop does: under forest, relief and borders.
     const landBefore = ['context-forest-canopy', 'context-relief', 'context-state-lines'].find(id => this.map.getLayer(id)) ?? before;
     if (!this.map.getLayer('context-land-detail-fill')) this.map.addLayer({ id: 'context-land-detail-fill', type: 'fill', source: 'context-land-detail',
-      filter: ['==', ['get', 'kind'], 'land'], paint: { 'fill-color': '#f5f5ef', 'fill-opacity': 1 } }, landBefore);
+      filter: ['==', ['get', 'kind'], 'land'], paint: { 'fill-color': '#f7f8fa', 'fill-opacity': 1 } }, landBefore);
     if (!this.map.getLayer('context-land-detail-shore')) this.map.addLayer({ id: 'context-land-detail-shore', type: 'line', source: 'context-land-detail',
-      filter: ['==', ['get', 'kind'], 'shore'], paint: { 'line-color': '#a9c3cc', 'line-width': 0.7 } }, landBefore);
+      filter: ['==', ['get', 'kind'], 'shore'], paint: { 'line-color': '#a7bccb', 'line-width': 0.7 } }, landBefore);
   }
 
   private render() {

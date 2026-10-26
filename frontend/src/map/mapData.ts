@@ -3,7 +3,7 @@ import type { CandidateRegion, LayerData, LayerSelection, ScreeningStatus } from
 import { geometryKey, polygonGeometry, regionCoordinate } from './geometry';
 
 export const STATUS_COLORS: Record<ScreeningStatus, string> = {
-  PASS: '#167d84', CONDITIONAL: '#b88932', FAIL: '#b35c58', UNKNOWN: '#818b94',
+  PASS: '#127a3e', CONDITIONAL: '#b86e00', FAIL: '#c4363b', UNKNOWN: '#8a93a0',
 };
 export function statusColor(status: string): string {
   return STATUS_COLORS[status as ScreeningStatus] ?? STATUS_COLORS.UNKNOWN;
