@@ -54,6 +54,14 @@ export interface Capabilities {
   analysisModes?: AnalysisModeCapability[];
   defaultAnalysisMode?: GridAnalysisMode | null;
   cachedRegionalBaselineRunId?: string | null;
+  /** Where a fast search looks, drawn before any search; absent from older services. */
+  cachedRegionalCoverage?: CachedRegionalCoverage | null;
+}
+/** Refined windows of the fixed cached cohort. Presentation only: land outside them is not assessed at 1 km. */
+export interface CachedRegionalCoverage {
+  runId: string | null; windowSizeM: number | null; cellSizeM: number | null;
+  refinedWindows: number | null; refinedCells: number | null; shortlistedWindows: number | null;
+  windows: FeatureCollection;
 }
 export interface RunResult {
   modelKind?: 'monte-carlo';

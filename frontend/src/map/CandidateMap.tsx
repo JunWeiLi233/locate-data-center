@@ -6,7 +6,7 @@ import type { CandidateRegion, LayerData, LayerSelection, MapCamera, MapFeatureI
 import { overlapRegions, selectedLayerIds } from './mapData';
 import { coolingName, regionName, shortCooling, statusWord } from '../utils/regions';
 import { initialMapView, selectionViewport, US_BOUNDS, viewportPadding } from './geometry';
-import { CANDIDATE_LAYERS, CANDIDATE_SOURCE, DEFAULT_BASEMAP, isContextSourceError, neutralStyle, setBasemapVisibility, syncCandidates, syncContext, syncIndicators, type BasemapVisibility, type ContextBackdrop } from './mapStyle';
+import { CANDIDATE_LAYERS, CANDIDATE_SOURCE, DEFAULT_BASEMAP, isContextSourceError, neutralStyle, setBasemapVisibility, syncCandidates, syncContext, syncIndicators, syncScope, type BasemapVisibility, type ContextBackdrop } from './mapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
 import { BoundaryDetails } from './boundaryContext';
@@ -28,6 +28,8 @@ export interface CandidateMapProps {
   viewRequest?: { camera: MapCamera; id: number };
   /** Optional presentation overlays (points, rings, images) drawn above model results. */
   overlays?: MapOverlays;
+  /** Search-scope windows shown before any results; land outside them is hatched as not assessed. `null` hides them. */
+  scope?: FeatureCollection | null;
   /** Receives `properties.overlayId` of a clicked clickable overlay feature. */
   onOverlaySelect?: (id: string) => void;
   className?: string;
@@ -103,6 +105,7 @@ export function CandidateMap(props: CandidateMapProps) {
         const value = current.current;
         syncContext(map, contextRef.current, localStyleRef.current, value.basemap ?? DEFAULT_BASEMAP, backdropRef.current);
         boundaryDetails?.refresh();
+        syncScope(map, value.scope ?? null);
         const enabled = selectedLayerIds(value.layerSelections);
         syncCandidates(map, value.regions, value.selectedId, enabled.has('candidates'));
         syncIndicators(map, value.layers, enabled);
@@ -284,6 +287,12 @@ export function CandidateMap(props: CandidateMapProps) {
     if (!map || !styleReadyRef.current) return;
     syncOverlays(map, props.overlays);
   }, [props.overlays, revision]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !styleReadyRef.current) return;
+    syncScope(map, props.scope ?? null);
+  }, [props.scope, revision]);
 
   useEffect(() => { if (choices.length) choiceRef.current?.querySelector<HTMLButtonElement>('button')?.focus(); }, [choices]);
 

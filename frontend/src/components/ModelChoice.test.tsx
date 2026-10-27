@@ -50,10 +50,10 @@ beforeEach(() => {
 describe('runtime model choice', () => {
   it('keeps grid default and clears results, selection, scenario and URL run when switching either way', async () => {
     render(<App />);
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled());
     expect(screen.getByRole('combobox', { name: 'Model' })).toHaveValue('grid');
     expect(adapters.county.capabilities).not.toHaveBeenCalled();
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await screen.findByRole('button', { name: 'Point DEMO_ALPHA' });
     await userEvent.click(screen.getByRole('button', { name: 'Point DEMO_ALPHA' }));
     expect(screen.getByRole('complementary', { name: /Details for Candidate Alpha/ })).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe('runtime model choice', () => {
     expect(within(details).getByText(/Unavailable from the county Monte Carlo API/)).toBeInTheDocument();
     expect(adapters.county.socioeconomic).not.toHaveBeenCalled();
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Model' }), 'grid');
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled());
     expect(screen.queryByRole('button', { name: 'Point 01089' })).not.toBeInTheDocument();
     expect(new URLSearchParams(window.location.search).has('run')).toBe(false);
     expect(adapters.grid.run).not.toHaveBeenCalled();
@@ -84,8 +84,8 @@ describe('runtime model choice', () => {
 
   it('returns to the previous model and its results with the browser Back button', async () => {
     render(<App />);
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled());
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await screen.findByRole('button', { name: 'Point DEMO_ALPHA' });
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Model' }), 'county');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
@@ -105,8 +105,8 @@ describe('runtime model choice', () => {
       return new Promise<RunResult>(resolve => { complete = resolve; });
     });
     render(<App />);
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled());
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Model' }), 'county');
     expect(requestSignal.aborted).toBe(true);
     await act(async () => { complete(parseRunResult(demoRun())); });

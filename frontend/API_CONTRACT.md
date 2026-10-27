@@ -114,6 +114,15 @@ retains legacy full execution; the page selects the advertised fast default
 when its input cache is ready. The mode is independent of the facility fields
 and is omitted by the County adapter.
 
+Capabilities also add optional `cached_regional_coverage`, null unless the
+cohort is ready: `{run_id, window_size_m, cell_size_m, refined_windows,
+refined_cells, shortlisted_windows, windows}`. `windows` is a GeoJSON
+FeatureCollection of the cohort's refined windows as EPSG:4326 polygons with a
+`grid_id` property, rebuilt from its `refinement_windows.parquet` grid IDs.
+The start screen draws them as the fast-search scope; land outside them is not
+assessed at 1 km. Counts the catalog lacks are null. Older services omit the
+field and the page shows the scope as text only.
+
 Fast requests evaluate the submitted facility across the complete fixed
 cached regional cohort. Identical in-flight requests share a job; identical
 completed requests reuse checksum-verified outputs. A separate bounded worker

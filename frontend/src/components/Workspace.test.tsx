@@ -15,8 +15,8 @@ const configuration = { ...DEMO_CONFIG, screeningMode: 'STRICT' as const };
 const ALPHA = 'Candidate Alpha, Air / dry (assumed)'; const GAMMA = 'Candidate Gamma, Air / dry (assumed)';
 function result(): RunResult { return parseRunResult(demoRun({ ...DEMO_CONFIG, screeningMode: 'EXPLORATORY' })); }
 function deferred<T>() { let resolve!: (value: T) => void; let reject!: (value: unknown) => void; const promise = new Promise<T>((yes, no) => { resolve = yes; reject = no; }); return { promise, resolve, reject }; }
-async function ready() { render(<App />); await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled()); }
-async function evaluate() { await ready(); await userEvent.click(screen.getByRole('button', { name: 'Find locations' })); await screen.findByRole('button', { name: `Select ${ALPHA}` }); }
+async function ready() { render(<App />); await waitFor(() => expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled()); }
+async function evaluate() { await ready(); await userEvent.click(screen.getByRole('button', { name: 'Find search areas' })); await screen.findByRole('button', { name: `Select ${ALPHA}` }); }
 
 beforeEach(() => {
   window.history.replaceState({}, '', '/');
@@ -83,14 +83,14 @@ describe('locator workspace', () => {
     expect(screen.getByRole('spinbutton', { name: 'Operating lifetime years' })).toHaveValue(25);
     expect(screen.queryByRole('button', { name: /Select Candidate Alpha/ })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Back to results' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'open saved results' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /open saved results/i })).not.toBeInTheDocument();
   });
   it('returns to the start form with the browser Back button after the first search', async () => {
     await evaluate(); expect(api.search).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole('spinbutton', { name: 'Peak IT power MW' })).not.toBeInTheDocument();
     act(() => window.history.back());
     await waitFor(() => expect(screen.getByRole('spinbutton', { name: 'Peak IT power MW' })).toBeInTheDocument());
-    expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled();
   });
   describe('opening on a completed run', () => {
     beforeEach(() => {
@@ -103,13 +103,13 @@ describe('locator workspace', () => {
       window.history.replaceState({}, '', '/');
       await ready(); expect(api.run).not.toHaveBeenCalled(); expect(api.search).not.toHaveBeenCalled();
       expect(screen.getByRole('spinbutton', { name: 'Peak IT power MW' })).toHaveValue(100);
-      await userEvent.click(screen.getByRole('button', { name: 'open saved results' }));
+      await userEvent.click(screen.getByRole('button', { name: /open saved results/i }));
       await screen.findByRole('button', { name: `Select ${ALPHA}` });
       expect(api.run).toHaveBeenCalledWith('REAL_SAVED', 'current', expect.any(AbortSignal)); expect(api.search).not.toHaveBeenCalled();
       const facility = screen.getByRole('region', { name: 'Evaluated configuration' });
       expect(facility).toHaveTextContent('100 MW · 80% load · opens 2030'); expect(facility).toHaveTextContent('exploratory screening');
       expect(facility).toHaveTextContent('Saved results for these inputs');
-      expect(screen.queryByRole('button', { name: 'open saved results' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /open saved results/i })).not.toBeInTheDocument();
       act(() => window.history.back());
       await waitFor(() => expect(screen.getByRole('spinbutton', { name: 'Peak IT power MW' })).toBeInTheDocument());
       expect(api.run).toHaveBeenCalledTimes(1);
@@ -147,7 +147,7 @@ describe('locator workspace', () => {
       render(<App />); await screen.findByRole('button', { name: `Select ${ALPHA}` });
       await userEvent.click(screen.getByRole('button', { name: 'Edit facility' }));
       fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '120' } });
-      await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
       await waitFor(() => expect(screen.getByRole('region', { name: 'Evaluated configuration' })).toHaveTextContent('120 MW'));
       act(() => window.history.back());
       await waitFor(() => expect(api.run).toHaveBeenLastCalledWith('REAL_SAVED', 'current', expect.any(AbortSignal)));
@@ -173,7 +173,7 @@ describe('locator workspace', () => {
       render(<App />); await screen.findByRole('button', { name: `Select ${ALPHA}` });
       await userEvent.click(screen.getByRole('button', { name: 'Edit facility' }));
       fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '120' } });
-      await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
       expect(api.search.mock.calls[0][0].peakItPowerMw).toBe(120);
       const facility = await screen.findByRole('region', { name: 'Evaluated configuration' });
       await waitFor(() => expect(facility).toHaveTextContent('120 MW'));
@@ -194,7 +194,7 @@ describe('locator workspace', () => {
   it('sends changed physical inputs to the API and displays only actual stages while loading', async () => {
     const pending = deferred<RunResult>(); api.search.mockImplementation((_config, progress: (job: Job) => void) => { progress({ id: 'JOB', state: 'RUNNING', stage: 'Simulating facility', runId: null, error: null }); return pending.promise; });
     await ready(); fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '120' } });
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     expect(api.search.mock.calls[0][0].peakItPowerMw).toBe(120);
     expect(screen.getByRole('status', { name: 'Evaluation status' })).toHaveTextContent('Simulating facility'); expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     await act(async () => { pending.resolve(result()); }); expect(screen.getByRole('status', { name: 'Evaluation status' })).toHaveTextContent('Results contain unresolved critical data.');
@@ -239,13 +239,13 @@ describe('locator workspace', () => {
   it('retains previous evaluated results and edited inputs after error; retry preserves the failed request', async () => {
     await evaluate(); await userEvent.click(screen.getByRole('button', { name: 'Edit facility' }));
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '125' } }); api.search.mockRejectedValueOnce(new Error('Native source unavailable'));
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' })); await screen.findByRole('alert');
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' })); await screen.findByRole('alert');
     expect(screen.getByRole('alert')).toHaveTextContent('Previous results are retained.'); expect(screen.getByRole('button', { name: `Select ${ALPHA}` })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Retry' })); await waitFor(() => expect(api.search).toHaveBeenCalledTimes(3));
     expect(api.search.mock.calls[2][0].peakItPowerMw).toBe(125);
   });
   it('shows a valid empty strict result and never creates a candidate', async () => {
-    api.search.mockResolvedValue(parseRunResult(demoRun(configuration))); await ready(); await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    api.search.mockResolvedValue(parseRunResult(demoRun(configuration))); await ready(); await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await screen.findByRole('heading', { name: 'No regions satisfied the current hard constraints.' }); expect(screen.queryByRole('button', { name: /Select Candidate Alpha/ })).not.toBeInTheDocument();
   });
   it('loads optional layers only on request and keeps unavailable sources disabled', async () => {
@@ -279,7 +279,7 @@ describe('locator workspace', () => {
   it('keeps progress and error retry reachable inside an expanded mobile sheet', async () => {
     window.matchMedia = vi.fn().mockImplementation(query => ({ matches: query === '(max-width: 1190px)', media: query, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
     const request = deferred<RunResult>(); api.search.mockReturnValueOnce(request.promise);
-    await ready(); await userEvent.click(screen.getByRole('button', { name: 'Expand bottom sheet' })); await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await ready(); await userEvent.click(screen.getByRole('button', { name: 'Expand bottom sheet' })); await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     expect(screen.getByRole('status', { name: 'Evaluation request' }).closest('.mobile-sheet')).not.toBeNull();
     await act(async () => { request.reject(new Error('Official source access failed')); });
     const notice = screen.getByRole('alert', { name: 'Evaluation request' }); expect(notice.closest('.mobile-sheet')).not.toBeNull();
@@ -289,7 +289,7 @@ describe('locator workspace', () => {
   it('retains edited configuration when capabilities are reconnected', async () => {
     api.capabilities.mockRejectedValueOnce(new Error('Service disconnected')); render(<App />); await screen.findByRole('alert');
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '140' } });
-    await userEvent.click(screen.getByRole('button', { name: 'Reconnect' })); await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
+    await userEvent.click(screen.getByRole('button', { name: 'Reconnect' })); await waitFor(() => expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled());
     expect(screen.getByRole('spinbutton', { name: 'Peak IT power MW' })).toHaveValue(140);
   });
   it('keeps mobile retry accessible in selected previous details after a context fails', async () => {
@@ -308,7 +308,7 @@ describe('locator workspace', () => {
     const judgments = screen.getAllByPlaceholderText('1–9'); expect(judgments).toHaveLength(6);
     for (const input of judgments) fireEvent.change(input, { target: { value: '1' } });
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Decision preferences' }), weighting);
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     expect(api.search.mock.calls[0][0].weighting).toBe(weighting); expect(api.search.mock.calls[0][0].ahpMatrix).toBeNull();
   });
   it('restores the actual saved facility configuration without a false edited warning', async () => {
@@ -322,7 +322,7 @@ describe('locator workspace', () => {
     window.history.replaceState({}, '', '/?run=SAVED120&mw=140&opening=2050'); const value = result(); value.configuration = { ...value.configuration, peakItPowerMw: 120, averageLoadPercent: 75, cooling: 'cold_plate_tower_assumed' }; api.run.mockResolvedValue(value);
     render(<App />); await screen.findByRole('button', { name: `Select ${ALPHA}` }); await userEvent.click(screen.getByRole('button', { name: 'Edit facility' }));
     expect(screen.getByRole('spinbutton', { name: 'Peak IT power MW' })).toHaveValue(140); expect(screen.getByRole('spinbutton', { name: 'Average load percent' })).toHaveValue(75); expect(screen.getByRole('spinbutton', { name: 'Target opening year' })).toHaveValue(2050);
-    expect(screen.getByRole('combobox', { name: 'Cooling design' })).toHaveValue('cold_plate_tower_assumed');
+    expect(screen.getByRole('radio', { name: 'Direct-to-chip · tower' })).toBeChecked();
   });
   it('discards cancelled URL facility fields for later scenario loads of the same run', async () => {
     window.history.replaceState({}, '', '/?run=SAVED120&mw=140'); const value = result(); value.configuration = { ...value.configuration, peakItPowerMw: 120 }; api.run.mockResolvedValue(value);
@@ -339,7 +339,7 @@ describe('locator workspace', () => {
   });
   it('lists one row per place with its backend rank and switches cooling designs in the region panel', async () => {
     const value = result(); value.regions[0].placeLabel = 'Trinity, CA'; value.regions[0].regionStates = ['WA', 'CA', 'OR', 'ID']; api.search.mockResolvedValue(value);
-    await ready(); await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await ready(); await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     const row = await screen.findByRole('button', { name: 'Select Trinity, CA, Air / dry (assumed)' });
     expect(document.querySelectorAll('.place-row')).toHaveLength(2); expect(row).toHaveTextContent('#1'); expect(row).toHaveTextContent('Air / dry');
     expect(screen.getByText(/# is its rank among all evaluated 1 km alternatives/)).toBeInTheDocument();
@@ -352,7 +352,7 @@ describe('locator workspace', () => {
   });
   it('returns an expanded result sheet to half height for a new selection and preserves later resizing for the same region', async () => {
     window.matchMedia = vi.fn().mockImplementation(query => ({ matches: query === '(max-width: 1190px)', media: query, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
-    await ready(); await userEvent.click(screen.getByRole('button', { name: 'Expand bottom sheet' })); await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await ready(); await userEvent.click(screen.getByRole('button', { name: 'Expand bottom sheet' })); await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await screen.findByRole('button', { name: `Select ${ALPHA}` });
     const sheet = screen.getByRole('button', { name: 'Expand bottom sheet' }).closest('.mobile-sheet')!;
     expect(sheet).toHaveStyle('--sheet-height: 88dvh');

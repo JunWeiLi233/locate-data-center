@@ -18,6 +18,7 @@ import yaml
 from .serialization import FINE_SELECTIONS, ApiError, ArtifactReader, EXPORTS, GROUPS, SCHEMA_VERSION, SCOPE, available_scenarios, describe_scope, clean, fine_surface_metadata, json_bytes, read_json, regional_catalog, regional_scope, snapshot_configuration
 from . import socioeconomic
 from .artifacts import ModelArtifactReader, cached_cohort_status, fast_request_identity, is_fast_run, run_cached_evaluation, verify_fast_artifacts
+from .coverage import cached_window_coverage
 
 STAGES = ("ingest", "build-features", "screen", "simulate", "rank", "cluster", "validate")
 COOLING = ("all", "air_dry_assumed", "cold_plate_tower_assumed")
@@ -382,6 +383,8 @@ class LocatorService:
                                    {"id": "full_rediscovery", "label": "Full nationwide rediscovery", "available": True, "reason": None}],
                 "default_analysis_mode": "cached_regional" if ready else "full_rediscovery",
                 "cached_regional_baseline_run_id": cached.get("baseline_run_id") if ready else None,
+                # Where a fast search looks: the cohort's refined windows, drawn on the start screen before any search.
+                "cached_regional_coverage": cached_window_coverage(self.root / "runs/cleanview_regional_v2", cached.get("baseline_run_id")) if ready else None,
                 "demo": False, "configuration_bounds": DEFAULT_BOUNDS}
 
     def run_result(self, identifier, scenario="current"):

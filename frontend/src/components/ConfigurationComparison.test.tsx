@@ -26,7 +26,7 @@ describe('evaluated facility comparison', () => {
       result.configuration = { ...result.configuration, groupWeights: Object.fromEntries(Object.entries(configuration.groupWeights).reverse()) };
       return Promise.resolve(result);
     });
-    render(<App />); await screen.findByRole('combobox', { name: 'Search depth' });
+    render(<App />); await screen.findByRole('radiogroup', { name: 'Search depth' });
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '131' } });
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Average load percent' }), { target: { value: '79' } });
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Target opening year' }), { target: { value: '2031' } });
@@ -35,7 +35,7 @@ describe('evaluated facility comparison', () => {
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Decision preferences' }), 'user');
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Power & Carbon weight' }), { target: { value: '3' } });
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Water Stewardship weight' }), { target: { value: '1' } });
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await screen.findByRole('region', { name: 'Evaluated configuration' });
     expect(api.search.mock.calls[0][3]).toBe('cached_regional');
     expect(screen.getByRole('status', { name: 'Evaluation status' })).not.toHaveTextContent('Configuration edited');

@@ -35,7 +35,7 @@ describe('evidence and preferences', () => {
     function Harness() { const [configuration, setConfiguration] = useState<FacilityConfiguration>({ ...DEMO_CONFIG, weighting: 'ahp', ahpMatrix: null }); return <ConfigurationForm configuration={configuration} capabilities={capabilities} busy={false} onChange={setConfiguration} onSubmit={() => submitted(configuration)} />; }
     render(<Harness />); const pairs = screen.getAllByPlaceholderText('1–9'); expect(pairs).toHaveLength(6); pairs.forEach(input => expect(input).toHaveValue(null));
     for (const [index, input] of pairs.entries()) fireEvent.change(input, { target: { value: index === 0 ? '3' : '1' } });
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     expect(submitted).toHaveBeenCalledTimes(1); const config = submitted.mock.calls[0][0] as FacilityConfiguration;
     expect(config.ahpMatrix?.[0][1]).toBe(3); expect(config.ahpMatrix?.[1][0]).toBe(1 / 3); expect(config.ahpMatrix?.every((row, i) => row[i] === 1)).toBe(true);
     expect(screen.queryByText(/Final AHP weights/)).not.toBeInTheDocument();

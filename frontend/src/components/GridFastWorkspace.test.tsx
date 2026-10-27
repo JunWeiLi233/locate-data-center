@@ -23,24 +23,24 @@ beforeEach(() => {
 });
 describe('Grid cached cohort evaluation controls', () => {
   it('defaults to advertised fast mode and recomputes the edited facility and weights rather than loading a saved run', async () => {
-    render(<App />); const mode = await screen.findByRole('combobox', { name: 'Search depth' });
-    expect(mode).toHaveValue('cached_regional'); expect(screen.getByText(/Re-scores the regions already analyzed at 1 km/)).toBeInTheDocument();
+    render(<App />); await screen.findByRole('radiogroup', { name: 'Search depth' });
+    expect(screen.getByRole('radio', { name: /^Fast/ })).toBeChecked(); expect(screen.getByText(/Re-scores the regions already analyzed at 1 km/)).toBeInTheDocument();
     expect(screen.getByText(/no new regions are searched/i)).toBeInTheDocument();
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '140' } });
     await userEvent.click(screen.getByText('More options'));
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Decision preferences' }), 'user');
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Power & Carbon weight' }), { target: { value: '3' } });
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Water Stewardship weight' }), { target: { value: '1' } });
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await waitFor(() => expect(api.search).toHaveBeenCalledWith(expect.objectContaining({ peakItPowerMw: 140, weighting: 'user', groupWeights: expect.objectContaining({ energy_carbon: 3, water_stewardship: 1 }) }), expect.any(Function), expect.any(AbortSignal), 'cached_regional'));
     expect(api.run).not.toHaveBeenCalled();
   });
   it('lets Grid users explicitly select full nationwide rediscovery', async () => {
-    render(<App />); const mode = await screen.findByRole('combobox', { name: 'Search depth' });
-    await userEvent.selectOptions(mode, 'full_rediscovery');
+    render(<App />); await screen.findByRole('radiogroup', { name: 'Search depth' });
+    await userEvent.click(screen.getByRole('radio', { name: /^Full/ }));
     expect(screen.getByText(/Repeats the national search.*much longer/i)).toBeInTheDocument();
     expect(screen.queryByText(/Re-scores the regions already analyzed at 1 km/)).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await waitFor(() => expect(api.search).toHaveBeenCalledWith(expect.any(Object), expect.any(Function), expect.any(AbortSignal), 'full_rediscovery'));
     expect(api.run).not.toHaveBeenCalled();
   });
@@ -48,15 +48,16 @@ describe('Grid cached cohort evaluation controls', () => {
     api.capabilities.mockResolvedValue(parseCapabilities({ ...wire, default_analysis_mode: 'full_rediscovery', analysis_modes: [
       { ...wire.analysis_modes[0], available: false, reason: 'Verified cached cohort unavailable' }, wire.analysis_modes[1],
     ] }));
-    render(<App />); const mode = await screen.findByRole('combobox', { name: 'Search depth' });
-    expect(mode).toHaveValue('full_rediscovery');
-    expect(within(mode).getByRole('option', { name: /Fast.*cached/ })).toBeDisabled();
+    render(<App />); await screen.findByRole('radiogroup', { name: 'Search depth' });
+    expect(screen.getByRole('radio', { name: /^Full/ })).toBeChecked();
+    expect(screen.getByRole('radio', { name: /^Fast/ })).toBeDisabled();
+    expect(screen.getByText('Fast search unavailable: Verified cached cohort unavailable')).toBeInTheDocument();
   });
   it('keeps legacy Grid evaluation requests unchanged when modes are not advertised', async () => {
     api.capabilities.mockResolvedValue(parseCapabilities(demoCapabilities));
-    render(<App />); await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
-    expect(screen.queryByRole('combobox', { name: 'Search depth' })).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    render(<App />); await waitFor(() => expect(screen.getByRole('button', { name: 'Find search areas' })).toBeEnabled());
+    expect(screen.queryByRole('radiogroup', { name: 'Search depth' })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await waitFor(() => expect(api.search).toHaveBeenCalledWith(expect.any(Object), expect.any(Function), expect.any(AbortSignal)));
     expect(api.search.mock.calls[0]).toHaveLength(3);
   });
@@ -64,18 +65,18 @@ describe('Grid cached cohort evaluation controls', () => {
     window.history.replaceState({}, '', '/?model=county');
     api.capabilities.mockResolvedValue({ ...parseCapabilities(wire), modelKind: 'monte-carlo', defaultConfiguration: { ...DEMO_CONFIG, monteCarlo: { settingsJson: '{}', sensitivity: true, convergence: true } } });
     render(<App />); await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
-    expect(screen.queryByRole('combobox', { name: 'Search depth' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('radiogroup', { name: 'Search depth' })).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
     await waitFor(() => expect(api.search).toHaveBeenCalledWith(expect.any(Object), expect.any(Function), expect.any(AbortSignal)));
     expect(api.search.mock.calls[0]).toHaveLength(3);
   });
   it('omits Grid mode after switching an initialized fast Grid workspace to County', async () => {
     render(<App />);
-    expect(await screen.findByRole('combobox', { name: 'Search depth' })).toHaveValue('cached_regional');
+    await screen.findByRole('radiogroup', { name: 'Search depth' }); expect(screen.getByRole('radio', { name: /^Fast/ })).toBeChecked();
     api.capabilities.mockResolvedValue({ ...parseCapabilities(wire), modelKind: 'monte-carlo', defaultConfiguration: { ...DEMO_CONFIG, monteCarlo: { settingsJson: '{}', sensitivity: true, convergence: true } } });
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Model' }), 'county');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Find locations' })).toBeEnabled());
-    expect(screen.queryByRole('combobox', { name: 'Search depth' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('radiogroup', { name: 'Search depth' })).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
     await waitFor(() => expect(api.search).toHaveBeenCalledOnce());
     expect(api.search.mock.calls[0]).toHaveLength(3);
@@ -84,11 +85,11 @@ describe('Grid cached cohort evaluation controls', () => {
   it('retries the submitted facility and mode even after controls are edited', async () => {
     api.search.mockRejectedValueOnce(new Error('Temporary request failure'));
     render(<App />);
-    await userEvent.selectOptions(await screen.findByRole('combobox', { name: 'Search depth' }), 'full_rediscovery');
+    await screen.findByRole('radiogroup', { name: 'Search depth' }); await userEvent.click(screen.getByRole('radio', { name: /^Full/ }));
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '147' } });
-    await userEvent.click(screen.getByRole('button', { name: 'Find locations' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Find search areas' }));
     await screen.findByText('Temporary request failure');
-    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Search depth' }), 'cached_regional');
+    await userEvent.click(screen.getByRole('radio', { name: /^Fast/ }));
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Peak IT power MW' }), { target: { value: '190' } });
     await userEvent.click(screen.getByRole('button', { name: 'Retry' }));
     await waitFor(() => expect(api.search).toHaveBeenCalledTimes(2));
